@@ -17,7 +17,7 @@ public class UpdateCustomerAddress implements Message, MessageDescription {
     private String city;
     private String postCode;
     private String country;
-    private Integer flags;
+    private Integer flags = 0;
 
     @Override
     public Status send(Connection connection) {

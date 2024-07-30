@@ -11,7 +11,7 @@ public class UpdateCustomerEmail implements Message, MessageDescription {
     private String customerId;
     private Integer number;
     private String address;
-    private Integer flags;
+    private Integer flags = 0;
 
     @Override
     public Status send(Connection connection) {

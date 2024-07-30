@@ -13,7 +13,7 @@ public class UpdateCustomerPhoneNumber implements Message, MessageDescription {
     private String type;
     private String prefix;
     private String phoneNumber;
-    private Integer flags;
+    private Integer flags = 0;
 
     @Override
     public Status send(Connection connection) {

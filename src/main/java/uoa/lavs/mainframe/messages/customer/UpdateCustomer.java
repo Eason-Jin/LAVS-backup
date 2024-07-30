@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 public class UpdateCustomer implements Message, MessageDescription {
     public static final int REQUEST_CODE = 1201;
     public static final String[] INPUT = {"id", "title", "name", "dob", "occupation", "citizenship", "visa"};
-    public static final String[] OUTPUT = {"title", "name", "dob", "occupation", "citizenship", "visa"};
+    public static final String[] OUTPUT = {"id", "title", "name", "dob", "occupation", "citizenship", "visa"};
 
     private Response response;
     private String customerId;
@@ -100,6 +100,13 @@ public class UpdateCustomer implements Message, MessageDescription {
             throw new IllegalArgumentException("visa is too long - max length is 40");
         }
         visa = value;
+     }
+
+    // gets customer id [id] from server
+    public String getCustomerIdFromServer()
+     {
+        String key = "id";
+        return response.getValue(key);
      }
 
     // gets title from server

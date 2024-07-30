@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 public class UpdateLoan implements Message, MessageDescription {
     public static final int REQUEST_CODE = 2201;
     public static final String[] INPUT = {"id", "customerId", "principal", "rate.value", "rate.type", "date", "period", "payment.amount", "payment.freq", "compounding"};
-    public static final String[] OUTPUT = {"customerId", "customerName", "status", "principal", "rate.value", "rate.type", "date", "period", "term", "payment.amount", "payment.freq", "compounding"};
+    public static final String[] OUTPUT = {"id", "customerId", "customerName", "status", "principal", "rate.value", "rate.type", "date", "period", "term", "payment.amount", "payment.freq", "compounding"};
 
     private Response response;
     private String loanId;
@@ -31,13 +31,13 @@ public class UpdateLoan implements Message, MessageDescription {
         if (rateValue != null) request.setValue("rate.value", rateValue.toString());
         switch (rateType)
         {
-            case RateType.Floating:
+            case Floating:
                 request.setValue("rate.type", "1");
                 break;
-            case RateType.Fixed:
+            case Fixed:
                 request.setValue("rate.type", "2");
                 break;
-            case RateType.InterestOnly:
+            case InterestOnly:
                 request.setValue("rate.type", "3");
                 break;
         }
@@ -49,25 +49,25 @@ public class UpdateLoan implements Message, MessageDescription {
         if (paymentAmount != null) request.setValue("payment.amount", paymentAmount.toString());
         switch (paymentFrequency)
         {
-            case Frequency.Weekly:
+            case Weekly:
                 request.setValue("payment.freq", "2");
                 break;
-            case Frequency.Fortnightly:
+            case Fortnightly:
                 request.setValue("payment.freq", "3");
                 break;
-            case Frequency.Monthly:
+            case Monthly:
                 request.setValue("payment.freq", "4");
                 break;
         }
         switch (compounding)
         {
-            case Frequency.Weekly:
+            case Weekly:
                 request.setValue("compounding", "2");
                 break;
-            case Frequency.Monthly:
+            case Monthly:
                 request.setValue("compounding", "4");
                 break;
-            case Frequency.Yearly:
+            case Yearly:
                 request.setValue("compounding", "7");
                 break;
         }
@@ -141,6 +141,13 @@ public class UpdateLoan implements Message, MessageDescription {
     public void setCompounding(Frequency value)
      {
         compounding = value;
+     }
+
+    // gets loan id [id] from server
+    public String getLoanIdFromServer()
+     {
+        String key = "id";
+        return response.getValue(key);
      }
 
     // gets customer id [customerId] from server

@@ -23,7 +23,7 @@ class AmortizingLoanCalculatorTests {
 
         // Assert
         LoanRepayment firstPayment = repayments.get(0);
-        LoanRepayment lastPayment = repayments.getLast();
+        LoanRepayment lastPayment = repayments.get(repayments.size() - 1);
         assertAll(
                 () -> assertEquals(361, repayments.size()),
                 () -> assertEquals(292.75, firstPayment.getPrincipalAmount()),
@@ -47,7 +47,7 @@ class AmortizingLoanCalculatorTests {
 
         // Assert
         LoanRepayment firstPayment = repayments.get(0);
-        LoanRepayment lastPayment = repayments.getLast();
+        LoanRepayment lastPayment = repayments.get(repayments.size() - 1);
         assertAll(
                 () -> assertEquals(11, repayments.size()),
                 () -> assertEquals(97.08, firstPayment.getPrincipalAmount()),
@@ -71,7 +71,7 @@ class AmortizingLoanCalculatorTests {
 
         // Assert
         LoanRepayment firstPayment = repayments.get(0);
-        LoanRepayment lastPayment = repayments.getLast();
+        LoanRepayment lastPayment = repayments.get(repayments.size() - 1);
         assertAll(
                 () -> assertEquals(11, repayments.size()),
                 () -> assertEquals(95.16, firstPayment.getPrincipalAmount()),
@@ -95,7 +95,7 @@ class AmortizingLoanCalculatorTests {
 
         // Assert
         LoanRepayment firstPayment = repayments.get(0);
-        LoanRepayment lastPayment = repayments.getLast();
+        LoanRepayment lastPayment = repayments.get(repayments.size() - 1);
         assertAll(
                 () -> assertEquals(LocalDate.of(2024, 9, 22), firstPayment.getRepaymentDate()),
                 () -> assertEquals(1, firstPayment.getNumber()),
@@ -119,7 +119,7 @@ class AmortizingLoanCalculatorTests {
 
         // Assert
         LoanRepayment firstPayment = repayments.get(0);
-        LoanRepayment lastPayment = repayments.getLast();
+        LoanRepayment lastPayment = repayments.get(repayments.size() - 1);
         assertAll(
                 () -> assertEquals(LocalDate.of(2024, 8, 29), firstPayment.getRepaymentDate()),
                 () -> assertEquals(1, firstPayment.getNumber()),
@@ -143,7 +143,7 @@ class AmortizingLoanCalculatorTests {
 
         // Assert
         LoanRepayment firstPayment = repayments.get(0);
-        LoanRepayment lastPayment = repayments.getLast();
+        LoanRepayment lastPayment = repayments.get(repayments.size() - 1);
         assertAll(
                 () -> assertEquals(LocalDate.of(2024, 9, 5), firstPayment.getRepaymentDate()),
                 () -> assertEquals(1, firstPayment.getNumber()),

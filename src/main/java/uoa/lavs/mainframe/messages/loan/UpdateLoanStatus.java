@@ -17,16 +17,16 @@ public class UpdateLoanStatus implements Message, MessageDescription {
         if (loanId != null) request.setValue("id", loanId.toString());
         switch (status)
         {
-            case LoanStatus.New:
+            case New:
                 request.setValue("status", "1");
                 break;
-            case LoanStatus.Pending:
+            case Pending:
                 request.setValue("status", "2");
                 break;
-            case LoanStatus.Active:
+            case Active:
                 request.setValue("status", "5");
                 break;
-            case LoanStatus.Cancelled:
+            case Cancelled:
                 request.setValue("status", "8");
                 break;
         }
