@@ -8,11 +8,14 @@ import uoa.lavs.mainframe.messages.customer.FindCustomer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// WARNING: Some of these tests are fragile as they test against hard-coded strings. If the underlying string
+// generation changes, then some of these tests will fail.
 class DataParserTests {
     @Test
     public void convertResponseFromData() {
         // Arrange
-        String data = "code=\"1001\",error=\"0\",msg=,in-id=\"123456-789\",out-count=\"1\",out-name=\"2\",out-dob=\"3\",out-id=\"4\"";
+        String data = "code=\"1001\",error=\"0\",msg=,in-id=\"123456-789\",out-count=\"1\",out-[01].name=\"2\"," +
+                "out-[01].dob=\"3\",out-[01].id=\"4\"";
 
         // Act
         Response response = DataParser.convertResponseFromData(data, 123L);
@@ -23,9 +26,9 @@ class DataParserTests {
                 () -> assertEquals(0, response.getStatus().getErrorCode()),
                 () -> assertNull(response.getStatus().getErrorMessage()),
                 () -> assertEquals("1", response.getValue("count")),
-                () -> assertEquals("2", response.getValue("name")),
-                () -> assertEquals("3", response.getValue("dob")),
-                () -> assertEquals("4", response.getValue("id"))
+                () -> assertEquals("2", response.getValue("[01].name")),
+                () -> assertEquals("3", response.getValue("[01].dob")),
+                () -> assertEquals("4", response.getValue("[01].id"))
         );
     }
 
@@ -52,7 +55,8 @@ class DataParserTests {
     @Test
     public void convertResponseHandlesEncodedData() {
         // Arrange
-        String data = "code=\"1001\",error=\"0\",msg=,in-id=\"123456-789\",out-count=\"\\\\\",out-name=\"\\\"\",out-dob=\"\\n\",out-id=\"\\r\"";
+        String data = "code=\"1001\",error=\"0\",msg=,in-id=\"123456-789\",out-count=\"\\\\\",out-[01].name=\"\\\"\"," +
+                "out-[01].dob=\"\\n\",out-[01].id=\"\\r\"";
 
         // Act
         Response response = DataParser.convertResponseFromData(data, 123L);
@@ -63,9 +67,9 @@ class DataParserTests {
                 () -> assertEquals(0, response.getStatus().getErrorCode()),
                 () -> assertNull(response.getStatus().getErrorMessage()),
                 () -> assertEquals("\\", response.getValue("count")),
-                () -> assertEquals("\"", response.getValue("name")),
-                () -> assertEquals("\n", response.getValue("dob")),
-                () -> assertEquals("\r", response.getValue("id"))
+                () -> assertEquals("\"", response.getValue("[01].name")),
+                () -> assertEquals("\n", response.getValue("[01].dob")),
+                () -> assertEquals("\r", response.getValue("[01].id"))
         );
     }
 
@@ -79,7 +83,12 @@ class DataParserTests {
         String actual = DataParser.convertToData(request);
 
         // Assert
-        String expected = "code=\"1001\",error=\"0\",msg=,in-id=\"123456-789\",out-count=\"\",out-name=\"\",out-dob=\"\",out-id=\"\"";
+        String expected = "code=\"1001\",error=\"0\",msg=,in-id=\"123456-789\"," +
+                "out-[01].dob=\"\",out-[01].id=\"\",out-[01].name=\"\"," +
+                "out-[02].dob=\"\",out-[02].id=\"\",out-[02].name=\"\"," +
+                "out-[03].dob=\"\",out-[03].id=\"\",out-[03].name=\"\"," +
+                "out-[04].dob=\"\",out-[04].id=\"\",out-[04].name=\"\"," +
+                "out-[05].dob=\"\",out-[05].id=\"\",out-[05].name=\"\",out-count=\"\"";
         assertEquals(expected, actual);
     }
 
@@ -92,7 +101,12 @@ class DataParserTests {
         String actual = DataParser.convertToData(request);
 
         // Assert
-        String expected = "code=\"1001\",error=\"0\",msg=,in-id=,out-count=\"\",out-name=\"\",out-dob=\"\",out-id=\"\"";
+        String expected = "code=\"1001\",error=\"0\",msg=,in-id=," +
+                "out-[01].dob=\"\",out-[01].id=\"\",out-[01].name=\"\"," +
+                "out-[02].dob=\"\",out-[02].id=\"\",out-[02].name=\"\"," +
+                "out-[03].dob=\"\",out-[03].id=\"\",out-[03].name=\"\"," +
+                "out-[04].dob=\"\",out-[04].id=\"\",out-[04].name=\"\"," +
+                "out-[05].dob=\"\",out-[05].id=\"\",out-[05].name=\"\",out-count=\"\"";
         assertEquals(expected, actual);
     }
 
@@ -106,7 +120,12 @@ class DataParserTests {
         String actual = DataParser.convertToData(request);
 
         // Assert
-        String expected = "code=\"1001\",error=\"0\",msg=,in-id=\"quote=\\\",slash=\\\\,newline=\\r\\n\",out-count=\"\",out-name=\"\",out-dob=\"\",out-id=\"\"";
+        String expected = "code=\"1001\",error=\"0\",msg=,in-id=\"quote=\\\",slash=\\\\,newline=\\r\\n\"," +
+                "out-[01].dob=\"\",out-[01].id=\"\",out-[01].name=\"\"," +
+                "out-[02].dob=\"\",out-[02].id=\"\",out-[02].name=\"\"," +
+                "out-[03].dob=\"\",out-[03].id=\"\",out-[03].name=\"\"," +
+                "out-[04].dob=\"\",out-[04].id=\"\",out-[04].name=\"\"," +
+                "out-[05].dob=\"\",out-[05].id=\"\",out-[05].name=\"\",out-count=\"\"";
         assertEquals(expected, actual);
     }
 

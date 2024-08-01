@@ -4,18 +4,26 @@ import uoa.lavs.mainframe.*;
 
 public class UpdateLoanCoborrower implements Message, MessageDescription {
     public static final int REQUEST_CODE = 2206;
-    public static final String[] INPUT = {"id", "coborrowerId"};
-    public static final String[] OUTPUT = {"customerId", "customerName", "coborrowerId", "coborrowerName"};
-
     private Response response;
     private String loanId;
     private String coborrowerId;
 
+    public class Fields {
+        public static final String[] INPUT = {"coborrowerId", "id"};
+        public static final String[] OUTPUT = {"coborrowerId", "coborrowerName", "customerId", "customerName"};
+
+        public static final String LOAN_ID = "id";
+        public static final String CUSTOMER_ID = "customerId";
+        public static final String CUSTOMER_NAME = "customerName";
+        public static final String COBORROWER_ID = "coborrowerId";
+        public static final String COBORROWER_NAME = "coborrowerName";
+    }
+
     @Override
     public Status send(Connection connection) {
         Request request = new Request(REQUEST_CODE);
-        if (loanId != null) request.setValue("id", loanId.toString());
-        if (coborrowerId != null) request.setValue("coborrowerId", coborrowerId.toString());
+        if (loanId != null) request.setValue(Fields.LOAN_ID, loanId.toString());
+        if (coborrowerId != null) request.setValue(Fields.COBORROWER_ID, coborrowerId.toString());
         response = connection.send(request);
         return response.getStatus();
     }
@@ -43,40 +51,40 @@ public class UpdateLoanCoborrower implements Message, MessageDescription {
     // gets customer id [customerId] from server
     public String getCustomerIdFromServer()
      {
-        String key = "customerId";
+        String key = Fields.CUSTOMER_ID;
         return response.getValue(key);
      }
 
     // gets customer name [customerName] from server
     public String getCustomerNameFromServer()
      {
-        String key = "customerName";
+        String key = Fields.CUSTOMER_NAME;
         return response.getValue(key);
      }
 
     // gets coborrower id [coborrowerId] from server
     public String getCoborrowerIdFromServer()
      {
-        String key = "coborrowerId";
+        String key = Fields.COBORROWER_ID;
         return response.getValue(key);
      }
 
     // gets coborrower name [coborrowerName] from server
     public String getCoborrowerNameFromServer()
      {
-        String key = "coborrowerName";
+        String key = Fields.COBORROWER_NAME;
         return response.getValue(key);
      }
 
     @Override
     public String[] getInputFields()
     {
-        return INPUT;
+        return Fields.INPUT;
     }
 
     @Override
     public String[] getOutputFields()
     {
-        return OUTPUT;
+        return Fields.OUTPUT;
     }
 }

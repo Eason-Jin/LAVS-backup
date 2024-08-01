@@ -7,9 +7,6 @@ import java.time.format.DateTimeFormatter;
 
 public class UpdateLoan implements Message, MessageDescription {
     public static final int REQUEST_CODE = 2201;
-    public static final String[] INPUT = {"id", "customerId", "principal", "rate.value", "rate.type", "date", "period", "payment.amount", "payment.freq", "compounding"};
-    public static final String[] OUTPUT = {"id", "customerId", "customerName", "status", "principal", "rate.value", "rate.type", "date", "period", "term", "payment.amount", "payment.freq", "compounding"};
-
     private Response response;
     private String loanId;
     private String customerId;
@@ -18,57 +15,78 @@ public class UpdateLoan implements Message, MessageDescription {
     private RateType rateType;
     private LocalDate startDate;
     private Integer period;
+    private Integer term;
     private Double paymentAmount;
     private Frequency paymentFrequency;
     private Frequency compounding;
 
+    public class Fields {
+        public static final String[] INPUT = {"compounding", "customerId", "date", "id", "payment.amount", "payment.freq", "period", "principal", "rate.type", "rate.value", "term"};
+        public static final String[] OUTPUT = {"compounding", "customerId", "customerName", "date", "id", "payment.amount", "payment.freq", "period", "principal", "rate.type", "rate.value", "status", "term"};
+
+        public static final String LOAN_ID = "id";
+        public static final String CUSTOMER_ID = "customerId";
+        public static final String CUSTOMER_NAME = "customerName";
+        public static final String STATUS = "status";
+        public static final String PRINCIPAL = "principal";
+        public static final String RATE_VALUE = "rate.value";
+        public static final String RATE_TYPE = "rate.type";
+        public static final String START_DATE = "date";
+        public static final String PERIOD = "period";
+        public static final String TERM = "term";
+        public static final String PAYMENT_AMOUNT = "payment.amount";
+        public static final String PAYMENT_FREQUENCY = "payment.freq";
+        public static final String COMPOUNDING = "compounding";
+    }
+
     @Override
     public Status send(Connection connection) {
         Request request = new Request(REQUEST_CODE);
-        if (loanId != null) request.setValue("id", loanId.toString());
-        if (customerId != null) request.setValue("customerId", customerId.toString());
-        if (principal != null) request.setValue("principal", principal.toString());
-        if (rateValue != null) request.setValue("rate.value", rateValue.toString());
+        if (loanId != null) request.setValue(Fields.LOAN_ID, loanId.toString());
+        if (customerId != null) request.setValue(Fields.CUSTOMER_ID, customerId.toString());
+        if (principal != null) request.setValue(Fields.PRINCIPAL, principal.toString());
+        if (rateValue != null) request.setValue(Fields.RATE_VALUE, rateValue.toString());
         switch (rateType)
         {
             case Floating:
-                request.setValue("rate.type", "1");
+                request.setValue(Fields.RATE_TYPE, "1");
                 break;
             case Fixed:
-                request.setValue("rate.type", "2");
+                request.setValue(Fields.RATE_TYPE, "2");
                 break;
             case InterestOnly:
-                request.setValue("rate.type", "3");
+                request.setValue(Fields.RATE_TYPE, "3");
                 break;
         }
         if (startDate != null) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            request.setValue("date", formatter.format(startDate));
+            request.setValue(Fields.START_DATE, formatter.format(startDate));
         }
-        if (period != null) request.setValue("period", period.toString());
-        if (paymentAmount != null) request.setValue("payment.amount", paymentAmount.toString());
+        if (period != null) request.setValue(Fields.PERIOD, period.toString());
+        if (term != null) request.setValue(Fields.TERM, term.toString());
+        if (paymentAmount != null) request.setValue(Fields.PAYMENT_AMOUNT, paymentAmount.toString());
         switch (paymentFrequency)
         {
             case Weekly:
-                request.setValue("payment.freq", "2");
+                request.setValue(Fields.PAYMENT_FREQUENCY, "2");
                 break;
             case Fortnightly:
-                request.setValue("payment.freq", "3");
+                request.setValue(Fields.PAYMENT_FREQUENCY, "3");
                 break;
             case Monthly:
-                request.setValue("payment.freq", "4");
+                request.setValue(Fields.PAYMENT_FREQUENCY, "4");
                 break;
         }
         switch (compounding)
         {
             case Weekly:
-                request.setValue("compounding", "2");
+                request.setValue(Fields.COMPOUNDING, "2");
                 break;
             case Monthly:
-                request.setValue("compounding", "4");
+                request.setValue(Fields.COMPOUNDING, "4");
                 break;
             case Yearly:
-                request.setValue("compounding", "7");
+                request.setValue(Fields.COMPOUNDING, "7");
                 break;
         }
         response = connection.send(request);
@@ -125,6 +143,12 @@ public class UpdateLoan implements Message, MessageDescription {
         period = value;
      }
 
+    // sets term [term]
+    public void setTerm(Integer value)
+     {
+        term = value;
+     }
+
     // sets payment amount [paymentAmount]
     public void setPaymentAmount(Double value)
      {
@@ -146,35 +170,35 @@ public class UpdateLoan implements Message, MessageDescription {
     // gets loan id [id] from server
     public String getLoanIdFromServer()
      {
-        String key = "id";
+        String key = Fields.LOAN_ID;
         return response.getValue(key);
      }
 
     // gets customer id [customerId] from server
     public String getCustomerIdFromServer()
      {
-        String key = "customerId";
+        String key = Fields.CUSTOMER_ID;
         return response.getValue(key);
      }
 
     // gets customer name [customerName] from server
     public String getCustomerNameFromServer()
      {
-        String key = "customerName";
+        String key = Fields.CUSTOMER_NAME;
         return response.getValue(key);
      }
 
     // gets status from server
     public String getStatusFromServer()
      {
-        String key = "status";
+        String key = Fields.STATUS;
         return response.getValue(key);
      }
 
     // gets principal from server
     public Double getPrincipalFromServer()
      {
-        String key = "principal";
+        String key = Fields.PRINCIPAL;
         String value = response.getValue(key);
         if (value == null) return 0.0;
         return Double.parseDouble(value);
@@ -183,7 +207,7 @@ public class UpdateLoan implements Message, MessageDescription {
     // gets rate value [rate.value] from server
     public Double getRateValueFromServer()
      {
-        String key = "rate.value";
+        String key = Fields.RATE_VALUE;
         String value = response.getValue(key);
         if (value == null) return 0.0;
         return Double.parseDouble(value);
@@ -192,7 +216,7 @@ public class UpdateLoan implements Message, MessageDescription {
     // gets rate type [rate.type] from server
     public RateType getRateTypeFromServer()
      {
-        String key = "rate.type";
+        String key = Fields.RATE_TYPE;
         String value = response.getValue(key);
         switch (value)
         {
@@ -209,7 +233,7 @@ public class UpdateLoan implements Message, MessageDescription {
     // gets start date [date] from server
     public LocalDate getStartDateFromServer()
      {
-        String key = "date";
+        String key = Fields.START_DATE;
         String value = response.getValue(key);
         if (value == null) return null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -219,7 +243,7 @@ public class UpdateLoan implements Message, MessageDescription {
     // gets period from server
     public Integer getPeriodFromServer()
      {
-        String key = "period";
+        String key = Fields.PERIOD;
         String value = response.getValue(key);
         if (value == null) return null;
         return Integer.parseInt(value);
@@ -228,7 +252,7 @@ public class UpdateLoan implements Message, MessageDescription {
     // gets term from server
     public Integer getTermFromServer()
      {
-        String key = "term";
+        String key = Fields.TERM;
         String value = response.getValue(key);
         if (value == null) return null;
         return Integer.parseInt(value);
@@ -237,7 +261,7 @@ public class UpdateLoan implements Message, MessageDescription {
     // gets payment amount [payment.amount] from server
     public Double getPaymentAmountFromServer()
      {
-        String key = "payment.amount";
+        String key = Fields.PAYMENT_AMOUNT;
         String value = response.getValue(key);
         if (value == null) return 0.0;
         return Double.parseDouble(value);
@@ -246,7 +270,7 @@ public class UpdateLoan implements Message, MessageDescription {
     // gets payment frequency [payment.freq] from server
     public Frequency getPaymentFrequencyFromServer()
      {
-        String key = "payment.freq";
+        String key = Fields.PAYMENT_FREQUENCY;
         String value = response.getValue(key);
         switch (value)
         {
@@ -263,7 +287,7 @@ public class UpdateLoan implements Message, MessageDescription {
     // gets compounding from server
     public Frequency getCompoundingFromServer()
      {
-        String key = "compounding";
+        String key = Fields.COMPOUNDING;
         String value = response.getValue(key);
         switch (value)
         {
@@ -280,12 +304,12 @@ public class UpdateLoan implements Message, MessageDescription {
     @Override
     public String[] getInputFields()
     {
-        return INPUT;
+        return Fields.INPUT;
     }
 
     @Override
     public String[] getOutputFields()
     {
-        return OUTPUT;
+        return Fields.OUTPUT;
     }
 }

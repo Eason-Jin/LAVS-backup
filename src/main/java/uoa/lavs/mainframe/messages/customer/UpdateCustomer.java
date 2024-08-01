@@ -7,9 +7,6 @@ import java.time.format.DateTimeFormatter;
 
 public class UpdateCustomer implements Message, MessageDescription {
     public static final int REQUEST_CODE = 1201;
-    public static final String[] INPUT = {"id", "title", "name", "dob", "occupation", "citizenship", "visa"};
-    public static final String[] OUTPUT = {"id", "title", "name", "dob", "occupation", "citizenship", "visa"};
-
     private Response response;
     private String customerId;
     private String title;
@@ -19,19 +16,32 @@ public class UpdateCustomer implements Message, MessageDescription {
     private String citizenship;
     private String visa;
 
+    public class Fields {
+        public static final String[] INPUT = {"citizenship", "dob", "id", "name", "occupation", "title", "visa"};
+        public static final String[] OUTPUT = {"citizenship", "dob", "id", "name", "occupation", "title", "visa"};
+
+        public static final String CUSTOMER_ID = "id";
+        public static final String TITLE = "title";
+        public static final String NAME = "name";
+        public static final String DATE_OF_BIRTH = "dob";
+        public static final String OCCUPATION = "occupation";
+        public static final String CITIZENSHIP = "citizenship";
+        public static final String VISA = "visa";
+    }
+
     @Override
     public Status send(Connection connection) {
         Request request = new Request(REQUEST_CODE);
-        if (customerId != null) request.setValue("id", customerId.toString());
-        if (title != null) request.setValue("title", title.toString());
-        if (name != null) request.setValue("name", name.toString());
+        if (customerId != null) request.setValue(Fields.CUSTOMER_ID, customerId.toString());
+        if (title != null) request.setValue(Fields.TITLE, title.toString());
+        if (name != null) request.setValue(Fields.NAME, name.toString());
         if (dateOfBirth != null) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            request.setValue("dob", formatter.format(dateOfBirth));
+            request.setValue(Fields.DATE_OF_BIRTH, formatter.format(dateOfBirth));
         }
-        if (occupation != null) request.setValue("occupation", occupation.toString());
-        if (citizenship != null) request.setValue("citizenship", citizenship.toString());
-        if (visa != null) request.setValue("visa", visa.toString());
+        if (occupation != null) request.setValue(Fields.OCCUPATION, occupation.toString());
+        if (citizenship != null) request.setValue(Fields.CITIZENSHIP, citizenship.toString());
+        if (visa != null) request.setValue(Fields.VISA, visa.toString());
         response = connection.send(request);
         return response.getStatus();
     }
@@ -105,28 +115,28 @@ public class UpdateCustomer implements Message, MessageDescription {
     // gets customer id [id] from server
     public String getCustomerIdFromServer()
      {
-        String key = "id";
+        String key = Fields.CUSTOMER_ID;
         return response.getValue(key);
      }
 
     // gets title from server
     public String getTitleFromServer()
      {
-        String key = "title";
+        String key = Fields.TITLE;
         return response.getValue(key);
      }
 
     // gets name from server
     public String getNameFromServer()
      {
-        String key = "name";
+        String key = Fields.NAME;
         return response.getValue(key);
      }
 
     // gets date of birth [dob] from server
     public LocalDate getDateofBirthFromServer()
      {
-        String key = "dob";
+        String key = Fields.DATE_OF_BIRTH;
         String value = response.getValue(key);
         if (value == null) return null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -136,33 +146,33 @@ public class UpdateCustomer implements Message, MessageDescription {
     // gets occupation from server
     public String getOccupationFromServer()
      {
-        String key = "occupation";
+        String key = Fields.OCCUPATION;
         return response.getValue(key);
      }
 
     // gets citizenship from server
     public String getCitizenshipFromServer()
      {
-        String key = "citizenship";
+        String key = Fields.CITIZENSHIP;
         return response.getValue(key);
      }
 
     // gets visa from server
     public String getVisaFromServer()
      {
-        String key = "visa";
+        String key = Fields.VISA;
         return response.getValue(key);
      }
 
     @Override
     public String[] getInputFields()
     {
-        return INPUT;
+        return Fields.INPUT;
     }
 
     @Override
     public String[] getOutputFields()
     {
-        return OUTPUT;
+        return Fields.OUTPUT;
     }
 }

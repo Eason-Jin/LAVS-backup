@@ -4,9 +4,6 @@ import uoa.lavs.mainframe.*;
 
 public class UpdateCustomerPhoneNumber implements Message, MessageDescription {
     public static final int REQUEST_CODE = 1203;
-    public static final String[] INPUT = {"id", "number", "type", "prefix", "phone", "flags", "flags"};
-    public static final String[] OUTPUT = {"type", "prefix", "phone", "flags", "flags"};
-
     private Response response;
     private String customerId;
     private Integer number;
@@ -15,15 +12,29 @@ public class UpdateCustomerPhoneNumber implements Message, MessageDescription {
     private String phoneNumber;
     private Integer flags = 0;
 
+    public class Fields {
+        public static final String[] INPUT = {"flags", "id", "number", "phone", "prefix", "type"};
+        public static final String[] OUTPUT = {"flags", "phone", "prefix", "type"};
+
+        public static final String CUSTOMER_ID = "id";
+        public static final String NUMBER = "number";
+        public static final String TYPE = "type";
+        public static final String PREFIX = "prefix";
+        public static final String PHONE_NUMBER = "phone";
+        public static final String IS_PRIMARY = "flags";
+        public static final String CAN_SEND_TXT = "flags";
+    }
+
     @Override
     public Status send(Connection connection) {
         Request request = new Request(REQUEST_CODE);
-        if (customerId != null) request.setValue("id", customerId.toString());
-        if (number != null) request.setValue("number", number.toString());
-        if (type != null) request.setValue("type", type.toString());
-        if (prefix != null) request.setValue("prefix", prefix.toString());
-        if (phoneNumber != null) request.setValue("phone", phoneNumber.toString());
-        if (flags != null) request.setValue("flags", flags.toString());
+        if (customerId != null) request.setValue(Fields.CUSTOMER_ID, customerId.toString());
+        if (number != null) request.setValue(Fields.NUMBER, number.toString());
+        if (type != null) request.setValue(Fields.TYPE, type.toString());
+        if (prefix != null) request.setValue(Fields.PREFIX, prefix.toString());
+        if (phoneNumber != null) request.setValue(Fields.PHONE_NUMBER, phoneNumber.toString());
+        if (flags != null) request.setValue(Fields.IS_PRIMARY, flags.toString());
+        if (flags != null) request.setValue(Fields.CAN_SEND_TXT, flags.toString());
         response = connection.send(request);
         return response.getStatus();
     }
@@ -79,28 +90,28 @@ public class UpdateCustomerPhoneNumber implements Message, MessageDescription {
     // gets type from server
     public String getTypeFromServer()
      {
-        String key = "type";
+        String key = Fields.TYPE;
         return response.getValue(key);
      }
 
     // gets prefix from server
     public String getPrefixFromServer()
      {
-        String key = "prefix";
+        String key = Fields.PREFIX;
         return response.getValue(key);
      }
 
     // gets phone number [phone] from server
     public String getPhoneNumberFromServer()
      {
-        String key = "phone";
+        String key = Fields.PHONE_NUMBER;
         return response.getValue(key);
      }
 
     // gets is primary [flags] from server
     public Boolean getIsPrimaryFromServer()
      {
-        String key = "flags";
+        String key = Fields.IS_PRIMARY;
         String value = response.getValue(key);
         int flags = Integer.parseInt(value);
         return (flags & 1) == 1;
@@ -109,7 +120,7 @@ public class UpdateCustomerPhoneNumber implements Message, MessageDescription {
     // gets can send txt [flags] from server
     public Boolean getCanSendTxtFromServer()
      {
-        String key = "flags";
+        String key = Fields.CAN_SEND_TXT;
         String value = response.getValue(key);
         int flags = Integer.parseInt(value);
         return (flags & 2) == 2;
@@ -118,12 +129,12 @@ public class UpdateCustomerPhoneNumber implements Message, MessageDescription {
     @Override
     public String[] getInputFields()
     {
-        return INPUT;
+        return Fields.INPUT;
     }
 
     @Override
     public String[] getOutputFields()
     {
-        return OUTPUT;
+        return Fields.OUTPUT;
     }
 }

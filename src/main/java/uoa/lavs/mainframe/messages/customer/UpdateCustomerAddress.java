@@ -4,9 +4,6 @@ import uoa.lavs.mainframe.*;
 
 public class UpdateCustomerAddress implements Message, MessageDescription {
     public static final int REQUEST_CODE = 1202;
-    public static final String[] INPUT = {"id", "number", "type", "line1", "line2", "suburb", "city", "postCode", "country", "flags", "flags"};
-    public static final String[] OUTPUT = {"type", "line1", "line2", "suburb", "city", "postCode", "country", "flags", "flags"};
-
     private Response response;
     private String customerId;
     private Integer number;
@@ -19,19 +16,37 @@ public class UpdateCustomerAddress implements Message, MessageDescription {
     private String country;
     private Integer flags = 0;
 
+    public class Fields {
+        public static final String[] INPUT = {"city", "country", "flags", "id", "line1", "line2", "number", "postCode", "suburb", "type"};
+        public static final String[] OUTPUT = {"city", "country", "flags", "line1", "line2", "postCode", "suburb", "type"};
+
+        public static final String CUSTOMER_ID = "id";
+        public static final String NUMBER = "number";
+        public static final String TYPE = "type";
+        public static final String LINE_1 = "line1";
+        public static final String LINE_2 = "line2";
+        public static final String SUBURB = "suburb";
+        public static final String CITY = "city";
+        public static final String POST_CODE = "postCode";
+        public static final String COUNTRY = "country";
+        public static final String IS_PRIMARY = "flags";
+        public static final String IS_MAILING = "flags";
+    }
+
     @Override
     public Status send(Connection connection) {
         Request request = new Request(REQUEST_CODE);
-        if (customerId != null) request.setValue("id", customerId.toString());
-        if (number != null) request.setValue("number", number.toString());
-        if (type != null) request.setValue("type", type.toString());
-        if (line1 != null) request.setValue("line1", line1.toString());
-        if (line2 != null) request.setValue("line2", line2.toString());
-        if (suburb != null) request.setValue("suburb", suburb.toString());
-        if (city != null) request.setValue("city", city.toString());
-        if (postCode != null) request.setValue("postCode", postCode.toString());
-        if (country != null) request.setValue("country", country.toString());
-        if (flags != null) request.setValue("flags", flags.toString());
+        if (customerId != null) request.setValue(Fields.CUSTOMER_ID, customerId.toString());
+        if (number != null) request.setValue(Fields.NUMBER, number.toString());
+        if (type != null) request.setValue(Fields.TYPE, type.toString());
+        if (line1 != null) request.setValue(Fields.LINE_1, line1.toString());
+        if (line2 != null) request.setValue(Fields.LINE_2, line2.toString());
+        if (suburb != null) request.setValue(Fields.SUBURB, suburb.toString());
+        if (city != null) request.setValue(Fields.CITY, city.toString());
+        if (postCode != null) request.setValue(Fields.POST_CODE, postCode.toString());
+        if (country != null) request.setValue(Fields.COUNTRY, country.toString());
+        if (flags != null) request.setValue(Fields.IS_PRIMARY, flags.toString());
+        if (flags != null) request.setValue(Fields.IS_MAILING, flags.toString());
         response = connection.send(request);
         return response.getStatus();
     }
@@ -139,56 +154,56 @@ public class UpdateCustomerAddress implements Message, MessageDescription {
     // gets type from server
     public String getTypeFromServer()
      {
-        String key = "type";
+        String key = Fields.TYPE;
         return response.getValue(key);
      }
 
     // gets line 1 [line1] from server
     public String getLine1FromServer()
      {
-        String key = "line1";
+        String key = Fields.LINE_1;
         return response.getValue(key);
      }
 
     // gets line 2 [line2] from server
     public String getLine2FromServer()
      {
-        String key = "line2";
+        String key = Fields.LINE_2;
         return response.getValue(key);
      }
 
     // gets suburb from server
     public String getSuburbFromServer()
      {
-        String key = "suburb";
+        String key = Fields.SUBURB;
         return response.getValue(key);
      }
 
     // gets city from server
     public String getCityFromServer()
      {
-        String key = "city";
+        String key = Fields.CITY;
         return response.getValue(key);
      }
 
     // gets post code [postCode] from server
     public String getPostCodeFromServer()
      {
-        String key = "postCode";
+        String key = Fields.POST_CODE;
         return response.getValue(key);
      }
 
     // gets country from server
     public String getCountryFromServer()
      {
-        String key = "country";
+        String key = Fields.COUNTRY;
         return response.getValue(key);
      }
 
     // gets is primary [flags] from server
     public Boolean getIsPrimaryFromServer()
      {
-        String key = "flags";
+        String key = Fields.IS_PRIMARY;
         String value = response.getValue(key);
         int flags = Integer.parseInt(value);
         return (flags & 1) == 1;
@@ -197,7 +212,7 @@ public class UpdateCustomerAddress implements Message, MessageDescription {
     // gets is mailing [flags] from server
     public Boolean getIsMailingFromServer()
      {
-        String key = "flags";
+        String key = Fields.IS_MAILING;
         String value = response.getValue(key);
         int flags = Integer.parseInt(value);
         return (flags & 2) == 2;
@@ -206,12 +221,12 @@ public class UpdateCustomerAddress implements Message, MessageDescription {
     @Override
     public String[] getInputFields()
     {
-        return INPUT;
+        return Fields.INPUT;
     }
 
     @Override
     public String[] getOutputFields()
     {
-        return OUTPUT;
+        return Fields.OUTPUT;
     }
 }

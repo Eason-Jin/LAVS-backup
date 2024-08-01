@@ -7,13 +7,11 @@ import uoa.lavs.mainframe.Status;
 
 import java.io.*;
 import java.util.HashMap;
-import java.util.Queue;
 
 // this is a simple replay connection that will replay transactions in the order that they were received
 public class SimpleReplayConnection implements Connection {
 
     private BufferedReader inputReader = null;
-    private HashMap<Integer, Queue<Response>> responses = new HashMap<>();
     private Long transactionId = 0L;
 
     public SimpleReplayConnection(String dataPath) {

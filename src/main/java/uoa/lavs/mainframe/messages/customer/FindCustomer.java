@@ -7,16 +7,24 @@ import java.time.format.DateTimeFormatter;
 
 public class FindCustomer implements Message, MessageDescription {
     public static final int REQUEST_CODE = 1001;
-    public static final String[] INPUT = {"id"};
-    public static final String[] OUTPUT = {"count", "name", "dob", "id"};
-
     private Response response;
     private String customerId;
+
+    public class Fields {
+        public static final String[] INPUT = {"id"};
+        public static final String[] OUTPUT = {"[01].dob", "[01].id", "[01].name", "[02].dob", "[02].id", "[02].name", "[03].dob", "[03].id", "[03].name", "[04].dob", "[04].id", "[04].name", "[05].dob", "[05].id", "[05].name", "count"};
+
+        public static final String CUSTOMER_ID = "id";
+        public static final String CUSTOMER_COUNT = "count";
+        public static final String NAME = "[%02d].name";
+        public static final String DATE_OF_BIRTH = "[%02d].dob";
+        public static final String ID = "[%02d].id";
+    }
 
     @Override
     public Status send(Connection connection) {
         Request request = new Request(REQUEST_CODE);
-        if (customerId != null) request.setValue("id", customerId.toString());
+        if (customerId != null) request.setValue(Fields.CUSTOMER_ID, customerId.toString());
         response = connection.send(request);
         return response.getStatus();
     }
@@ -34,7 +42,7 @@ public class FindCustomer implements Message, MessageDescription {
     // gets customer count [count] from server
     public Integer getCustomerCountFromServer()
      {
-        String key = "count";
+        String key = Fields.CUSTOMER_COUNT;
         String value = response.getValue(key);
         if (value == null) return null;
         return Integer.parseInt(value);
@@ -43,14 +51,14 @@ public class FindCustomer implements Message, MessageDescription {
     // gets name from server
     public String getNameFromServer(Integer row)
      {
-        String key = String.format("[%02d].name", row);
+        String key = String.format(Fields.NAME, row);
         return response.getValue(key);
      }
 
     // gets date of birth [dob] from server
     public LocalDate getDateofBirthFromServer(Integer row)
      {
-        String key = String.format("[%02d].dob", row);
+        String key = String.format(Fields.DATE_OF_BIRTH, row);
         String value = response.getValue(key);
         if (value == null) return null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -60,19 +68,19 @@ public class FindCustomer implements Message, MessageDescription {
     // gets id from server
     public String getIdFromServer(Integer row)
      {
-        String key = String.format("[%02d].id", row);
+        String key = String.format(Fields.ID, row);
         return response.getValue(key);
      }
 
     @Override
     public String[] getInputFields()
     {
-        return INPUT;
+        return Fields.INPUT;
     }
 
     @Override
     public String[] getOutputFields()
     {
-        return OUTPUT;
+        return Fields.OUTPUT;
     }
 }

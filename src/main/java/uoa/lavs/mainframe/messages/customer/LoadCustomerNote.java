@@ -4,18 +4,26 @@ import uoa.lavs.mainframe.*;
 
 public class LoadCustomerNote implements Message, MessageDescription {
     public static final int REQUEST_CODE = 1106;
-    public static final String[] INPUT = {"id", "number"};
-    public static final String[] OUTPUT = {"pages", "pages", "line"};
-
     private Response response;
     private String customerId;
     private Integer number;
 
+    public class Fields {
+        public static final String[] INPUT = {"id", "number"};
+        public static final String[] OUTPUT = {"[01].line", "[02].line", "[03].line", "[04].line", "[05].line", "lines", "pages"};
+
+        public static final String CUSTOMER_ID = "id";
+        public static final String NUMBER = "number";
+        public static final String PAGE_COUNT = "pages";
+        public static final String LINE_COUNT = "lines";
+        public static final String LINE = "[%02d].line";
+    }
+
     @Override
     public Status send(Connection connection) {
         Request request = new Request(REQUEST_CODE);
-        if (customerId != null) request.setValue("id", customerId.toString());
-        if (number != null) request.setValue("number", number.toString());
+        if (customerId != null) request.setValue(Fields.CUSTOMER_ID, customerId.toString());
+        if (number != null) request.setValue(Fields.NUMBER, number.toString());
         response = connection.send(request);
         return response.getStatus();
     }
@@ -39,16 +47,16 @@ public class LoadCustomerNote implements Message, MessageDescription {
     // gets page count [pages] from server
     public Integer getPageCountFromServer()
      {
-        String key = "pages";
+        String key = Fields.PAGE_COUNT;
         String value = response.getValue(key);
         if (value == null) return null;
         return Integer.parseInt(value);
      }
 
-    // gets line count [pages] from server
+    // gets line count [lines] from server
     public Integer getLineCountFromServer()
      {
-        String key = "pages";
+        String key = Fields.LINE_COUNT;
         String value = response.getValue(key);
         if (value == null) return null;
         return Integer.parseInt(value);
@@ -57,19 +65,19 @@ public class LoadCustomerNote implements Message, MessageDescription {
     // gets line from server
     public String getLineFromServer(Integer row)
      {
-        String key = String.format("[%02d].line", row);
+        String key = String.format(Fields.LINE, row);
         return response.getValue(key);
      }
 
     @Override
     public String[] getInputFields()
     {
-        return INPUT;
+        return Fields.INPUT;
     }
 
     @Override
     public String[] getOutputFields()
     {
-        return OUTPUT;
+        return Fields.OUTPUT;
     }
 }

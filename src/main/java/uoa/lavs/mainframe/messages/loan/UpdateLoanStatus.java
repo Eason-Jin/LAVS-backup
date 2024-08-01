@@ -4,30 +4,37 @@ import uoa.lavs.mainframe.*;
 
 public class UpdateLoanStatus implements Message, MessageDescription {
     public static final int REQUEST_CODE = 2207;
-    public static final String[] INPUT = {"id", "status"};
-    public static final String[] OUTPUT = {"customerId", "customerName", "status"};
-
     private Response response;
     private String loanId;
     private LoanStatus status;
 
+    public class Fields {
+        public static final String[] INPUT = {"id", "status"};
+        public static final String[] OUTPUT = {"customerId", "customerName", "status"};
+
+        public static final String LOAN_ID = "id";
+        public static final String CUSTOMER_ID = "customerId";
+        public static final String CUSTOMER_NAME = "customerName";
+        public static final String STATUS = "status";
+    }
+
     @Override
     public Status send(Connection connection) {
         Request request = new Request(REQUEST_CODE);
-        if (loanId != null) request.setValue("id", loanId.toString());
+        if (loanId != null) request.setValue(Fields.LOAN_ID, loanId.toString());
         switch (status)
         {
             case New:
-                request.setValue("status", "1");
+                request.setValue(Fields.STATUS, "1");
                 break;
             case Pending:
-                request.setValue("status", "2");
+                request.setValue(Fields.STATUS, "2");
                 break;
             case Active:
-                request.setValue("status", "5");
+                request.setValue(Fields.STATUS, "5");
                 break;
             case Cancelled:
-                request.setValue("status", "8");
+                request.setValue(Fields.STATUS, "8");
                 break;
         }
         response = connection.send(request);
@@ -53,21 +60,21 @@ public class UpdateLoanStatus implements Message, MessageDescription {
     // gets customer id [customerId] from server
     public String getCustomerIdFromServer()
      {
-        String key = "customerId";
+        String key = Fields.CUSTOMER_ID;
         return response.getValue(key);
      }
 
     // gets customer name [customerName] from server
     public String getCustomerNameFromServer()
      {
-        String key = "customerName";
+        String key = Fields.CUSTOMER_NAME;
         return response.getValue(key);
      }
 
     // gets status from server
     public LoanStatus getStatusFromServer()
      {
-        String key = "status";
+        String key = Fields.STATUS;
         String value = response.getValue(key);
         switch (value)
         {
@@ -86,12 +93,12 @@ public class UpdateLoanStatus implements Message, MessageDescription {
     @Override
     public String[] getInputFields()
     {
-        return INPUT;
+        return Fields.INPUT;
     }
 
     @Override
     public String[] getOutputFields()
     {
-        return OUTPUT;
+        return Fields.OUTPUT;
     }
 }

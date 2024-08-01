@@ -4,9 +4,6 @@ import uoa.lavs.mainframe.*;
 
 public class UpdateCustomerEmployer implements Message, MessageDescription {
     public static final int REQUEST_CODE = 1205;
-    public static final String[] INPUT = {"id", "number", "name", "line1", "line2", "suburb", "city", "postCode", "country", "phone", "email", "web"};
-    public static final String[] OUTPUT = {"name", "line1", "line2", "suburb", "city", "postCode", "country", "phone", "email", "web", "flags"};
-
     private Response response;
     private String customerId;
     private Integer number;
@@ -20,22 +17,43 @@ public class UpdateCustomerEmployer implements Message, MessageDescription {
     private String phoneNumber;
     private String emailAddress;
     private String website;
+    private Integer flags = 0;
+
+    public class Fields {
+        public static final String[] INPUT = {"city", "country", "email", "flags", "id", "line1", "line2", "name", "number", "phone", "postCode", "suburb", "web"};
+        public static final String[] OUTPUT = {"city", "country", "email", "flags", "line1", "line2", "name", "phone", "postCode", "suburb", "web"};
+
+        public static final String CUSTOMER_ID = "id";
+        public static final String NUMBER = "number";
+        public static final String NAME = "name";
+        public static final String LINE_1 = "line1";
+        public static final String LINE_2 = "line2";
+        public static final String SUBURB = "suburb";
+        public static final String CITY = "city";
+        public static final String POST_CODE = "postCode";
+        public static final String COUNTRY = "country";
+        public static final String PHONE_NUMBER = "phone";
+        public static final String EMAIL_ADDRESS = "email";
+        public static final String WEBSITE = "web";
+        public static final String IS_OWNER = "flags";
+    }
 
     @Override
     public Status send(Connection connection) {
         Request request = new Request(REQUEST_CODE);
-        if (customerId != null) request.setValue("id", customerId.toString());
-        if (number != null) request.setValue("number", number.toString());
-        if (name != null) request.setValue("name", name.toString());
-        if (line1 != null) request.setValue("line1", line1.toString());
-        if (line2 != null) request.setValue("line2", line2.toString());
-        if (suburb != null) request.setValue("suburb", suburb.toString());
-        if (city != null) request.setValue("city", city.toString());
-        if (postCode != null) request.setValue("postCode", postCode.toString());
-        if (country != null) request.setValue("country", country.toString());
-        if (phoneNumber != null) request.setValue("phone", phoneNumber.toString());
-        if (emailAddress != null) request.setValue("email", emailAddress.toString());
-        if (website != null) request.setValue("web", website.toString());
+        if (customerId != null) request.setValue(Fields.CUSTOMER_ID, customerId.toString());
+        if (number != null) request.setValue(Fields.NUMBER, number.toString());
+        if (name != null) request.setValue(Fields.NAME, name.toString());
+        if (line1 != null) request.setValue(Fields.LINE_1, line1.toString());
+        if (line2 != null) request.setValue(Fields.LINE_2, line2.toString());
+        if (suburb != null) request.setValue(Fields.SUBURB, suburb.toString());
+        if (city != null) request.setValue(Fields.CITY, city.toString());
+        if (postCode != null) request.setValue(Fields.POST_CODE, postCode.toString());
+        if (country != null) request.setValue(Fields.COUNTRY, country.toString());
+        if (phoneNumber != null) request.setValue(Fields.PHONE_NUMBER, phoneNumber.toString());
+        if (emailAddress != null) request.setValue(Fields.EMAIL_ADDRESS, emailAddress.toString());
+        if (website != null) request.setValue(Fields.WEBSITE, website.toString());
+        if (flags != null) request.setValue(Fields.IS_OWNER, flags.toString());
         response = connection.send(request);
         return response.getStatus();
     }
@@ -156,80 +174,87 @@ public class UpdateCustomerEmployer implements Message, MessageDescription {
         website = value;
      }
 
+    // sets is owner [IsOwner]
+    public void setIsOwner(Boolean value)
+     {
+        flags &= 254;
+        if (value) flags |= 1;
+     }
+
     // gets name from server
     public String getNameFromServer()
      {
-        String key = "name";
+        String key = Fields.NAME;
         return response.getValue(key);
      }
 
     // gets line 1 [line1] from server
     public String getLine1FromServer()
      {
-        String key = "line1";
+        String key = Fields.LINE_1;
         return response.getValue(key);
      }
 
     // gets line 2 [line2] from server
     public String getLine2FromServer()
      {
-        String key = "line2";
+        String key = Fields.LINE_2;
         return response.getValue(key);
      }
 
     // gets suburb from server
     public String getSuburbFromServer()
      {
-        String key = "suburb";
+        String key = Fields.SUBURB;
         return response.getValue(key);
      }
 
     // gets city from server
     public String getCityFromServer()
      {
-        String key = "city";
+        String key = Fields.CITY;
         return response.getValue(key);
      }
 
     // gets post code [postCode] from server
     public String getPostCodeFromServer()
      {
-        String key = "postCode";
+        String key = Fields.POST_CODE;
         return response.getValue(key);
      }
 
     // gets country from server
     public String getCountryFromServer()
      {
-        String key = "country";
+        String key = Fields.COUNTRY;
         return response.getValue(key);
      }
 
     // gets phone number [phone] from server
     public String getPhoneNumberFromServer()
      {
-        String key = "phone";
+        String key = Fields.PHONE_NUMBER;
         return response.getValue(key);
      }
 
     // gets email address [email] from server
     public String getEmailAddressFromServer()
      {
-        String key = "email";
+        String key = Fields.EMAIL_ADDRESS;
         return response.getValue(key);
      }
 
     // gets website [web] from server
     public String getWebsiteFromServer()
      {
-        String key = "web";
+        String key = Fields.WEBSITE;
         return response.getValue(key);
      }
 
     // gets is owner [flags] from server
     public Boolean getIsOwnerFromServer()
      {
-        String key = "flags";
+        String key = Fields.IS_OWNER;
         String value = response.getValue(key);
         int flags = Integer.parseInt(value);
         return (flags & 1) == 1;
@@ -238,12 +263,12 @@ public class UpdateCustomerEmployer implements Message, MessageDescription {
     @Override
     public String[] getInputFields()
     {
-        return INPUT;
+        return Fields.INPUT;
     }
 
     @Override
     public String[] getOutputFields()
     {
-        return OUTPUT;
+        return Fields.OUTPUT;
     }
 }

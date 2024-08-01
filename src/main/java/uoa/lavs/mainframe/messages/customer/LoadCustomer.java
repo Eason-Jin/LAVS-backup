@@ -7,16 +7,26 @@ import java.time.format.DateTimeFormatter;
 
 public class LoadCustomer implements Message, MessageDescription {
     public static final int REQUEST_CODE = 1101;
-    public static final String[] INPUT = {"id"};
-    public static final String[] OUTPUT = {"title", "name", "dob", "occupation", "citizenship", "visa"};
-
     private Response response;
     private String customerId;
+
+    public class Fields {
+        public static final String[] INPUT = {"id"};
+        public static final String[] OUTPUT = {"citizenship", "dob", "name", "occupation", "title", "visa"};
+
+        public static final String CUSTOMER_ID = "id";
+        public static final String TITLE = "title";
+        public static final String NAME = "name";
+        public static final String DATE_OF_BIRTH = "dob";
+        public static final String OCCUPATION = "occupation";
+        public static final String CITIZENSHIP = "citizenship";
+        public static final String VISA = "visa";
+    }
 
     @Override
     public Status send(Connection connection) {
         Request request = new Request(REQUEST_CODE);
-        if (customerId != null) request.setValue("id", customerId.toString());
+        if (customerId != null) request.setValue(Fields.CUSTOMER_ID, customerId.toString());
         response = connection.send(request);
         return response.getStatus();
     }
@@ -34,21 +44,21 @@ public class LoadCustomer implements Message, MessageDescription {
     // gets title from server
     public String getTitleFromServer()
      {
-        String key = "title";
+        String key = Fields.TITLE;
         return response.getValue(key);
      }
 
     // gets name from server
     public String getNameFromServer()
      {
-        String key = "name";
+        String key = Fields.NAME;
         return response.getValue(key);
      }
 
     // gets date of birth [dob] from server
     public LocalDate getDateofBirthFromServer()
      {
-        String key = "dob";
+        String key = Fields.DATE_OF_BIRTH;
         String value = response.getValue(key);
         if (value == null) return null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -58,33 +68,33 @@ public class LoadCustomer implements Message, MessageDescription {
     // gets occupation from server
     public String getOccupationFromServer()
      {
-        String key = "occupation";
+        String key = Fields.OCCUPATION;
         return response.getValue(key);
      }
 
     // gets citizenship from server
     public String getCitizenshipFromServer()
      {
-        String key = "citizenship";
+        String key = Fields.CITIZENSHIP;
         return response.getValue(key);
      }
 
     // gets visa from server
     public String getVisaFromServer()
      {
-        String key = "visa";
+        String key = Fields.VISA;
         return response.getValue(key);
      }
 
     @Override
     public String[] getInputFields()
     {
-        return INPUT;
+        return Fields.INPUT;
     }
 
     @Override
     public String[] getOutputFields()
     {
-        return OUTPUT;
+        return Fields.OUTPUT;
     }
 }

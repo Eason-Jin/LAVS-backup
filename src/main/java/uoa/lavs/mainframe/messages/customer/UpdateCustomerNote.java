@@ -4,20 +4,34 @@ import uoa.lavs.mainframe.*;
 
 public class UpdateCustomerNote implements Message, MessageDescription {
     public static final int REQUEST_CODE = 1106;
-    public static final String[] INPUT = {"id", "number", "line"};
-    public static final String[] OUTPUT = {"pages", "pages", "line"};
-
     private Response response;
     private String customerId;
     private Integer number;
-    private String line;
+    private String[] line= new String[20];
+
+    public class Fields {
+        public static final String[] INPUT = {"[01].line", "[02].line", "[03].line", "[04].line", "[05].line", "[06].line", "[07].line", "[08].line", "[09].line", "[10].line", "[11].line", "[12].line", "[13].line", "[14].line", "[15].line", "[16].line", "[17].line", "[18].line", "[19].line", "[20].line", "id", "number"};
+        public static final String[] OUTPUT = {"[01].line", "[02].line", "[03].line", "[04].line", "[05].line", "[06].line", "[07].line", "[08].line", "[09].line", "[10].line", "[11].line", "[12].line", "[13].line", "[14].line", "[15].line", "[16].line", "[17].line", "[18].line", "[19].line", "[20].line", "pages"};
+
+        public static final String CUSTOMER_ID = "id";
+        public static final String NUMBER = "number";
+        public static final String PAGE_COUNT = "pages";
+        public static final String LINE_COUNT = "pages";
+        public static final String LINE = "[%02d].line";
+    }
 
     @Override
     public Status send(Connection connection) {
         Request request = new Request(REQUEST_CODE);
-        if (customerId != null) request.setValue("id", customerId.toString());
-        if (number != null) request.setValue("number", number.toString());
-        if (line != null) request.setValue("line", line.toString());
+        if (customerId != null) request.setValue(Fields.CUSTOMER_ID, customerId.toString());
+        if (number != null) request.setValue(Fields.NUMBER, number.toString());
+        for (int loop = 0; loop < 20; loop++) {
+            if (line[loop] != null) {
+                request.setValue(
+                    String.format(Fields.LINE, loop),
+                    line[loop].toString());
+            }
+        }
         response = connection.send(request);
         return response.getStatus();
     }
@@ -39,15 +53,15 @@ public class UpdateCustomerNote implements Message, MessageDescription {
      }
 
     // sets line [line]
-    public void setLine(String value)
+    public void setLine(Integer row, String value)
      {
-        line = value;
+        line[row] = value;
      }
 
     // gets page count [pages] from server
     public Integer getPageCountFromServer()
      {
-        String key = "pages";
+        String key = Fields.PAGE_COUNT;
         String value = response.getValue(key);
         if (value == null) return null;
         return Integer.parseInt(value);
@@ -56,7 +70,7 @@ public class UpdateCustomerNote implements Message, MessageDescription {
     // gets line count [pages] from server
     public Integer getLineCountFromServer()
      {
-        String key = "pages";
+        String key = Fields.LINE_COUNT;
         String value = response.getValue(key);
         if (value == null) return null;
         return Integer.parseInt(value);
@@ -65,19 +79,19 @@ public class UpdateCustomerNote implements Message, MessageDescription {
     // gets line from server
     public String getLineFromServer(Integer row)
      {
-        String key = String.format("[%02d].line", row);
+        String key = String.format(Fields.LINE, row);
         return response.getValue(key);
      }
 
     @Override
     public String[] getInputFields()
     {
-        return INPUT;
+        return Fields.INPUT;
     }
 
     @Override
     public String[] getOutputFields()
     {
-        return OUTPUT;
+        return Fields.OUTPUT;
     }
 }
