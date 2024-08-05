@@ -13,10 +13,11 @@ The project specification is available [here](https://canvas.auckland.ac.nz/cour
 
 Update this readme file to contain the names of each team member and your GitHub login.
 
-* *Replace this text: Team Member Name 1 - GitHub Login*
-* *Replace this text: Team Member Name 2 - GitHub Login*
-* *Replace this text: Team Member Name 3 - GitHub Login*
-* *Replace this text: Team Member Name 4 - GitHub Login*
+* Jessica Jiang - jj2947
+* Eason Jin - Eason-Jin
+* Amanda Lowe - starfluffy
+* Liam Parker - LiamParker1
+* Victor Qiu - vqiu25
 
 ## Initial Repository Code
 
