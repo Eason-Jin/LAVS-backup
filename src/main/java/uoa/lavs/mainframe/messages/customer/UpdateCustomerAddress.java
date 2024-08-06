@@ -55,7 +55,7 @@ public class UpdateCustomerAddress implements Message, MessageDescription {
     public void setCustomerId(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 10) {
+        if (value != null && value.length() > 10) {
             throw new IllegalArgumentException("customerId is too long - max length is 10");
         }
         customerId = value;
@@ -71,7 +71,7 @@ public class UpdateCustomerAddress implements Message, MessageDescription {
     public void setType(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 20) {
+        if (value != null && value.length() > 20) {
             throw new IllegalArgumentException("type is too long - max length is 20");
         }
         type = value;
@@ -81,7 +81,7 @@ public class UpdateCustomerAddress implements Message, MessageDescription {
     public void setLine1(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 60) {
+        if (value != null && value.length() > 60) {
             throw new IllegalArgumentException("line1 is too long - max length is 60");
         }
         line1 = value;
@@ -91,7 +91,7 @@ public class UpdateCustomerAddress implements Message, MessageDescription {
     public void setLine2(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 60) {
+        if (value != null && value.length() > 60) {
             throw new IllegalArgumentException("line2 is too long - max length is 60");
         }
         line2 = value;
@@ -101,7 +101,7 @@ public class UpdateCustomerAddress implements Message, MessageDescription {
     public void setSuburb(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 30) {
+        if (value != null && value.length() > 30) {
             throw new IllegalArgumentException("suburb is too long - max length is 30");
         }
         suburb = value;
@@ -111,7 +111,7 @@ public class UpdateCustomerAddress implements Message, MessageDescription {
     public void setCity(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 30) {
+        if (value != null && value.length() > 30) {
             throw new IllegalArgumentException("city is too long - max length is 30");
         }
         city = value;
@@ -121,7 +121,7 @@ public class UpdateCustomerAddress implements Message, MessageDescription {
     public void setPostCode(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 10) {
+        if (value != null && value.length() > 10) {
             throw new IllegalArgumentException("postCode is too long - max length is 10");
         }
         postCode = value;
@@ -131,7 +131,7 @@ public class UpdateCustomerAddress implements Message, MessageDescription {
     public void setCountry(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 30) {
+        if (value != null && value.length() > 30) {
             throw new IllegalArgumentException("country is too long - max length is 30");
         }
         country = value;

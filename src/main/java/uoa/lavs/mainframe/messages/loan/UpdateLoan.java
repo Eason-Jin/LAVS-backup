@@ -97,7 +97,7 @@ public class UpdateLoan implements Message, MessageDescription {
     public void setLoanId(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 14) {
+        if (value != null && value.length() > 14) {
             throw new IllegalArgumentException("loanId is too long - max length is 14");
         }
         loanId = value;
@@ -107,7 +107,7 @@ public class UpdateLoan implements Message, MessageDescription {
     public void setCustomerId(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 10) {
+        if (value != null && value.length() > 10) {
             throw new IllegalArgumentException("customerId is too long - max length is 10");
         }
         customerId = value;

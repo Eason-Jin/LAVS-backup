@@ -3,7 +3,7 @@ package uoa.lavs.mainframe.messages.customer;
 import uoa.lavs.mainframe.*;
 
 public class UpdateCustomerNote implements Message, MessageDescription {
-    public static final int REQUEST_CODE = 1106;
+    public static final int REQUEST_CODE = 1206;
     private Response response;
     private String customerId;
     private Integer number;
@@ -11,12 +11,12 @@ public class UpdateCustomerNote implements Message, MessageDescription {
 
     public class Fields {
         public static final String[] INPUT = {"[01].line", "[02].line", "[03].line", "[04].line", "[05].line", "[06].line", "[07].line", "[08].line", "[09].line", "[10].line", "[11].line", "[12].line", "[13].line", "[14].line", "[15].line", "[16].line", "[17].line", "[18].line", "[19].line", "[20].line", "id", "number"};
-        public static final String[] OUTPUT = {"[01].line", "[02].line", "[03].line", "[04].line", "[05].line", "[06].line", "[07].line", "[08].line", "[09].line", "[10].line", "[11].line", "[12].line", "[13].line", "[14].line", "[15].line", "[16].line", "[17].line", "[18].line", "[19].line", "[20].line", "pages"};
+        public static final String[] OUTPUT = {"[01].line", "[02].line", "[03].line", "[04].line", "[05].line", "[06].line", "[07].line", "[08].line", "[09].line", "[10].line", "[11].line", "[12].line", "[13].line", "[14].line", "[15].line", "[16].line", "[17].line", "[18].line", "[19].line", "[20].line", "lines", "pages"};
 
         public static final String CUSTOMER_ID = "id";
         public static final String NUMBER = "number";
         public static final String PAGE_COUNT = "pages";
-        public static final String LINE_COUNT = "pages";
+        public static final String LINE_COUNT = "lines";
         public static final String LINE = "[%02d].line";
     }
 
@@ -40,7 +40,7 @@ public class UpdateCustomerNote implements Message, MessageDescription {
     public void setCustomerId(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 10) {
+        if (value != null && value.length() > 10) {
             throw new IllegalArgumentException("customerId is too long - max length is 10");
         }
         customerId = value;
@@ -67,7 +67,7 @@ public class UpdateCustomerNote implements Message, MessageDescription {
         return Integer.parseInt(value);
      }
 
-    // gets line count [pages] from server
+    // gets line count [lines] from server
     public Integer getLineCountFromServer()
      {
         String key = Fields.LINE_COUNT;

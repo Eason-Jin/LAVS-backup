@@ -41,7 +41,7 @@ public class LoadLoan implements Message, MessageDescription {
     public void setLoanId(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 14) {
+        if (value != null && value.length() > 14) {
             throw new IllegalArgumentException("loanId is too long - max length is 14");
         }
         loanId = value;

@@ -50,7 +50,7 @@ public class UpdateCustomer implements Message, MessageDescription {
     public void setCustomerId(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 10) {
+        if (value != null && value.length() > 10) {
             throw new IllegalArgumentException("customerId is too long - max length is 10");
         }
         customerId = value;
@@ -60,7 +60,7 @@ public class UpdateCustomer implements Message, MessageDescription {
     public void setTitle(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 10) {
+        if (value != null && value.length() > 10) {
             throw new IllegalArgumentException("title is too long - max length is 10");
         }
         title = value;
@@ -70,7 +70,7 @@ public class UpdateCustomer implements Message, MessageDescription {
     public void setName(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 60) {
+        if (value != null && value.length() > 60) {
             throw new IllegalArgumentException("name is too long - max length is 60");
         }
         name = value;
@@ -86,7 +86,7 @@ public class UpdateCustomer implements Message, MessageDescription {
     public void setOccupation(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 40) {
+        if (value != null && value.length() > 40) {
             throw new IllegalArgumentException("occupation is too long - max length is 40");
         }
         occupation = value;
@@ -96,7 +96,7 @@ public class UpdateCustomer implements Message, MessageDescription {
     public void setCitizenship(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 40) {
+        if (value != null && value.length() > 40) {
             throw new IllegalArgumentException("citizenship is too long - max length is 40");
         }
         citizenship = value;
@@ -106,7 +106,7 @@ public class UpdateCustomer implements Message, MessageDescription {
     public void setVisa(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 40) {
+        if (value != null && value.length() > 40) {
             throw new IllegalArgumentException("visa is too long - max length is 40");
         }
         visa = value;

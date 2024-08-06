@@ -62,7 +62,7 @@ public class UpdateCustomerEmployer implements Message, MessageDescription {
     public void setCustomerId(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 10) {
+        if (value != null && value.length() > 10) {
             throw new IllegalArgumentException("customerId is too long - max length is 10");
         }
         customerId = value;
@@ -78,7 +78,7 @@ public class UpdateCustomerEmployer implements Message, MessageDescription {
     public void setName(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 60) {
+        if (value != null && value.length() > 60) {
             throw new IllegalArgumentException("name is too long - max length is 60");
         }
         name = value;
@@ -88,7 +88,7 @@ public class UpdateCustomerEmployer implements Message, MessageDescription {
     public void setLine1(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 60) {
+        if (value != null && value.length() > 60) {
             throw new IllegalArgumentException("line1 is too long - max length is 60");
         }
         line1 = value;
@@ -98,7 +98,7 @@ public class UpdateCustomerEmployer implements Message, MessageDescription {
     public void setLine2(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 60) {
+        if (value != null && value.length() > 60) {
             throw new IllegalArgumentException("line2 is too long - max length is 60");
         }
         line2 = value;
@@ -108,7 +108,7 @@ public class UpdateCustomerEmployer implements Message, MessageDescription {
     public void setSuburb(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 30) {
+        if (value != null && value.length() > 30) {
             throw new IllegalArgumentException("suburb is too long - max length is 30");
         }
         suburb = value;
@@ -118,7 +118,7 @@ public class UpdateCustomerEmployer implements Message, MessageDescription {
     public void setCity(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 30) {
+        if (value != null && value.length() > 30) {
             throw new IllegalArgumentException("city is too long - max length is 30");
         }
         city = value;
@@ -128,7 +128,7 @@ public class UpdateCustomerEmployer implements Message, MessageDescription {
     public void setPostCode(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 10) {
+        if (value != null && value.length() > 10) {
             throw new IllegalArgumentException("postCode is too long - max length is 10");
         }
         postCode = value;
@@ -138,7 +138,7 @@ public class UpdateCustomerEmployer implements Message, MessageDescription {
     public void setCountry(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 30) {
+        if (value != null && value.length() > 30) {
             throw new IllegalArgumentException("country is too long - max length is 30");
         }
         country = value;
@@ -148,7 +148,7 @@ public class UpdateCustomerEmployer implements Message, MessageDescription {
     public void setPhoneNumber(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 30) {
+        if (value != null && value.length() > 30) {
             throw new IllegalArgumentException("phoneNumber is too long - max length is 30");
         }
         phoneNumber = value;
@@ -158,7 +158,7 @@ public class UpdateCustomerEmployer implements Message, MessageDescription {
     public void setEmailAddress(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 60) {
+        if (value != null && value.length() > 60) {
             throw new IllegalArgumentException("emailAddress is too long - max length is 60");
         }
         emailAddress = value;
@@ -168,7 +168,7 @@ public class UpdateCustomerEmployer implements Message, MessageDescription {
     public void setWebsite(String value)
         throws IllegalArgumentException
      {
-        if (value.length() > 60) {
+        if (value != null && value.length() > 60) {
             throw new IllegalArgumentException("website is too long - max length is 60");
         }
         website = value;
