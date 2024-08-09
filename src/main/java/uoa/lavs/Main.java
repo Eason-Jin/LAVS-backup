@@ -33,7 +33,6 @@ public class Main {
 
         // you can use another approach if desired, but make sure you document how the markers can change the
         // connection implementation.
-        App.startApp();
     }
 
     private static void executeTestMessage(Connection connection) {
