@@ -1,5 +1,6 @@
 package uoa.lavs;
 
+import atlantafx.base.theme.PrimerLight;
 import uoa.lavs.SceneManager.SceneUi;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -49,6 +50,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException{
+        Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
         addScenes();
         Parent root = setRoot(SceneUi.START);
         scene = new Scene(root, 1200, 680);
