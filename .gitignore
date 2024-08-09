@@ -36,3 +36,7 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+recorder-data*
+simple-data*
+lavs-data.db
