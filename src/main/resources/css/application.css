@@ -1,0 +1,14 @@
+Button {
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 1, 2);
+    -fx-border-color: white;
+    -fx-border-width: 0.5px;
+}
+
+#btnAddCustomer {
+    -fx-background-color: linear-gradient(#DBFEFC 75%, white 25%) no-repeat;
+}
+#btnSearch {
+    -fx-background-color: linear-gradient(#DBF1FE 75%, white 25%) no-repeat;
+}
