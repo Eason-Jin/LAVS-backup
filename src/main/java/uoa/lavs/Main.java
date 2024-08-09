@@ -23,8 +23,6 @@ public class Main extends Application {
     private static Stage primaryStage;
 
     public static void main(String[] args) {
-        // Launch the JavaFX application
-        launch(args);
 
         // The following shows two ways of using the mainframe interface
         // Approach #1: Use the singleton instance - this way is recommended as it provides a single configuration
@@ -45,6 +43,8 @@ public class Main extends Application {
 
         // You can use another approach if desired, but make sure you document how the markers can change the
         // connection implementation.
+        launch(args);
+
     }
 
     @Override
