@@ -1,5 +1,10 @@
 package uoa.lavs;
 
+import uoa.lavs.SceneManager.SceneUi;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import uoa.lavs.mainframe.Connection;
 import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.Status;
@@ -13,6 +18,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Main extends Application {
+
+    private static Scene scene;
+    private static Stage primaryStage;
 
     public static void main(String[] args) {
         // Launch the JavaFX application
@@ -40,11 +48,23 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("JavaFX Application");
-        primaryStage.setWidth(400);
-        primaryStage.setHeight(300);
-        primaryStage.show();
+    public void start(Stage stage) throws IOException{
+        addScenes();
+        Parent root = setRoot(SceneUi.START);
+        scene = new Scene(root, 1920, 1080);
+        stage.setTitle("JavaFX Application");
+        stage.setWidth(400);
+        stage.setHeight(300);
+        stage.show();
+
+        stage.setOnCloseRequest(
+                event -> {
+                    event.consume();
+                    logout();
+                });
+
+        root.requestFocus();
+        primaryStage = stage;
     }
 
     private static void executeTestMessage(Connection connection) {
@@ -63,5 +83,37 @@ public class Main extends Application {
         } else {
             System.out.println("Something went wrong - the send failed! The code is " + status.getErrorCode());
         }
+    }
+
+    public static Parent setRoot(SceneUi sceneUi) throws IOException {
+
+        Parent root = SceneManager.getParentSceneUi(sceneUi);
+
+        if (root == null) {
+            // scene has not been loaded previously
+            root = loadFxml(SceneManager.getStringSceneUi(sceneUi));
+            SceneManager.addParentSceneUi(sceneUi, root);
+        }
+
+        if (scene != null) {
+            scene.setRoot(root);
+        }
+
+        return root;
+    }
+
+    public static void logout() {
+        primaryStage.close();
+        Platform.exit();
+        System.exit(0);
+    }
+
+    private static Parent loadFxml(final String fxml) throws IOException {
+        return new FXMLLoader(Main.class.getResource("/fxml/" + fxml + ".fxml")).load();
+    }
+
+    private void addScenes() throws IOException {
+        // store string of location of each view
+        SceneManager.addStringSceneUi(SceneManager.SceneUi.START, "start");
     }
 }
