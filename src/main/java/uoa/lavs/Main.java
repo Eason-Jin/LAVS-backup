@@ -51,10 +51,11 @@ public class Main extends Application {
     public void start(Stage stage) throws IOException{
         addScenes();
         Parent root = setRoot(SceneUi.START);
-        scene = new Scene(root, 1920, 1080);
+        scene = new Scene(root, 1200, 680);
         stage.setTitle("JavaFX Application");
-        stage.setWidth(400);
-        stage.setHeight(300);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        // stage.setMaximized(true);
         stage.show();
 
         stage.setOnCloseRequest(
