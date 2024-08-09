@@ -1,5 +1,10 @@
 package uoa.lavs;
 
+import uoa.lavs.SceneManager.SceneUi;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import uoa.lavs.mainframe.Connection;
 import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.Status;
@@ -7,32 +12,59 @@ import uoa.lavs.mainframe.messages.customer.LoadCustomer;
 import uoa.lavs.mainframe.simulator.RecorderConnection;
 import uoa.lavs.mainframe.simulator.SimpleReplayConnection;
 
+import javafx.application.Application;
+import javafx.stage.Stage;
+
 import java.io.IOException;
 
-public class Main {
+public class Main extends Application {
+
+    private static Scene scene;
+    private static Stage primaryStage;
+
     public static void main(String[] args) {
-        // the following shows two ways of using the mainframe interface
-        // approach #1: use the singleton instance - this way is recommended as it provides a single configuration
+
+        // The following shows two ways of using the mainframe interface
+        // Approach #1: Use the singleton instance - this way is recommended as it provides a single configuration
         // location (and is easy for the testers to change when needed).
         Connection connection = Instance.getConnection();
         executeTestMessage(connection);
 
-        // approach #2: dynamically initialize the interface based on some parameters - this way allows the connection
+        // Approach #2: Dynamically initialize the interface based on some parameters - this way allows the connection
         // to change when needed (e.g., based on a command-line argument.) But it means that the connection must be
         // passed around in the application.
         String dataPath = args.length > 1 ? args[1] : "lavs-data.txt";
-        if (args.length > 0 && args[0].equals("record"))
-        {
+        if (args.length > 0 && args[0].equals("record")) {
             connection = new RecorderConnection(dataPath);
-        }
-        else
-        {
+        } else {
             connection = new SimpleReplayConnection(dataPath);
         }
         executeTestMessage(connection);
 
-        // you can use another approach if desired, but make sure you document how the markers can change the
+        // You can use another approach if desired, but make sure you document how the markers can change the
         // connection implementation.
+        launch(args);
+
+    }
+
+    @Override
+    public void start(Stage stage) throws IOException{
+        addScenes();
+        Parent root = setRoot(SceneUi.START);
+        scene = new Scene(root, 1920, 1080);
+        stage.setTitle("JavaFX Application");
+        stage.setWidth(400);
+        stage.setHeight(300);
+        stage.show();
+
+        stage.setOnCloseRequest(
+                event -> {
+                    event.consume();
+                    logout();
+                });
+
+        root.requestFocus();
+        primaryStage = stage;
     }
 
     private static void executeTestMessage(Connection connection) {
@@ -42,7 +74,7 @@ public class Main {
         try {
             connection.close();
         } catch (IOException e) {
-            System.out.println("Something went wrong - could not clos connection! The message is " + e.getMessage());
+            System.out.println("Something went wrong - could not close connection! The message is " + e.getMessage());
             return;
         }
 
@@ -51,5 +83,37 @@ public class Main {
         } else {
             System.out.println("Something went wrong - the send failed! The code is " + status.getErrorCode());
         }
+    }
+
+    public static Parent setRoot(SceneUi sceneUi) throws IOException {
+
+        Parent root = SceneManager.getParentSceneUi(sceneUi);
+
+        if (root == null) {
+            // scene has not been loaded previously
+            root = loadFxml(SceneManager.getStringSceneUi(sceneUi));
+            SceneManager.addParentSceneUi(sceneUi, root);
+        }
+
+        if (scene != null) {
+            scene.setRoot(root);
+        }
+
+        return root;
+    }
+
+    public static void logout() {
+        primaryStage.close();
+        Platform.exit();
+        System.exit(0);
+    }
+
+    private static Parent loadFxml(final String fxml) throws IOException {
+        return new FXMLLoader(Main.class.getResource("/fxml/" + fxml + ".fxml")).load();
+    }
+
+    private void addScenes() throws IOException {
+        // store string of location of each view
+        SceneManager.addStringSceneUi(SceneManager.SceneUi.START, "start");
     }
 }
