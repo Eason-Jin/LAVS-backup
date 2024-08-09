@@ -14,7 +14,6 @@ import uoa.lavs.mainframe.simulator.NitriteConnection;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static uoa.lavs.mainframe.MessageErrorStatus.CUSTOMER_NOT_FOUND;
 import static uoa.lavs.mainframe.MessageErrorStatus.INVALID_REQUEST_CUSTOMER_ID;
 
 class FindCustomerTests {
@@ -30,8 +29,8 @@ class FindCustomerTests {
 
         // Assert
         assertAll(
-                () -> assertEquals(CUSTOMER_NOT_FOUND.getCode(), status.getErrorCode()),
-                () -> assertEquals(CUSTOMER_NOT_FOUND.getMessage(), status.getErrorMessage())
+                () -> assertTrue(status.getWasSuccessful()),
+                () -> assertEquals(0, message.getCustomerCountFromServer())
         );
     }
 

@@ -3,6 +3,7 @@ package uoa.lavs.mainframe.simulator.nitrite;
 import org.junit.jupiter.api.Test;
 import uoa.lavs.mainframe.Connection;
 import uoa.lavs.mainframe.Status;
+import uoa.lavs.mainframe.messages.customer.FindCustomer;
 import uoa.lavs.mainframe.messages.customer.LoadCustomer;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomer;
 import uoa.lavs.mainframe.simulator.NitriteConnection;
@@ -28,7 +29,16 @@ public class IntegrationTests {
         status = load.send(connection);
         assertTrue(status.getWasSuccessful());
 
+        // Act 3: attempt to find the customer
+        FindCustomer find = new FindCustomer();
+        find.setCustomerId(update.getCustomerIdFromServer());
+        status = find.send(connection);
+        assertTrue(status.getWasSuccessful());
+
         // Assert
-        assertEquals("John Doe", load.getNameFromServer());
+        assertAll(
+                () -> assertEquals("John Doe", load.getNameFromServer()),
+                () -> assertEquals("John Doe", find.getNameFromServer(1))
+        );
     }
 }
