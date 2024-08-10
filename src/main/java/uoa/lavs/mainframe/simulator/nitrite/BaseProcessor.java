@@ -23,6 +23,11 @@ public abstract class BaseProcessor implements MessageProcessor {
         this.database = database;
     }
 
+    protected String retrieveDocumentField(Document doc, String key) {
+        Object value = doc.get(key);
+        return value == null ? "" : value.toString();
+    }
+
     protected Response validateId(String id, Integer maxLength, MessageErrorStatus error, long transactionId) {
         if (id == null || id.length() == 0) return error.generateEmptyResponse(transactionId);
         if (id.length() > maxLength) return error.generateEmptyResponse(transactionId);

@@ -31,21 +31,23 @@ public class FindCustomerProcessor extends BaseProcessor {
 
         DocumentCursor cursor = getCustomersCollection().find(where("id").eq(id));
         Document doc = cursor.firstOrNull();
-        if (doc == null) {
-            return MessageErrorStatus.CUSTOMER_NOT_FOUND.generateEmptyResponse(transactionId);
-        }
 
         HashMap<String, String> data = new HashMap<>();
-        data.put("count", "1");
-        data.put(
-                String.format(FindCustomer.Fields.ID, 1),
-                doc.get("id").toString());
-        data.put(
-                String.format(FindCustomer.Fields.NAME, 1),
-                doc.get("name").toString());
-        data.put(
-                String.format(FindCustomer.Fields.DATE_OF_BIRTH, 1),
-                doc.get("dob").toString());
+        Integer count = 0;
+        if (doc != null) {
+            count = 1;
+            data.put(
+                    String.format(FindCustomer.Fields.ID, 1),
+                    retrieveDocumentField(doc, "id"));
+            data.put(
+                    String.format(FindCustomer.Fields.NAME, 1),
+                    retrieveDocumentField(doc, "name"));
+            data.put(
+                    String.format(FindCustomer.Fields.DATE_OF_BIRTH, 1),
+                    retrieveDocumentField(doc, "dob"));
+        }
+
+        data.put("count", count.toString());
         return new Response(
                 new Status(transactionId),
                 data);
