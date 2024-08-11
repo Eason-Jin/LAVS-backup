@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public final class DataParser {
 
-    public static String convertToData(Request request) {
+    public static String convertToData(Request request, boolean appendOutput) {
         Integer code = request.getRequestType();
         // retrieve the message description
         MessageDescription description = All.getMessageDescription(code);
@@ -20,12 +20,19 @@ public final class DataParser {
         // adding the error data here means they can be manually set
         builder.append("code=\"");
         builder.append(code);
-        builder.append("\",error=\"0\",msg=");
+        if (appendOutput) {
+            builder.append("\",error=\"0\",msg=");
+        } else {
+            builder.append("\"");
+        }
 
         // add all the input fields - use the data from the request
-        for (String input : description.getInputFields())
-        {
-            builder.append(",in-");
+        for (String input : description.getInputFields()) {
+            if (appendOutput) {
+                builder.append(",in-");
+            } else {
+                builder.append(",");
+            }
             builder.append(input);
             String value = request.getValue(input);
             builder.append("=");
@@ -34,13 +41,14 @@ public final class DataParser {
             builder.append(encodeValue(value));
         }
 
-        // add all the output fields - these will be empty, but it makes it easier to fill them
-        // in manually later
-        for (String output : description.getOutputFields())
-        {
-            builder.append(",out-");
-            builder.append(output);
-            builder.append("=\"\"");
+        if (appendOutput) {
+            // add all the output fields - these will be empty, but it makes it easier to fill them
+            // in manually later
+            for (String output : description.getOutputFields()) {
+                builder.append(",out-");
+                builder.append(output);
+                builder.append("=\"\"");
+            }
         }
 
         // return the generate data string
@@ -66,7 +74,7 @@ public final class DataParser {
                         // anything else is an exception
                         if (++i < value.length()) {
                             c = value.charAt(i);
-                        }else {
+                        } else {
                             // this means we have hit the end of our string, so, we will treat it as an end-of-value
                             // character
                             c = ',';

@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 // WARNING: Some of these tests are fragile as they test against hard-coded strings. If the underlying string
 // generation changes, then some of these tests will fail.
@@ -21,7 +21,7 @@ class RecorderConnectionTests {
         FindCustomer message = new FindCustomer();
         message.setCustomerId("123456-789");
 
-        // Act
+// Act
         message.send(connection);
         connection.close();
 
@@ -109,7 +109,7 @@ class RecorderConnectionTests {
                 + "out-[04].dob=\"\",out-[04].id=\"\",out-[04].name=\"\","
                 + "out-[05].dob=\"\",out-[05].id=\"\",out-[05].name=\"\",out-count=\"\""
                 + System.lineSeparator()
-                + "code=\"1101\",error=\"0\",msg=,in-id=,out-citizenship=\"\",out-dob=\"\",out-name=\"\",out-occupation=\"\",out-title=\"\",out-visa=\"\"";
+                + "code=\"1101\",error=\"0\",msg=,in-id=,out-citizenship=\"\",out-dob=\"\",out-name=\"\",out-occupation=\"\",out-status=\"\",out-title=\"\",out-visa=\"\"";
         assertEquals(expected, actual);
     }
 }

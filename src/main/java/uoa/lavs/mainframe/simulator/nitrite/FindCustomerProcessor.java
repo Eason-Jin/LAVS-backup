@@ -47,7 +47,7 @@ public class FindCustomerProcessor extends BaseProcessor {
                     retrieveDocumentField(doc, "dob"));
         }
 
-        data.put("count", count.toString());
+        data.put(FindCustomer.Fields.CUSTOMER_COUNT, count.toString());
         return new Response(
                 new Status(transactionId),
                 data);

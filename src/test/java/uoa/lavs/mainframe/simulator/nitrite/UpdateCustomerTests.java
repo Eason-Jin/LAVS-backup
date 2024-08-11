@@ -12,6 +12,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import static uoa.lavs.mainframe.MessageErrorStatus.CUSTOMER_NOT_FOUND;
 
 class UpdateCustomerTests {
+    private static void setMessageParameters(UpdateCustomer message, String id) {
+        message.setCustomerId(id);
+        message.setName("Jane Doe");
+        message.setTitle("Mrs");
+        message.setOccupation("Test Mannequin");
+        message.setCitizenship("Australia");
+        message.setVisa("Automatic");
+        message.setDateofBirth(LocalDate.of(1998, 7, 6));
+    }
+
     @Test
     public void handlesMissingCustomer() {
         // Arrange
@@ -43,12 +53,13 @@ class UpdateCustomerTests {
         // Assert
         assertAll(
                 () -> assertTrue(status.getWasSuccessful()),
-                () -> assertEquals("124", message.getCustomerIdFromServer()),
+                () -> assertEquals("125", message.getCustomerIdFromServer()),
                 () -> assertEquals("Jane Doe", message.getNameFromServer()),
                 () -> assertEquals("Mrs", message.getTitleFromServer()),
                 () -> assertEquals("Test Mannequin", message.getOccupationFromServer()),
                 () -> assertEquals("Automatic", message.getVisaFromServer()),
                 () -> assertEquals("Australia", message.getCitizenshipFromServer()),
+                () -> assertEquals("Active", message.getStatusFromServer()),
                 () -> assertEquals(LocalDate.of(1998, 7, 6), message.getDateofBirthFromServer())
         );
     }
@@ -73,18 +84,9 @@ class UpdateCustomerTests {
                 () -> assertEquals("Test Mannequin", message.getOccupationFromServer()),
                 () -> assertEquals("Automatic", message.getVisaFromServer()),
                 () -> assertEquals("Australia", message.getCitizenshipFromServer()),
+                () -> assertEquals("Active", message.getStatusFromServer()),
                 () -> assertEquals(LocalDate.of(1998, 7, 6), message.getDateofBirthFromServer())
         );
-    }
-
-    private static void setMessageParameters(UpdateCustomer message, String id) {
-        message.setCustomerId(id);
-        message.setName("Jane Doe");
-        message.setTitle("Mrs");
-        message.setOccupation("Test Mannequin");
-        message.setCitizenship("Australia");
-        message.setVisa("Automatic");
-        message.setDateofBirth(LocalDate.of(1998, 7, 6));
     }
 
 }

@@ -4,12 +4,12 @@ import org.dizitart.no2.Nitrite;
 import org.dizitart.no2.collection.Document;
 import org.dizitart.no2.collection.DocumentCursor;
 import org.dizitart.no2.collection.NitriteCollection;
+import uoa.lavs.mainframe.MessageErrorStatus;
 import uoa.lavs.mainframe.Request;
 import uoa.lavs.mainframe.Response;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.LoadCustomerUpdateStatus;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomer;
-import uoa.lavs.mainframe.MessageErrorStatus;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -33,6 +33,7 @@ public class UpdateCustomerProcessor extends BaseProcessor {
             doc = Document.createDocument();
             populateDocument(request, doc);
             doc.put(UpdateCustomer.Fields.CUSTOMER_ID, id);
+            doc.put(UpdateCustomer.Fields.STATUS, "Active");    // Status will always be active
             customers.insert(doc);
         } else {
             DocumentCursor cursor = customers.find(where(UpdateCustomer.Fields.CUSTOMER_ID).eq(id));

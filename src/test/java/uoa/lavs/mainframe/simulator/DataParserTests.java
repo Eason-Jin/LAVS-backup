@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import uoa.lavs.mainframe.Request;
 import uoa.lavs.mainframe.Response;
 import uoa.lavs.mainframe.messages.All;
-import uoa.lavs.mainframe.messages.customer.FindCustomer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -74,13 +73,13 @@ class DataParserTests {
     }
 
     @Test
-    public void convertToDataGeneratesValidString() {
+    public void convertToDataWithOutputGeneratesValidString() {
         // Arrange
         Request request = new Request(All.FindCustomer);
         request.setValue("id", "123456-789");
 
         // Act
-        String actual = DataParser.convertToData(request);
+        String actual = DataParser.convertToData(request, true);
 
         // Assert
         String expected = "code=\"1001\",error=\"0\",msg=,in-id=\"123456-789\"," +
@@ -93,12 +92,53 @@ class DataParserTests {
     }
 
     @Test
-    public void convertToDataHandlesNull() {
+    public void convertToDataWithNoOutputHandlesNull() {
+        // Arrange
+        Request request = new Request(All.LoadCustomer);
+
+        // Act
+        String actual = DataParser.convertToData(request, false);
+
+        // Assert
+        String expected = "code=\"1101\",id=";
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void convertToDataWithNoOutputHandlesData() {
+        // Arrange
+        Request request = new Request(All.LoadCustomer);
+        request.setValue("id", "1234");
+
+        // Act
+        String actual = DataParser.convertToData(request, false);
+
+        // Assert
+        String expected = "code=\"1101\",id=\"1234\"";
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void convertToDataWithNoOutputHandlesSpecialCharacters() {
+        // Arrange
+        Request request = new Request(All.LoadCustomer);
+        request.setValue("id", "quote=\",slash=\\,newline=\r\n");
+
+        // Act
+        String actual = DataParser.convertToData(request, false);
+
+        // Assert
+        String expected = "code=\"1101\",id=\"quote=\\\",slash=\\\\,newline=\\r\\n\"";
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void convertToDataWithOutputHandlesNull() {
         // Arrange
         Request request = new Request(All.FindCustomer);
 
         // Act
-        String actual = DataParser.convertToData(request);
+        String actual = DataParser.convertToData(request, true);
 
         // Assert
         String expected = "code=\"1001\",error=\"0\",msg=,in-id=," +
@@ -111,13 +151,13 @@ class DataParserTests {
     }
 
     @Test
-    public void convertToDataEncodesSpecialCharacters() {
+    public void convertToDataWithOutputEncodesSpecialCharacters() {
         // Arrange
         Request request = new Request(All.FindCustomer);
         request.setValue("id", "quote=\",slash=\\,newline=\r\n");
 
         // Act
-        String actual = DataParser.convertToData(request);
+        String actual = DataParser.convertToData(request, true);
 
         // Assert
         String expected = "code=\"1001\",error=\"0\",msg=,in-id=\"quote=\\\",slash=\\\\,newline=\\r\\n\"," +
