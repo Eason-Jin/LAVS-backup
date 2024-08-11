@@ -68,7 +68,7 @@ public abstract class BaseProcessor implements MessageProcessor {
         }
     }
 
-    protected String generateNewId(String type) {
+        protected String generateNewId(String type) {
         NitriteCollection ids = database.getCollection(NitriteConnection.Internal.IDS_COLLECTION);
         DocumentCursor cursor = ids.find(where("type").eq(type));
         Document idDoc = cursor.firstOrNull();
@@ -83,6 +83,6 @@ public abstract class BaseProcessor implements MessageProcessor {
         Integer id = idDoc.get("id", Integer.class);
         idDoc.put("id", id + 1);
         ids.update(idDoc);
-        return String.format("%d", id);
+        return String.format("%d", id + 1);
     }
 }

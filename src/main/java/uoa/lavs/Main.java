@@ -2,10 +2,8 @@ package uoa.lavs;
 
 import atlantafx.base.theme.PrimerLight;
 import java.io.IOException;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.time.LocalDate;
+import java.util.List;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -13,12 +11,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import uoa.lavs.SceneManager.SceneUi;
+import uoa.lavs.dataoperations.CustomerFinder;
+import uoa.lavs.dataoperations.CustomerLoader;
+import uoa.lavs.dataoperations.CustomerUpdater;
 import uoa.lavs.mainframe.Connection;
-import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.LoadCustomer;
-import uoa.lavs.mainframe.simulator.RecorderConnection;
-import uoa.lavs.mainframe.simulator.SimpleReplayConnection;
+import uoa.lavs.models.Customer;
 
 public class Main extends Application {
 
@@ -27,48 +26,70 @@ public class Main extends Application {
 
   public static void main(String[] args) {
 
-    // The following shows two ways of using the mainframe interface
-    // Approach #1: Use the singleton instance - this way is recommended as it provides a single
-    // configuration
-    // location (and is easy for the testers to change when needed).
-    Connection connection = Instance.getConnection();
-    executeTestMessage(connection);
+    Customer customer = new Customer();
+    customer.setName("Jessica");
+    customer.setTitle("Ms");
+    customer.setDob(LocalDate.of(2004, 4, 16));
+    customer.setOccupation("Student");
+    customer.setCitizenship("NZ");
+    customer.setStatus("Active");
 
-    // NOTE: Connection and Statement are AutoCloseable.
-    //       Don't forget to close them both in order to avoid leaks.
-    try (
-    // create a database connection
-    java.sql.Connection databaseConnection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
-        Statement statement = databaseConnection.createStatement(); ) {
-      statement.setQueryTimeout(30); // set timeout to 30 sec.
-      ResultSet rs = statement.executeQuery("select * from Customer");
-      while (rs.next()) {
-        // read the result set
-        System.out.println("name = " + rs.getString("Name"));
-        System.out.println("id = " + rs.getString("Title"));
-      }
-    } catch (SQLException e) {
-      // if the error message is "out of memory",
-      // it probably means no database file is found
-      e.printStackTrace(System.err);
-    }
+    // Creates customer in database and mainframe
+    CustomerUpdater customerUpdater = new CustomerUpdater();
+    customerUpdater.updateData(null, customer);
+    System.out.println("Customer created");
+    System.out.println("Id: " + customer.getId());
+    System.out.println("Name: " + customer.getName());
+    System.out.println("Title: " + customer.getTitle());
+    System.out.println("Date of Birth: " + customer.getDob());
+    System.out.println("Occupation: " + customer.getOccupation());
+    System.out.println("Citizenship: " + customer.getCitizenship());
+    System.out.println("Status: " + customer.getStatus());
+    System.out.println();
 
-    // Approach #2: Dynamically initialize the interface based on some parameters - this way allows
-    // the connection
-    // to change when needed (e.g., based on a command-line argument.) But it means that the
-    // connection must be
-    // passed around in the application.
-    String dataPath = args.length > 1 ? args[1] : "lavs-data.txt";
-    if (args.length > 0 && args[0].equals("record")) {
-      connection = new RecorderConnection(dataPath);
-    } else {
-      connection = new SimpleReplayConnection(dataPath);
-    }
-    executeTestMessage(connection);
+    Customer customer2 = new Customer();
+    customer2.setName("Bob");
+    customer2.setTitle("Mr");
+    customer2.setDob(LocalDate.of(1990, 4, 16));
+    customer2.setOccupation("IT");
+    customer2.setCitizenship("NZ");
+    customer2.setStatus("Pending");
 
-    // You can use another approach if desired, but make sure you document how the markers can
-    // change the
-    // connection implementation.
+    // Creates customer in database and mainframe
+    customerUpdater.updateData(null, customer2);
+    System.out.println("Customer created");
+    System.out.println("Id: " + customer2.getId());
+    System.out.println("Name: " + customer2.getName());
+    System.out.println("Title: " + customer2.getTitle());
+    System.out.println("Date of Birth: " + customer2.getDob());
+    System.out.println("Occupation: " + customer2.getOccupation());
+    System.out.println("Citizenship: " + customer2.getCitizenship());
+    System.out.println("Status: " + customer2.getStatus());
+    System.out.println();
+
+    // Updates customer in database and mainframe
+    Customer updateCustomerRequest = new Customer();
+    updateCustomerRequest.setName("Jessica");
+    customerUpdater.updateData("2", updateCustomerRequest);
+
+    CustomerFinder customerFinder = new CustomerFinder();
+    List<Customer> customers = customerFinder.findData("2");
+    System.out.println("Customer with Id: " + customers.get(0).getId() + " updated");
+    System.out.println("Name: " + customers.get(0).getName());
+    System.out.println("Date of Birth: " + customers.get(0).getDob());
+    System.out.println();
+
+    CustomerLoader customerLoader = new CustomerLoader();
+    Customer customer3 = customerLoader.loadData("1");
+    System.out.println("Load Customer with Id: " + customer3.getId());
+    System.out.println("Name: " + customer3.getName());
+    System.out.println("Title: " + customer3.getTitle());
+    System.out.println("Date of Birth: " + customer3.getDob());
+    System.out.println("Occupation: " + customer3.getOccupation());
+    System.out.println("Citizenship: " + customer3.getCitizenship());
+    System.out.println("Status: " + customer3.getStatus());
+    System.out.println();
+
     launch(args);
   }
 
@@ -96,7 +117,7 @@ public class Main extends Application {
 
   private static void executeTestMessage(Connection connection) {
     LoadCustomer testMessage = new LoadCustomer();
-    testMessage.setCustomerId("123456-789");
+    testMessage.setCustomerId("1");
     Status status = testMessage.send(connection);
     try {
       connection.close();
