@@ -50,9 +50,10 @@ public class Main extends Application {
     Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
     SceneManager.addScene(AppScene.START, loadLoader("start").load());
     SceneManager.addScene(AppScene.ADD_CUSTOMER, loadLoader("addCustomer").load());
+    SceneManager.addScene(AppScene.SEARCH, loadLoader("search").load());
 
     currentStage = stage;
-    currentScene = new Scene(loadLoader("start").load(), 800, 625);
+    currentScene = new Scene(loadLoader("start").load(), 1152, 648);
     stage.setScene(currentScene);
     stage.show();
     stage.setOnCloseRequest(e -> System.exit(0));

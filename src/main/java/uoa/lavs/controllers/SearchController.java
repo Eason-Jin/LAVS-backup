@@ -5,11 +5,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager;
+import uoa.lavs.SceneManager.AppScene;
 
 import java.io.IOException;
 
-public class AddCustomerController {
-    
+public class SearchController {
+
     @FXML private Button startButton;
 
     @FXML
