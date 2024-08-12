@@ -42,7 +42,7 @@ public class UpdateCustomerItemProcessor extends BaseCustomerProcessor {
             doc.put(documentItemName, items);
         }
 
-        Integer index = Integer.parseInt(number) - 1;
+        Integer index = number == null ? Integer.MAX_VALUE : Integer.parseInt(number) - 1;
         Document item;
         if (index >= items.size()) {
             item = Document.createDocument("number", number);
@@ -57,6 +57,8 @@ public class UpdateCustomerItemProcessor extends BaseCustomerProcessor {
 
         HashMap<String, String> data = new HashMap<>();
         copyOutputData(item, data, outputData);
+        Integer size = items.size();
+        data.put("number", size.toString());
         return new Response(
                 new Status(transactionId),
                 data);

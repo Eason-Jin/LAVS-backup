@@ -24,9 +24,9 @@ public class UpdateLoanCoborrower implements Message, MessageDescription {
     @Override
     public Status send(Connection connection) {
         Request request = new Request(REQUEST_CODE);
-        if (loanId != null) request.setValue(Fields.LOAN_ID, loanId.toString());
+        if (loanId != null) request.setValue(Fields.LOAN_ID, loanId);
         if (number != null) request.setValue(Fields.NUMBER, number.toString());
-        if (coborrowerId != null) request.setValue(Fields.COBORROWER_ID, coborrowerId.toString());
+        if (coborrowerId != null) request.setValue(Fields.COBORROWER_ID, coborrowerId);
         response = connection.send(request);
         return response.getStatus();
     }

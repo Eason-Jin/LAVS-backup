@@ -10,6 +10,27 @@ import static org.junit.jupiter.api.Assertions.*;
 import static uoa.lavs.mainframe.MessageErrorStatus.CUSTOMER_NOT_FOUND;
 
 class UpdateCustomerPhoneNumberTests {
+    private static void assertExpectedProperties(Status status, UpdateCustomerPhoneNumber message) {
+        assertAll(
+                () -> assertTrue(status.getWasSuccessful()),
+                () -> assertEquals("New", message.getTypeFromServer()),
+                () -> assertEquals("321-7654", message.getPhoneNumberFromServer()),
+                () -> assertEquals("+77", message.getPrefixFromServer()),
+                () -> assertFalse(message.getIsPrimaryFromServer()),
+                () -> assertFalse(message.getCanSendTxtFromServer())
+        );
+    }
+
+    private static void setMessageParameters(UpdateCustomerPhoneNumber message) {
+        message.setCustomerId("123");
+        message.setNumber(1);
+        message.setType("New");
+        message.setPhoneNumber("321-7654");
+        message.setPrefix("+77");
+        message.setIsPrimary(false);
+        message.setCanSendTxt(false);
+    }
+
     @Test
     public void handlesMissingCustomer() {
         // Arrange
@@ -44,6 +65,22 @@ class UpdateCustomerPhoneNumberTests {
     }
 
     @Test
+    public void handlesNewPhoneNumberViaNull() {
+        // Arrange
+        Connection connection = new NitriteConnection(
+                DatabaseHelper.generateDefaultDatabase());
+        UpdateCustomerPhoneNumber message = new UpdateCustomerPhoneNumber();
+        setMessageParameters(message);
+        message.setNumber(null);
+
+        // Act
+        Status status = message.send(connection);
+
+        // Assert
+        assertExpectedProperties(status, message);
+    }
+
+    @Test
     public void handlesPhoneNumberUpdate() {
         // Arrange
         Connection connection = new NitriteConnection(
@@ -56,26 +93,5 @@ class UpdateCustomerPhoneNumberTests {
 
         // Assert
         assertExpectedProperties(status, message);
-    }
-
-    private static void assertExpectedProperties(Status status, UpdateCustomerPhoneNumber message) {
-        assertAll(
-                () -> assertTrue(status.getWasSuccessful()),
-                () -> assertEquals("New", message.getTypeFromServer()),
-                () -> assertEquals("321-7654", message.getPhoneNumberFromServer()),
-                () -> assertEquals("+77", message.getPrefixFromServer()),
-                () -> assertFalse( message.getIsPrimaryFromServer()),
-                () -> assertFalse( message.getCanSendTxtFromServer())
-        );
-    }
-
-    private static void setMessageParameters(UpdateCustomerPhoneNumber message) {
-        message.setCustomerId("123");
-        message.setNumber(1);
-        message.setType("New");
-        message.setPhoneNumber("321-7654");
-        message.setPrefix("+77");
-        message.setIsPrimary(false);
-        message.setCanSendTxt(false);
     }
 }

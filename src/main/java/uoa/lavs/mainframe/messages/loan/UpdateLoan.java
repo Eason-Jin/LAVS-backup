@@ -42,8 +42,8 @@ public class UpdateLoan implements Message, MessageDescription {
     @Override
     public Status send(Connection connection) {
         Request request = new Request(REQUEST_CODE);
-        if (loanId != null) request.setValue(Fields.LOAN_ID, loanId.toString());
-        if (customerId != null) request.setValue(Fields.CUSTOMER_ID, customerId.toString());
+        if (loanId != null) request.setValue(Fields.LOAN_ID, loanId);
+        if (customerId != null) request.setValue(Fields.CUSTOMER_ID, customerId);
         if (principal != null) request.setValue(Fields.PRINCIPAL, principal.toString());
         if (rateValue != null) request.setValue(Fields.RATE_VALUE, rateValue.toString());
         switch (rateType)

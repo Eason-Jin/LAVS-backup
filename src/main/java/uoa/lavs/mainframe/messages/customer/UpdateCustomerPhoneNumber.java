@@ -2,8 +2,7 @@ package uoa.lavs.mainframe.messages.customer;
 
 import uoa.lavs.mainframe.*;
 
-public class
-UpdateCustomerPhoneNumber implements Message, MessageDescription {
+public class UpdateCustomerPhoneNumber implements Message, MessageDescription, UpdateCustomerChildMessage {
     public static final int REQUEST_CODE = 1203;
     private Response response;
     private String customerId;
@@ -12,6 +11,19 @@ UpdateCustomerPhoneNumber implements Message, MessageDescription {
     private String prefix;
     private String phoneNumber;
     private Integer flags = 0;
+
+    public class Fields {
+        public static final String[] INPUT = {"flags", "id", "number", "phone", "prefix", "type"};
+        public static final String[] OUTPUT = {"flags", "number", "phone", "prefix", "type"};
+
+        public static final String CUSTOMER_ID = "id";
+        public static final String NUMBER = "number";
+        public static final String TYPE = "type";
+        public static final String PREFIX = "prefix";
+        public static final String PHONE_NUMBER = "phone";
+        public static final String IS_PRIMARY = "flags";
+        public static final String CAN_SEND_TXT = "flags";
+    }
 
     @Override
     public Status send(Connection connection) {
@@ -29,99 +41,109 @@ UpdateCustomerPhoneNumber implements Message, MessageDescription {
 
     // sets customer id [customerId]
     public void setCustomerId(String value)
-            throws IllegalArgumentException {
+        throws IllegalArgumentException
+     {
         if (value != null && value.length() > 10) {
             throw new IllegalArgumentException("customerId is too long - max length is 10");
         }
         customerId = value;
-    }
+     }
 
     // sets number [number]
-    public void setNumber(Integer value) {
+    public void setNumber(Integer value)
+     {
         number = value;
-    }
+     }
 
     // sets type [type]
-    public void setType(String value) {
+    public void setType(String value)
+     {
         type = value;
-    }
+     }
 
     // sets prefix [prefix]
-    public void setPrefix(String value) {
+    public void setPrefix(String value)
+     {
         prefix = value;
-    }
+     }
 
     // sets phone number [phoneNumber]
-    public void setPhoneNumber(String value) {
+    public void setPhoneNumber(String value)
+     {
         phoneNumber = value;
-    }
+     }
 
     // sets is primary [IsPrimary]
-    public void setIsPrimary(Boolean value) {
+    public void setIsPrimary(Boolean value)
+     {
         flags &= 254;
         if (value) flags |= 1;
-    }
+     }
 
     // sets can send txt [CanSendTxt]
-    public void setCanSendTxt(Boolean value) {
+    public void setCanSendTxt(Boolean value)
+     {
         flags &= 253;
         if (value) flags |= 2;
-    }
+     }
+
+    // gets number from server
+    public Integer getNumberFromServer()
+     {
+        String key = Fields.NUMBER;
+        String value = response.getValue(key);
+        if (value == null) return null;
+        return Integer.parseInt(value);
+     }
 
     // gets type from server
-    public String getTypeFromServer() {
+    public String getTypeFromServer()
+     {
         String key = Fields.TYPE;
         return response.getValue(key);
-    }
+     }
 
     // gets prefix from server
-    public String getPrefixFromServer() {
+    public String getPrefixFromServer()
+     {
         String key = Fields.PREFIX;
         return response.getValue(key);
-    }
+     }
 
     // gets phone number [phone] from server
-    public String getPhoneNumberFromServer() {
+    public String getPhoneNumberFromServer()
+     {
         String key = Fields.PHONE_NUMBER;
         return response.getValue(key);
-    }
+     }
 
     // gets is primary [flags] from server
-    public Boolean getIsPrimaryFromServer() {
+    public Boolean getIsPrimaryFromServer()
+     {
         String key = Fields.IS_PRIMARY;
         String value = response.getValue(key);
         int flags = Integer.parseInt(value);
         return (flags & 1) == 1;
-    }
+     }
 
     // gets can send txt [flags] from server
-    public Boolean getCanSendTxtFromServer() {
+    public Boolean getCanSendTxtFromServer()
+     {
         String key = Fields.CAN_SEND_TXT;
         String value = response.getValue(key);
         int flags = Integer.parseInt(value);
         return (flags & 2) == 2;
-    }
+     }
 
     @Override
-    public String[] getInputFields() {
+    public String[] getInputFields()
+    {
         return Fields.INPUT;
     }
 
     @Override
-    public String[] getOutputFields() {
+    public String[] getOutputFields()
+    {
         return Fields.OUTPUT;
-    }
-
-    public class Fields {
-        public static final String[] INPUT = {"flags", "id", "number", "phone", "prefix", "type"};
-        public static final String[] OUTPUT = {"flags", "phone", "prefix", "type"};
-
-        public static final String CUSTOMER_ID = "id";
-        public static final String NUMBER = "number";
-        public static final String TYPE = "type";
-        public static final String PREFIX = "prefix";
-        public static final String PHONE_NUMBER = "phone";
-        public static final String IS_PRIMARY = "flags";
-        public static final String CAN_SEND_TXT = "flags";
     }
 }

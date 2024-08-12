@@ -24,7 +24,7 @@ public class UpdateCustomerNoteProcessor extends BaseCustomerProcessor {
         Document doc = getCustomerDocument();
         String number = request.getValue("number");
 
-        Integer index = Integer.parseInt(number) - 1;
+        Integer index = number == null ? Integer.MAX_VALUE : Integer.parseInt(number) - 1;
         ArrayList<Document> items = getCustomerItems(NitriteConnection.Internal.ITEM_NOTES);
         if (items == null) {
             items = new ArrayList<>();
@@ -52,6 +52,8 @@ public class UpdateCustomerNoteProcessor extends BaseCustomerProcessor {
         HashMap<String, String> data = new HashMap<>();
         copyOutputData(item, data, UpdateCustomerNote.Fields.OUTPUT);
         data.put(UpdateCustomerNote.Fields.PAGE_COUNT, Integer.toString(items.size()));
+        Integer size = items.size();
+        data.put("number", size.toString());
         return new Response(
                 new Status(transactionId),
                 data);
