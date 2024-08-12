@@ -8,7 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import uoa.lavs.SceneManager.SceneUi;
+import uoa.lavs.SceneManager.AppScene;
 import uoa.lavs.mainframe.Connection;
 import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.Status;
@@ -18,8 +18,8 @@ import uoa.lavs.mainframe.simulator.SimpleReplayConnection;
 
 public class Main extends Application {
 
-  private static Scene scene;
-  private static Stage primaryStage;
+  private static Scene currentScene;
+  private static Stage currentStage;
 
   public static void main(String[] args) {
 
@@ -29,33 +29,34 @@ public class Main extends Application {
     // location (and is easy for the testers to change when needed).
     Connection connection = Instance.getConnection();
     executeTestMessage(connection);
-
-    // You can use another approach if desired, but make sure you document how the markers can
-    // change the
-    // connection implementation.
     launch(args);
+  }
+
+  public static Stage getStage() {
+    return currentStage;
+  }
+
+  private static FXMLLoader loadLoader(String fxml) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/fxml/" + fxml + ".fxml"));
+    return fxmlLoader;
+  }
+
+  public static void setScene(AppScene scene) {
+    currentScene.setRoot(SceneManager.getScene(scene));
   }
 
   @Override
   public void start(Stage stage) throws IOException {
     Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
-    addScenes();
-    Parent root = setRoot(SceneUi.START);
-    scene = new Scene(root, 1200, 680);
-    stage.setTitle("JavaFX Application");
-    stage.setScene(scene);
-    stage.setResizable(false);
-    // stage.setMaximized(true);
+    SceneManager.addScene(AppScene.START, loadLoader("start").load());
+    SceneManager.addScene(AppScene.ADD_CUSTOMER, loadLoader("addCustomer").load());
+    SceneManager.addScene(AppScene.SEARCH, loadLoader("search").load());
+
+    currentStage = stage;
+    currentScene = new Scene(loadLoader("start").load(), 1152, 648);
+    stage.setScene(currentScene);
     stage.show();
-
-    stage.setOnCloseRequest(
-        event -> {
-          event.consume();
-          logout();
-        });
-
-    root.requestFocus();
-    primaryStage = stage;
+    stage.setOnCloseRequest(e -> System.exit(0));
   }
 
   private static void executeTestMessage(Connection connection) {
@@ -77,37 +78,5 @@ public class Main extends Application {
       System.out.println(
           "Something went wrong - the send failed! The code is " + status.getErrorCode());
     }
-  }
-
-  public static Parent setRoot(SceneUi sceneUi) throws IOException {
-
-    Parent root = SceneManager.getParentSceneUi(sceneUi);
-
-    if (root == null) {
-      // scene has not been loaded previously
-      root = loadFxml(SceneManager.getStringSceneUi(sceneUi));
-      SceneManager.addParentSceneUi(sceneUi, root);
-    }
-
-    if (scene != null) {
-      scene.setRoot(root);
-    }
-
-    return root;
-  }
-
-  public static void logout() {
-    primaryStage.close();
-    Platform.exit();
-    System.exit(0);
-  }
-
-  private static Parent loadFxml(final String fxml) throws IOException {
-    return new FXMLLoader(Main.class.getResource("/fxml/" + fxml + ".fxml")).load();
-  }
-
-  private void addScenes() throws IOException {
-    // store string of location of each view
-    SceneManager.addStringSceneUi(SceneManager.SceneUi.START, "start");
   }
 }
