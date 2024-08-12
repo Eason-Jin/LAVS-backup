@@ -32,7 +32,6 @@ public class Main extends Application {
     customer.setDob(LocalDate.of(2004, 4, 16));
     customer.setOccupation("Student");
     customer.setCitizenship("NZ");
-    customer.setStatus("Active");
 
     // Creates customer in database and mainframe
     CustomerUpdater customerUpdater = new CustomerUpdater();
@@ -53,7 +52,6 @@ public class Main extends Application {
     customer2.setDob(LocalDate.of(1990, 4, 16));
     customer2.setOccupation("IT");
     customer2.setCitizenship("NZ");
-    customer2.setStatus("Pending");
 
     // Creates customer in database and mainframe
     customerUpdater.updateData(null, customer2);

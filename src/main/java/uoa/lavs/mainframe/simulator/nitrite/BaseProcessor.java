@@ -83,6 +83,6 @@ public abstract class BaseProcessor implements MessageProcessor {
         Integer id = idDoc.get("id", Integer.class) + 1;
         idDoc.put("id", id);
         ids.update(idDoc);
-        return String.format("%d", id + 1);
+        return String.format("%d", id);
     }
 }

@@ -70,8 +70,7 @@ public class CustomerLoader implements Loader<Customer> {
     customer.setOccupation(loadCustomer.getOccupationFromServer());
     customer.setTitle(loadCustomer.getTitleFromServer());
     customer.setVisaType(loadCustomer.getVisaFromServer());
-    //TODO: Uncomment this line when status is implemented
-    // customer.setStatus(loadCustomer.getStatusFromServer());
+    customer.setStatus(loadCustomer.getStatusFromServer());
     return customer;
   }
 }

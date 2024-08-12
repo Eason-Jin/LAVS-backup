@@ -43,7 +43,10 @@ public class CustomerUpdater implements Updater {
           }
         }
       }
+    } else { // If new customer and mainframe add failed, set status to pending
+      customer.setStatus("Pending");
     }
+
     String sql;
     if (exists) {
       sql =
@@ -119,9 +122,6 @@ public class CustomerUpdater implements Updater {
               : existingCustomer.getCitizenship());
       updateCustomer.setVisa(
           customer.getVisaType() != null ? customer.getVisaType() : existingCustomer.getVisaType());
-      // TODO: Uncomment this line when status is implemented
-      // updateCustomer.setStatus(
-      //     customer.getStatus() != null ? customer.getStatus() : existingCustomer.getStatus());
     } else {
       updateCustomer.setTitle(customer.getTitle());
       updateCustomer.setName(customer.getName());
@@ -129,13 +129,12 @@ public class CustomerUpdater implements Updater {
       updateCustomer.setOccupation(customer.getOccupation());
       updateCustomer.setCitizenship(customer.getCitizenship());
       updateCustomer.setVisa(customer.getVisaType());
-      // TODO: Uncomment this line when status is implemented
-      // updateCustomer.setStatus(customer.getStatus());
     }
 
     try {
       updateCustomer.send(Instance.getConnection());
       customer.setId(updateCustomer.getCustomerIdFromServer());
+      customer.setStatus(updateCustomer.getStatusFromServer());
       return updateCustomer.getCustomerIdFromServer();
     } catch (Exception e) {
       System.out.println("Mainframe update failed: " + e.getMessage());
