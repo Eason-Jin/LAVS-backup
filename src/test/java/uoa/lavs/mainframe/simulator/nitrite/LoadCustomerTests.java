@@ -74,6 +74,7 @@ class LoadCustomerTests {
                 () -> assertEquals("Test dummy", message.getOccupationFromServer()),
                 () -> assertEquals("n/a", message.getVisaFromServer()),
                 () -> assertEquals("New Zealand", message.getCitizenshipFromServer()),
+                () -> assertEquals("Active", message.getStatusFromServer()),
                 () -> assertEquals(LocalDate.of(1945, 3, 12), message.getDateofBirthFromServer())
         );
     }

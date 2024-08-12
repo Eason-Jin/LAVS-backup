@@ -1,8 +1,14 @@
 package uoa.lavs.mainframe.simulator;
 
-import uoa.lavs.mainframe.*;
+import uoa.lavs.mainframe.Connection;
+import uoa.lavs.mainframe.Request;
+import uoa.lavs.mainframe.Response;
+import uoa.lavs.mainframe.Status;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -10,7 +16,7 @@ import java.util.HashMap;
 // this is a connection that will record any messages so that they can be modified and replayed later
 public class RecorderConnection implements Connection {
 
-    private BufferedWriter writer;
+    private final BufferedWriter writer;
     private Long transactionId = 0L;
 
     public RecorderConnection(String dataPath) {
@@ -33,7 +39,7 @@ public class RecorderConnection implements Connection {
 
     @Override
     public Response send(Request request) {
-        String data = DataParser.convertToData(request);
+        String data = DataParser.convertToData(request, true);
         try {
             writer.write(data);
             writer.newLine();

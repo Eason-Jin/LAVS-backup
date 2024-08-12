@@ -4,13 +4,12 @@ import java.util.HashMap;
 
 // a request to send to the mainframe
 public final class Request {
-    private HashMap<String, String> rawData = new HashMap<>();
-    private int requestType;
+    private final int requestType;
+    private final HashMap<String, String> rawData = new HashMap<>();
 
     // initialize a new Request instance
     public Request(int requestType) {
         this.requestType = requestType;
-        this.rawData = rawData;
     }
 
     // gets a data value
@@ -28,4 +27,7 @@ public final class Request {
         return requestType;
     }
 
+    public String[] getValueKeys() {
+        return rawData.keySet().toArray(new String[0]);
+    }
 }

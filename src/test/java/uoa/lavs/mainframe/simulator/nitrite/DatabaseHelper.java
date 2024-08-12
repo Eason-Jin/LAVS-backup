@@ -30,6 +30,7 @@ public class DatabaseHelper {
                 .put(LoadCustomer.Fields.DATE_OF_BIRTH, "12-03-1945")
                 .put(LoadCustomer.Fields.NAME, name)
                 .put(LoadCustomer.Fields.OCCUPATION, "Test dummy")
+                .put(LoadCustomer.Fields.STATUS, "Active")
                 .put(LoadCustomer.Fields.TITLE, "Mr")
                 .put(LoadCustomer.Fields.VISA, "n/a")
                 .put(NitriteConnection.Internal.NEXT_LOAN_ID, 10);

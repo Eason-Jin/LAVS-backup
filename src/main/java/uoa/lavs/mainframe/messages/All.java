@@ -24,6 +24,7 @@ public class All {
     public static final Integer LoadCustomerPhoneNumbers = 1003;
     public static final Integer UpdateCustomerPhoneNumber = 1203;
     public static final Integer LoadLoan = 2101;
+    public static final Integer FindLoan = 2001;
     public static final Integer UpdateLoan = 2201;
     public static final Integer LoadLoanCoborrowers = 2106;
     public static final Integer LoadLoanPayments = 2102;
@@ -71,6 +72,8 @@ public class All {
                 return new UpdateCustomerPhoneNumber();
             case 2101:
                 return new LoadLoan();
+            case 2001:
+                return new FindLoan();
             case 2201:
                 return new UpdateLoan();
             case 2106:
