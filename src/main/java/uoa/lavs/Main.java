@@ -30,19 +30,6 @@ public class Main extends Application {
     Connection connection = Instance.getConnection();
     executeTestMessage(connection);
 
-    // Approach #2: Dynamically initialize the interface based on some parameters - this way allows
-    // the connection
-    // to change when needed (e.g., based on a command-line argument.) But it means that the
-    // connection must be
-    // passed around in the application.
-    String dataPath = args.length > 1 ? args[1] : "lavs-data.txt";
-    if (args.length > 0 && args[0].equals("record")) {
-      connection = new RecorderConnection(dataPath);
-    } else {
-      connection = new SimpleReplayConnection(dataPath);
-    }
-    executeTestMessage(connection);
-
     // You can use another approach if desired, but make sure you document how the markers can
     // change the
     // connection implementation.
