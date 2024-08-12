@@ -2,7 +2,7 @@ package uoa.lavs.mainframe.messages.customer;
 
 import uoa.lavs.mainframe.*;
 
-public class UpdateCustomerEmployer implements Message, MessageDescription {
+public class UpdateCustomerEmployer implements Message, MessageDescription, UpdateCustomerChildMessage {
     public static final int REQUEST_CODE = 1205;
     private Response response;
     private String customerId;
@@ -21,7 +21,7 @@ public class UpdateCustomerEmployer implements Message, MessageDescription {
 
     public class Fields {
         public static final String[] INPUT = {"city", "country", "email", "flags", "id", "line1", "line2", "name", "number", "phone", "postCode", "suburb", "web"};
-        public static final String[] OUTPUT = {"city", "country", "email", "flags", "line1", "line2", "name", "phone", "postCode", "suburb", "web"};
+        public static final String[] OUTPUT = {"city", "country", "email", "flags", "line1", "line2", "name", "number", "phone", "postCode", "suburb", "web"};
 
         public static final String CUSTOMER_ID = "id";
         public static final String NUMBER = "number";
@@ -41,18 +41,18 @@ public class UpdateCustomerEmployer implements Message, MessageDescription {
     @Override
     public Status send(Connection connection) {
         Request request = new Request(REQUEST_CODE);
-        if (customerId != null) request.setValue(Fields.CUSTOMER_ID, customerId.toString());
+        if (customerId != null) request.setValue(Fields.CUSTOMER_ID, customerId);
         if (number != null) request.setValue(Fields.NUMBER, number.toString());
-        if (name != null) request.setValue(Fields.NAME, name.toString());
-        if (line1 != null) request.setValue(Fields.LINE_1, line1.toString());
-        if (line2 != null) request.setValue(Fields.LINE_2, line2.toString());
-        if (suburb != null) request.setValue(Fields.SUBURB, suburb.toString());
-        if (city != null) request.setValue(Fields.CITY, city.toString());
-        if (postCode != null) request.setValue(Fields.POST_CODE, postCode.toString());
-        if (country != null) request.setValue(Fields.COUNTRY, country.toString());
-        if (phoneNumber != null) request.setValue(Fields.PHONE_NUMBER, phoneNumber.toString());
-        if (emailAddress != null) request.setValue(Fields.EMAIL_ADDRESS, emailAddress.toString());
-        if (website != null) request.setValue(Fields.WEBSITE, website.toString());
+        if (name != null) request.setValue(Fields.NAME, name);
+        if (line1 != null) request.setValue(Fields.LINE_1, line1);
+        if (line2 != null) request.setValue(Fields.LINE_2, line2);
+        if (suburb != null) request.setValue(Fields.SUBURB, suburb);
+        if (city != null) request.setValue(Fields.CITY, city);
+        if (postCode != null) request.setValue(Fields.POST_CODE, postCode);
+        if (country != null) request.setValue(Fields.COUNTRY, country);
+        if (phoneNumber != null) request.setValue(Fields.PHONE_NUMBER, phoneNumber);
+        if (emailAddress != null) request.setValue(Fields.EMAIL_ADDRESS, emailAddress);
+        if (website != null) request.setValue(Fields.WEBSITE, website);
         if (flags != null) request.setValue(Fields.IS_OWNER, flags.toString());
         response = connection.send(request);
         return response.getStatus();
@@ -179,6 +179,15 @@ public class UpdateCustomerEmployer implements Message, MessageDescription {
      {
         flags &= 254;
         if (value) flags |= 1;
+     }
+
+    // gets number from server
+    public Integer getNumberFromServer()
+     {
+        String key = Fields.NUMBER;
+        String value = response.getValue(key);
+        if (value == null) return null;
+        return Integer.parseInt(value);
      }
 
     // gets name from server

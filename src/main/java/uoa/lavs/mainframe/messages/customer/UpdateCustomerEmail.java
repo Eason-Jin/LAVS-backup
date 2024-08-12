@@ -2,7 +2,7 @@ package uoa.lavs.mainframe.messages.customer;
 
 import uoa.lavs.mainframe.*;
 
-public class UpdateCustomerEmail implements Message, MessageDescription {
+public class UpdateCustomerEmail implements Message, MessageDescription, UpdateCustomerChildMessage {
     public static final int REQUEST_CODE = 1204;
     private Response response;
     private String customerId;
@@ -12,7 +12,7 @@ public class UpdateCustomerEmail implements Message, MessageDescription {
 
     public class Fields {
         public static final String[] INPUT = {"address", "flags", "id", "number"};
-        public static final String[] OUTPUT = {"address", "flags"};
+        public static final String[] OUTPUT = {"address", "flags", "number"};
 
         public static final String CUSTOMER_ID = "id";
         public static final String NUMBER = "number";
@@ -23,9 +23,9 @@ public class UpdateCustomerEmail implements Message, MessageDescription {
     @Override
     public Status send(Connection connection) {
         Request request = new Request(REQUEST_CODE);
-        if (customerId != null) request.setValue(Fields.CUSTOMER_ID, customerId.toString());
+        if (customerId != null) request.setValue(Fields.CUSTOMER_ID, customerId);
         if (number != null) request.setValue(Fields.NUMBER, number.toString());
-        if (address != null) request.setValue(Fields.ADDRESS, address.toString());
+        if (address != null) request.setValue(Fields.ADDRESS, address);
         if (flags != null) request.setValue(Fields.IS_PRIMARY, flags.toString());
         response = connection.send(request);
         return response.getStatus();
@@ -58,6 +58,15 @@ public class UpdateCustomerEmail implements Message, MessageDescription {
      {
         flags &= 254;
         if (value) flags |= 1;
+     }
+
+    // gets number from server
+    public Integer getNumberFromServer()
+     {
+        String key = Fields.NUMBER;
+        String value = response.getValue(key);
+        if (value == null) return null;
+        return Integer.parseInt(value);
      }
 
     // gets address from server

@@ -32,7 +32,7 @@ public class LoadLoan implements Message, MessageDescription {
     @Override
     public Status send(Connection connection) {
         Request request = new Request(REQUEST_CODE);
-        if (loanId != null) request.setValue(Fields.LOAN_ID, loanId.toString());
+        if (loanId != null) request.setValue(Fields.LOAN_ID, loanId);
         response = connection.send(request);
         return response.getStatus();
     }

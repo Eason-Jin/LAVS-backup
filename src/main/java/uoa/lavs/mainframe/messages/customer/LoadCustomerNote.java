@@ -22,7 +22,7 @@ public class LoadCustomerNote implements Message, MessageDescription {
     @Override
     public Status send(Connection connection) {
         Request request = new Request(REQUEST_CODE);
-        if (customerId != null) request.setValue(Fields.CUSTOMER_ID, customerId.toString());
+        if (customerId != null) request.setValue(Fields.CUSTOMER_ID, customerId);
         if (number != null) request.setValue(Fields.NUMBER, number.toString());
         response = connection.send(request);
         return response.getStatus();

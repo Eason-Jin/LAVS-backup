@@ -2,7 +2,7 @@ package uoa.lavs.mainframe.messages.customer;
 
 import uoa.lavs.mainframe.*;
 
-public class UpdateCustomerAddress implements Message, MessageDescription {
+public class UpdateCustomerAddress implements Message, MessageDescription, UpdateCustomerChildMessage {
     public static final int REQUEST_CODE = 1202;
     private Response response;
     private String customerId;
@@ -18,7 +18,7 @@ public class UpdateCustomerAddress implements Message, MessageDescription {
 
     public class Fields {
         public static final String[] INPUT = {"city", "country", "flags", "id", "line1", "line2", "number", "postCode", "suburb", "type"};
-        public static final String[] OUTPUT = {"city", "country", "flags", "line1", "line2", "postCode", "suburb", "type"};
+        public static final String[] OUTPUT = {"city", "country", "flags", "line1", "line2", "number", "postCode", "suburb", "type"};
 
         public static final String CUSTOMER_ID = "id";
         public static final String NUMBER = "number";
@@ -36,15 +36,15 @@ public class UpdateCustomerAddress implements Message, MessageDescription {
     @Override
     public Status send(Connection connection) {
         Request request = new Request(REQUEST_CODE);
-        if (customerId != null) request.setValue(Fields.CUSTOMER_ID, customerId.toString());
+        if (customerId != null) request.setValue(Fields.CUSTOMER_ID, customerId);
         if (number != null) request.setValue(Fields.NUMBER, number.toString());
-        if (type != null) request.setValue(Fields.TYPE, type.toString());
-        if (line1 != null) request.setValue(Fields.LINE_1, line1.toString());
-        if (line2 != null) request.setValue(Fields.LINE_2, line2.toString());
-        if (suburb != null) request.setValue(Fields.SUBURB, suburb.toString());
-        if (city != null) request.setValue(Fields.CITY, city.toString());
-        if (postCode != null) request.setValue(Fields.POST_CODE, postCode.toString());
-        if (country != null) request.setValue(Fields.COUNTRY, country.toString());
+        if (type != null) request.setValue(Fields.TYPE, type);
+        if (line1 != null) request.setValue(Fields.LINE_1, line1);
+        if (line2 != null) request.setValue(Fields.LINE_2, line2);
+        if (suburb != null) request.setValue(Fields.SUBURB, suburb);
+        if (city != null) request.setValue(Fields.CITY, city);
+        if (postCode != null) request.setValue(Fields.POST_CODE, postCode);
+        if (country != null) request.setValue(Fields.COUNTRY, country);
         if (flags != null) request.setValue(Fields.IS_PRIMARY, flags.toString());
         if (flags != null) request.setValue(Fields.IS_MAILING, flags.toString());
         response = connection.send(request);
@@ -149,6 +149,15 @@ public class UpdateCustomerAddress implements Message, MessageDescription {
      {
         flags &= 253;
         if (value) flags |= 2;
+     }
+
+    // gets number from server
+    public Integer getNumberFromServer()
+     {
+        String key = Fields.NUMBER;
+        String value = response.getValue(key);
+        if (value == null) return null;
+        return Integer.parseInt(value);
      }
 
     // gets type from server
