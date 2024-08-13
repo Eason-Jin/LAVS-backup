@@ -52,6 +52,28 @@ class LoadCustomerAddressTests {
         );
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {"12345678901", "abc"})
+    @NullAndEmptySource
+    public void handlesInvalidItemNumbers(String id) {
+        // Arrange - these tests need to be low-level as we are bypassing the validation provided by the message
+        Connection connection = new NitriteConnection(
+                DatabaseHelper.generateDefaultDatabase());
+        Request request = new Request(LoadCustomerAddress.REQUEST_CODE);
+        request.setValue(LoadCustomerAddress.Fields.CUSTOMER_ID, "123");
+        request.setValue(LoadCustomerAddress.Fields.NUMBER, id);
+
+        // Act
+        Response response = connection.send(request);
+
+        // Assert
+        Status status = response.getStatus();
+        assertAll(
+                () -> assertEquals(INVALID_REQUEST_NUMBER.getCode(), status.getErrorCode()),
+                () -> assertEquals(INVALID_REQUEST_NUMBER.getMessage(), status.getErrorMessage())
+        );
+    }
+
     @Test
     public void handlesMissingCustomerAddress() {
         // Arrange

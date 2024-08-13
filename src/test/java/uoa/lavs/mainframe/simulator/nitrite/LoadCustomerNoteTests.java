@@ -52,6 +52,28 @@ class LoadCustomerNoteTests {
         );
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {"12345678901", "abc"})
+    @NullAndEmptySource
+    public void handlesInvalidPageNumbers(String id) {
+        // Arrange - these tests need to be low-level as we are bypassing the validation provided by the message
+        Connection connection = new NitriteConnection(
+                DatabaseHelper.generateDefaultDatabase());
+        Request request = new Request(LoadCustomerNote.REQUEST_CODE);
+        request.setValue(LoadCustomerNote.Fields.CUSTOMER_ID, "123");
+        request.setValue(LoadCustomerNote.Fields.NUMBER, id);
+
+        // Act
+        Response response = connection.send(request);
+
+        // Assert
+        Status status = response.getStatus();
+        assertAll(
+                () -> assertEquals(INVALID_REQUEST_NUMBER.getCode(), status.getErrorCode()),
+                () -> assertEquals(INVALID_REQUEST_NUMBER.getMessage(), status.getErrorMessage())
+        );
+    }
+
     @Test
     public void handlesMissingNotes() {
         // Arrange

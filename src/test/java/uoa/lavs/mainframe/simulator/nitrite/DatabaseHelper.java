@@ -113,6 +113,8 @@ public class DatabaseHelper {
 
     private static Document appendCustomerEmployer(Document document) {
         Document employer = Document.createDocument()
+                .put(LoadCustomerEmployer.Fields.NUMBER, "1")
+                .put(LoadCustomerEmployer.Fields.NAME, "The Best Employer")
                 .put(LoadCustomerEmployer.Fields.LINE_1, "5 Somewhere Lane")
                 .put(LoadCustomerEmployer.Fields.LINE_2, "Nowhere")
                 .put(LoadCustomerEmployer.Fields.SUBURB, "Important")

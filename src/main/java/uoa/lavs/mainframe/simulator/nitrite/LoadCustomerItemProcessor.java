@@ -32,7 +32,12 @@ public class LoadCustomerItemProcessor extends BaseCustomerProcessor {
         if (response != null) return response;
 
         String number = request.getValue("number");
-        Integer index = Integer.parseInt(number) - 1;
+        Integer index;
+        try {
+            index = Integer.parseInt(number) - 1;
+        } catch (NumberFormatException e) {
+            return MessageErrorStatus.INVALID_REQUEST_NUMBER.generateEmptyResponse(transactionId);
+        }
         ArrayList<Document> items = getCustomerItems(documentItemName);
         if (index < 0 || index >= items.size()) {
             return errorStatus.generateEmptyResponse(transactionId);

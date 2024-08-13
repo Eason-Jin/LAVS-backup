@@ -67,6 +67,7 @@ public class NitriteConnection implements Connection {
                         "employers",
                         MessageErrorStatus.CUSTOMER_EMPLOYER_NOT_FOUND,
                         LoadCustomerEmployer.Fields.OUTPUT));
+        messageProcessors.put(All.LoadCustomerEmployers, new LoadCustomerEmployersProcessor(database));
         messageProcessors.put(All.LoadCustomerPhoneNumber,
                 new LoadCustomerItemProcessor(database,
                         "phoneNumbers",

@@ -14,6 +14,7 @@ public class All {
     public static final Integer LoadCustomerAddresses = 1002;
     public static final Integer UpdateCustomerAddress = 1202;
     public static final Integer LoadCustomerEmployer = 1105;
+    public static final Integer LoadCustomerEmployers = 1005;
     public static final Integer UpdateCustomerEmployer = 1205;
     public static final Integer LoadCustomerNote = 1106;
     public static final Integer UpdateCustomerNote = 1206;
@@ -52,6 +53,8 @@ public class All {
                 return new UpdateCustomerAddress();
             case 1105:
                 return new LoadCustomerEmployer();
+            case 1005:
+                return new LoadCustomerEmployers();
             case 1205:
                 return new UpdateCustomerEmployer();
             case 1106:

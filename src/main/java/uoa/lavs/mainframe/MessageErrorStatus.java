@@ -18,7 +18,11 @@ public enum MessageErrorStatus {
     INVALID_REQUEST_NUMBER(400, "Request is invalid - missing number"),
     INVALID_REQUEST_SEARCH(420, "Request is invalid - invalid or missing search criteria"),
     INVALID_REQUEST_CUSTOMER_ID(450, "Request is invalid - invalid or missing customer ID"),
-    INVALID_REQUEST_LOAN_ID(460, "Request is invalid - invalid or missing loan ID");
+    INVALID_REQUEST_LOAN_ID(460, "Request is invalid - invalid or missing loan ID"),
+
+    NETWORK_FAILURE_UNKNOWN(1000, "Unknown network error"),
+    NETWORK_FAILURE_TIMEOUT(1010, "The request has timed out"),
+    NETWORK_FAILURE_UNAVAILABLE(1020, "The remote host has responded that it is currently unavailable");
 
     private final String message;
     private final Integer code;
