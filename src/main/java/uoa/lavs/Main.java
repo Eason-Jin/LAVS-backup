@@ -53,7 +53,7 @@ public class Main extends Application {
     SceneManager.addScene(AppScene.SEARCH, loadLoader("search").load());
 
     currentStage = stage;
-    currentScene = new Scene(loadLoader("addCustomer").load(), 1152, 648);
+    currentScene = new Scene(loadLoader("start").load(), 1152, 648);
     stage.setScene(currentScene);
     stage.show();
     stage.setOnCloseRequest(e -> System.exit(0));
