@@ -547,7 +547,9 @@ Text {
   -color-button-bg-pressed: -color-accent-emphasis;
   -color-button-fg-pressed: -color-fg-emphasis;
   -color-button-border-pressed: transparent;
-  -fx-background-image: url("../images/home.png");
+}
+.info{
+  -fx-background-image: url("../images/info.png");
   -fx-background-repeat: no-repeat;
   -fx-background-position: center;
   -fx-background-size: 70%;
@@ -557,6 +559,13 @@ Text {
   -color-button-fg: -color-accent-fg;
   -color-button-bg-hover: -color-accent-emphasis;
   -color-button-fg-hover: -color-fg-emphasis;
+}
+.home {
+  -color-button-border-pressed: transparent;
+  -fx-background-image: url("../images/home_black.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: center;
+  -fx-background-size: 60%;
 }
 .button:default.flat, .button.accent.flat {
   -color-button-fg: -color-accent-fg;
@@ -574,6 +583,8 @@ Text {
   -color-button-border-focused: -color-success-emphasis;
   -color-button-bg-pressed: -color-success-emphasis;
   -color-button-fg-pressed: -color-fg-emphasis;
+}
+.tick {
   -color-button-border-pressed: transparent;
   -fx-background-image: url("../images/tick.png");
   -fx-background-repeat: no-repeat;
@@ -603,6 +614,8 @@ Text {
   -color-button-bg-pressed: -color-danger-emphasis;
   -color-button-fg-pressed: -color-fg-emphasis;
   -color-button-border-pressed: transparent;
+}
+.cross {
   -fx-background-image: url("../images/cross.png");
   -fx-background-repeat: no-repeat;
   -fx-background-position: center;
