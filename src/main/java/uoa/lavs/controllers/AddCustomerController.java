@@ -72,12 +72,14 @@ public class AddCustomerController {
     @FXML
     private void onClickSave(ActionEvent event) {
         // Save the form to the mainframe
-        
+        Customer customer = new Customer(null, titleField.getText(), givenNameField.getText() + " " + familyNameField.getText(), dobPicker.getValue(), jobField.getText(), citizenshipField.getText(), visaField.getText(), "Active");
+        CustomerUpdater updater = new CustomerUpdater();
+        updater.updateData(null, customer);
     }
 
     @FXML
     private void onClickCancel(ActionEvent event) {
-        // Clear the form
+        
     }
 
     @FXML
