@@ -32,7 +32,6 @@ public class EmailUpdater implements Updater<Email> {
     UpdateCustomerEmail updateCustomerEmail = new UpdateCustomerEmail();
     updateCustomerEmail.setCustomerId(customerID);
     updateCustomerEmail.setNumber(email.getNumber());
-    System.out.println(email.getNumber());
     if (email.getNumber() != null) {
       EmailLoader emailLoader = new EmailLoader();
       Email existingEmail = emailLoader.loadData(customerID, email.getNumber());
@@ -51,9 +50,7 @@ public class EmailUpdater implements Updater<Email> {
           "Something went wrong - the Mainframe send failed! The code is " + status.getErrorCode());
       throw new Exception("Mainframe send failed");
     }
-    System.out.println(updateCustomerEmail.getNumberFromServer());
     email.setNumber(updateCustomerEmail.getNumberFromServer());
-    System.out.println(email.getNumber());
     return updateCustomerEmail.getNumberFromServer();
   }
 
