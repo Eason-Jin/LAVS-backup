@@ -6,10 +6,12 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="648.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.AddCustomerController">
    <children>
@@ -70,8 +72,8 @@
                         </FXCollections>
                      </items>
                   </ComboBox>
-                  <TextField fx:id="prefixField" layoutX="190.0" layoutY="645.0" prefHeight="36.0" prefWidth="85.0" promptText="Prefix" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="numberField" layoutX="290.0" layoutY="645.0" prefHeight="36.0" prefWidth="237.0" promptText="Number" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="prefixField" layoutX="202.0" layoutY="645.0" prefHeight="36.0" prefWidth="85.0" promptText="Prefix" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="numberField" layoutX="302.0" layoutY="645.0" prefHeight="36.0" prefWidth="237.0" promptText="Number" stylesheets="@../css/primer-light.css" />
                   <CheckBox fx:id="isTextingNumber" layoutX="740.0" layoutY="651.0" mnemonicParsing="false" text="Send texts to this number" />
                   <CheckBox fx:id="isPrimaryNumber" layoutX="571.0" layoutY="651.0" mnemonicParsing="false" text="Primary number" />
                   <Separator layoutX="22.0" layoutY="690.0" prefHeight="0.0" prefWidth="943.0" stylesheets="@../css/primer-light.css" />
@@ -86,6 +88,11 @@
                   <TextField fx:id="employerEmailField" layoutX="498.0" layoutY="925.0" prefHeight="25.0" prefWidth="453.0" promptText="Employer email" stylesheets="@../css/primer-light.css" />
                   <TextField fx:id="companyWebsiteField" layoutX="35.0" layoutY="975.0" prefHeight="25.0" prefWidth="916.0" promptText="Company website" stylesheets="@../css/primer-light.css" />
                   <TextField fx:id="jobField" layoutX="35.0" layoutY="725.0" prefHeight="25.0" prefWidth="453.0" promptText="Job" stylesheets="@../css/primer-light.css" />
+                  <Label layoutX="185.0" layoutY="647.0" text="+">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
 
                </children>
             </AnchorPane>
