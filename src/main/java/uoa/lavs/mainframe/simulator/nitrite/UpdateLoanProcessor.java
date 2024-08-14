@@ -4,12 +4,12 @@ import org.dizitart.no2.Nitrite;
 import org.dizitart.no2.collection.Document;
 import org.dizitart.no2.collection.DocumentCursor;
 import org.dizitart.no2.collection.NitriteCollection;
+import uoa.lavs.mainframe.MessageErrorStatus;
 import uoa.lavs.mainframe.Request;
 import uoa.lavs.mainframe.Response;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomer;
 import uoa.lavs.mainframe.messages.loan.UpdateLoan;
-import uoa.lavs.mainframe.MessageErrorStatus;
 import uoa.lavs.mainframe.simulator.NitriteConnection;
 
 import java.util.HashMap;
@@ -38,6 +38,7 @@ public class UpdateLoanProcessor extends BaseProcessor {
         if (id == null) {
             // generate the new loan id
             Integer nextLoanId = customerDoc.get(NitriteConnection.Internal.NEXT_LOAN_ID, Integer.class);
+            if (nextLoanId == null) nextLoanId = 1;
             id = String.format(
                     "%s-%02d",
                     customerDoc.get(UpdateCustomer.Fields.CUSTOMER_ID),

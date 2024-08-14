@@ -19,6 +19,7 @@ public enum MessageErrorStatus {
     INVALID_REQUEST_SEARCH(420, "Request is invalid - invalid or missing search criteria"),
     INVALID_REQUEST_CUSTOMER_ID(450, "Request is invalid - invalid or missing customer ID"),
     INVALID_REQUEST_LOAN_ID(460, "Request is invalid - invalid or missing loan ID"),
+    INVALID_REQUEST_LOAN_STATUS(470, "Loan status is missing or invalid"),
 
     NETWORK_FAILURE_UNKNOWN(1000, "Unknown network error"),
     NETWORK_FAILURE_TIMEOUT(1010, "The request has timed out"),
