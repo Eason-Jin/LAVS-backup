@@ -13,6 +13,27 @@ public class Address {
   private Boolean isPrimary;
   private Boolean isMailing;
 
+  public Address(
+      String customerId,
+      String line1,
+      String line2,
+      String suburb,
+      String city,
+      String postCode,
+      String country,
+      Boolean isPrimary,
+      Boolean isMailing) {
+    this.customerId = customerId;
+    this.line1 = line1;
+    this.line2 = line2;
+    this.suburb = suburb;
+    this.city = city;
+    this.postCode = postCode;
+    this.country = country;
+    this.isPrimary = isPrimary;
+    this.isMailing = isMailing;
+  }
+
   public Address() {}
 
   public String getCustomerId() {

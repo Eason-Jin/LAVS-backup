@@ -1,67 +1,82 @@
 package uoa.lavs.models;
 
 public class Phone {
-    private String customerId;
-    private Integer number;
-    private String type;
-    private String prefix;
-    private String phoneNumber;
-    private Boolean isPrimary;
-    private Boolean canSendText;
+  private String customerId;
+  private Integer number;
+  private String type;
+  private String prefix;
+  private String phoneNumber;
+  private Boolean isPrimary;
+  private Boolean canSendText;
 
-    public String getCustomerId() {
-        return customerId;
-    }
+  public Phone(
+      String customerId,
+      String prefix,
+      String phoneNumber,
+      Boolean isPrimary,
+      Boolean canSendText) {
+    this.customerId = customerId;
+    this.prefix = prefix;
+    this.phoneNumber = phoneNumber;
+    this.isPrimary = isPrimary;
+    this.canSendText = canSendText;
+  }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
+  public Phone() {}
 
-    public Integer getNumber() {
-        return number;
-    }
+  public String getCustomerId() {
+    return customerId;
+  }
 
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
+  public void setCustomerId(String customerId) {
+    this.customerId = customerId;
+  }
 
-    public String getType() {
-        return type;
-    }
+  public Integer getNumber() {
+    return number;
+  }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+  public void setNumber(Integer number) {
+    this.number = number;
+  }
 
-    public String getPrefix() {
-        return prefix;
-    }
+  public String getType() {
+    return type;
+  }
 
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
-    }
+  public void setType(String type) {
+    this.type = type;
+  }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
+  public String getPrefix() {
+    return prefix;
+  }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+  public void setPrefix(String prefix) {
+    this.prefix = prefix;
+  }
 
-    public Boolean getIsPrimary() {
-        return isPrimary;
-    }
+  public String getPhoneNumber() {
+    return phoneNumber;
+  }
 
-    public void setIsPrimary(Boolean isPrimary) {
-        this.isPrimary = isPrimary;
-    }
+  public void setPhoneNumber(String phoneNumber) {
+    this.phoneNumber = phoneNumber;
+  }
 
-    public Boolean getCanSendText() {
-        return canSendText;
-    }
+  public Boolean getIsPrimary() {
+    return isPrimary;
+  }
 
-    public void setCanSendTxt(Boolean canSendText) {
-        this.canSendText = canSendText;
-    }
+  public void setIsPrimary(Boolean isPrimary) {
+    this.isPrimary = isPrimary;
+  }
+
+  public Boolean getCanSendText() {
+    return canSendText;
+  }
+
+  public void setCanSendTxt(Boolean canSendText) {
+    this.canSendText = canSendText;
+  }
 }
