@@ -69,18 +69,21 @@ public class AddCustomerController {
   @FXML
   private void onClickSave(ActionEvent event) {
     // Save the form to the mainframe
-    Customer customer =
-        new Customer(
-            null,
-            titleField.getText(),
-            givenNameField.getText() + " " + familyNameField.getText(),
-            dobPicker.getValue(),
-            jobField.getText(),
-            citizenshipField.getText(),
-            visaField.getText(),
-            "Active");
-    CustomerUpdater updater = new CustomerUpdater();
-    updater.updateData(null, customer);
+    if (checkFields()) {
+      Customer customer =
+          new Customer(
+              null,
+              titleField.getText(),
+              givenNameField.getText() + " " + familyNameField.getText(),
+              dobPicker.getValue(),
+              jobField.getText(),
+              citizenshipField.getText(),
+              visaField.getText(),
+              "Active");
+      CustomerUpdater updater = new CustomerUpdater();
+      updater.updateData(null, customer);
+    // TODO: add other objects
+    }
   }
 
   @FXML
@@ -134,5 +137,41 @@ public class AddCustomerController {
     employerPhoneField.clear();
     employerEmailField.clear();
     companyWebsiteField.clear();
+  }
+
+  private boolean checkFields() {
+    // Only address line 2 can be empty
+    if (titleField.getText().isEmpty()
+        || familyNameField.getText().isEmpty()
+        || givenNameField.getText().isEmpty()
+        || dobPicker.getValue() == null
+        || citizenshipField.getText().isEmpty()
+        || visaField.getText().isEmpty()
+        || address1Field.getText().isEmpty()
+        || suburbField.getText().isEmpty()
+        || cityField.getText().isEmpty()
+        || postcodeField.getText().isEmpty()
+        || countryField.getText().isEmpty()
+        || emailField.getText().isEmpty()
+        || phoneTypeBox.getValue() == null
+        || prefixField.getText().isEmpty()
+        || numberField.getText().isEmpty()
+        || jobField.getText().isEmpty()
+        || companyNameField.getText().isEmpty()
+        || companyAddress1Field.getText().isEmpty()
+        || companySuburbField.getText().isEmpty()
+        || companyCityField.getText().isEmpty()
+        || companyPostcodeField.getText().isEmpty()
+        || companyCountryField.getText().isEmpty()
+        || employerPhoneField.getText().isEmpty()
+        || employerEmailField.getText().isEmpty()
+        || companyWebsiteField.getText().isEmpty()) {
+      Alert alert = new Alert(AlertType.ERROR);
+      alert.setTitle("Error");
+      alert.setHeaderText("Please fill in all required fields");
+      alert.showAndWait();
+      return false;
+    }
+    return true;
   }
 }
