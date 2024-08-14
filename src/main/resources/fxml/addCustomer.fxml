@@ -79,7 +79,7 @@
                   <TextField fx:id="companyAddress1Field" layoutX="35.0" layoutY="775.0" prefHeight="25.0" prefWidth="453.0" promptText="Address line 1" stylesheets="@../css/primer-light.css" />
                   <TextField fx:id="companyAddress2Field" layoutX="498.0" layoutY="775.0" prefHeight="25.0" prefWidth="453.0" promptText="Address line 2" stylesheets="@../css/primer-light.css" />
                   <TextField fx:id="companySuburbField" layoutX="35.0" layoutY="825.0" prefHeight="25.0" prefWidth="453.0" promptText="Suburb" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="companySuburbField" layoutX="498.0" layoutY="825.0" prefHeight="25.0" prefWidth="453.0" promptText="City" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="companyCityField" layoutX="498.0" layoutY="825.0" prefHeight="25.0" prefWidth="453.0" promptText="City" stylesheets="@../css/primer-light.css" />
                   <TextField fx:id="companyPostcodeField" layoutX="35.0" layoutY="875.0" prefHeight="25.0" prefWidth="453.0" promptText="Postcode" stylesheets="@../css/primer-light.css" />
                   <TextField fx:id="companyCountryField" layoutX="498.0" layoutY="875.0" prefHeight="25.0" prefWidth="453.0" promptText="Country" stylesheets="@../css/primer-light.css" />
                   <TextField fx:id="employerPhoneField" layoutX="35.0" layoutY="925.0" prefHeight="25.0" prefWidth="453.0" promptText="Employer phone" stylesheets="@../css/primer-light.css" />
