@@ -9,26 +9,32 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import uoa.lavs.mainframe.Instance;
+import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomer;
 import uoa.lavs.models.Customer;
 
-public class CustomerUpdater implements Updater {
-  private List<FailedCall> failedCalls = new ArrayList<>();
+public class CustomerUpdater {
+  private static List<FailedCall> failedCalls = new ArrayList<>();
 
-  @Override
-  public void updateData(String customerID, Customer customer) {
+  public static void updateData(String customerID, Customer customer) {
+    String id = customerID;
     try {
-      String id = updateMainframe(customerID, customer);
+      id = updateMainframe(customerID, customer);
       if (id == null) {
         id = customerID;
       }
-      updateDatabase(id, customer);
     } catch (Exception e) {
-      e.printStackTrace();
+      System.out.println("Mainframe update failed: " + e.getMessage());
+    } finally {
+      try {
+        updateDatabase(id, customer);
+      } catch (SQLException e) {
+        System.out.println("Database update failed: " + e.getMessage());
+      }
     }
   }
 
-  private String updateDatabase(String customerID, Customer customer) throws SQLException {
+  private static void updateDatabase(String customerID, Customer customer) throws SQLException {
     boolean exists = false;
     String CHECK_SQL = "SELECT COUNT(*) FROM customer WHERE CustomerID = ?";
 
@@ -90,21 +96,15 @@ public class CustomerUpdater implements Updater {
         }
       }
       customer.setId(customerID);
-      return customerID;
-    } catch (Exception e) {
-      System.out.println("Database update failed: " + e.getMessage());
-      recordFailedCall(customerID, customer);
-      return null;
     }
   }
 
-  private String updateMainframe(String customerID, Customer customer) {
+  private static String updateMainframe(String customerID, Customer customer) throws Exception {
     UpdateCustomer updateCustomer = new UpdateCustomer();
     updateCustomer.setCustomerId(customerID);
 
     if (customerID != null) {
-      CustomerLoader customerLoader = new CustomerLoader();
-      Customer existingCustomer = customerLoader.loadData(customerID);
+      Customer existingCustomer = CustomerLoader.loadData(customerID);
 
       updateCustomer.setTitle(
           customer.getTitle() != null ? customer.getTitle() : existingCustomer.getTitle());
@@ -131,24 +131,23 @@ public class CustomerUpdater implements Updater {
       updateCustomer.setVisa(customer.getVisaType());
     }
 
-    try {
-      updateCustomer.send(Instance.getConnection());
-      customer.setId(updateCustomer.getCustomerIdFromServer());
-      customer.setStatus(updateCustomer.getStatusFromServer());
-      return updateCustomer.getCustomerIdFromServer();
-    } catch (Exception e) {
-      System.out.println("Mainframe update failed: " + e.getMessage());
-      e.printStackTrace();
+    Status status = updateCustomer.send(Instance.getConnection());
+    if (!status.getWasSuccessful()) {
       recordFailedCall(customerID, customer);
-      return customerID;
+      System.out.println(
+          "Something went wrong - the Mainframe send failed! The code is " + status.getErrorCode());
+      throw new Exception("Mainframe send failed");
     }
+    customer.setId(updateCustomer.getCustomerIdFromServer());
+    customer.setStatus(updateCustomer.getStatusFromServer());
+    return updateCustomer.getCustomerIdFromServer();
   }
 
-  private void recordFailedCall(String customerID, Customer customer) {
+  private static void recordFailedCall(String customerID, Customer customer) {
     failedCalls.add(new FailedCall(customerID, customer));
   }
 
-  public void retryFailedCalls() {
+  public static void retryFailedCalls() {
     List<FailedCall> retryList = new ArrayList<>(failedCalls);
     failedCalls.clear();
     for (FailedCall failedCall : retryList) {
@@ -156,7 +155,7 @@ public class CustomerUpdater implements Updater {
     }
   }
 
-  private class FailedCall {
+  private static class FailedCall {
     private String customerID;
     private Customer customer;
 
