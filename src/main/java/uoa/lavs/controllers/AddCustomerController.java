@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import uoa.lavs.Main;
@@ -188,37 +189,90 @@ public class AddCustomerController {
   }
 
   private boolean checkFields() {
+    boolean titleFieldFlag = checkField(titleField);
+    boolean familyNameFieldFlag = checkField(familyNameField);
+    boolean givenNameFieldFlag = checkField(givenNameField);
+    boolean dobPickerFlag = checkField(dobPicker);
+    boolean citizenshipFieldFlag = checkField(citizenshipField);
+    boolean visaFieldFlag = checkField(visaField);
+    boolean address1FieldFlag = checkField(address1Field);
+    boolean suburbFieldFlag = checkField(suburbField);
+    boolean cityFieldFlag = checkField(cityField);
+    boolean postcodeFieldFlag = checkField(postcodeField);
+    boolean countryFieldFlag = checkField(countryField);
+    boolean emailFieldFlag = checkField(emailField);
+    boolean phoneTypeBoxFlag = checkField(phoneTypeBox);
+    boolean prefixFieldFlag = checkField(prefixField);
+    boolean numberFieldFlag = checkField(numberField);
+    boolean jobFieldFlag = checkField(jobField);
+    boolean companyNameFieldFlag = checkField(companyNameField);
+    boolean companyAddress1FieldFlag = checkField(companyAddress1Field);
+    boolean companySuburbFieldFlag = checkField(companySuburbField);
+    boolean companyCityFieldFlag = checkField(companyCityField);
+    boolean companyPostcodeFieldFlag = checkField(companyPostcodeField);
+    boolean companyCountryFieldFlag = checkField(companyCountryField);
+    boolean employerPhoneFieldFlag = checkField(employerPhoneField);
+    boolean employerEmailFieldFlag = checkField(employerEmailField);
+    boolean companyWebsiteFieldFlag = checkField(companyWebsiteField);
+
     // Only address line 2 can be empty
-    if (titleField.getText().isEmpty()
-        || familyNameField.getText().isEmpty()
-        || givenNameField.getText().isEmpty()
-        || dobPicker.getValue() == null
-        || citizenshipField.getText().isEmpty()
-        || visaField.getText().isEmpty()
-        || address1Field.getText().isEmpty()
-        || suburbField.getText().isEmpty()
-        || cityField.getText().isEmpty()
-        || postcodeField.getText().isEmpty()
-        || countryField.getText().isEmpty()
-        || emailField.getText().isEmpty()
-        || phoneTypeBox.getValue() == null
-        || prefixField.getText().isEmpty()
-        || numberField.getText().isEmpty()
-        || jobField.getText().isEmpty()
-        || companyNameField.getText().isEmpty()
-        || companyAddress1Field.getText().isEmpty()
-        || companySuburbField.getText().isEmpty()
-        || companyCityField.getText().isEmpty()
-        || companyPostcodeField.getText().isEmpty()
-        || companyCountryField.getText().isEmpty()
-        || employerPhoneField.getText().isEmpty()
-        || employerEmailField.getText().isEmpty()
-        || companyWebsiteField.getText().isEmpty()) {
-      Alert alert = new Alert(AlertType.ERROR);
-      alert.setTitle("Error");
-      alert.setHeaderText("Please fill in all required fields");
-      alert.showAndWait();
-      return false;
+    if (titleFieldFlag
+        && familyNameFieldFlag
+        && givenNameFieldFlag
+        && dobPickerFlag
+        && citizenshipFieldFlag
+        && visaFieldFlag
+        && address1FieldFlag
+        && suburbFieldFlag
+        && cityFieldFlag
+        && postcodeFieldFlag
+        && countryFieldFlag
+        && emailFieldFlag
+        && phoneTypeBoxFlag
+        && prefixFieldFlag
+        && numberFieldFlag
+        && jobFieldFlag
+        && companyNameFieldFlag
+        && companyAddress1FieldFlag
+        && companySuburbFieldFlag
+        && companyCityFieldFlag
+        && companyPostcodeFieldFlag
+        && companyCountryFieldFlag
+        && employerPhoneFieldFlag
+        && employerEmailFieldFlag
+        && companyWebsiteFieldFlag) {
+      return true;
+    }
+    Alert alert = new Alert(AlertType.ERROR);
+    alert.setTitle("Error");
+    alert.setHeaderText("Please fill in all required fields");
+    alert.showAndWait();
+
+    return false;
+  }
+
+  private boolean checkField(Control ui) {
+    ui.setStyle("-fx-border-color: none");
+    if (ui instanceof TextField) {
+      TextField tf = (TextField) ui;
+      if (tf.getText().isEmpty()) {
+        tf.setStyle("-fx-border-color: red");
+        return false;
+      }
+    }
+    if (ui instanceof ComboBox) {
+      ComboBox<FXCollections> cb = (ComboBox<FXCollections>) ui;
+      if (cb.getValue() == null) {
+        cb.setStyle("-fx-border-color: red");
+        return false;
+      }
+    }
+    if (ui instanceof DatePicker) {
+      DatePicker dp = (DatePicker) ui;
+      if (dp.getValue() == null) {
+        dp.setStyle("-fx-border-color: red");
+        return false;
+      }
     }
     return true;
   }
