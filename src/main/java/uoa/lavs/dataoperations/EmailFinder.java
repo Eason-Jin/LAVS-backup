@@ -11,10 +11,9 @@ import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.FindCustomerEmail;
 import uoa.lavs.models.Email;
 
-public class EmailFinder implements Finder<Email> {
+public class EmailFinder {
 
-  @Override
-  public List<Email> findData(String customerId) {
+  public static List<Email> findData(String customerId) {
     List<Email> emails = new ArrayList<>();
     try {
       emails = findFromDatabase(customerId);
@@ -30,7 +29,7 @@ public class EmailFinder implements Finder<Email> {
     return emails;
   }
 
-  private List<Email> findFromMainframe(String customerId) throws Exception {
+  private static List<Email> findFromMainframe(String customerId) throws Exception {
     FindCustomerEmail findCustomerEmail = new FindCustomerEmail();
     findCustomerEmail.setCustomerId(customerId);
     Status status = findCustomerEmail.send(Instance.getConnection());
@@ -56,7 +55,7 @@ public class EmailFinder implements Finder<Email> {
     return emails;
   }
 
-  private List<Email> findFromDatabase(String customerId) throws Exception {
+  private static List<Email> findFromDatabase(String customerId) throws Exception {
     List<Email> emails = new ArrayList<>();
     Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
     Statement statement = connection.createStatement();

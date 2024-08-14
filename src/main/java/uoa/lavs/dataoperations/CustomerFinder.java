@@ -14,10 +14,9 @@ import uoa.lavs.mainframe.messages.customer.FindCustomer;
 import uoa.lavs.mainframe.messages.customer.FindCustomerAdvanced;
 import uoa.lavs.models.Customer;
 
-public class CustomerFinder implements Finder<Customer> {
+public class CustomerFinder {
 
-  @Override
-  public List<Customer> findData(String customerId) {
+  public static List<Customer> findData(String customerId) {
     List<Customer> customers = new ArrayList<>();
     try {
       customers = findFromDatabase(customerId);
@@ -33,7 +32,7 @@ public class CustomerFinder implements Finder<Customer> {
     return customers;
   }
 
-  public List<Customer> findCustomerByName(String customerName) {
+  public static List<Customer> findCustomerByName(String customerName) {
     List<Customer> customers = new ArrayList<>();
     try {
       customers = findFromDatabaseByName(customerName);
@@ -49,7 +48,7 @@ public class CustomerFinder implements Finder<Customer> {
     return customers;
   }
 
-  private List<Customer> findFromMainframe(String customerId) throws Exception {
+  private static List<Customer> findFromMainframe(String customerId) throws Exception {
     FindCustomer findCustomer = new FindCustomer();
     findCustomer.setCustomerId(customerId);
     Status status = findCustomer.send(Instance.getConnection());
@@ -74,7 +73,7 @@ public class CustomerFinder implements Finder<Customer> {
     return customers;
   }
 
-  private List<Customer> findFromDatabase(String customerId) throws Exception {
+  private static List<Customer> findFromDatabase(String customerId) throws Exception {
     List<Customer> customers = new ArrayList<>();
     Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
     Statement statement = connection.createStatement();
@@ -96,7 +95,7 @@ public class CustomerFinder implements Finder<Customer> {
     return customers;
   }
 
-  private List<Customer> findFromMainframeByName(String customerName) throws Exception {
+  private static List<Customer> findFromMainframeByName(String customerName) throws Exception {
     FindCustomerAdvanced findCustomer = new FindCustomerAdvanced();
     findCustomer.setSearchName(customerName);
     Status status = findCustomer.send(Instance.getConnection());
@@ -121,7 +120,7 @@ public class CustomerFinder implements Finder<Customer> {
     return customers;
   }
 
-  private List<Customer> findFromDatabaseByName(String customerName) throws Exception {
+  private static List<Customer> findFromDatabaseByName(String customerName) throws Exception {
     List<Customer> customers = new ArrayList<>();
     Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
     Statement statement = connection.createStatement();

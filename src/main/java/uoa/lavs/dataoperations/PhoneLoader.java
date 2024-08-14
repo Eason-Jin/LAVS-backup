@@ -12,7 +12,7 @@ import uoa.lavs.models.Phone;
 
 public class PhoneLoader {
 
-  public Phone loadData(String customerId, int number) {
+  public static Phone loadData(String customerId, int number) {
     Phone phone = new Phone();
     try {
       phone = loadFromMainframe(customerId, number);
@@ -27,7 +27,7 @@ public class PhoneLoader {
     return phone;
   }
 
-  private Phone loadFromDatabase(String customerId, int number) {
+  private static Phone loadFromDatabase(String customerId, int number) {
     Phone phone = new Phone();
     String query = "SELECT * FROM Phone WHERE CustomerID = ? AND Number = ?";
     try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
@@ -51,7 +51,7 @@ public class PhoneLoader {
     return phone;
   }
 
-  private Phone loadFromMainframe(String customerId, int number) throws Exception {
+  private static Phone loadFromMainframe(String customerId, int number) throws Exception {
     LoadCustomerPhoneNumber loadCustomerPhone = new LoadCustomerPhoneNumber();
     loadCustomerPhone.setCustomerId(customerId);
     loadCustomerPhone.setNumber(number);

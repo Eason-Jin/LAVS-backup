@@ -11,10 +11,9 @@ import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.FindCustomerAddress;
 import uoa.lavs.models.Address;
 
-public class AddressFinder implements Finder<Address> {
+public class AddressFinder {
 
-  @Override
-  public List<Address> findData(String customerId) {
+  public static List<Address> findData(String customerId) {
     List<Address> addresses = new ArrayList<>();
     try {
       addresses = findFromDatabase(customerId);
@@ -30,7 +29,7 @@ public class AddressFinder implements Finder<Address> {
     return addresses;
   }
 
-  private List<Address> findFromMainframe(String customerId) throws Exception {
+  private static List<Address> findFromMainframe(String customerId) throws Exception {
     FindCustomerAddress findCustomerAddress = new FindCustomerAddress();
     findCustomerAddress.setCustomerId(customerId);
     Status status = findCustomerAddress.send(Instance.getConnection());
@@ -57,7 +56,7 @@ public class AddressFinder implements Finder<Address> {
     return addresses;
   }
 
-  private List<Address> findFromDatabase(String customerId) throws Exception {
+  private static List<Address> findFromDatabase(String customerId) throws Exception {
     List<Address> addresses = new ArrayList<>();
     Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
     Statement statement = connection.createStatement();

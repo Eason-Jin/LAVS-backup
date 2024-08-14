@@ -11,10 +11,9 @@ import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.FindCustomerPhoneNumber;
 import uoa.lavs.models.Phone;
 
-public class PhoneFinder implements Finder<Phone> {
+public class PhoneFinder {
 
-  @Override
-  public List<Phone> findData(String customerId) {
+  public static List<Phone> findData(String customerId) {
     List<Phone> phones = new ArrayList<>();
     try {
       phones = findFromDatabase(customerId);
@@ -30,7 +29,7 @@ public class PhoneFinder implements Finder<Phone> {
     return phones;
   }
 
-  private List<Phone> findFromMainframe(String customerId) throws Exception {
+  private static List<Phone> findFromMainframe(String customerId) throws Exception {
     FindCustomerPhoneNumber findCustomerPhone = new FindCustomerPhoneNumber();
     findCustomerPhone.setCustomerId(customerId);
     Status status = findCustomerPhone.send(Instance.getConnection());
@@ -57,7 +56,7 @@ public class PhoneFinder implements Finder<Phone> {
     return phones;
   }
 
-  private List<Phone> findFromDatabase(String customerId) throws Exception {
+  private static List<Phone> findFromDatabase(String customerId) throws Exception {
     List<Phone> phones = new ArrayList<>();
     Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
     Statement statement = connection.createStatement();

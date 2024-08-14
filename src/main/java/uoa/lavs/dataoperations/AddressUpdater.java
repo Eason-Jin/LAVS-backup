@@ -11,10 +11,9 @@ import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomerAddress;
 import uoa.lavs.models.Address;
 
-public class AddressUpdater implements Updater<Address> {
+public class AddressUpdater {
 
-  @Override
-  public void updateData(String customerID, Address address) {
+  public static void updateData(String customerID, Address address) {
     try {
       updateMainframe(customerID, address);
     } catch (Exception e) {
@@ -28,14 +27,13 @@ public class AddressUpdater implements Updater<Address> {
     }
   }
 
-  private Integer updateMainframe(String customerID, Address address) throws Exception {
+  private static Integer updateMainframe(String customerID, Address address) throws Exception {
     UpdateCustomerAddress updateCustomerAddress = new UpdateCustomerAddress();
     updateCustomerAddress.setCustomerId(customerID);
     updateCustomerAddress.setNumber(address.getNumber());
 
     if (address.getNumber() != null) {
-      AddressLoader addressLoader = new AddressLoader();
-      Address existingAddress = addressLoader.loadData(customerID, address.getNumber());
+      Address existingAddress = AddressLoader.loadData(customerID, address.getNumber());
 
       updateCustomerAddress.setType(
           address.getType() != null ? address.getType() : existingAddress.getType());
@@ -77,7 +75,7 @@ public class AddressUpdater implements Updater<Address> {
     return updateCustomerAddress.getNumberFromServer();
   }
 
-  private void updateDatabase(String customerID, Address address) throws SQLException {
+  private static void updateDatabase(String customerID, Address address) throws SQLException {
     boolean exists = false;
     String CHECK_SQL = "SELECT COUNT(*) FROM Address WHERE CustomerID = ? AND Number = ?";
 

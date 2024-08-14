@@ -11,10 +11,9 @@ import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomerEmail;
 import uoa.lavs.models.Email;
 
-public class EmailUpdater implements Updater<Email> {
+public class EmailUpdater {
 
-  @Override
-  public void updateData(String customerID, Email email) {
+  public static void updateData(String customerID, Email email) {
     try {
       updateMainframe(customerID, email);
     } catch (Exception e) {
@@ -28,13 +27,12 @@ public class EmailUpdater implements Updater<Email> {
     }
   }
 
-  private Integer updateMainframe(String customerID, Email email) throws Exception {
+  private static Integer updateMainframe(String customerID, Email email) throws Exception {
     UpdateCustomerEmail updateCustomerEmail = new UpdateCustomerEmail();
     updateCustomerEmail.setCustomerId(customerID);
     updateCustomerEmail.setNumber(email.getNumber());
     if (email.getNumber() != null) {
-      EmailLoader emailLoader = new EmailLoader();
-      Email existingEmail = emailLoader.loadData(customerID, email.getNumber());
+      Email existingEmail = EmailLoader.loadData(customerID, email.getNumber());
       updateCustomerEmail.setAddress(
           email.getAddress() != null ? email.getAddress() : existingEmail.getAddress());
       updateCustomerEmail.setIsPrimary(
@@ -54,7 +52,7 @@ public class EmailUpdater implements Updater<Email> {
     return updateCustomerEmail.getNumberFromServer();
   }
 
-  private void updateDatabase(String customerID, Email email) throws SQLException {
+  private static void updateDatabase(String customerID, Email email) throws SQLException {
     boolean exists = false;
     String CHECK_SQL = "SELECT COUNT(*) FROM Email WHERE CustomerID = ? AND Number = ?";
 

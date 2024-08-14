@@ -11,10 +11,9 @@ import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomerPhoneNumber;
 import uoa.lavs.models.Phone;
 
-public class PhoneUpdater implements Updater<Phone> {
+public class PhoneUpdater {
 
-  @Override
-  public void updateData(String customerID, Phone phone) {
+  public static void updateData(String customerID, Phone phone) {
     try {
       updateMainframe(customerID, phone);
     } catch (Exception e) {
@@ -28,14 +27,13 @@ public class PhoneUpdater implements Updater<Phone> {
     }
   }
 
-  private Integer updateMainframe(String customerID, Phone phone) throws Exception {
+  private static Integer updateMainframe(String customerID, Phone phone) throws Exception {
     UpdateCustomerPhoneNumber updateCustomerPhone = new UpdateCustomerPhoneNumber();
     updateCustomerPhone.setCustomerId(customerID);
     updateCustomerPhone.setNumber(phone.getNumber());
 
     if (phone.getNumber() != null) {
-      PhoneLoader phoneLoader = new PhoneLoader();
-      Phone existingPhone = phoneLoader.loadData(customerID, phone.getNumber());
+      Phone existingPhone = PhoneLoader.loadData(customerID, phone.getNumber());
 
       updateCustomerPhone.setType(
           phone.getType() != null ? phone.getType() : existingPhone.getType());
@@ -65,7 +63,7 @@ public class PhoneUpdater implements Updater<Phone> {
     return updateCustomerPhone.getNumberFromServer();
   }
 
-  private void updateDatabase(String customerID, Phone phone) throws SQLException {
+  private static void updateDatabase(String customerID, Phone phone) throws SQLException {
     boolean exists = false;
     String CHECK_SQL = "SELECT COUNT(*) FROM Phone WHERE CustomerID = ? AND Number = ?";
 

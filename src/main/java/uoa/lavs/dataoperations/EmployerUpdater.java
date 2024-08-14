@@ -11,10 +11,9 @@ import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomerEmployer;
 import uoa.lavs.models.Employer;
 
-public class EmployerUpdater implements Updater<Employer> {
+public class EmployerUpdater {
 
-  @Override
-  public void updateData(String customerID, Employer employer) {
+  public static void updateData(String customerID, Employer employer) {
     try {
       updateMainframe(customerID, employer);
     } catch (Exception e) {
@@ -28,14 +27,13 @@ public class EmployerUpdater implements Updater<Employer> {
     }
   }
 
-  private Integer updateMainframe(String customerID, Employer employer) throws Exception {
+  private static Integer updateMainframe(String customerID, Employer employer) throws Exception {
     UpdateCustomerEmployer updateCustomerEmployer = new UpdateCustomerEmployer();
     updateCustomerEmployer.setCustomerId(customerID);
     updateCustomerEmployer.setNumber(employer.getNumber());
 
     if (employer.getNumber() != null) {
-      EmployerLoader employerLoader = new EmployerLoader();
-      Employer existingEmployer = employerLoader.loadData(customerID, employer.getNumber());
+      Employer existingEmployer = EmployerLoader.loadData(customerID, employer.getNumber());
 
       updateCustomerEmployer.setName(
           employer.getName() != null ? employer.getName() : existingEmployer.getName());
@@ -87,7 +85,7 @@ public class EmployerUpdater implements Updater<Employer> {
     return updateCustomerEmployer.getNumberFromServer();
   }
 
-  private void updateDatabase(String customerID, Employer employer) throws SQLException {
+  private static void updateDatabase(String customerID, Employer employer) throws SQLException {
     boolean exists = false;
     String CHECK_SQL = "SELECT COUNT(*) FROM Employer WHERE CustomerID = ? AND Number = ?";
 
