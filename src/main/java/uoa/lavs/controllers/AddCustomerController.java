@@ -14,8 +14,16 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager;
+import uoa.lavs.dataoperations.AddressUpdater;
 import uoa.lavs.dataoperations.CustomerUpdater;
+import uoa.lavs.dataoperations.EmailUpdater;
+import uoa.lavs.dataoperations.EmployerUpdater;
+import uoa.lavs.dataoperations.PhoneUpdater;
+import uoa.lavs.models.Address;
 import uoa.lavs.models.Customer;
+import uoa.lavs.models.Email;
+import uoa.lavs.models.Employer;
+import uoa.lavs.models.Phone;
 
 public class AddCustomerController {
 
@@ -80,9 +88,49 @@ public class AddCustomerController {
               citizenshipField.getText(),
               visaField.getText(),
               "Active");
-      CustomerUpdater updater = new CustomerUpdater();
-      updater.updateData(null, customer);
-    // TODO: add other objects
+      CustomerUpdater.updateData(null, customer);
+
+      String customerID = customer.getId();
+
+      Address address =
+          new Address(
+              customerID,
+              address1Field.getText(),
+              address2Field.getText(),
+              suburbField.getText(),
+              cityField.getText(),
+              postcodeField.getText(),
+              countryField.getText(),
+              isPrimaryAddress.isSelected(),
+              isMailingAddress.isSelected());
+      AddressUpdater.updateData(customerID, address);
+
+      Email email = new Email(customerID, emailField.getText(), isPrimaryEmail.isSelected());
+      EmailUpdater.updateData(customerID, email);
+
+      Phone phone =
+          new Phone(
+              customerID,
+              prefixField.getText(),
+              numberField.getText(),
+              isPrimaryNumber.isSelected(),
+              isTextingNumber.isSelected());
+      PhoneUpdater.updateData(customerID, phone);
+
+      Employer employer =
+          new Employer(
+              customerID,
+              companyNameField.getText(),
+              companyAddress1Field.getText(),
+              companyAddress2Field.getText(),
+              companySuburbField.getText(),
+              companyCityField.getText(),
+              companyPostcodeField.getText(),
+              companyCountryField.getText(),
+              employerPhoneField.getText(),
+              employerEmailField.getText(),
+              companyWebsiteField.getText());
+      EmployerUpdater.updateData(customerID, employer);
     }
   }
 
