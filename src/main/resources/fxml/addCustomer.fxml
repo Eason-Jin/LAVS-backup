@@ -61,7 +61,7 @@
                   <CheckBox fx:id="isMailingAddress" layoutX="214.0" layoutY="530.0" mnemonicParsing="false" text="Use as mailing address" />
                   <Separator layoutX="22.0" layoutY="560.0" prefHeight="0.0" prefWidth="943.0" stylesheets="@../css/primer-light.css" />
                   <TextField fx:id="emailField" layoutX="35.0" layoutY="595.0" prefHeight="36.0" prefWidth="764.0" promptText="Email" stylesheets="@../css/primer-light.css" />
-                  <CheckBox layoutX="820.0" layoutY="601.0" mnemonicParsing="false" text="Primary email" />
+                  <CheckBox fx:id="isPrimaryEmail" layoutX="820.0" layoutY="601.0" mnemonicParsing="false" text="Primary email" />
                   <ComboBox fx:id="phoneTypeBox" layoutX="35.0" layoutY="645.0" prefHeight="36.0" prefWidth="137.0" promptText="Phone type">
                      <items>
                         <FXCollections fx:factory="observableArrayList">
