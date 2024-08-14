@@ -13,6 +13,7 @@ import uoa.lavs.models.Customer;
 
 public class CustomerLoader implements Loader<Customer> {
 
+  @Override
   public Customer loadData(String customerId) {
     Customer customer = new Customer();
     try {
