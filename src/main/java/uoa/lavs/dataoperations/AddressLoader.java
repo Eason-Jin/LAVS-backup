@@ -12,7 +12,7 @@ import uoa.lavs.models.Address;
 
 public class AddressLoader {
 
-  public Address loadData(String customerId, int number) {
+  public static Address loadData(String customerId, int number) {
     Address address = new Address();
     try {
       address = loadFromMainframe(customerId, number);
@@ -27,7 +27,7 @@ public class AddressLoader {
     return address;
   }
 
-  private Address loadFromDatabase(String customerId, int number) {
+  private static Address loadFromDatabase(String customerId, int number) {
     Address address = new Address();
     String query = "SELECT * FROM Address WHERE CustomerID = ? AND Number = ?";
     try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
@@ -55,7 +55,7 @@ public class AddressLoader {
     return address;
   }
 
-  private Address loadFromMainframe(String customerId, int number) throws Exception {
+  private static Address loadFromMainframe(String customerId, int number) throws Exception {
     LoadCustomerAddress loadCustomerAddress = new LoadCustomerAddress();
     loadCustomerAddress.setCustomerId(customerId);
     loadCustomerAddress.setNumber(number);

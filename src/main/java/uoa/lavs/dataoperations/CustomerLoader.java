@@ -11,10 +11,9 @@ import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.LoadCustomer;
 import uoa.lavs.models.Customer;
 
-public class CustomerLoader implements Loader<Customer> {
+public class CustomerLoader {
 
-  @Override
-  public Customer loadData(String customerId) {
+  public static Customer loadData(String customerId) {
     Customer customer = new Customer();
     try {
       customer = loadFromMainframe(customerId);
@@ -29,7 +28,7 @@ public class CustomerLoader implements Loader<Customer> {
     return customer;
   }
 
-  private Customer loadFromDatabase(String customerId) {
+  private static Customer loadFromDatabase(String customerId) {
     Customer customer = new Customer();
     try {
       Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
@@ -53,7 +52,7 @@ public class CustomerLoader implements Loader<Customer> {
     return customer;
   }
 
-  private Customer loadFromMainframe(String customerId) throws Exception {
+  private static Customer loadFromMainframe(String customerId) throws Exception {
     LoadCustomer loadCustomer = new LoadCustomer();
     loadCustomer.setCustomerId(customerId);
     Status status = loadCustomer.send(Instance.getConnection());

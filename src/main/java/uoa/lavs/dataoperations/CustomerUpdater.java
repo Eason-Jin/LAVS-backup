@@ -13,11 +13,10 @@ import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomer;
 import uoa.lavs.models.Customer;
 
-public class CustomerUpdater implements Updater<Customer> {
-  private List<FailedCall> failedCalls = new ArrayList<>();
+public class CustomerUpdater {
+  private static List<FailedCall> failedCalls = new ArrayList<>();
 
-  @Override
-  public void updateData(String customerID, Customer customer) {
+  public static void updateData(String customerID, Customer customer) {
     String id = customerID;
     try {
       id = updateMainframe(customerID, customer);
@@ -35,7 +34,7 @@ public class CustomerUpdater implements Updater<Customer> {
     }
   }
 
-  private void updateDatabase(String customerID, Customer customer) throws SQLException {
+  private static void updateDatabase(String customerID, Customer customer) throws SQLException {
     boolean exists = false;
     String CHECK_SQL = "SELECT COUNT(*) FROM customer WHERE CustomerID = ?";
 
@@ -100,13 +99,12 @@ public class CustomerUpdater implements Updater<Customer> {
     }
   }
 
-  private String updateMainframe(String customerID, Customer customer) throws Exception {
+  private static String updateMainframe(String customerID, Customer customer) throws Exception {
     UpdateCustomer updateCustomer = new UpdateCustomer();
     updateCustomer.setCustomerId(customerID);
 
     if (customerID != null) {
-      CustomerLoader customerLoader = new CustomerLoader();
-      Customer existingCustomer = customerLoader.loadData(customerID);
+      Customer existingCustomer = CustomerLoader.loadData(customerID);
 
       updateCustomer.setTitle(
           customer.getTitle() != null ? customer.getTitle() : existingCustomer.getTitle());
@@ -145,11 +143,11 @@ public class CustomerUpdater implements Updater<Customer> {
     return updateCustomer.getCustomerIdFromServer();
   }
 
-  private void recordFailedCall(String customerID, Customer customer) {
+  private static void recordFailedCall(String customerID, Customer customer) {
     failedCalls.add(new FailedCall(customerID, customer));
   }
 
-  public void retryFailedCalls() {
+  public static void retryFailedCalls() {
     List<FailedCall> retryList = new ArrayList<>(failedCalls);
     failedCalls.clear();
     for (FailedCall failedCall : retryList) {
@@ -157,7 +155,7 @@ public class CustomerUpdater implements Updater<Customer> {
     }
   }
 
-  private class FailedCall {
+  private static class FailedCall {
     private String customerID;
     private Customer customer;
 

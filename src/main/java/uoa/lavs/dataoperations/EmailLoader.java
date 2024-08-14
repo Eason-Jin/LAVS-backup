@@ -12,7 +12,7 @@ import uoa.lavs.models.Email;
 
 public class EmailLoader {
 
-  public Email loadData(String customerId, int number) {
+  public static Email loadData(String customerId, int number) {
     Email email = new Email();
     try {
       email = loadFromMainframe(customerId, number);
@@ -27,7 +27,7 @@ public class EmailLoader {
     return email;
   }
 
-  private Email loadFromDatabase(String customerId, int number) {
+  private static Email loadFromDatabase(String customerId, int number) {
     Email email = new Email();
     String query = "SELECT * FROM Email WHERE CustomerID = ? AND Number = ?";
     try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
@@ -48,7 +48,7 @@ public class EmailLoader {
     return email;
   }
 
-  private Email loadFromMainframe(String customerId, int number) throws Exception {
+  private static Email loadFromMainframe(String customerId, int number) throws Exception {
     LoadCustomerEmail loadCustomerEmail = new LoadCustomerEmail();
     loadCustomerEmail.setCustomerId(customerId);
     loadCustomerEmail.setNumber(number);

@@ -12,7 +12,7 @@ import uoa.lavs.models.Employer;
 
 public class EmployerLoader {
 
-  public Employer loadData(String customerId, int number) {
+  public static Employer loadData(String customerId, int number) {
     Employer employer = new Employer();
     try {
       employer = loadFromMainframe(customerId, number);
@@ -27,7 +27,7 @@ public class EmployerLoader {
     return employer;
   }
 
-  private Employer loadFromDatabase(String customerId, int number) {
+  private static Employer loadFromDatabase(String customerId, int number) {
     Employer employer = new Employer();
     String query = "SELECT * FROM Employer WHERE CustomerID = ? AND Number = ?";
     try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
@@ -57,7 +57,7 @@ public class EmployerLoader {
     return employer;
   }
 
-  private Employer loadFromMainframe(String customerId, int number) throws Exception {
+  private static Employer loadFromMainframe(String customerId, int number) throws Exception {
     LoadCustomerEmployer loadCustomerEmployer = new LoadCustomerEmployer();
     loadCustomerEmployer.setCustomerId(customerId);
     loadCustomerEmployer.setNumber(number);
