@@ -11,11 +11,13 @@ public class Phone {
 
   public Phone(
       String customerId,
+      String type,
       String prefix,
       String phoneNumber,
       Boolean isPrimary,
       Boolean canSendText) {
     this.customerId = customerId;
+    this.type = type;
     this.prefix = prefix;
     this.phoneNumber = phoneNumber;
     this.isPrimary = isPrimary;

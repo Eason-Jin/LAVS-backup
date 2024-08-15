@@ -118,6 +118,7 @@ public class AddCustomerController {
       Phone phone =
           new Phone(
               customerID,
+              (String)(Object)phoneTypeBox.getValue(),  // Some wild casting here but it works :)
               prefixField.getText(),
               numberField.getText(),
               isPrimaryNumber.isSelected(),
@@ -167,6 +168,7 @@ public class AddCustomerController {
     jobField.clear();
     citizenshipField.clear();
     visaField.clear();
+    addressTypeField.clear();
     address1Field.clear();
     address2Field.clear();
     suburbField.clear();
@@ -193,6 +195,8 @@ public class AddCustomerController {
     employerPhoneField.clear();
     employerEmailField.clear();
     companyWebsiteField.clear();
+    isOwner.setSelected(false);
+    notesArea.clear();
   }
 
   private boolean checkFields() {
