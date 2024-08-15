@@ -12,6 +12,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager;
@@ -41,6 +42,7 @@ public class AddCustomerController {
   @FXML private TextField citizenshipField;
   @FXML private TextField visaField;
 
+  @FXML private TextField addressTypeField; // TODO: new field
   @FXML private TextField address1Field;
   @FXML private TextField address2Field;
   @FXML private TextField suburbField;
@@ -69,6 +71,9 @@ public class AddCustomerController {
   @FXML private TextField employerPhoneField;
   @FXML private TextField employerEmailField;
   @FXML private TextField companyWebsiteField;
+  @FXML private CheckBox isOwner; // TODO: new field
+
+  @FXML private TextArea notesArea; // TODO: new field
 
   @FXML
   private void onClickHome(ActionEvent event) throws IOException {
