@@ -9,6 +9,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -43,28 +44,28 @@
       </Button>
       <ScrollPane layoutX="83.0" layoutY="125.0" prefHeight="523.0" prefWidth="1004.0" stylesheets="@../css/primer-light.css">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1032.0" prefWidth="988.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1121.0" prefWidth="988.0">
                <children>
-                  <TextField fx:id="titleField" layoutX="35.0" layoutY="20.0" prefHeight="25.0" prefWidth="916.0" promptText="Title" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="familyNameField" layoutX="35.0" layoutY="70.0" prefHeight="25.0" prefWidth="916.0" promptText="Family name" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="givenNameField" layoutX="35.0" layoutY="120.0" prefHeight="25.0" prefWidth="916.0" promptText="Given name(s)" stylesheets="@../css/primer-light.css" />
-                  <DatePicker fx:id="dobPicker" layoutX="35.0" layoutY="170.0" prefHeight="25.0" prefWidth="914.0" promptText="Date of birth" stylesheets="@../css/primer-light.css" />
-                  <Separator layoutX="22.0" layoutY="215.0" prefHeight="0.0" prefWidth="943.0" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="citizenshipField" layoutX="35.0" layoutY="250.0" prefHeight="25.0" prefWidth="916.0" promptText="Citenzenship status" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="visaField" layoutX="35.0" layoutY="300.0" prefHeight="25.0" prefWidth="916.0" promptText="Visa Type" stylesheets="@../css/primer-light.css" />
-                  <Separator layoutX="22.0" layoutY="345.0" prefHeight="18.0" prefWidth="943.0" />
-                  <TextField fx:id="address1Field" layoutX="35.0" layoutY="380.0" prefHeight="25.0" prefWidth="453.0" promptText="Address line 1" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="address2Field" layoutX="498.0" layoutY="380.0" prefHeight="25.0" prefWidth="453.0" promptText="Address line 2" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="suburbField" layoutX="35.0" layoutY="430.0" prefHeight="25.0" prefWidth="453.0" promptText="Suburb" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="cityField" layoutX="498.0" layoutY="430.0" prefHeight="25.0" prefWidth="453.0" promptText="City" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="postcodeField" layoutX="35.0" layoutY="480.0" prefHeight="25.0" prefWidth="453.0" promptText="Postcode" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="countryField" layoutX="498.0" layoutY="480.0" prefHeight="25.0" prefWidth="453.0" promptText="Country" stylesheets="@../css/primer-light.css" />
-                  <CheckBox fx:id="isPrimaryAddress" layoutX="52.0" layoutY="530.0" mnemonicParsing="false" text="Primary address" />
-                  <CheckBox fx:id="isMailingAddress" layoutX="214.0" layoutY="530.0" mnemonicParsing="false" text="Use as mailing address" />
-                  <Separator layoutX="22.0" layoutY="560.0" prefHeight="0.0" prefWidth="943.0" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="emailField" layoutX="35.0" layoutY="595.0" prefHeight="36.0" prefWidth="764.0" promptText="Email" stylesheets="@../css/primer-light.css" />
-                  <CheckBox fx:id="isPrimaryEmail" layoutX="820.0" layoutY="601.0" mnemonicParsing="false" text="Primary email" />
-                  <ComboBox fx:id="phoneTypeBox" layoutX="35.0" layoutY="645.0" prefHeight="36.0" prefWidth="137.0" promptText="Phone type">
+                  <TextField fx:id="titleField" layoutX="35.0" layoutY="20.0" prefHeight="36.0" prefWidth="100.0" promptText="Title" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="familyNameField" layoutX="545.0" layoutY="20.0" prefHeight="36.0" prefWidth="406.0" promptText="Family name" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="givenNameField" layoutX="145.0" layoutY="20.0" prefHeight="36.0" prefWidth="390.0" promptText="Given name(s)" stylesheets="@../css/primer-light.css" />
+                  <DatePicker fx:id="dobPicker" layoutX="35.0" layoutY="70.0" prefHeight="25.0" prefWidth="914.0" promptText="Date of birth" stylesheets="@../css/primer-light.css" />
+                  <Separator layoutX="22.0" layoutY="115.0" prefHeight="0.0" prefWidth="943.0" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="citizenshipField" layoutX="35.0" layoutY="150.0" prefHeight="25.0" prefWidth="916.0" promptText="Citenzenship status" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="visaField" layoutX="35.0" layoutY="200.0" prefHeight="25.0" prefWidth="916.0" promptText="Visa Type" stylesheets="@../css/primer-light.css" />
+                  <Separator layoutX="22.0" layoutY="245.0" prefHeight="18.0" prefWidth="943.0" />
+                  <TextField fx:id="address1Field" layoutX="245.0" layoutY="280.0" prefHeight="25.0" prefWidth="348.0" promptText="Address line 1" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="address2Field" layoutX="603.0" layoutY="280.0" prefHeight="25.0" prefWidth="348.0" promptText="Address line 2" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="suburbField" layoutX="35.0" layoutY="330.0" prefHeight="25.0" prefWidth="453.0" promptText="Suburb" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="cityField" layoutX="498.0" layoutY="330.0" prefHeight="25.0" prefWidth="453.0" promptText="City" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="postcodeField" layoutX="35.0" layoutY="380.0" prefHeight="25.0" prefWidth="453.0" promptText="Postcode" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="countryField" layoutX="498.0" layoutY="380.0" prefHeight="25.0" prefWidth="453.0" promptText="Country" stylesheets="@../css/primer-light.css" />
+                  <CheckBox fx:id="isPrimaryAddress" layoutX="52.0" layoutY="432.0" mnemonicParsing="false" text="Primary address" />
+                  <CheckBox fx:id="isMailingAddress" layoutX="214.0" layoutY="432.0" mnemonicParsing="false" text="Use as mailing address" />
+                  <Separator layoutX="22.0" layoutY="460.0" prefHeight="0.0" prefWidth="943.0" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="emailField" layoutX="35.0" layoutY="495.0" prefHeight="36.0" prefWidth="764.0" promptText="Email" stylesheets="@../css/primer-light.css" />
+                  <CheckBox fx:id="isPrimaryEmail" layoutX="820.0" layoutY="501.0" mnemonicParsing="false" text="Primary email" />
+                  <ComboBox fx:id="phoneTypeBox" layoutX="35.0" layoutY="545.0" prefHeight="36.0" prefWidth="137.0" promptText="Phone type">
                      <items>
                         <FXCollections fx:factory="observableArrayList">
                            <String fx:value="Mobile" />
@@ -72,27 +73,26 @@
                         </FXCollections>
                      </items>
                   </ComboBox>
-                  <TextField fx:id="prefixField" layoutX="202.0" layoutY="645.0" prefHeight="36.0" prefWidth="85.0" promptText="Prefix" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="numberField" layoutX="302.0" layoutY="645.0" prefHeight="36.0" prefWidth="237.0" promptText="Number" stylesheets="@../css/primer-light.css" />
-                  <CheckBox fx:id="isTextingNumber" layoutX="740.0" layoutY="651.0" mnemonicParsing="false" text="Send texts to this number" />
-                  <CheckBox fx:id="isPrimaryNumber" layoutX="571.0" layoutY="651.0" mnemonicParsing="false" text="Primary number" />
-                  <Separator layoutX="22.0" layoutY="690.0" prefHeight="0.0" prefWidth="943.0" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="companyNameField" layoutX="498.0" layoutY="725.0" prefHeight="36.0" prefWidth="453.0" promptText="Company name" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="companyAddress1Field" layoutX="35.0" layoutY="775.0" prefHeight="25.0" prefWidth="453.0" promptText="Address line 1" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="companyAddress2Field" layoutX="498.0" layoutY="775.0" prefHeight="25.0" prefWidth="453.0" promptText="Address line 2" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="companySuburbField" layoutX="35.0" layoutY="825.0" prefHeight="25.0" prefWidth="453.0" promptText="Suburb" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="companyCityField" layoutX="498.0" layoutY="825.0" prefHeight="25.0" prefWidth="453.0" promptText="City" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="companyPostcodeField" layoutX="35.0" layoutY="875.0" prefHeight="25.0" prefWidth="453.0" promptText="Postcode" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="companyCountryField" layoutX="498.0" layoutY="875.0" prefHeight="25.0" prefWidth="453.0" promptText="Country" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="employerPhoneField" layoutX="35.0" layoutY="925.0" prefHeight="25.0" prefWidth="453.0" promptText="Employer phone" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="employerEmailField" layoutX="498.0" layoutY="925.0" prefHeight="25.0" prefWidth="453.0" promptText="Employer email" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="companyWebsiteField" layoutX="35.0" layoutY="975.0" prefHeight="25.0" prefWidth="916.0" promptText="Company website" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="jobField" layoutX="35.0" layoutY="725.0" prefHeight="25.0" prefWidth="453.0" promptText="Job" stylesheets="@../css/primer-light.css" />
-                  <Label layoutX="185.0" layoutY="647.0" text="+">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
+                  <TextField fx:id="prefixField" layoutX="190.0" layoutY="545.0" prefHeight="36.0" prefWidth="85.0" promptText="Prefix" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="numberField" layoutX="290.0" layoutY="545.0" prefHeight="36.0" prefWidth="237.0" promptText="Number" stylesheets="@../css/primer-light.css" />
+                  <CheckBox fx:id="isTextingNumber" layoutX="740.0" layoutY="551.0" mnemonicParsing="false" text="Send texts to this number" />
+                  <CheckBox fx:id="isPrimaryNumber" layoutX="571.0" layoutY="551.0" mnemonicParsing="false" text="Primary number" />
+                  <Separator layoutX="22.0" layoutY="590.0" prefHeight="0.0" prefWidth="943.0" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="companyNameField" layoutX="498.0" layoutY="625.0" prefHeight="25.0" prefWidth="453.0" promptText="Company name" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="companyAddress1Field" layoutX="35.0" layoutY="675.0" prefHeight="25.0" prefWidth="453.0" promptText="Address line 1" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="companyAddress2Field" layoutX="498.0" layoutY="675.0" prefHeight="25.0" prefWidth="453.0" promptText="Address line 2" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="companySuburbField" layoutX="35.0" layoutY="725.0" prefHeight="25.0" prefWidth="453.0" promptText="Suburb" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="companyCityField" layoutX="498.0" layoutY="725.0" prefHeight="25.0" prefWidth="453.0" promptText="City" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="companyPostcodeField" layoutX="35.0" layoutY="775.0" prefHeight="25.0" prefWidth="453.0" promptText="Postcode" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="companyCountryField" layoutX="498.0" layoutY="775.0" prefHeight="25.0" prefWidth="453.0" promptText="Country" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="employerPhoneField" layoutX="35.0" layoutY="825.0" prefHeight="25.0" prefWidth="453.0" promptText="Employer phone" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="employerEmailField" layoutX="498.0" layoutY="825.0" prefHeight="25.0" prefWidth="453.0" promptText="Employer email" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="companyWebsiteField" layoutX="35.0" layoutY="875.0" prefHeight="36.0" prefWidth="763.0" promptText="Company website" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="jobField" layoutX="35.0" layoutY="625.0" prefHeight="25.0" prefWidth="453.0" promptText="Job" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="addressTypeField" layoutX="35.0" layoutY="280.0" prefHeight="25.0" prefWidth="200.0" promptText="Address type" stylesheets="@../css/primer-light.css" />
+                  <CheckBox layoutX="819.0" layoutY="880.0" mnemonicParsing="false" text="Is the owner" />
+                  <TextArea fx:id="notesArea" layoutX="35.0" layoutY="955.0" prefHeight="124.0" prefWidth="916.0" promptText="Extra notes" />
+                  <Separator layoutX="22.0" layoutY="920.0" prefHeight="0.0" prefWidth="943.0" stylesheets="@../css/primer-light.css" />
 
                </children>
             </AnchorPane>
