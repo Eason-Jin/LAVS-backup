@@ -11,6 +11,7 @@ public class Customer {
   private String citizenship;
   private String visaType;
   private String status;
+  private String notes;
 
   public Customer(
       String id,
@@ -20,7 +21,8 @@ public class Customer {
       String occupation,
       String citizenship,
       String visaType,
-      String status) {
+      String status,
+      String notes) {
     this.id = id;
     this.title = title;
     this.name = name;
@@ -29,6 +31,7 @@ public class Customer {
     this.citizenship = citizenship;
     this.visaType = visaType;
     this.status = status;
+    this.notes = notes;
   }
 
   public Customer() {}

@@ -26,7 +26,8 @@ public class Employer {
       String country,
       String phoneNumber,
       String emailAddress,
-      String website) {
+      String website,
+      Boolean isOwner) {
     this.customerId = customerId;
     this.name = name;
     this.line1 = line1;
@@ -38,6 +39,7 @@ public class Employer {
     this.phoneNumber = phoneNumber;
     this.emailAddress = emailAddress;
     this.website = website;
+    this.isOwner = isOwner;
   }
 
   public Employer() {}

@@ -42,7 +42,7 @@ public class AddCustomerController {
   @FXML private TextField citizenshipField;
   @FXML private TextField visaField;
 
-  @FXML private TextField addressTypeField; // TODO: new field
+  @FXML private TextField addressTypeField;
   @FXML private TextField address1Field;
   @FXML private TextField address2Field;
   @FXML private TextField suburbField;
@@ -71,9 +71,9 @@ public class AddCustomerController {
   @FXML private TextField employerPhoneField;
   @FXML private TextField employerEmailField;
   @FXML private TextField companyWebsiteField;
-  @FXML private CheckBox isOwner; // TODO: new field
+  @FXML private CheckBox isOwner;
 
-  @FXML private TextArea notesArea; // TODO: new field
+  @FXML private TextArea notesArea;
 
   @FXML
   private void onClickHome(ActionEvent event) throws IOException {
@@ -82,7 +82,6 @@ public class AddCustomerController {
 
   @FXML
   private void onClickSave(ActionEvent event) {
-    // Save the form to the mainframe
     if (checkFields()) {
       Customer customer =
           new Customer(
@@ -93,7 +92,8 @@ public class AddCustomerController {
               jobField.getText(),
               citizenshipField.getText(),
               visaField.getText(),
-              "Active");
+              "Active",
+              notesArea.getText());
       CustomerUpdater.updateData(null, customer);
 
       String customerID = customer.getId();
@@ -101,6 +101,7 @@ public class AddCustomerController {
       Address address =
           new Address(
               customerID,
+              addressTypeField.getText(),
               address1Field.getText(),
               address2Field.getText(),
               suburbField.getText(),
@@ -135,7 +136,8 @@ public class AddCustomerController {
               companyCountryField.getText(),
               employerPhoneField.getText(),
               employerEmailField.getText(),
-              companyWebsiteField.getText());
+              companyWebsiteField.getText(),
+              isOwner.isSelected());
       EmployerUpdater.updateData(customerID, employer);
     }
   }

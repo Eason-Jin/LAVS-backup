@@ -15,6 +15,7 @@ public class Address {
 
   public Address(
       String customerId,
+      String type,
       String line1,
       String line2,
       String suburb,
@@ -24,6 +25,7 @@ public class Address {
       Boolean isPrimary,
       Boolean isMailing) {
     this.customerId = customerId;
+    this.type = type;
     this.line1 = line1;
     this.line2 = line2;
     this.suburb = suburb;
