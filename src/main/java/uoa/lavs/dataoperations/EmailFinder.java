@@ -1,7 +1,6 @@
 package uoa.lavs.dataoperations;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -57,7 +56,7 @@ public class EmailFinder {
 
   private static List<Email> findFromDatabase(String customerId) throws Exception {
     List<Email> emails = new ArrayList<>();
-    Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+    Connection connection = Instance.getDatabaseConnection();
     Statement statement = connection.createStatement();
     String query = "SELECT * FROM Email WHERE CustomerID LIKE '%" + customerId + "%'";
     ResultSet resultSet = statement.executeQuery(query);

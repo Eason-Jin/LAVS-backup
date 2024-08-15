@@ -1,7 +1,6 @@
 package uoa.lavs.dataoperations;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -68,7 +67,7 @@ public class PhoneUpdater {
     String CHECK_SQL = "SELECT COUNT(*) FROM Phone WHERE CustomerID = ? AND Number = ?";
 
     if (customerID != null && phone.getNumber() != null) {
-      try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+      try (Connection connection = Instance.getDatabaseConnection();
           PreparedStatement checkStatement = connection.prepareStatement(CHECK_SQL)) {
         checkStatement.setString(1, customerID);
         checkStatement.setInt(2, phone.getNumber());
@@ -96,7 +95,7 @@ public class PhoneUpdater {
               + " Number) VALUES (?, ?, ?, ?, ?, ?, ?)";
     }
 
-    try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+    try (Connection connection = Instance.getDatabaseConnection();
         PreparedStatement statement =
             connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 

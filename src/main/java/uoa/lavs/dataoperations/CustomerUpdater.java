@@ -1,7 +1,6 @@
 package uoa.lavs.dataoperations;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,13 +33,13 @@ public class CustomerUpdater {
     }
   }
 
-  private static void updateDatabase(String customerID, Customer customer) throws SQLException {
+  public static void updateDatabase(String customerID, Customer customer) throws SQLException {
     boolean exists = false;
     String CHECK_SQL = "SELECT COUNT(*) FROM customer WHERE CustomerID = ?";
 
     // Check if CustomerID exists
     if (customerID != null) {
-      try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+      try (Connection connection = Instance.getDatabaseConnection();
           PreparedStatement checkStatement = connection.prepareStatement(CHECK_SQL)) {
         checkStatement.setString(1, customerID);
         try (ResultSet resultSet = checkStatement.executeQuery()) {
@@ -67,11 +66,11 @@ public class CustomerUpdater {
               + "WHERE CustomerID = ?";
     } else {
       sql =
-          "INSERT INTO Customer (Title, Name, Dob, Occupation, Citizenship, VisaType, Status) "
-              + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+          "INSERT INTO Customer (Title, Name, Dob, Occupation, Citizenship, VisaType, Status,"
+              + " CustomerID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     }
 
-    try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+    try (Connection connection = Instance.getDatabaseConnection();
         PreparedStatement statement =
             connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -82,9 +81,7 @@ public class CustomerUpdater {
       statement.setString(5, customer.getCitizenship());
       statement.setString(6, customer.getVisaType());
       statement.setString(7, customer.getStatus());
-      if (exists) {
-        statement.setString(8, customerID);
-      }
+      statement.setString(8, customerID);
 
       statement.executeUpdate();
 
@@ -99,7 +96,7 @@ public class CustomerUpdater {
     }
   }
 
-  private static String updateMainframe(String customerID, Customer customer) throws Exception {
+  public static String updateMainframe(String customerID, Customer customer) throws Exception {
     UpdateCustomer updateCustomer = new UpdateCustomer();
     updateCustomer.setCustomerId(customerID);
 

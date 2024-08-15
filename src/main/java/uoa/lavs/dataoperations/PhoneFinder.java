@@ -1,7 +1,6 @@
 package uoa.lavs.dataoperations;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -58,7 +57,7 @@ public class PhoneFinder {
 
   private static List<Phone> findFromDatabase(String customerId) throws Exception {
     List<Phone> phones = new ArrayList<>();
-    Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+    Connection connection = Instance.getDatabaseConnection();
     Statement statement = connection.createStatement();
     String query = "SELECT * FROM Phone WHERE CustomerID LIKE '%" + customerId + "%'";
     ResultSet resultSet = statement.executeQuery(query);

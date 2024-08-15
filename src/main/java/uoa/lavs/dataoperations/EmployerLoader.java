@@ -1,10 +1,8 @@
 package uoa.lavs.dataoperations;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.LoadCustomerEmployer;
@@ -22,37 +20,40 @@ public class EmployerLoader {
     } catch (Exception e) {
       System.out.println("Mainframe load failed: " + e.getMessage());
       System.out.println("Trying to load from database");
-      employer = loadFromDatabase(customerId, number);
+      try {
+        employer = loadFromDatabase(customerId, number);
+      } catch (Exception e1) {
+        System.out.println("Database load failed: " + e1.getMessage());
+      }
     }
     return employer;
   }
 
-  private static Employer loadFromDatabase(String customerId, int number) {
+  private static Employer loadFromDatabase(String customerId, int number) throws Exception {
     Employer employer = new Employer();
     String query = "SELECT * FROM Employer WHERE CustomerID = ? AND Number = ?";
-    try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+    try (Connection connection = Instance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(query)) {
       statement.setString(1, customerId);
       statement.setInt(2, number);
       try (ResultSet resultSet = statement.executeQuery()) {
-        if (resultSet.next()) {
-          employer.setCustomerId(resultSet.getString("CustomerID"));
-          employer.setNumber(resultSet.getInt("Number"));
-          employer.setName(resultSet.getString("Name"));
-          employer.setLine1(resultSet.getString("Line1"));
-          employer.setLine2(resultSet.getString("Line2"));
-          employer.setSuburb(resultSet.getString("Suburb"));
-          employer.setCity(resultSet.getString("City"));
-          employer.setPostCode(resultSet.getString("PostCode"));
-          employer.setCountry(resultSet.getString("Country"));
-          employer.setPhoneNumber(resultSet.getString("PhoneNumber"));
-          employer.setEmailAddress(resultSet.getString("EmailAddress"));
-          employer.setWebsite(resultSet.getString("Website"));
-          employer.setIsOwner(resultSet.getBoolean("IsOwner"));
+        if (!resultSet.next()) {
+          throw new Exception("Employer not in database");
         }
+        employer.setCustomerId(resultSet.getString("CustomerID"));
+        employer.setNumber(resultSet.getInt("Number"));
+        employer.setName(resultSet.getString("Name"));
+        employer.setLine1(resultSet.getString("Line1"));
+        employer.setLine2(resultSet.getString("Line2"));
+        employer.setSuburb(resultSet.getString("Suburb"));
+        employer.setCity(resultSet.getString("City"));
+        employer.setPostCode(resultSet.getString("PostCode"));
+        employer.setCountry(resultSet.getString("Country"));
+        employer.setPhoneNumber(resultSet.getString("PhoneNumber"));
+        employer.setEmailAddress(resultSet.getString("EmailAddress"));
+        employer.setWebsite(resultSet.getString("Website"));
+        employer.setIsOwner(resultSet.getBoolean("IsOwner"));
       }
-    } catch (SQLException e) {
-      e.printStackTrace();
     }
     return employer;
   }
