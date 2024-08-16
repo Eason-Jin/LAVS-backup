@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import uoa.lavs.dataoperations.customer.CustomerUpdater;
 import uoa.lavs.mainframe.Instance;
 import uoa.lavs.models.Customer;
 

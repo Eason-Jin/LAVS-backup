@@ -1,4 +1,4 @@
-package uoa.lavs.dataoperations;
+package uoa.lavs.dataoperations.customer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
