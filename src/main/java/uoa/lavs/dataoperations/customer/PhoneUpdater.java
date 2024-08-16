@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomerPhoneNumber;
@@ -32,8 +33,14 @@ public class PhoneUpdater {
     updateCustomerPhone.setNumber(phone.getNumber());
 
     if (phone.getNumber() != null) {
-      Phone existingPhone = PhoneLoader.loadData(customerID, phone.getNumber());
-
+      List<Phone> existingPhones = PhoneFinder.findData(customerID);
+      Phone existingPhone = new Phone();
+      for (Phone phoneOnAccount : existingPhones) {
+        if (phoneOnAccount.getNumber().equals(phone.getNumber())
+            && phoneOnAccount.getCustomerId().equals(phone.getCustomerId())) {
+          existingPhone = phoneOnAccount;
+        }
+      }
       updateCustomerPhone.setType(
           phone.getType() != null ? phone.getType() : existingPhone.getType());
       updateCustomerPhone.setPrefix(

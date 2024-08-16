@@ -1,13 +1,13 @@
 package uoa.lavs.dataoperations.customer;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.Status;
-import uoa.lavs.mainframe.messages.customer.FindCustomerPhoneNumber;
+import uoa.lavs.mainframe.messages.customer.LoadCustomerPhoneNumbers;
 import uoa.lavs.models.Phone;
 
 public class PhoneFinder {
@@ -29,27 +29,25 @@ public class PhoneFinder {
   }
 
   private static List<Phone> findFromMainframe(String customerId) throws Exception {
-    FindCustomerPhoneNumber findCustomerPhone = new FindCustomerPhoneNumber();
-    findCustomerPhone.setCustomerId(customerId);
-    Status status = findCustomerPhone.send(Instance.getConnection());
+    LoadCustomerPhoneNumbers loadCustomerPhoneNumbers = new LoadCustomerPhoneNumbers();
+    loadCustomerPhoneNumbers.setCustomerId(customerId);
+    Status status = loadCustomerPhoneNumbers.send(Instance.getConnection());
     if (!status.getWasSuccessful()) {
       System.out.println(
           "Something went wrong - the Mainframe send failed! The code is " + status.getErrorCode());
       throw new Exception("Mainframe send failed");
     }
-    Integer phoneCount = findCustomerPhone.getCountFromServer();
-    if (phoneCount == 0) {
-      throw new Exception("Phone number not found in mainframe");
-    }
+    Integer phoneCount = loadCustomerPhoneNumbers.getCountFromServer();
+
     List<Phone> phones = new ArrayList<>(phoneCount);
 
     for (int i = 1; i <= phoneCount; i++) {
       Phone phone = new Phone();
       phone.setCustomerId(customerId);
-      phone.setNumber(findCustomerPhone.getNumberFromServer(i));
-      phone.setType(findCustomerPhone.getTypeFromServer(i));
-      phone.setIsPrimary(findCustomerPhone.getIsPrimaryFromServer(i));
-      phone.setCanSendTxt(findCustomerPhone.getCanSendTxtFromServer(i));
+      phone.setNumber(loadCustomerPhoneNumbers.getNumberFromServer(i));
+      phone.setType(loadCustomerPhoneNumbers.getTypeFromServer(i));
+      phone.setIsPrimary(loadCustomerPhoneNumbers.getIsPrimaryFromServer(i));
+      phone.setCanSendTxt(loadCustomerPhoneNumbers.getCanSendTxtFromServer(i));
       phones.add(phone);
     }
     return phones;
@@ -57,24 +55,30 @@ public class PhoneFinder {
 
   private static List<Phone> findFromDatabase(String customerId) throws Exception {
     List<Phone> phones = new ArrayList<>();
-    Connection connection = Instance.getDatabaseConnection();
-    Statement statement = connection.createStatement();
-    String query = "SELECT * FROM Phone WHERE CustomerID LIKE '%" + customerId + "%'";
-    ResultSet resultSet = statement.executeQuery(query);
-    while (resultSet.next()) {
-      Phone phone = new Phone();
-      phone.setCustomerId(resultSet.getString("CustomerID"));
-      phone.setNumber(resultSet.getInt("Number"));
-      phone.setType(resultSet.getString("Type"));
-      phone.setPrefix(resultSet.getString("Prefix"));
-      phone.setPhoneNumber(resultSet.getString("PhoneNumber"));
-      phone.setIsPrimary(resultSet.getBoolean("IsPrimary"));
-      phone.setCanSendTxt(resultSet.getBoolean("CanSendText"));
-      phones.add(phone);
-    }
-    connection.close();
-    if (phones.isEmpty()) {
-      throw new Exception("Phone number not found in database");
+    Connection connection = null;
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
+
+    try {
+      connection = Instance.getDatabaseConnection();
+      String query = "SELECT * FROM Phone WHERE CustomerID = ?";
+      preparedStatement = connection.prepareStatement(query);
+      preparedStatement.setString(1, customerId);
+      resultSet = preparedStatement.executeQuery();
+
+      while (resultSet.next()) {
+        Phone phone = new Phone();
+        phone.setCustomerId(resultSet.getString("CustomerID"));
+        phone.setNumber(resultSet.getInt("Number"));
+        phone.setType(resultSet.getString("Type"));
+        phone.setPrefix(resultSet.getString("Prefix"));
+        phone.setPhoneNumber(resultSet.getString("PhoneNumber"));
+        phone.setIsPrimary(resultSet.getBoolean("IsPrimary"));
+        phone.setCanSendTxt(resultSet.getBoolean("CanSendText"));
+        phones.add(phone);
+      }
+    } finally {
+      connection.close();
     }
     return phones;
   }
