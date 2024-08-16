@@ -265,7 +265,6 @@ public class AddCustomerController {
     boolean givenNameFieldFlag = checkField(givenNameField);
     boolean dobPickerFlag = checkField(dobPicker);
     boolean citizenshipFieldFlag = checkField(citizenshipField);
-    boolean visaFieldFlag = checkField(visaField);
     boolean addressTypeFieldFlag = checkField(addressTypeField);
     boolean address1FieldFlag = checkField(address1Field);
     boolean suburbFieldFlag = checkField(suburbField);
@@ -293,7 +292,6 @@ public class AddCustomerController {
         && givenNameFieldFlag
         && dobPickerFlag
         && citizenshipFieldFlag
-        && visaFieldFlag
         && addressTypeFieldFlag
         && address1FieldFlag
         && suburbFieldFlag
