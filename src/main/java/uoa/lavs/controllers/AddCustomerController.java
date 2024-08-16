@@ -2,7 +2,6 @@ package uoa.lavs.controllers;
 
 import java.io.IOException;
 import java.time.LocalDate;
-
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -154,8 +153,13 @@ public class AddCustomerController {
                 companyWebsiteField.getText(),
                 isOwner.isSelected());
         EmployerUpdater.updateData(customerID, employer);
-        // If no exception, redirect to start page
-        Main.setScene(SceneManager.AppScene.START);
+
+        Alert successAlert = new Alert(AlertType.INFORMATION);
+        successAlert.setTitle("Success");
+        successAlert.setHeaderText("Customer has been added");
+        if (successAlert.showAndWait().get() == ButtonType.OK) {
+          Main.setScene(SceneManager.AppScene.START);
+        }
       } catch (Exception e) {
         Alert exceptionAlert = new Alert(AlertType.ERROR);
         exceptionAlert.setTitle("Error");
@@ -168,7 +172,6 @@ public class AddCustomerController {
       alert.showAndWait();
       // Clears error message
       errorString = new StringBuilder();
-
     }
   }
 
@@ -392,7 +395,7 @@ public class AddCustomerController {
   private boolean validate(DatePicker ui, Type type) {
     boolean flag;
     LocalDate today = LocalDate.now();
-    if (today.isBefore((LocalDate)(Object)ui.getValue())) {
+    if (today.isBefore((LocalDate) (Object) ui.getValue())) {
       flag = false;
       ui.setStyle("-fx-border-color: red");
       errorString.append("\tDate cannot be before today\n");
