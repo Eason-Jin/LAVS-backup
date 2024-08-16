@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -31,6 +32,7 @@ public class SearchController {
         idColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));
         dobColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("dob"));
+        searchTable.setPlaceholder(new Label(""));
     }
 
     @FXML
@@ -42,6 +44,12 @@ public class SearchController {
     private void onClickSearch(ActionEvent event) {
         String customerName = searchField.getText();
         List<Customer> customers = CustomerFinder.findCustomerByName(customerName);
+
+        if (customers.isEmpty()) {
+            searchTable.getItems().clear();
+            searchTable.setPlaceholder(new Label("No customers found"));
+        }
+
         ObservableList<Customer> observablecustomers = FXCollections.observableArrayList(customers);
         searchTable.setItems(observablecustomers);
     }
