@@ -104,7 +104,7 @@ public class AddCustomerController {
                 dobPicker.getValue(),
                 jobField.getText(),
                 citizenshipField.getText(),
-                visaField.getText(),
+                visaField.getText().isEmpty() ? null : visaField.getText(),
                 "Active",
                 notesArea.getText());
         CustomerUpdater.updateData(null, customer);
