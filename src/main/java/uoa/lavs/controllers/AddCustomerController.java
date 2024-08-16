@@ -178,7 +178,7 @@ public class AddCustomerController {
     alertCancel.setTitle("Cancel adding customer");
     alertCancel.setHeaderText("If you cancel, all progress will be lost.");
     alertCancel.setContentText("Are you sure you want to cancel?");
-    if (alert.showAndWait().get() == ButtonType.OK) {
+    if (alertCancel.showAndWait().get() == ButtonType.OK) {
       clearAllFields();
       resetFieldStyle();
       Main.setScene(SceneManager.AppScene.START);
