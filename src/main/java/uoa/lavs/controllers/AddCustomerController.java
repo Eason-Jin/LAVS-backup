@@ -75,6 +75,17 @@ public class AddCustomerController {
 
   @FXML private TextArea notesArea;
 
+  private Alert alert;
+  private StringBuilder errorString;
+
+  @FXML
+  private void initialize() {
+    alert = new Alert(AlertType.ERROR);
+    alert.setTitle("Error");
+    alert.setHeaderText("Please fix the following issues:");
+    errorString = new StringBuilder();
+  }
+
   @FXML
   private void onClickHome(ActionEvent event) throws IOException {
     Main.setScene(SceneManager.AppScene.START);
@@ -82,7 +93,7 @@ public class AddCustomerController {
 
   @FXML
   private void onClickSave(ActionEvent event) {
-    if (checkFields() &&validateFields()) {
+    if (checkFields() && validateFields()) {
       try {
         Customer customer =
             new Customer(
@@ -144,23 +155,30 @@ public class AddCustomerController {
         // If no exception, redirect to start page
         Main.setScene(SceneManager.AppScene.START);
       } catch (Exception e) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText("An error occurred while saving the customer");
-        alert.setContentText("Please try again later");
-        alert.showAndWait();
+        Alert exceptionAlert = new Alert(AlertType.ERROR);
+        exceptionAlert.setTitle("Error");
+        exceptionAlert.setHeaderText("An error occurred while saving the customer");
+        exceptionAlert.setContentText("Please try again later");
+        exceptionAlert.showAndWait();
       }
+    } else {
+      alert.setContentText(errorString.toString());
+      alert.showAndWait();
+      // Clears error message
+      errorString = new StringBuilder();
+
     }
   }
 
   @FXML
   private void onClickCancel(ActionEvent event) {
-    Alert alert = new Alert(AlertType.CONFIRMATION);
-    alert.setTitle("Cancel adding customer");
-    alert.setHeaderText("If you cancel, all progress will be lost.");
-    alert.setContentText("Are you sure you want to cancel?");
+    Alert alertCancel = new Alert(AlertType.CONFIRMATION);
+    alertCancel.setTitle("Cancel adding customer");
+    alertCancel.setHeaderText("If you cancel, all progress will be lost.");
+    alertCancel.setContentText("Are you sure you want to cancel?");
     if (alert.showAndWait().get() == ButtonType.OK) {
       clearAllFields();
+      resetFieldStyle();
       Main.setScene(SceneManager.AppScene.START);
     }
   }
@@ -208,6 +226,35 @@ public class AddCustomerController {
     companyWebsiteField.clear();
     isOwner.setSelected(false);
     notesArea.clear();
+  }
+
+  private void resetFieldStyle() {
+    titleField.setStyle("-fx-border-color: none");
+    familyNameField.setStyle("-fx-border-color: none");
+    givenNameField.setStyle("-fx-border-color: none");
+    dobPicker.setStyle("-fx-border-color: none");
+    citizenshipField.setStyle("-fx-border-color: none");
+    visaField.setStyle("-fx-border-color: none");
+    addressTypeField.setStyle("-fx-border-color: none");
+    address1Field.setStyle("-fx-border-color: none");
+    suburbField.setStyle("-fx-border-color: none");
+    cityField.setStyle("-fx-border-color: none");
+    postcodeField.setStyle("-fx-border-color: none");
+    countryField.setStyle("-fx-border-color: none");
+    emailField.setStyle("-fx-border-color: none");
+    phoneTypeBox.setStyle("-fx-border-color: none");
+    prefixField.setStyle("-fx-border-color: none");
+    numberField.setStyle("-fx-border-color: none");
+    jobField.setStyle("-fx-border-color: none");
+    companyNameField.setStyle("-fx-border-color: none");
+    companyAddress1Field.setStyle("-fx-border-color: none");
+    companySuburbField.setStyle("-fx-border-color: none");
+    companyCityField.setStyle("-fx-border-color: none");
+    companyPostcodeField.setStyle("-fx-border-color: none");
+    companyCountryField.setStyle("-fx-border-color: none");
+    employerPhoneField.setStyle("-fx-border-color: none");
+    employerEmailField.setStyle("-fx-border-color: none");
+    companyWebsiteField.setStyle("-fx-border-color: none");
   }
 
   private boolean checkFields() {
@@ -267,10 +314,7 @@ public class AddCustomerController {
         && companyWebsiteFieldFlag) {
       return true;
     }
-    Alert alert = new Alert(AlertType.ERROR);
-    alert.setTitle("Error");
-    alert.setHeaderText("Please fill in all required fields");
-    alert.showAndWait();
+    errorString.append("Please fill in the required fields\n");
 
     return false;
   }
@@ -312,18 +356,13 @@ public class AddCustomerController {
 
   private boolean validate(TextField ui, Type type) {
     boolean flag;
-    Alert alert = new Alert(AlertType.ERROR);
-    StringBuilder sb = new StringBuilder();
-    alert.setTitle("Error");
-    alert.setHeaderText("Invalid input");
 
-    sb.append("Please fix the following issues:\n");
     if (type == Type.EMAIL) {
       // Emails should be in the format of a@b.c
       flag = ui.getText().matches("^.+@.+\\..+$");
       if (!flag) {
         ui.setStyle("-fx-border-color: red");
-        sb.append("\tInvalid Email format\n");
+        errorString.append("Invalid email format\n");
       }
     } else if (type == Type.PHONE) {
       // Phone should be numbers
@@ -333,30 +372,26 @@ public class AddCustomerController {
       } catch (Exception e) {
         flag = false;
         ui.setStyle("-fx-border-color: red");
-        sb.append("\tPhone should only contain numbers\n");
+        errorString.append("Phone should only contain numbers\n");
       }
     } else if (type == Type.WEBSITE) {
       // Website should start with www. or https://
       flag = ui.getText().matches("^(www\\..+|https://.+)$");
       if (!flag) {
         ui.setStyle("-fx-border-color: red");
-        sb.append("\tInvalid Website format\n");
+        errorString.append("Invalid website format\n");
       }
     } else {
       flag = false;
     }
-    if (!flag) {
-      alert.setContentText(sb.toString());
-      alert.showAndWait();
-    }
+
     return flag;
   }
 
   private enum Type {
+    DATE,
     EMAIL,
     PHONE,
     WEBSITE
   }
 }
-
-// TODO: check address type
