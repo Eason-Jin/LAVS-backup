@@ -85,7 +85,7 @@ public class CustomerUpdater {
 
       statement.executeUpdate();
 
-      if (!exists) {
+      if (!exists && customerID == null) {
         try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
           if (generatedKeys.next()) {
             customerID = generatedKeys.getString(1);
