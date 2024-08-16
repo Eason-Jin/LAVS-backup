@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import org.springframework.stereotype.Controller;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -28,6 +29,7 @@ import uoa.lavs.models.Email;
 import uoa.lavs.models.Employer;
 import uoa.lavs.models.Phone;
 
+@Controller
 public class AddCustomerController {
 
   @FXML private Button homeButton;
