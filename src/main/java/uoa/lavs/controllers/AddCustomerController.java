@@ -82,64 +82,74 @@ public class AddCustomerController {
 
   @FXML
   private void onClickSave(ActionEvent event) {
-    if (checkFields()) {
-      Customer customer =
-          new Customer(
-              null,
-              titleField.getText(),
-              givenNameField.getText() + " " + familyNameField.getText(),
-              dobPicker.getValue(),
-              jobField.getText(),
-              citizenshipField.getText(),
-              visaField.getText(),
-              "Active",
-              notesArea.getText());
-      CustomerUpdater.updateData(null, customer);
+    if (checkFields() &&validateFields()) {
+      try {
+        Customer customer =
+            new Customer(
+                null,
+                titleField.getText(),
+                givenNameField.getText() + " " + familyNameField.getText(),
+                dobPicker.getValue(),
+                jobField.getText(),
+                citizenshipField.getText(),
+                visaField.getText(),
+                "Active",
+                notesArea.getText());
+        CustomerUpdater.updateData(null, customer);
 
-      String customerID = customer.getId();
+        String customerID = customer.getId();
 
-      Address address =
-          new Address(
-              customerID,
-              addressTypeField.getText(),
-              address1Field.getText(),
-              address2Field.getText(),
-              suburbField.getText(),
-              cityField.getText(),
-              postcodeField.getText(),
-              countryField.getText(),
-              isPrimaryAddress.isSelected(),
-              isMailingAddress.isSelected());
-      AddressUpdater.updateData(customerID, address);
+        Address address =
+            new Address(
+                customerID,
+                addressTypeField.getText(),
+                address1Field.getText(),
+                address2Field.getText(),
+                suburbField.getText(),
+                cityField.getText(),
+                postcodeField.getText(),
+                countryField.getText(),
+                isPrimaryAddress.isSelected(),
+                isMailingAddress.isSelected());
+        AddressUpdater.updateData(customerID, address);
 
-      Email email = new Email(customerID, emailField.getText(), isPrimaryEmail.isSelected());
-      EmailUpdater.updateData(customerID, email);
+        Email email = new Email(customerID, emailField.getText(), isPrimaryEmail.isSelected());
+        EmailUpdater.updateData(customerID, email);
 
-      Phone phone =
-          new Phone(
-              customerID,
-              (String)(Object)phoneTypeBox.getValue(),  // Some wild casting here but it works :)
-              prefixField.getText(),
-              numberField.getText(),
-              isPrimaryNumber.isSelected(),
-              isTextingNumber.isSelected());
-      PhoneUpdater.updateData(customerID, phone);
+        Phone phone =
+            new Phone(
+                customerID,
+                (String) (Object) phoneTypeBox.getValue(), // Some wild casting here but it works :)
+                prefixField.getText(),
+                numberField.getText(),
+                isPrimaryNumber.isSelected(),
+                isTextingNumber.isSelected());
+        PhoneUpdater.updateData(customerID, phone);
 
-      Employer employer =
-          new Employer(
-              customerID,
-              companyNameField.getText(),
-              companyAddress1Field.getText(),
-              companyAddress2Field.getText(),
-              companySuburbField.getText(),
-              companyCityField.getText(),
-              companyPostcodeField.getText(),
-              companyCountryField.getText(),
-              employerPhoneField.getText(),
-              employerEmailField.getText(),
-              companyWebsiteField.getText(),
-              isOwner.isSelected());
-      EmployerUpdater.updateData(customerID, employer);
+        Employer employer =
+            new Employer(
+                customerID,
+                companyNameField.getText(),
+                companyAddress1Field.getText(),
+                companyAddress2Field.getText(),
+                companySuburbField.getText(),
+                companyCityField.getText(),
+                companyPostcodeField.getText(),
+                companyCountryField.getText(),
+                employerPhoneField.getText(),
+                employerEmailField.getText(),
+                companyWebsiteField.getText(),
+                isOwner.isSelected());
+        EmployerUpdater.updateData(customerID, employer);
+        // If no exception, redirect to start page
+        Main.setScene(SceneManager.AppScene.START);
+      } catch (Exception e) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("An error occurred while saving the customer");
+        alert.setContentText("Please try again later");
+        alert.showAndWait();
+      }
     }
   }
 
@@ -207,6 +217,7 @@ public class AddCustomerController {
     boolean dobPickerFlag = checkField(dobPicker);
     boolean citizenshipFieldFlag = checkField(citizenshipField);
     boolean visaFieldFlag = checkField(visaField);
+    boolean addressTypeFieldFlag = checkField(addressTypeField);
     boolean address1FieldFlag = checkField(address1Field);
     boolean suburbFieldFlag = checkField(suburbField);
     boolean cityFieldFlag = checkField(cityField);
@@ -234,6 +245,7 @@ public class AddCustomerController {
         && dobPickerFlag
         && citizenshipFieldFlag
         && visaFieldFlag
+        && addressTypeFieldFlag
         && address1FieldFlag
         && suburbFieldFlag
         && cityFieldFlag
@@ -288,8 +300,63 @@ public class AddCustomerController {
     }
     return true;
   }
+
+  private boolean validateFields() {
+    boolean emailFlag = validate(emailField, Type.EMAIL);
+    boolean employerEmailFlag = validate(employerEmailField, Type.EMAIL);
+    boolean phonePrefixFlag = validate(prefixField, Type.PHONE);
+    boolean phoneFlag = validate(numberField, Type.PHONE);
+    boolean websiteFlag = validate(companyWebsiteField, Type.WEBSITE);
+    return emailFlag && employerEmailFlag && phonePrefixFlag && phoneFlag && websiteFlag;
+  }
+
+  private boolean validate(TextField ui, Type type) {
+    boolean flag;
+    Alert alert = new Alert(AlertType.ERROR);
+    StringBuilder sb = new StringBuilder();
+    alert.setTitle("Error");
+    alert.setHeaderText("Invalid input");
+
+    sb.append("Please fix the following issues:\n");
+    if (type == Type.EMAIL) {
+      // Emails should be in the format of a@b.c
+      flag = ui.getText().matches("^.+@.+\\..+$");
+      if (!flag) {
+        ui.setStyle("-fx-border-color: red");
+        sb.append("\tInvalid Email format\n");
+      }
+    } else if (type == Type.PHONE) {
+      // Phone should be numbers
+      try {
+        Long.parseLong(ui.getText());
+        flag = true;
+      } catch (Exception e) {
+        flag = false;
+        ui.setStyle("-fx-border-color: red");
+        sb.append("\tPhone should only contain numbers\n");
+      }
+    } else if (type == Type.WEBSITE) {
+      // Website should start with www. or https://
+      flag = ui.getText().matches("^(www\\..+|https://.+)$");
+      if (!flag) {
+        ui.setStyle("-fx-border-color: red");
+        sb.append("\tInvalid Website format\n");
+      }
+    } else {
+      flag = false;
+    }
+    if (!flag) {
+      alert.setContentText(sb.toString());
+      alert.showAndWait();
+    }
+    return flag;
+  }
+
+  private enum Type {
+    EMAIL,
+    PHONE,
+    WEBSITE
+  }
 }
 
-
-// TODO: add verification to email and number fields and website
-// TODO: combobox placeholder disappeared when adding second customer
+// TODO: check address type
