@@ -1,6 +1,8 @@
 package uoa.lavs.controllers;
 
 import java.io.IOException;
+import java.time.LocalDate;
+
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -314,7 +316,7 @@ public class AddCustomerController {
         && companyWebsiteFieldFlag) {
       return true;
     }
-    errorString.append("Please fill in the required fields\n");
+    errorString.append("\tPlease fill in the required fields\n");
 
     return false;
   }
@@ -346,12 +348,13 @@ public class AddCustomerController {
   }
 
   private boolean validateFields() {
+    boolean dobFlag = validate(dobPicker, Type.DATE);
     boolean emailFlag = validate(emailField, Type.EMAIL);
     boolean employerEmailFlag = validate(employerEmailField, Type.EMAIL);
     boolean phonePrefixFlag = validate(prefixField, Type.PHONE);
     boolean phoneFlag = validate(numberField, Type.PHONE);
     boolean websiteFlag = validate(companyWebsiteField, Type.WEBSITE);
-    return emailFlag && employerEmailFlag && phonePrefixFlag && phoneFlag && websiteFlag;
+    return dobFlag && emailFlag && employerEmailFlag && phonePrefixFlag && phoneFlag && websiteFlag;
   }
 
   private boolean validate(TextField ui, Type type) {
@@ -362,7 +365,7 @@ public class AddCustomerController {
       flag = ui.getText().matches("^.+@.+\\..+$");
       if (!flag) {
         ui.setStyle("-fx-border-color: red");
-        errorString.append("Invalid email format\n");
+        errorString.append("\tInvalid email format\n");
       }
     } else if (type == Type.PHONE) {
       // Phone should be numbers
@@ -372,17 +375,31 @@ public class AddCustomerController {
       } catch (Exception e) {
         flag = false;
         ui.setStyle("-fx-border-color: red");
-        errorString.append("Phone should only contain numbers\n");
+        errorString.append("\tPhone should only contain numbers\n");
       }
     } else if (type == Type.WEBSITE) {
       // Website should start with www. or https://
       flag = ui.getText().matches("^(www\\..+|https://.+)$");
       if (!flag) {
         ui.setStyle("-fx-border-color: red");
-        errorString.append("Invalid website format\n");
+        errorString.append("\tInvalid website format\n");
       }
     } else {
       flag = false;
+    }
+
+    return flag;
+  }
+
+  private boolean validate(DatePicker ui, Type type) {
+    boolean flag;
+    LocalDate today = LocalDate.now();
+    if (today.isBefore((LocalDate)(Object)ui.getValue())) {
+      flag = false;
+      ui.setStyle("-fx-border-color: red");
+      errorString.append("\tDate cannot be before today\n");
+    } else {
+      flag = true;
     }
 
     return flag;
