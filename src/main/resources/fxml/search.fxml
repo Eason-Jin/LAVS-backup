@@ -13,7 +13,7 @@
          <font>
             <Font size="18.0" />
          </font></Button>
-      <TextField fx:id="searchField" layoutX="326.0" layoutY="55.0" prefHeight="60.0" prefWidth="500.0" promptText="Search Customers">
+      <TextField fx:id="searchField" layoutX="326.0" layoutY="55.0" onKeyPressed="#keyPressed" prefHeight="60.0" prefWidth="500.0" promptText="Search Customers">
          <font>
             <Font size="18.0" />
          </font>

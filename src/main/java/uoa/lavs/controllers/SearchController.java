@@ -12,6 +12,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager.AppScene;
 import uoa.lavs.dataoperations.customer.CustomerFinder;
@@ -34,7 +35,7 @@ public class SearchController {
         idColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));
         dobColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("dob"));
-        searchCustomers("");
+        searchCustomers();
 
         searchTable.setRowFactory(tableView -> {
             final TableRow<Customer> row = new TableRow<Customer>();
@@ -50,7 +51,7 @@ public class SearchController {
             row.selectedProperty().addListener((observable) -> {
                 if (row.isSelected() && !row.isEmpty()) {
                     searchField.clear();
-                    searchCustomers("");
+                    searchCustomers();
                     Main.setScene(AppScene.CUSTOMER_DETAILS);
                 }
             });
@@ -58,7 +59,8 @@ public class SearchController {
         });
     }
 
-    private void searchCustomers(String customerName) {
+    private void searchCustomers() {
+        String customerName = searchField.getText();
         List<Customer> customers = CustomerFinder.findCustomerByName(customerName);
 
         if (customers.isEmpty()) {
@@ -73,12 +75,19 @@ public class SearchController {
     }
 
     @FXML
+    private void keyPressed(KeyEvent event) {
+        if (event.getCode().toString().equals("ENTER")) {
+            searchCustomers();
+        }
+    }
+
+    @FXML
     private void onClickStart(ActionEvent event) throws IOException {
         Main.setScene(AppScene.START);
     }
 
     @FXML
     private void onClickSearch(ActionEvent event) {
-        searchCustomers(searchField.getText());
+        searchCustomers();
     }
 }
