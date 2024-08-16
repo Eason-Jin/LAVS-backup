@@ -1,7 +1,6 @@
-package uoa.lavs.dataoperations;
+package uoa.lavs.dataoperations.customer;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
@@ -17,38 +16,41 @@ public class CustomerLoader {
     Customer customer = new Customer();
     try {
       customer = loadFromMainframe(customerId);
-      if(customer.getName() == null) {
+      if (customer.getName() == null) {
         throw new Exception("Customer not in mainframe");
       }
     } catch (Exception e) {
       System.out.println("Mainframe load failed: " + e.getMessage());
       System.out.println("Trying to load from database");
-      customer = loadFromDatabase(customerId);
+      try {
+        customer = loadFromDatabase(customerId);
+      } catch (Exception e1) {
+        System.out.println("Database load failed: " + e1.getMessage());
+      }
     }
     return customer;
   }
 
-  private static Customer loadFromDatabase(String customerId) {
+  private static Customer loadFromDatabase(String customerId) throws Exception {
     Customer customer = new Customer();
-    try {
-      Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
-      Statement statement = connection.createStatement();
-      String query = "SELECT * FROM customer WHERE CustomerID = " + customerId + ";";
-      ResultSet resultSet = statement.executeQuery(query);
-      customer.setId(resultSet.getString("CustomerID"));
-      customer.setName(resultSet.getString("Name"));
-      String dobString = resultSet.getString("Dob");
-      LocalDate dob = LocalDate.parse(dobString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-      customer.setDob(dob);
-      customer.setCitizenship(resultSet.getString("Citizenship"));
-      customer.setOccupation(resultSet.getString("Occupation"));
-      customer.setTitle(resultSet.getString("Title"));
-      customer.setVisaType(resultSet.getString("VisaType"));
-      customer.setStatus(resultSet.getString("Status"));
-      connection.close();
-    } catch (Exception e) {
-      e.printStackTrace();
+    Connection connection = Instance.getDatabaseConnection();
+    Statement statement = connection.createStatement();
+    String query = "SELECT * FROM customer WHERE CustomerID = " + customerId + ";";
+    ResultSet resultSet = statement.executeQuery(query);
+    if (!resultSet.next()) {
+      throw new Exception("Customer not in database");
     }
+    customer.setId(resultSet.getString("CustomerID"));
+    customer.setName(resultSet.getString("Name"));
+    String dobString = resultSet.getString("Dob");
+    LocalDate dob = LocalDate.parse(dobString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    customer.setDob(dob);
+    customer.setCitizenship(resultSet.getString("Citizenship"));
+    customer.setOccupation(resultSet.getString("Occupation"));
+    customer.setTitle(resultSet.getString("Title"));
+    customer.setVisaType(resultSet.getString("VisaType"));
+    customer.setStatus(resultSet.getString("Status"));
+    connection.close();
     return customer;
   }
 

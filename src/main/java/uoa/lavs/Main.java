@@ -17,11 +17,6 @@ public class Main extends Application {
   private static Stage currentStage;
 
   public static void main(String[] args) {
-
-    // The following shows two ways of using the mainframe interface
-    // Approach #1: Use the singleton instance - this way is recommended as it provides a single
-    // configuration
-    // location (and is easy for the testers to change when needed).
     launch(args);
   }
 

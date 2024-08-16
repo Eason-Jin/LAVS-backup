@@ -1,7 +1,6 @@
-package uoa.lavs.dataoperations;
+package uoa.lavs.dataoperations.customer;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +10,6 @@ import java.util.List;
 import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomer;
-import uoa.lavs.mainframe.messages.customer.UpdateCustomerNote;
 import uoa.lavs.models.Customer;
 
 public class CustomerUpdater {
@@ -35,13 +33,13 @@ public class CustomerUpdater {
     }
   }
 
-  private static void updateDatabase(String customerID, Customer customer) throws SQLException {
+  public static void updateDatabase(String customerID, Customer customer) throws SQLException {
     boolean exists = false;
     String CHECK_SQL = "SELECT COUNT(*) FROM customer WHERE CustomerID = ?";
 
     // Check if CustomerID exists
     if (customerID != null) {
-      try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+      try (Connection connection = Instance.getDatabaseConnection();
           PreparedStatement checkStatement = connection.prepareStatement(CHECK_SQL)) {
         checkStatement.setString(1, customerID);
         try (ResultSet resultSet = checkStatement.executeQuery()) {
@@ -65,16 +63,14 @@ public class CustomerUpdater {
               + "Citizenship = COALESCE(?, Citizenship), "
               + "VisaType = COALESCE(?, VisaType), "
               + "Status = COALESCE(?, Status) "
-              + "Note = COALESCE(?, Note) "
               + "WHERE CustomerID = ?";
     } else {
       sql =
-          "INSERT INTO Customer ("
-              + "Title, Name, Dob, Occupation, Citizenship, VisaType, Status, CustomerID, Note)"
-              + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+          "INSERT INTO Customer (Title, Name, Dob, Occupation, Citizenship, VisaType, Status,"
+              + " CustomerID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     }
 
-    try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+    try (Connection connection = Instance.getDatabaseConnection();
         PreparedStatement statement =
             connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -86,7 +82,6 @@ public class CustomerUpdater {
       statement.setString(6, customer.getVisaType());
       statement.setString(7, customer.getStatus());
       statement.setString(8, customerID);
-      statement.setString(9, customer.getNotes());
 
       statement.executeUpdate();
 
@@ -101,11 +96,9 @@ public class CustomerUpdater {
     }
   }
 
-  private static String updateMainframe(String customerID, Customer customer) throws Exception {
+  public static String updateMainframe(String customerID, Customer customer) throws Exception {
     UpdateCustomer updateCustomer = new UpdateCustomer();
-    UpdateCustomerNote updateCustomerNote = new UpdateCustomerNote();
     updateCustomer.setCustomerId(customerID);
-    updateCustomerNote.setCustomerId(customerID);
 
     if (customerID != null) {
       Customer existingCustomer = CustomerLoader.loadData(customerID);
@@ -126,8 +119,6 @@ public class CustomerUpdater {
               : existingCustomer.getCitizenship());
       updateCustomer.setVisa(
           customer.getVisaType() != null ? customer.getVisaType() : existingCustomer.getVisaType());
-      updateCustomerNote.setLine(
-          1, customer.getNotes() != null ? customer.getNotes() : existingCustomer.getNotes());
     } else {
       updateCustomer.setTitle(customer.getTitle());
       updateCustomer.setName(customer.getName());
@@ -135,7 +126,6 @@ public class CustomerUpdater {
       updateCustomer.setOccupation(customer.getOccupation());
       updateCustomer.setCitizenship(customer.getCitizenship());
       updateCustomer.setVisa(customer.getVisaType());
-      updateCustomerNote.setLine(1, customer.getNotes());
     }
 
     Status status = updateCustomer.send(Instance.getConnection());

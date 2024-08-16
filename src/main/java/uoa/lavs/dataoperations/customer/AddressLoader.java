@@ -1,10 +1,8 @@
-package uoa.lavs.dataoperations;
+package uoa.lavs.dataoperations.customer;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.LoadCustomerAddress;
@@ -22,35 +20,38 @@ public class AddressLoader {
     } catch (Exception e) {
       System.out.println("Mainframe load failed: " + e.getMessage());
       System.out.println("Trying to load from database");
-      address = loadFromDatabase(customerId, number);
+      try {
+        address = loadFromDatabase(customerId, number);
+      } catch (Exception e1) {
+        System.out.println("Database load failed: " + e1.getMessage());
+      }
     }
     return address;
   }
 
-  private static Address loadFromDatabase(String customerId, int number) {
+  private static Address loadFromDatabase(String customerId, int number) throws Exception {
     Address address = new Address();
     String query = "SELECT * FROM Address WHERE CustomerID = ? AND Number = ?";
-    try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+    try (Connection connection = Instance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(query)) {
       statement.setString(1, customerId);
       statement.setInt(2, number);
       try (ResultSet resultSet = statement.executeQuery()) {
-        if (resultSet.next()) {
-          address.setCustomerId(resultSet.getString("CustomerID"));
-          address.setNumber(resultSet.getInt("Number"));
-          address.setType(resultSet.getString("Type"));
-          address.setLine1(resultSet.getString("Line1"));
-          address.setLine2(resultSet.getString("Line2"));
-          address.setSuburb(resultSet.getString("Suburb"));
-          address.setCity(resultSet.getString("City"));
-          address.setPostCode(resultSet.getString("PostCode"));
-          address.setCountry(resultSet.getString("Country"));
-          address.setIsPrimary(resultSet.getBoolean("IsPrimary"));
-          address.setIsMailing(resultSet.getBoolean("IsMailing"));
+        if (!resultSet.next()) {
+          throw new Exception("Address not in database");
         }
+        address.setCustomerId(resultSet.getString("CustomerID"));
+        address.setNumber(resultSet.getInt("Number"));
+        address.setType(resultSet.getString("Type"));
+        address.setLine1(resultSet.getString("Line1"));
+        address.setLine2(resultSet.getString("Line2"));
+        address.setSuburb(resultSet.getString("Suburb"));
+        address.setCity(resultSet.getString("City"));
+        address.setPostCode(resultSet.getString("PostCode"));
+        address.setCountry(resultSet.getString("Country"));
+        address.setIsPrimary(resultSet.getBoolean("IsPrimary"));
+        address.setIsMailing(resultSet.getBoolean("IsMailing"));
       }
-    } catch (SQLException e) {
-      e.printStackTrace();
     }
     return address;
   }

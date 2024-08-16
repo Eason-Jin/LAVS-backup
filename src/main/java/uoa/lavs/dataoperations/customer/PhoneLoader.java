@@ -1,10 +1,8 @@
-package uoa.lavs.dataoperations;
+package uoa.lavs.dataoperations.customer;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.LoadCustomerPhoneNumber;
@@ -22,31 +20,34 @@ public class PhoneLoader {
     } catch (Exception e) {
       System.out.println("Mainframe load failed: " + e.getMessage());
       System.out.println("Trying to load from database");
-      phone = loadFromDatabase(customerId, number);
+      try {
+        phone = loadFromDatabase(customerId, number);
+      } catch (Exception e1) {
+        System.out.println("Database load failed: " + e1.getMessage());
+      }
     }
     return phone;
   }
 
-  private static Phone loadFromDatabase(String customerId, int number) {
+  private static Phone loadFromDatabase(String customerId, int number) throws Exception {
     Phone phone = new Phone();
     String query = "SELECT * FROM Phone WHERE CustomerID = ? AND Number = ?";
-    try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+    try (Connection connection = Instance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(query)) {
       statement.setString(1, customerId);
       statement.setInt(2, number);
       try (ResultSet resultSet = statement.executeQuery()) {
-        if (resultSet.next()) {
-          phone.setCustomerId(resultSet.getString("CustomerID"));
-          phone.setNumber(resultSet.getInt("Number"));
-          phone.setType(resultSet.getString("Type"));
-          phone.setPrefix(resultSet.getString("Prefix"));
-          phone.setPhoneNumber(resultSet.getString("PhoneNumber"));
-          phone.setIsPrimary(resultSet.getBoolean("IsPrimary"));
-          phone.setCanSendTxt(resultSet.getBoolean("CanSendText"));
+        if (!resultSet.next()) {
+          throw new Exception("Phone number not in database");
         }
+        phone.setCustomerId(resultSet.getString("CustomerID"));
+        phone.setNumber(resultSet.getInt("Number"));
+        phone.setType(resultSet.getString("Type"));
+        phone.setPrefix(resultSet.getString("Prefix"));
+        phone.setPhoneNumber(resultSet.getString("PhoneNumber"));
+        phone.setIsPrimary(resultSet.getBoolean("IsPrimary"));
+        phone.setCanSendTxt(resultSet.getBoolean("CanSendText"));
       }
-    } catch (SQLException e) {
-      e.printStackTrace();
     }
     return phone;
   }
