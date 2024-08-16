@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomerEmail;
@@ -31,7 +32,14 @@ public class EmailUpdater {
     updateCustomerEmail.setCustomerId(customerID);
     updateCustomerEmail.setNumber(email.getNumber());
     if (email.getNumber() != null) {
-      Email existingEmail = EmailLoader.loadData(customerID, email.getNumber());
+      List<Email> existingEmails = EmailFinder.findData(customerID);
+      Email existingEmail = new Email();
+      for (Email emailOnAccount : existingEmails) {
+        if (emailOnAccount.getNumber().equals(email.getNumber())
+            && emailOnAccount.getCustomerId().equals(email.getCustomerId())) {
+          existingEmail = emailOnAccount;
+        }
+      }
       updateCustomerEmail.setAddress(
           email.getAddress() != null ? email.getAddress() : existingEmail.getAddress());
       updateCustomerEmail.setIsPrimary(
