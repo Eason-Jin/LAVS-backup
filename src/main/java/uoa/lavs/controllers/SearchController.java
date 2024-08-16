@@ -1,5 +1,6 @@
 package uoa.lavs.controllers;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -61,12 +62,14 @@ public class SearchController {
         List<Customer> customers = CustomerFinder.findCustomerByName(customerName);
 
         if (customers.isEmpty()) {
-            searchTable.getItems().clear();
-            searchTable.setPlaceholder(new Label("No customers found"));
+            Platform.runLater(() -> {
+                searchTable.getItems().clear();
+                searchTable.setPlaceholder(new Label("No customers found"));
+            });
+        } else {
+            ObservableList<Customer> observablecustomers = FXCollections.observableArrayList(customers);
+            Platform.runLater(() -> searchTable.setItems(observablecustomers));
         }
-
-        ObservableList<Customer> observablecustomers = FXCollections.observableArrayList(customers);
-        searchTable.setItems(observablecustomers);
     }
 
     @FXML
