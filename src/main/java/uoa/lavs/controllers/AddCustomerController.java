@@ -180,6 +180,7 @@ public class AddCustomerController {
     emailField.clear();
     isPrimaryEmail.setSelected(false);
     phoneTypeBox.setValue(null);
+    phoneTypeBox.setPromptText("Phone type");
     prefixField.clear();
     numberField.clear();
     isPrimaryNumber.setSelected(false);
@@ -288,3 +289,7 @@ public class AddCustomerController {
     return true;
   }
 }
+
+
+// TODO: add verification to email and number fields and website
+// TODO: combobox placeholder disappeared when adding second customer
