@@ -100,4 +100,12 @@ public class Customer {
   public void setStatus(String status) {
     this.status = status;
   }
+
+  public String getNotes() {
+    return notes;
+  }
+
+  public void setNotes(String notes) {
+    this.notes = notes;
+  }
 }
