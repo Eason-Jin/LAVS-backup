@@ -6,7 +6,10 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import uoa.lavs.SceneManager.AppScene;
+import uoa.lavs.configs.SpringConfig;
 import uoa.lavs.mainframe.Connection;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.LoadCustomer;
@@ -15,6 +18,7 @@ public class Main extends Application {
 
   private static Scene currentScene;
   private static Stage currentStage;
+  private static ApplicationContext springContext;
 
   public static void main(String[] args) {
     launch(args);
@@ -26,6 +30,7 @@ public class Main extends Application {
 
   private static FXMLLoader loadLoader(String fxml) throws IOException {
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/fxml/" + fxml + ".fxml"));
+    fxmlLoader.setControllerFactory(springContext::getBean);
     return fxmlLoader;
   }
 
@@ -35,6 +40,7 @@ public class Main extends Application {
 
   @Override
   public void start(Stage stage) throws IOException {
+    springContext = new AnnotationConfigApplicationContext(SpringConfig.class);
     Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
     SceneManager.addScene(AppScene.START, loadLoader("start").load());
     SceneManager.addScene(AppScene.ADD_CUSTOMER, loadLoader("addCustomer").load());
@@ -56,16 +62,16 @@ public class Main extends Application {
       connection.close();
     } catch (IOException e) {
       System.out.println(
-          "Something went wrong - could not close connection! The message is " + e.getMessage());
+              "Something went wrong - could not close connection! The message is " + e.getMessage());
       return;
     }
 
     if (status.getWasSuccessful()) {
       System.out.println(
-          "The send was successful: the customer name is " + testMessage.getNameFromServer());
+              "The send was successful: the customer name is " + testMessage.getNameFromServer());
     } else {
       System.out.println(
-          "Something went wrong - the send failed! The code is " + status.getErrorCode());
+              "Something went wrong - the send failed! The code is " + status.getErrorCode());
     }
   }
 }

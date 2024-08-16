@@ -1,5 +1,7 @@
 package uoa.lavs.controllers;
 
+import java.io.IOException;
+import java.util.List;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,14 +15,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager.AppScene;
 import uoa.lavs.dataoperations.customer.CustomerFinder;
 import uoa.lavs.models.Customer;
 
-import java.io.IOException;
-import java.util.List;
-
+@Controller
 public class SearchController {
 
     @FXML private Button startButton;

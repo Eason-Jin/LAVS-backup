@@ -14,26 +14,26 @@
 
 <AnchorPane prefHeight="648.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.AddCustomerController">
    <children>
-      <Button fx:id="cancelButton" layoutX="1025.0" layoutY="77.0" mnemonicParsing="false" onAction="#onClickStart" prefHeight="40.0" prefWidth="40.0" stylesheets="@../css/primer-light.css" text="cross">
+      <Button fx:id="cancelButton" layoutX="1025.0" layoutY="77.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="40.0" prefWidth="40.0" stylesheets="@../css/primer-light.css" text="cross">
          <styleClass>
             <String fx:value="danger" />
             <String fx:value="button-circle" />
             <String fx:value="cross" />
          </styleClass></Button>
-      <Button fx:id="saveButton" layoutX="973.0" layoutY="77.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" stylesheets="@../css/primer-light.css" text="tick">
+      <Button fx:id="saveButton" layoutX="973.0" layoutY="77.0" mnemonicParsing="false" onAction="#onClickSave" prefHeight="40.0" prefWidth="40.0" stylesheets="@../css/primer-light.css" text="tick">
          <styleClass>
             <String fx:value="button-circle" />
             <String fx:value="success" />
             <String fx:value="tick" />
          </styleClass>
       </Button>
-      <Button fx:id="homeButton" layoutX="20.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClickStart" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/primer-light.css" text="home">
+      <Button fx:id="homeButton" layoutX="20.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClickHome" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/primer-light.css" text="home">
          <styleClass>
             <String fx:value="button-circle" />
             <String fx:value="home" />
          </styleClass>
       </Button>
-      <Button fx:id="infoButton" layoutX="1105.0" layoutY="7.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" stylesheets="@../css/primer-light.css" text="info">
+      <Button fx:id="infoButton" layoutX="1105.0" layoutY="7.0" mnemonicParsing="false" onAction="#onClickInfo" prefHeight="40.0" prefWidth="40.0" stylesheets="@../css/primer-light.css" text="info">
          <styleClass>
             <String fx:value="button-circle" />
             <String fx:value="accent" />
@@ -49,7 +49,7 @@
                   <TextField fx:id="givenNameField" layoutX="145.0" layoutY="20.0" prefHeight="36.0" prefWidth="390.0" promptText="Given name(s)" stylesheets="@../css/primer-light.css" />
                   <DatePicker fx:id="dobPicker" layoutX="35.0" layoutY="70.0" prefHeight="25.0" prefWidth="914.0" promptText="Date of birth" stylesheets="@../css/primer-light.css" />
                   <Separator layoutX="22.0" layoutY="115.0" prefHeight="0.0" prefWidth="943.0" stylesheets="@../css/primer-light.css" />
-                  <TextField fx:id="citizenshipField" layoutX="35.0" layoutY="150.0" prefHeight="25.0" prefWidth="916.0" promptText="Citenzenship status" stylesheets="@../css/primer-light.css" />
+                  <TextField fx:id="citizenshipField" layoutX="35.0" layoutY="150.0" prefHeight="25.0" prefWidth="916.0" promptText="Citizenship status" stylesheets="@../css/primer-light.css" />
                   <TextField fx:id="visaField" layoutX="35.0" layoutY="200.0" prefHeight="25.0" prefWidth="916.0" promptText="Visa Type" stylesheets="@../css/primer-light.css" />
                   <Separator layoutX="22.0" layoutY="245.0" prefHeight="18.0" prefWidth="943.0" />
                   <TextField fx:id="address1Field" layoutX="245.0" layoutY="280.0" prefHeight="25.0" prefWidth="348.0" promptText="Address line 1" stylesheets="@../css/primer-light.css" />
@@ -88,7 +88,7 @@
                   <TextField fx:id="companyWebsiteField" layoutX="35.0" layoutY="875.0" prefHeight="36.0" prefWidth="763.0" promptText="Company website" stylesheets="@../css/primer-light.css" />
                   <TextField fx:id="jobField" layoutX="35.0" layoutY="625.0" prefHeight="25.0" prefWidth="453.0" promptText="Job" stylesheets="@../css/primer-light.css" />
                   <TextField fx:id="addressTypeField" layoutX="35.0" layoutY="280.0" prefHeight="25.0" prefWidth="200.0" promptText="Address type" stylesheets="@../css/primer-light.css" />
-                  <CheckBox layoutX="819.0" layoutY="880.0" mnemonicParsing="false" text="Is the owner" />
+                  <CheckBox fx:id="isOwner" layoutX="819.0" layoutY="880.0" mnemonicParsing="false" text="Is the owner" />
                   <TextArea fx:id="notesArea" layoutX="35.0" layoutY="955.0" prefHeight="124.0" prefWidth="916.0" promptText="Extra notes" />
                   <Separator layoutX="22.0" layoutY="920.0" prefHeight="0.0" prefWidth="943.0" stylesheets="@../css/primer-light.css" />
 
