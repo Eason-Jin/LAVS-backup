@@ -1,122 +1,151 @@
 package uoa.lavs.models;
 
 public class Employer {
-    private String customerId;
-    private Integer number;
-    private String name;
-    private String line1;
-    private String line2;
-    private String suburb;
-    private String city;
-    private String postCode;
-    private String country;
-    private String phoneNumber;
-    private String emailAddress;
-    private String website;
-    private Boolean isOwner;
+  private String customerId;
+  private Integer number;
+  private String name;
+  private String line1;
+  private String line2;
+  private String suburb;
+  private String city;
+  private String postCode;
+  private String country;
+  private String phoneNumber;
+  private String emailAddress;
+  private String website;
+  private Boolean isOwner;
 
-    // Getters and Setters
-    public String getCustomerId() {
-        return customerId;
-    }
+  public Employer(
+      String customerId,
+      String name,
+      String line1,
+      String line2,
+      String suburb,
+      String city,
+      String postCode,
+      String country,
+      String phoneNumber,
+      String emailAddress,
+      String website,
+      Boolean isOwner) {
+    this.customerId = customerId;
+    this.name = name;
+    this.line1 = line1;
+    this.line2 = line2;
+    this.suburb = suburb;
+    this.city = city;
+    this.postCode = postCode;
+    this.country = country;
+    this.phoneNumber = phoneNumber;
+    this.emailAddress = emailAddress;
+    this.website = website;
+    this.isOwner = isOwner;
+  }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
+  public Employer() {}
 
-    public Integer getNumber() {
-        return number;
-    }
+  // Getters and Setters
+  public String getCustomerId() {
+    return customerId;
+  }
 
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
+  public void setCustomerId(String customerId) {
+    this.customerId = customerId;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public Integer getNumber() {
+    return number;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setNumber(Integer number) {
+    this.number = number;
+  }
 
-    public String getLine1() {
-        return line1;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setLine1(String line1) {
-        this.line1 = line1;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public String getLine2() {
-        return line2;
-    }
+  public String getLine1() {
+    return line1;
+  }
 
-    public void setLine2(String line2) {
-        this.line2 = line2;
-    }
+  public void setLine1(String line1) {
+    this.line1 = line1;
+  }
 
-    public String getSuburb() {
-        return suburb;
-    }
+  public String getLine2() {
+    return line2;
+  }
 
-    public void setSuburb(String suburb) {
-        this.suburb = suburb;
-    }
+  public void setLine2(String line2) {
+    this.line2 = line2;
+  }
 
-    public String getCity() {
-        return city;
-    }
+  public String getSuburb() {
+    return suburb;
+  }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+  public void setSuburb(String suburb) {
+    this.suburb = suburb;
+  }
 
-    public String getPostCode() {
-        return postCode;
-    }
+  public String getCity() {
+    return city;
+  }
 
-    public void setPostCode(String postCode) {
-        this.postCode = postCode;
-    }
+  public void setCity(String city) {
+    this.city = city;
+  }
 
-    public String getCountry() {
-        return country;
-    }
+  public String getPostCode() {
+    return postCode;
+  }
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
+  public void setPostCode(String postCode) {
+    this.postCode = postCode;
+  }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
+  public String getCountry() {
+    return country;
+  }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+  public void setCountry(String country) {
+    this.country = country;
+  }
 
-    public String getEmailAddress() {
-        return emailAddress;
-    }
+  public String getPhoneNumber() {
+    return phoneNumber;
+  }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
+  public void setPhoneNumber(String phoneNumber) {
+    this.phoneNumber = phoneNumber;
+  }
 
-    public String getWebsite() {
-        return website;
-    }
+  public String getEmailAddress() {
+    return emailAddress;
+  }
 
-    public void setWebsite(String website) {
-        this.website = website;
-    }
+  public void setEmailAddress(String emailAddress) {
+    this.emailAddress = emailAddress;
+  }
 
-    public Boolean getIsOwner() {
-        return isOwner;
-    }
+  public String getWebsite() {
+    return website;
+  }
 
-    public void setIsOwner(Boolean isOwner) {
-        this.isOwner = isOwner;
-    }
+  public void setWebsite(String website) {
+    this.website = website;
+  }
+
+  public Boolean getIsOwner() {
+    return isOwner;
+  }
+
+  public void setIsOwner(Boolean isOwner) {
+    this.isOwner = isOwner;
+  }
 }

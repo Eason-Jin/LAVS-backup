@@ -1,7 +1,7 @@
 package uoa.lavs.mainframe.simulator;
 
 import okhttp3.*;
-import uoa.lavs.mainframe.Connection;
+import uoa.lavs.mainframe.ConnectionWithState;
 import uoa.lavs.mainframe.MessageErrorStatus;
 
 import javax.net.ssl.SSLContext;
@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
-public class HttpConnection implements Connection {
+public class HttpConnection implements ConnectionWithState {
     public static final MediaType MEDIA_TYPE_DATA = MediaType.parse("text/plain; charset=utf-8");
 
     private final OkHttpClient client;
@@ -80,5 +80,22 @@ public class HttpConnection implements Connection {
     @Override
     public void close() throws IOException {
         client.dispatcher().executorService().shutdown();
+    }
+
+    @Override
+    public boolean isConnected() {
+        Request httpRequest = new Request.Builder()
+                .url(baseUrl + "api/v1/request")
+                .get()
+                .build();
+
+        try (Response httpResponse = client.newCall(httpRequest).execute()) {
+            if (!httpResponse.isSuccessful()) throw new IOException("Unexpected code " + httpResponse);
+
+            String data = httpResponse.body().string();
+            return data.equalsIgnoreCase("ok");
+        } catch (IOException ex) {
+            return false;
+        }
     }
 }
