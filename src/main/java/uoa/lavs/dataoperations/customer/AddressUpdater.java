@@ -1,7 +1,6 @@
-package uoa.lavs.dataoperations;
+package uoa.lavs.dataoperations.customer;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -80,7 +79,7 @@ public class AddressUpdater {
     String CHECK_SQL = "SELECT COUNT(*) FROM Address WHERE CustomerID = ? AND Number = ?";
 
     if (customerID != null && address.getNumber() != null) {
-      try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+      try (Connection connection = Instance.getDatabaseConnection();
           PreparedStatement checkStatement = connection.prepareStatement(CHECK_SQL)) {
         checkStatement.setString(1, customerID);
         checkStatement.setInt(2, address.getNumber());
@@ -112,7 +111,7 @@ public class AddressUpdater {
               + " IsMailing, CustomerID, Number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     }
 
-    try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+    try (Connection connection = Instance.getDatabaseConnection();
         PreparedStatement statement =
             connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 

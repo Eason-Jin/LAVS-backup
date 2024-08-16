@@ -3,18 +3,13 @@ package uoa.lavs;
 import atlantafx.base.theme.PrimerLight;
 import java.io.IOException;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import uoa.lavs.SceneManager.AppScene;
 import uoa.lavs.mainframe.Connection;
-import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.LoadCustomer;
-import uoa.lavs.mainframe.simulator.RecorderConnection;
-import uoa.lavs.mainframe.simulator.SimpleReplayConnection;
 
 public class Main extends Application {
 
@@ -22,13 +17,6 @@ public class Main extends Application {
   private static Stage currentStage;
 
   public static void main(String[] args) {
-
-    // The following shows two ways of using the mainframe interface
-    // Approach #1: Use the singleton instance - this way is recommended as it provides a single
-    // configuration
-    // location (and is easy for the testers to change when needed).
-    Connection connection = Instance.getConnection();
-    executeTestMessage(connection);
     launch(args);
   }
 

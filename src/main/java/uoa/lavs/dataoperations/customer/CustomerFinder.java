@@ -1,7 +1,6 @@
-package uoa.lavs.dataoperations;
+package uoa.lavs.dataoperations.customer;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
@@ -75,7 +74,7 @@ public class CustomerFinder {
 
   private static List<Customer> findFromDatabase(String customerId) throws Exception {
     List<Customer> customers = new ArrayList<>();
-    Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+    Connection connection = Instance.getDatabaseConnection();
     Statement statement = connection.createStatement();
     String query = "SELECT * FROM customer WHERE CustomerID LIKE '%" + customerId + "%'";
     ResultSet resultSet = statement.executeQuery(query);
@@ -122,7 +121,7 @@ public class CustomerFinder {
 
   private static List<Customer> findFromDatabaseByName(String customerName) throws Exception {
     List<Customer> customers = new ArrayList<>();
-    Connection connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+    Connection connection = Instance.getDatabaseConnection();
     Statement statement = connection.createStatement();
     String query = "SELECT * FROM customer WHERE Name LIKE '%" + customerName + "%'";
     ResultSet resultSet = statement.executeQuery(query);
