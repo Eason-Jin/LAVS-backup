@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -32,17 +33,31 @@ public class SearchController {
         idColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));
         dobColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("dob"));
-        searchTable.setPlaceholder(new Label(""));
+        searchCustomers("");
+
+        searchTable.setRowFactory(tableView -> {
+            final TableRow<Customer> row = new TableRow<Customer>();
+            row.hoverProperty().addListener((observable) -> {
+                if (row.isHover() && !row.isEmpty()) {
+                    row.styleProperty().set("-fx-background-color: #f0f0f0");
+                } else {
+                    row.styleProperty().set("-fx-background-color: none");
+                    row.styleProperty().set("-fx-border-width: 5");
+                }
+            });
+
+            row.selectedProperty().addListener((observable) -> {
+                if (row.isSelected() && !row.isEmpty()) {
+                    searchField.clear();
+                    searchCustomers("");
+                    Main.setScene(AppScene.CUSTOMER_DETAILS);
+                }
+            });
+            return row;
+        });
     }
 
-    @FXML
-    private void onClickStart(ActionEvent event) throws IOException {
-        Main.setScene(AppScene.START);
-    }
-
-    @FXML
-    private void onClickSearch(ActionEvent event) {
-        String customerName = searchField.getText();
+    private void searchCustomers(String customerName) {
         List<Customer> customers = CustomerFinder.findCustomerByName(customerName);
 
         if (customers.isEmpty()) {
@@ -52,5 +67,15 @@ public class SearchController {
 
         ObservableList<Customer> observablecustomers = FXCollections.observableArrayList(customers);
         searchTable.setItems(observablecustomers);
+    }
+
+    @FXML
+    private void onClickStart(ActionEvent event) throws IOException {
+        Main.setScene(AppScene.START);
+    }
+
+    @FXML
+    private void onClickSearch(ActionEvent event) {
+        searchCustomers(searchField.getText());
     }
 }
