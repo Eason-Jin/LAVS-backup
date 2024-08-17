@@ -561,7 +561,6 @@ Text {
   -color-button-fg-hover: -color-fg-emphasis;
 }
 .home {
-  -color-button-border-pressed: transparent;
   -fx-background-image: url("../images/home_black.png");
   -fx-background-repeat: no-repeat;
   -fx-background-position: center;
@@ -585,11 +584,16 @@ Text {
   -color-button-fg-pressed: -color-fg-emphasis;
 }
 .tick {
-  -color-button-border-pressed: transparent;
   -fx-background-image: url("../images/tick.png");
   -fx-background-repeat: no-repeat;
   -fx-background-position: center;
   -fx-background-size: 70%;
+}
+.add {
+  -fx-background-image: url("../images/add.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: center;
+  -fx-background-size: 60%;
 }
 .button.success.button-outlined {
   -color-button-bg: -color-bg-default;

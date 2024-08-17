@@ -2,20 +2,19 @@ package uoa.lavs.controllers;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import org.springframework.stereotype.Controller;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Control;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager;
 import uoa.lavs.dataoperations.customer.AddressUpdater;
@@ -78,6 +77,31 @@ public class AddCustomerController {
 
   @FXML private TextArea notesArea;
 
+  @FXML private TabPane detailsTabPane;
+
+  @FXML private FlowPane addressFlowPane;
+  @FXML private Pane addressPane;
+  @FXML private AnchorPane addressScrollAnchorPane;
+
+  @FXML private FlowPane emailFlowPane;
+  @FXML private Pane emailPane;
+  @FXML private FlowPane phoneFlowPane;
+  @FXML private Pane phonePane;
+  @FXML private AnchorPane contactScrollAnchorPane;
+
+  @FXML private FlowPane employmentFlowPane;
+  @FXML private Pane employmentPane;
+  @FXML private AnchorPane employmentScrollAnchorPane;
+
+  private int initialCounter = 2;
+  private int addressCounter = initialCounter;
+  private int phoneCounter = initialCounter;
+  private int emailCounter = initialCounter;
+  private int employmentCounter = initialCounter;
+  private Map<String, TextField> textFields = new HashMap<>();
+  private Map<String, CheckBox> checkBoxes = new HashMap<>();
+  private Map<String, ComboBox<FXCollections>> comboBoxes = new HashMap<>();
+
   private Alert alert;
   private StringBuilder errorString;
 
@@ -87,11 +111,124 @@ public class AddCustomerController {
     alert.setTitle("Error");
     alert.setHeaderText("Please fix the following issues:");
     errorString = new StringBuilder();
+
+    addElementsToMap(addressPane);
+    addElementsToMap(emailPane);
+    addElementsToMap(phonePane);
+    addElementsToMap(employmentPane);
+  }
+
+  private void addElementsToMap(Pane pane) {
+    for (var node : pane.getChildren()) {
+      if (node instanceof TextField) {
+        textFields.put(node.getId(), (TextField) node);
+      }
+      else if (node instanceof CheckBox) {
+        checkBoxes.put(node.getId(), (CheckBox) node);
+      }
+      else if (node instanceof ComboBox) {
+        comboBoxes.put(node.getId(), (ComboBox<FXCollections>) node);
+      }
+      else {
+        continue;
+      }
+    }
   }
 
   @FXML
   private void onClickHome(ActionEvent event) throws IOException {
+    clearAllFields();
+    resetFieldStyle();
+    resetAddresses();
     Main.setScene(SceneManager.AppScene.START);
+  }
+
+  private Pane addNewField(Pane pane, int counter) {
+    List<Node> nodesCopy = new ArrayList<>(pane.getChildrenUnmodifiable());
+    Pane newPane = new Pane();
+    newPane.setId(pane.getId() + counter);
+    newPane.setPrefWidth(pane.getPrefWidth());
+    newPane.setPrefHeight(pane.getPrefHeight());
+    for (var node : nodesCopy) {
+      if (node instanceof TextField) {
+        TextField newTextField = new TextField();
+        newTextField.setPromptText(((TextField) node).getPromptText());
+        newTextField.setLayoutX(node.getLayoutX());
+        newTextField.setLayoutY(node.getLayoutY());
+        newTextField.setPrefWidth(((TextField) node).getPrefWidth());
+        newTextField.setPrefHeight(((TextField) node).getPrefHeight());
+        String newFxId = node.getId() + counter;
+        newTextField.setId(newFxId);
+        newPane.getChildren().add(newTextField);
+        textFields.put(newFxId, newTextField);
+      }
+      else if (node instanceof CheckBox) {
+        CheckBox newCheckBox = new CheckBox(((CheckBox) node).getText());
+        newCheckBox.setLayoutX(node.getLayoutX());
+        newCheckBox.setLayoutY(node.getLayoutY());
+        String newFxId = node.getId() + counter;
+        newCheckBox.setId(newFxId);
+        newPane.getChildren().add(newCheckBox);
+        checkBoxes.put(newFxId, newCheckBox);
+      }
+      else if (node instanceof ComboBox) {
+        ComboBox<FXCollections> newComboBox = new ComboBox<>();
+        newComboBox.setPromptText(((ComboBox<FXCollections>) node).getPromptText());
+        newComboBox.setItems(FXCollections.observableArrayList(((ComboBox<FXCollections>) node).getItems()));
+        newComboBox.setLayoutX(node.getLayoutX());
+        newComboBox.setLayoutY(node.getLayoutY());
+        newComboBox.setPrefWidth(((ComboBox<FXCollections>) node).getPrefWidth());
+        newComboBox.setPrefHeight(((ComboBox<FXCollections>) node).getPrefHeight());
+        String newFxId = node.getId() + counter;
+        newComboBox.setId(newFxId);
+        newPane.getChildren().add(newComboBox);
+        comboBoxes.put(newFxId, newComboBox);
+      }
+      else if (node instanceof Separator) {
+        Separator newSeparator = new Separator();
+        newSeparator.setPrefWidth(((Separator) node).getPrefWidth());
+        newSeparator.setPrefHeight(((Separator) node).getPrefHeight());
+        newSeparator.setLayoutX(node.getLayoutX());
+        newSeparator.setLayoutY(node.getLayoutY());
+        newPane.getChildren().add(newSeparator);
+      }
+      else {
+        continue;
+      }
+    }
+    return newPane;
+  }
+
+  @FXML
+  private void onClickAddAddress(ActionEvent event) throws IOException {
+    Pane newAddressPane = addNewField(addressPane, addressCounter);
+    addressCounter++;
+    addressScrollAnchorPane.setPrefHeight(addressScrollAnchorPane.getPrefHeight()+newAddressPane.getPrefHeight()+addressFlowPane.getVgap());
+    addressFlowPane.getChildren().add(newAddressPane);
+  }
+
+  @FXML
+  private void onClickAddPhone(ActionEvent event) throws IOException {
+    Pane newPhonePane = addNewField(phonePane, phoneCounter);
+    phoneCounter++;
+    contactScrollAnchorPane.setPrefHeight(contactScrollAnchorPane.getPrefHeight()+newPhonePane.getPrefHeight()+phoneFlowPane.getVgap());
+    phoneFlowPane.getChildren().add(newPhonePane);
+  }
+
+  @FXML
+  private void onClickAddEmail(ActionEvent event) throws IOException {
+    Pane newEmailPane = addNewField(emailPane, emailCounter);
+    emailCounter++;
+    contactScrollAnchorPane.setPrefHeight(contactScrollAnchorPane.getPrefHeight()+newEmailPane.getPrefHeight()+emailFlowPane.getVgap());
+    emailFlowPane.getChildren().add(newEmailPane);
+  }
+
+  @FXML
+  private void onClickAddEmployment(ActionEvent event) throws IOException {
+    Pane newEmploymentPane = addNewField(employmentPane, employmentCounter);
+    employmentCounter++;
+    employmentScrollAnchorPane.setPrefHeight(employmentScrollAnchorPane.getPrefHeight()+newEmploymentPane.getPrefHeight()+employmentFlowPane.getVgap());
+    employmentFlowPane.getChildren().add(newEmploymentPane);
   }
 
   @FXML
@@ -193,6 +330,15 @@ public class AddCustomerController {
   @FXML
   private void onClickInfo(ActionEvent event) {
     System.out.println("Info button clicked");
+  }
+
+  private void resetAddresses() {
+    Pane temp = addressPane;
+    addressFlowPane.getChildren().clear();
+    addressFlowPane.getChildren().add(temp);
+    addressScrollAnchorPane.setPrefHeight(addressScrollAnchorPane.getPrefHeight()-(addressCounter- initialCounter)*(addressPane.getPrefHeight()+addressFlowPane.getVgap()));
+    addressCounter = 1;
+    detailsTabPane.getSelectionModel().select(0);
   }
 
   private void clearAllFields() {

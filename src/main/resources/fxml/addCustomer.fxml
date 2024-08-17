@@ -6,6 +6,9 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
@@ -13,45 +16,55 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="648.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.AddCustomerController">
    <children>
-      <Button fx:id="cancelButton" layoutX="1025.0" layoutY="77.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="40.0" prefWidth="40.0" stylesheets="@../css/primer-light.css" text="cross">
+      <Button fx:id="cancelButton" layoutX="1025.0" layoutY="77.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="40.0" prefWidth="40.0" stylesheets="@../css/primer-light.css">
          <styleClass>
             <String fx:value="danger" />
             <String fx:value="button-circle" />
             <String fx:value="cross" />
          </styleClass></Button>
-      <Button fx:id="saveButton" layoutX="973.0" layoutY="77.0" mnemonicParsing="false" onAction="#onClickSave" prefHeight="40.0" prefWidth="40.0" stylesheets="@../css/primer-light.css" text="tick">
+      <Button fx:id="saveButton" layoutX="973.0" layoutY="77.0" mnemonicParsing="false" onAction="#onClickSave" prefHeight="40.0" prefWidth="40.0" stylesheets="@../css/primer-light.css">
          <styleClass>
             <String fx:value="button-circle" />
             <String fx:value="success" />
             <String fx:value="tick" />
          </styleClass>
       </Button>
-      <Button fx:id="homeButton" layoutX="20.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClickHome" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/primer-light.css" text="home">
+      <Button fx:id="homeButton" layoutX="20.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClickHome" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/primer-light.css">
          <styleClass>
             <String fx:value="button-circle" />
             <String fx:value="home" />
          </styleClass>
       </Button>
-      <Button fx:id="infoButton" layoutX="1105.0" layoutY="7.0" mnemonicParsing="false" onAction="#onClickInfo" prefHeight="40.0" prefWidth="40.0" stylesheets="@../css/primer-light.css" text="info">
+      <Button fx:id="infoButton" layoutX="1104.0" layoutY="12.0" mnemonicParsing="false" onAction="#onClickInfo" prefHeight="40.0" prefWidth="40.0" stylesheets="@../css/primer-light.css">
          <styleClass>
             <String fx:value="button-circle" />
             <String fx:value="accent" />
             <String fx:value="info" />
          </styleClass>
       </Button>
-      <TabPane layoutX="76.0" layoutY="130.0" prefHeight="516.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="detailsTabPane" layoutX="76.0" layoutY="130.0" prefHeight="518.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab fx:id="generalDetailsTab" text="General Details">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="1000.0">
                      <children>
-                        <TextField fx:id="titleField" layoutX="25.0" layoutY="25.0" prefHeight="35.0" prefWidth="120.0" promptText="Title" stylesheets="@../css/primer-light.css" />
-                        <TextField fx:id="familyNameField" layoutX="570.0" layoutY="25.0" prefHeight="35.0" prefWidth="405.0" promptText="Family name" stylesheets="@../css/primer-light.css" />
-                        <TextField fx:id="givenNameField" layoutX="155.0" layoutY="25.0" prefHeight="35.0" prefWidth="405.0" promptText="Given name(s)" stylesheets="@../css/primer-light.css" />
-                        <DatePicker fx:id="dobPicker" layoutX="25.0" layoutY="75.0" prefHeight="35.0" prefWidth="950.0" promptText="Date of birth" stylesheets="@../css/primer-light.css" />
+                        <Pane layoutX="25.0" layoutY="55.0" prefHeight="85.0" prefWidth="950.0">
+                           <children>
+                              <TextField fx:id="titleField" prefHeight="35.0" prefWidth="120.0" promptText="Title" stylesheets="@../css/primer-light.css" />
+                              <TextField fx:id="familyNameField" layoutX="130.0" prefHeight="35.0" prefWidth="405.0" promptText="Family name" stylesheets="@../css/primer-light.css" />
+                              <TextField fx:id="givenNameField" layoutX="545.0" prefHeight="35.0" prefWidth="405.0" promptText="Given name(s)" stylesheets="@../css/primer-light.css" />
+                              <DatePicker fx:id="dobPicker" layoutY="50.0" prefHeight="35.0" prefWidth="950.0" promptText="Date of birth" stylesheets="@../css/primer-light.css" />
+                           </children>
+                        </Pane>
+                        <Label alignment="TOP_LEFT" contentDisplay="TOP" layoutX="15.0" layoutY="15.0" text="General Details">
+                           <font>
+                              <Font name="Calibri" size="30.0" />
+                           </font>
+                        </Label>
                      </children>
                   </AnchorPane>
             </content>
@@ -60,33 +73,61 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="citizenshipField" layoutX="25.0" layoutY="25.0" prefHeight="35.0" prefWidth="950.0" promptText="Citizenship status" stylesheets="@../css/primer-light.css" />
-                        <TextField fx:id="visaField" layoutX="25.0" layoutY="75.0" prefHeight="35.0" prefWidth="950.0" promptText="Visa Type" stylesheets="@../css/primer-light.css" />
+                        <TextField fx:id="citizenshipField" layoutX="25.0" layoutY="55.0" prefHeight="35.0" prefWidth="950.0" promptText="Citizenship status" stylesheets="@../css/primer-light.css" />
+                        <TextField fx:id="visaField" layoutX="25.0" layoutY="105.0" prefHeight="35.0" prefWidth="950.0" promptText="Visa Type" stylesheets="@../css/primer-light.css" />
+                        <Label layoutX="15.0" layoutY="15.0" text="Status">
+                           <font>
+                              <Font name="Calibri" size="30.0" />
+                           </font>
+                        </Label>
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
             <Tab fx:id="addressTab" text="Address">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="176.0" prefWidth="1000.0">
                      <children>
-                        <FlowPane fx:id="addressFLowPane" layoutX="25.0" layoutY="25.0" prefHeight="67.0" prefWidth="950.0" vgap="15.0">
-                           <children>
-                              <Pane fx:id="addressPane1" prefHeight="182.0" prefWidth="950.0">
+                        <ScrollPane fx:id="addressScrollPane" hbarPolicy="NEVER" prefHeight="486.0" prefWidth="1000.0">
+                          <content>
+                            <AnchorPane fx:id="addressScrollAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="247.0" prefWidth="1000.0">
                                  <children>
-                                    <TextField fx:id="address1Field1" layoutX="210.0" prefHeight="35.0" prefWidth="365.0" promptText="Address line 1" stylesheets="@../css/primer-light.css" />
-                                    <TextField fx:id="address2Field1" layoutX="585.0" prefHeight="35.0" prefWidth="365.0" promptText="Address line 2" stylesheets="@../css/primer-light.css" />
-                                    <TextField fx:id="suburbField1" layoutY="50.0" prefHeight="35.0" prefWidth="470.0" promptText="Suburb" stylesheets="@../css/primer-light.css" />
-                                    <TextField fx:id="cityField1" layoutX="480.0" layoutY="50.0" prefHeight="35.0" prefWidth="470.0" promptText="City" stylesheets="@../css/primer-light.css" />
-                                    <TextField fx:id="postcodeField1" layoutY="100.0" prefHeight="35.0" prefWidth="470.0" promptText="Postcode" stylesheets="@../css/primer-light.css" />
-                                    <TextField fx:id="countryField1" layoutX="480.0" layoutY="100.0" prefHeight="35.0" prefWidth="470.0" promptText="Country" stylesheets="@../css/primer-light.css" />
-                                    <CheckBox fx:id="isPrimaryAddress1" layoutX="16.0" layoutY="149.0" mnemonicParsing="false" text="Primary address" />
-                                    <CheckBox fx:id="isMailingAddress1" layoutX="178.0" layoutY="149.0" mnemonicParsing="false" text="Use as mailing address" />
-                                    <TextField fx:id="addressTypeField1" prefHeight="35.0" prefWidth="200.0" promptText="Address type" stylesheets="@../css/primer-light.css" />
+                                    <FlowPane fx:id="addressFlowPane" layoutX="25.0" layoutY="55.0" prefHeight="67.0" prefWidth="950.0" vgap="15.0">
+                                       <children>
+                                          <Pane fx:id="addressPane" prefHeight="190.0" prefWidth="950.0" stylesheets="@../css/primer-light.css">
+                                             <children>
+                                                <TextField fx:id="addressTypeField" prefHeight="35.0" prefWidth="200.0" promptText="Address type" stylesheets="@../css/primer-light.css" />
+                                                <TextField fx:id="address1Field" layoutX="210.0" prefHeight="35.0" prefWidth="365.0" promptText="Address line 1" stylesheets="@../css/primer-light.css" />
+                                                <TextField fx:id="address2Field" layoutX="585.0" prefHeight="35.0" prefWidth="365.0" promptText="Address line 2" stylesheets="@../css/primer-light.css" />
+                                                <TextField fx:id="suburbField" layoutY="50.0" prefHeight="35.0" prefWidth="470.0" promptText="Suburb" stylesheets="@../css/primer-light.css" />
+                                                <TextField fx:id="cityField" layoutX="480.0" layoutY="50.0" prefHeight="35.0" prefWidth="470.0" promptText="City" stylesheets="@../css/primer-light.css" />
+                                                <TextField fx:id="postcodeField" layoutY="100.0" prefHeight="35.0" prefWidth="470.0" promptText="Postcode" stylesheets="@../css/primer-light.css" />
+                                                <TextField fx:id="countryField" layoutX="480.0" layoutY="100.0" prefHeight="35.0" prefWidth="470.0" promptText="Country" stylesheets="@../css/primer-light.css" />
+                                                <CheckBox fx:id="isPrimaryAddress" layoutX="26.0" layoutY="151.0" mnemonicParsing="false" text="Primary address" />
+                                                <CheckBox fx:id="isMailingAddress" layoutX="187.0" layoutY="151.0" mnemonicParsing="false" text="Use as mailing address" />
+                                                <Separator layoutY="180.0" prefWidth="950.0" />
+                                             </children>
+                                          </Pane>
+                                       </children>
+                                    </FlowPane>
+                                    <Button alignment="CENTER" layoutX="945.0" layoutY="15.0" mnemonicParsing="false" onAction="#onClickAddAddress" prefHeight="30.0" prefWidth="30.0" style="-color-button-bg: -color-accent-5;" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                       <styleClass>
+                                          <String fx:value="button-circle" />
+                                          <String fx:value="add" />
+                                       </styleClass>
+                                    </Button>
+                                    <Label layoutX="15.0" layoutY="15.0" text="Address">
+                                       <font>
+                                          <Font name="Calibri" size="30.0" />
+                                       </font>
+                                    </Label>
                                  </children>
-                              </Pane>
-                           </children>
-                        </FlowPane>
+                              </AnchorPane>
+                          </content>
+                        </ScrollPane>
                      </children>
                   </AnchorPane>
                </content>
@@ -95,40 +136,86 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <FlowPane fx:id="contactDetailsFlowPane" layoutX="25.0" layoutY="25.0" prefHeight="298.0" prefWidth="950.0" vgap="25.0">
-                           <children>
-                              <FlowPane fx:id="emailFlowPane" prefHeight="35.0" prefWidth="950.0" vgap="15.0">
+                        <ScrollPane fx:id="phoneScrollAnchorPane" prefHeight="486.0" prefWidth="1000.0">
+                          <content>
+                            <AnchorPane fx:id="contactScrollAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="217.0" prefWidth="1000.0">
                                  <children>
-                                    <Pane fx:id="emailPane1" prefHeight="35.0" prefWidth="950.0">
+                                    <Pane prefHeight="50.0" prefWidth="1000.0">
                                        <children>
-                                          <TextField fx:id="emailField1" prefHeight="35.0" prefWidth="791.0" promptText="Email" stylesheets="@../css/primer-light.css" />
-                                          <CheckBox fx:id="isPrimaryEmail1" layoutX="813.0" layoutY="7.0" mnemonicParsing="false" text="Primary email" />
+                                          <Label layoutX="15.0" layoutY="15.0" text="Email">
+                                             <font>
+                                                <Font name="Calibri" size="30.0" />
+                                             </font>
+                                          </Label>
+                                          <Button alignment="CENTER" layoutX="945.0" layoutY="15.0" mnemonicParsing="false" onAction="#onClickAddEmail" prefHeight="30.0" prefWidth="30.0" style="-color-button-bg: -color-accent-5;" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
+                                             <font>
+                                                <Font size="1.0" />
+                                             </font>
+                                             <styleClass>
+                                                <String fx:value="button-circle" />
+                                                <String fx:value="add" />
+                                             </styleClass>
+                                          </Button>
                                        </children>
                                     </Pane>
-                                 </children>
-                              </FlowPane>
-                              <FlowPane fx:id="phoneFlowPane" prefHeight="35.0" prefWidth="950.0" vgap="15.0">
-                                 <children>
-                                    <Pane fx:id="phonePane1" prefHeight="35.0" prefWidth="950.0">
+                                    <FlowPane fx:id="contactDetailsFlowPane" layoutY="55.0" prefHeight="170.0" prefWidth="1000.0" vgap="5.0">
                                        <children>
-                                          <ComboBox fx:id="phoneTypeBox1" prefHeight="35.0" prefWidth="150.0" promptText="Phone type">
-                                             <items>
-                                                <FXCollections fx:factory="observableArrayList">
-                                                   <String fx:value="Mobile" />
-                                                   <String fx:value="Landline" />
-                                                </FXCollections>
-                                             </items>
-                                          </ComboBox>
-                                          <TextField fx:id="prefixField1" layoutX="160.0" prefHeight="35.0" prefWidth="125.0" promptText="Prefix" stylesheets="@../css/primer-light.css" />
-                                          <TextField fx:id="numberField1" layoutX="295.0" prefHeight="35.0" prefWidth="275.0" promptText="Number" stylesheets="@../css/primer-light.css" />
-                                          <CheckBox fx:id="isTextingNumber1" layoutX="595.0" layoutY="7.0" mnemonicParsing="false" text="Send texts to this number" />
-                                          <CheckBox fx:id="isPrimaryNumber1" layoutX="799.0" layoutY="7.0" mnemonicParsing="false" text="Primary number" />
+                                          <FlowPane fx:id="emailFlowPane" prefHeight="45.0" prefWidth="1000.0" vgap="15.0">
+                                             <children>
+                                                <Pane fx:id="emailPane" layoutX="25.0" layoutY="25.0" prefHeight="50.0" prefWidth="1000.0">
+                                                   <children>
+                                                      <TextField fx:id="emailField" layoutX="25.0" prefHeight="35.0" prefWidth="791.0" promptText="Email" stylesheets="@../css/primer-light.css" />
+                                                      <CheckBox fx:id="isPrimaryEmail" layoutX="838.0" layoutY="7.0" mnemonicParsing="false" text="Primary email" />
+                                                      <Separator layoutX="25.0" layoutY="40.0" prefWidth="950.0" />
+                                                   </children>
+                                                </Pane>
+                                             </children>
+                                          </FlowPane>
+                                          <Pane prefHeight="50.0" prefWidth="1000.0">
+                                             <children>
+                                                <Label layoutX="15.0" layoutY="15.0" text="Phone">
+                                                   <font>
+                                                      <Font name="Calibri" size="30.0" />
+                                                   </font>
+                                                </Label>
+                                                <Button alignment="CENTER" layoutX="945.0" layoutY="15.0" mnemonicParsing="false" onAction="#onClickAddPhone" prefHeight="30.0" prefWidth="30.0" style="-color-button-bg: -color-accent-5;" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
+                                                   <font>
+                                                      <Font size="1.0" />
+                                                   </font>
+                                                   <styleClass>
+                                                      <String fx:value="button-circle" />
+                                                      <String fx:value="add" />
+                                                   </styleClass>
+                                                </Button>
+                                             </children>
+                                          </Pane>
+                                          <FlowPane fx:id="phoneFlowPane" prefHeight="45.0" prefWidth="1000.0" vgap="15.0">
+                                             <children>
+                                                <Pane fx:id="phonePane" prefHeight="50.0" prefWidth="1000.0">
+                                                   <children>
+                                                      <ComboBox fx:id="phoneTypeBox" layoutX="25.0" prefHeight="35.0" prefWidth="150.0" promptText="Phone type">
+                                                         <items>
+                                                            <FXCollections fx:factory="observableArrayList">
+                                                               <String fx:value="Mobile" />
+                                                               <String fx:value="Landline" />
+                                                            </FXCollections>
+                                                         </items>
+                                                      </ComboBox>
+                                                      <TextField fx:id="prefixField" layoutX="185.0" prefHeight="35.0" prefWidth="125.0" promptText="Prefix" stylesheets="@../css/primer-light.css" />
+                                                      <TextField fx:id="numberField" layoutX="320.0" prefHeight="35.0" prefWidth="275.0" promptText="Number" stylesheets="@../css/primer-light.css" />
+                                                      <CheckBox fx:id="isTextingNumber" layoutX="620.0" layoutY="7.0" mnemonicParsing="false" text="Send texts to this number" />
+                                                      <CheckBox fx:id="isPrimaryNumber" layoutX="825.0" layoutY="7.0" mnemonicParsing="false" text="Primary number" />
+                                                      <Separator layoutX="25.0" layoutY="40.0" prefWidth="950.0" />
+                                                   </children>
+                                                </Pane>
+                                             </children>
+                                          </FlowPane>
                                        </children>
-                                    </Pane>
+                                    </FlowPane>
                                  </children>
-                              </FlowPane>
-                           </children>
-                        </FlowPane>
+                              </AnchorPane>
+                          </content>
+                        </ScrollPane>
                      </children>
                   </AnchorPane>
                </content>
@@ -137,26 +224,49 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <FlowPane fx:id="employmentFlowPane" layoutX="25.0" layoutY="25.0" prefHeight="314.0" prefWidth="950.0" vgap="15.0">
-                           <children>
-                              <Pane fx:id="employmentPane1" prefHeight="285.0" prefWidth="950.0">
+                        <ScrollPane prefHeight="486.0" prefWidth="1000.0">
+                          <content>
+                            <AnchorPane fx:id="employmentScrollAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="363.0" prefWidth="1000.0">
                                  <children>
-                                    <TextField fx:id="companyNameField1" layoutX="480.0" prefHeight="35.0" prefWidth="470.0" promptText="Company name" stylesheets="@../css/primer-light.css" />
-                                    <TextField fx:id="companyAddress1Field1" layoutY="50.0" prefHeight="35.0" prefWidth="470.0" promptText="Address line 1" stylesheets="@../css/primer-light.css" />
-                                    <TextField fx:id="companyAddress2Field1" layoutX="480.0" layoutY="50.0" prefHeight="35.0" prefWidth="470.0" promptText="Address line 2" stylesheets="@../css/primer-light.css" />
-                                    <TextField fx:id="companySuburbField1" layoutY="100.0" prefHeight="35.0" prefWidth="470.0" promptText="Suburb" stylesheets="@../css/primer-light.css" />
-                                    <TextField fx:id="companyCityField1" layoutX="480.0" layoutY="100.0" prefHeight="35.0" prefWidth="470.0" promptText="City" stylesheets="@../css/primer-light.css" />
-                                    <TextField fx:id="companyPostcodeField1" layoutY="150.0" prefHeight="35.0" prefWidth="470.0" promptText="Postcode" stylesheets="@../css/primer-light.css" />
-                                    <TextField fx:id="companyCountryField1" layoutX="480.0" layoutY="150.0" prefHeight="35.0" prefWidth="470.0" promptText="Country" stylesheets="@../css/primer-light.css" />
-                                    <TextField fx:id="employerPhoneField1" layoutY="200.0" prefHeight="35.0" prefWidth="470.0" promptText="Employer phone" stylesheets="@../css/primer-light.css" />
-                                    <TextField fx:id="employerEmailField1" layoutX="480.0" layoutY="200.0" prefHeight="35.0" prefWidth="470.0" promptText="Employer email" stylesheets="@../css/primer-light.css" />
-                                    <TextField fx:id="companyWebsiteField1" layoutY="250.0" prefHeight="36.0" prefWidth="792.0" promptText="Company website" stylesheets="@../css/primer-light.css" />
-                                    <TextField fx:id="jobField1" prefHeight="35.0" prefWidth="470.0" promptText="Job" stylesheets="@../css/primer-light.css" />
-                                    <CheckBox fx:id="isOwner1" layoutX="816.0" layoutY="255.0" mnemonicParsing="false" text="Is the owner" />
+                                    <FlowPane fx:id="employmentFlowPane" layoutX="25.0" layoutY="55.0" prefHeight="255.0" prefWidth="950.0" vgap="15.0">
+                                       <children>
+                                          <Pane fx:id="employmentPane" prefHeight="305.0" prefWidth="950.0">
+                                             <children>
+                                                <TextField fx:id="companyNameField" layoutX="480.0" prefHeight="35.0" prefWidth="470.0" promptText="Company name" stylesheets="@../css/primer-light.css" />
+                                                <TextField fx:id="companyAddress1Field" layoutY="50.0" prefHeight="35.0" prefWidth="470.0" promptText="Address line 1" stylesheets="@../css/primer-light.css" />
+                                                <TextField fx:id="companyAddress2Field" layoutX="480.0" layoutY="50.0" prefHeight="35.0" prefWidth="470.0" promptText="Address line 2" stylesheets="@../css/primer-light.css" />
+                                                <TextField fx:id="companySuburbField" layoutY="100.0" prefHeight="35.0" prefWidth="470.0" promptText="Suburb" stylesheets="@../css/primer-light.css" />
+                                                <TextField fx:id="companyCityField" layoutX="480.0" layoutY="100.0" prefHeight="35.0" prefWidth="470.0" promptText="City" stylesheets="@../css/primer-light.css" />
+                                                <TextField fx:id="companyPostcodeField" layoutY="150.0" prefHeight="35.0" prefWidth="470.0" promptText="Postcode" stylesheets="@../css/primer-light.css" />
+                                                <TextField fx:id="companyCountryField" layoutX="480.0" layoutY="150.0" prefHeight="35.0" prefWidth="470.0" promptText="Country" stylesheets="@../css/primer-light.css" />
+                                                <TextField fx:id="employerPhoneField" layoutY="200.0" prefHeight="35.0" prefWidth="470.0" promptText="Employer phone" stylesheets="@../css/primer-light.css" />
+                                                <TextField fx:id="employerEmailField" layoutX="480.0" layoutY="200.0" prefHeight="35.0" prefWidth="470.0" promptText="Employer email" stylesheets="@../css/primer-light.css" />
+                                                <TextField fx:id="companyWebsiteField" layoutY="250.0" prefHeight="36.0" prefWidth="792.0" promptText="Company website" stylesheets="@../css/primer-light.css" />
+                                                <TextField fx:id="jobField" prefHeight="35.0" prefWidth="470.0" promptText="Job" stylesheets="@../css/primer-light.css" />
+                                                <CheckBox fx:id="isOwner" layoutX="816.0" layoutY="255.0" mnemonicParsing="false" text="Is the owner" />
+                                                <Separator layoutY="295.0" prefWidth="950.0" />
+                                             </children>
+                                          </Pane>
+                                       </children>
+                                    </FlowPane>
+                                    <Button alignment="CENTER" layoutX="945.0" layoutY="15.0" mnemonicParsing="false" onAction="#onClickAddEmployment" prefHeight="30.0" prefWidth="30.0" style="-color-button-bg: -color-accent-5;" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                       <styleClass>
+                                          <String fx:value="button-circle" />
+                                          <String fx:value="add" />
+                                       </styleClass>
+                                    </Button>
+                                    <Label layoutX="15.0" layoutY="15.0" text="Employment Details">
+                                       <font>
+                                          <Font name="Calibri" size="30.0" />
+                                       </font>
+                                    </Label>
                                  </children>
-                              </Pane>
-                           </children>
-                        </FlowPane>
+                              </AnchorPane>
+                          </content>
+                        </ScrollPane>
                      </children>
                   </AnchorPane>
                </content>
@@ -165,7 +275,12 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextArea fx:id="notesArea" layoutX="25.0" layoutY="25.0" prefHeight="287.0" prefWidth="950.0" promptText="Extra notes" />
+                        <Label layoutX="15.0" layoutY="15.0" text="Extra notes">
+                           <font>
+                              <Font name="Calibri" size="30.0" />
+                           </font>
+                        </Label>
+                        <TextArea fx:id="notesArea" layoutX="25.0" layoutY="55.0" prefHeight="287.0" prefWidth="950.0" promptText="Extra notes" />
                      </children>
                   </AnchorPane>
                </content>
