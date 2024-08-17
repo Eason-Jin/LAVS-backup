@@ -10,6 +10,7 @@ public class RandomPolicy implements IntermittentFailurePolicy {
     private final boolean cumulative;
     private final Random rand = new Random();
     private int value;
+    private boolean reset = true;
 
     public RandomPolicy() {
         threshold = 5;
@@ -22,10 +23,14 @@ public class RandomPolicy implements IntermittentFailurePolicy {
     }
 
     @Override
-    public boolean canSend() {
-        value = cumulative
-                ? value + rand.nextInt(0, 100)
-                : rand.nextInt(0, 100);
+    public boolean canSend(boolean checkOnly) {
+        if (reset) {
+            value = cumulative
+                    ? value + rand.nextInt(0, 100)
+                    : rand.nextInt(0, 100);
+        }
+
+        reset = !checkOnly;
         if (value < threshold) return true;
         value = 0;
         return false;

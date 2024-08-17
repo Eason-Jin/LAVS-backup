@@ -13,7 +13,7 @@ public class FileExistsPolicy implements IntermittentFailurePolicy {
     }
 
     @Override
-    public boolean canSend() {
+    public boolean canSend(boolean checkOnly) {
         File file = new File(filePath);
         return !file.exists();
     }

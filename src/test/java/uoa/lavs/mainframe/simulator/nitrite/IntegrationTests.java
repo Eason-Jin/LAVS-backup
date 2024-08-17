@@ -56,6 +56,43 @@ public class IntegrationTests {
     }
 
     @Test
+    public void testDataPersistence() throws IOException {
+        // arrange
+        Connection connection = new NitriteConnection("testing/lavs-data.db");
+        String customerId;
+
+        // act #1: add a customer
+        try {
+            UpdateCustomer newCustomer = new UpdateCustomer();
+            newCustomer.setCustomerId(null);
+            newCustomer.setName("John Doe");
+            Status status = newCustomer.send(connection);
+            assertTrue(status.getWasSuccessful());
+            customerId = newCustomer.getCustomerIdFromServer();
+        } finally {
+            connection.close();
+        }
+
+        // act #2: load the customer
+        connection = new NitriteConnection("testing/lavs-data.db");
+        try {
+            LoadCustomer loadCustomer = new LoadCustomer();
+            loadCustomer.setCustomerId(customerId);
+            Status status = loadCustomer.send(connection);
+            assertAll(
+                    () -> assertTrue(status.getWasSuccessful()),
+                    () -> assertEquals(0, status.getErrorCode()),
+                    () -> assertNull(status.getErrorMessage())
+            );
+
+            // assert
+            assertEquals("John Doe", loadCustomer.getNameFromServer());
+        } finally {
+            connection.close();
+        }
+    }
+
+    @Test
     public void addACustomerAndALoan() throws IOException {
         // Arrange
         Connection connection = new NitriteConnection("testing/lavs-data.db");

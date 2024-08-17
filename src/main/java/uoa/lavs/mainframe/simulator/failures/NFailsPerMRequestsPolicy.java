@@ -6,7 +6,7 @@ public class NFailsPerMRequestsPolicy implements IntermittentFailurePolicy {
 
     private final int failureThreshold;
     private final int successThreshold;
-    private int requestCount = 0;
+    private int requestCount = 1;
 
     public NFailsPerMRequestsPolicy(int numberOfFailures, int numberOfRequests) {
         failureThreshold = numberOfRequests + numberOfFailures - 1;
@@ -14,14 +14,20 @@ public class NFailsPerMRequestsPolicy implements IntermittentFailurePolicy {
     }
 
     @Override
-    public boolean canSend() {
-        if (++requestCount < successThreshold) {
-            return true;
-        }
-        if (requestCount > failureThreshold) {
-            requestCount = 1;
-        }
+    public boolean canSend(boolean checkOnly) {
+        try {
+            if (requestCount < successThreshold) {
+                return true;
+            }
+            if (requestCount > failureThreshold) {
+                requestCount = 1;
+            }
 
-        return requestCount < failureThreshold;
+            return requestCount < failureThreshold;
+        } finally {
+            if (!checkOnly) {
+                requestCount++;
+            }
+        }
     }
 }
