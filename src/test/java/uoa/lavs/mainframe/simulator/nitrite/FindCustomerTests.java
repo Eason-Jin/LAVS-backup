@@ -30,6 +30,8 @@ class FindCustomerTests {
         // Assert
         assertAll(
                 () -> assertTrue(status.getWasSuccessful()),
+                () -> assertEquals(0, status.getErrorCode()),
+                () -> assertNull(status.getErrorMessage()),
                 () -> assertEquals(0, message.getCustomerCountFromServer())
         );
     }
@@ -68,11 +70,12 @@ class FindCustomerTests {
         // Assert
         assertAll(
                 () -> assertTrue(status.getWasSuccessful()),
+                () -> assertEquals(0, status.getErrorCode()),
+                () -> assertNull(status.getErrorMessage()),
                 () -> assertEquals(1, message.getCustomerCountFromServer()),
                 () -> assertEquals("123", message.getIdFromServer(1)),
                 () -> assertEquals("John Doe", message.getNameFromServer(1)),
                 () -> assertEquals(LocalDate.of(1945, 3, 12), message.getDateofBirthFromServer(1))
         );
     }
-
 }

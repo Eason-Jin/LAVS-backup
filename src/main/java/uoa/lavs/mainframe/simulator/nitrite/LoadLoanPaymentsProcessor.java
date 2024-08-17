@@ -3,13 +3,12 @@ package uoa.lavs.mainframe.simulator.nitrite;
 import org.dizitart.no2.Nitrite;
 import org.dizitart.no2.collection.Document;
 import org.dizitart.no2.collection.DocumentCursor;
-import org.dizitart.no2.collection.NitriteCollection;
+import uoa.lavs.mainframe.MessageErrorStatus;
 import uoa.lavs.mainframe.Request;
 import uoa.lavs.mainframe.Response;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.loan.LoadLoan;
 import uoa.lavs.mainframe.messages.loan.LoadLoanPayments;
-import uoa.lavs.mainframe.MessageErrorStatus;
 import uoa.lavs.utility.LoanRepayment;
 
 import java.util.ArrayList;
@@ -38,7 +37,6 @@ public class LoadLoanPaymentsProcessor extends LoanBaseProcessor {
 
         ArrayList<LoanRepayment> repayments = generateRepaymentSchedule(doc);
         Integer pages = repayments.size();
-        data.put(LoadLoanPayments.Fields.PAYMENT_COUNT, pages.toString());
         pages = pages % 18 == 0
                 ? pages / 18
                 : pages / 18 + 1;
@@ -49,26 +47,31 @@ public class LoadLoanPaymentsProcessor extends LoanBaseProcessor {
                 : Integer.parseInt(pageValue);
         Integer startIndex = (page - 1) * 18;
         Integer endIndex = page * 18 - 1;
-        for (Integer loop = startIndex; loop < endIndex; loop++) {
+        Integer number = 1;
+        Integer paymentsAdded = 0;
+        for (Integer loop = startIndex; loop < endIndex && loop < repayments.size(); loop++) {
             LoanRepayment repayment = repayments.get(loop);
             data.put(
-                    String.format(LoadLoanPayments.Fields.PAYMENT_PRINCIPAL, loop + 1),
+                    String.format(LoadLoanPayments.Fields.PAYMENT_PRINCIPAL, number),
                     String.format("%.2f", repayment.getPrincipalAmount())
             );
             data.put(
-                    String.format(LoadLoanPayments.Fields.PAYMENT_INTEREST, loop + 1),
+                    String.format(LoadLoanPayments.Fields.PAYMENT_INTEREST, number),
                     String.format("%.2f", repayment.getInterestAmount())
             );
             data.put(
-                    String.format(LoadLoanPayments.Fields.PAYMENT_REMAINING, loop + 1),
+                    String.format(LoadLoanPayments.Fields.PAYMENT_REMAINING, number),
                     String.format("%.2f", repayment.getRemainingAmount())
             );
             Integer paymentNumber = loop + 1;
             data.put(
-                    String.format(LoadLoanPayments.Fields.PAYMENT_NUMBER, loop + 1),
+                    String.format(LoadLoanPayments.Fields.PAYMENT_NUMBER, number),
                     paymentNumber.toString()
             );
+            number++;
+            paymentsAdded++;
         }
+        data.put(LoadLoanPayments.Fields.PAYMENT_COUNT, paymentsAdded.toString());
         return new Response(
                 new Status(transactionId),
                 data);

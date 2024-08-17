@@ -114,6 +114,27 @@ class LoadCustomerNoteTests {
     }
 
     @Test
+    public void handlesNoteZero() {
+        // Arrange
+        Connection connection = new HttpConnection(Constants.BASE_URL);
+        LoadCustomerNote message = new LoadCustomerNote();
+        message.setCustomerId("0000022");
+        message.setNumber(0);
+
+        // Act
+        Status status = message.send(connection);
+
+        // Assert
+        assertAll(
+                () -> assertTrue(status.getWasSuccessful()),
+                () -> assertEquals(0, status.getErrorCode()),
+                () -> assertNull(status.getErrorMessage()),
+                () -> assertEquals(0, message.getLineCountFromServer()),
+                () -> assertEquals(1, message.getPageCountFromServer())
+        );
+    }
+
+    @Test
     public void retrievesPageCount() {
         // Arrange
         Connection connection = new HttpConnection(Constants.BASE_URL);

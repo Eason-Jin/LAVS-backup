@@ -12,6 +12,7 @@ import uoa.lavs.mainframe.messages.customer.FindCustomerAdvanced;
 import uoa.lavs.mainframe.simulator.NitriteConnection;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static uoa.lavs.mainframe.MessageErrorStatus.INVALID_REQUEST_SEARCH;
@@ -31,6 +32,8 @@ class FindCustomerAdvancedTests {
         // Assert
         assertAll(
                 () -> assertTrue(status.getWasSuccessful()),
+                () -> assertEquals(0, status.getErrorCode()),
+                () -> assertNull(status.getErrorMessage()),
                 () -> assertEquals(0, message.getCustomerCountFromServer())
         );
     }

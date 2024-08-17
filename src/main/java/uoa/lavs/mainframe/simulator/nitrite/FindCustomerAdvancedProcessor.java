@@ -34,13 +34,13 @@ public class FindCustomerAdvancedProcessor extends BaseProcessor {
             count++;
             data.put(
                     String.format(FindCustomerAdvanced.Fields.ID, count),
-                    doc.get("id").toString());
+                    doc.get("id", String.class));
             data.put(
                     String.format(FindCustomerAdvanced.Fields.NAME, count),
-                    doc.get("name").toString());
+                    doc.get("name", String.class));
             data.put(
                     String.format(FindCustomerAdvanced.Fields.DATE_OF_BIRTH, count),
-                    doc.get("dob").toString());
+                    doc.get("dob", String.class));
         }
 
         data.put(FindCustomerAdvanced.Fields.CUSTOMER_COUNT, count.toString());
