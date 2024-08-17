@@ -8,9 +8,13 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
 
 <AnchorPane prefHeight="648.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.AddCustomerController">
    <children>
@@ -40,7 +44,7 @@
             <String fx:value="info" />
          </styleClass>
       </Button>
-      <ScrollPane layoutX="83.0" layoutY="125.0" prefHeight="523.0" prefWidth="1004.0" stylesheets="@../css/primer-light.css">
+      <ScrollPane layoutX="58.0" layoutY="660.0" prefHeight="1137.0" prefWidth="1004.0" stylesheets="@../css/primer-light.css">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1121.0" prefWidth="988.0">
                <children>
@@ -96,5 +100,71 @@
             </AnchorPane>
         </content>
       </ScrollPane>
+      <TabPane layoutX="76.0" layoutY="168.0" prefHeight="384.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="General Details">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="1000.0">
+                     <children>
+                        <TextField fx:id="titleField1" layoutX="25.0" layoutY="25.0" prefHeight="35.0" prefWidth="120.0" promptText="Title" stylesheets="@../css/primer-light.css" />
+                        <TextField fx:id="familyNameField1" layoutX="570.0" layoutY="25.0" prefHeight="35.0" prefWidth="405.0" promptText="Family name" stylesheets="@../css/primer-light.css" />
+                        <TextField fx:id="givenNameField1" layoutX="155.0" layoutY="25.0" prefHeight="35.0" prefWidth="405.0" promptText="Given name(s)" stylesheets="@../css/primer-light.css" />
+                        <DatePicker fx:id="dobPicker1" layoutX="25.0" layoutY="75.0" prefHeight="35.0" prefWidth="950.0" promptText="Date of birth" stylesheets="@../css/primer-light.css" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Status">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="citizenshipField1" layoutX="25.0" layoutY="25.0" prefHeight="25.0" prefWidth="950.0" promptText="Citizenship status" stylesheets="@../css/primer-light.css" />
+                        <TextField fx:id="visaField1" layoutX="25.0" layoutY="75.0" prefHeight="25.0" prefWidth="950.0" promptText="Visa Type" stylesheets="@../css/primer-light.css" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Address">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <FlowPane layoutX="25.0" layoutY="25.0" prefHeight="67.0" prefWidth="950.0" vgap="15.0">
+                           <children>
+                              <Pane fx:id="addressPane1" prefHeight="187.0" prefWidth="950.0">
+                                 <children>
+                                    <TextField fx:id="address1Field1" layoutX="210.0" prefHeight="25.0" prefWidth="365.0" promptText="Address line 1" stylesheets="@../css/primer-light.css" />
+                                    <TextField fx:id="address2Field1" layoutX="585.0" prefHeight="25.0" prefWidth="365.0" promptText="Address line 2" stylesheets="@../css/primer-light.css" />
+                                    <TextField fx:id="suburbField1" layoutY="50.0" prefHeight="25.0" prefWidth="470.0" promptText="Suburb" stylesheets="@../css/primer-light.css" />
+                                    <TextField fx:id="cityField1" layoutX="480.0" layoutY="50.0" prefHeight="25.0" prefWidth="470.0" promptText="City" stylesheets="@../css/primer-light.css" />
+                                    <TextField fx:id="postcodeField1" layoutY="100.0" prefHeight="25.0" prefWidth="470.0" promptText="Postcode" stylesheets="@../css/primer-light.css" />
+                                    <TextField fx:id="countryField1" layoutX="480.0" layoutY="100.0" prefHeight="25.0" prefWidth="470.0" promptText="Country" stylesheets="@../css/primer-light.css" />
+                                    <CheckBox fx:id="isPrimaryAddress1" layoutX="16.0" layoutY="149.0" mnemonicParsing="false" text="Primary address" />
+                                    <CheckBox fx:id="isMailingAddress1" layoutX="178.0" layoutY="149.0" mnemonicParsing="false" text="Use as mailing address" />
+                                    <TextField fx:id="addressTypeField1" prefHeight="25.0" prefWidth="200.0" promptText="Address type" stylesheets="@../css/primer-light.css" />
+                                 </children>
+                              </Pane>
+                           </children>
+                        </FlowPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Contact details">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab text="Employment details">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab text="Extra notes">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
    </children>
 </AnchorPane>
