@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -101,6 +102,7 @@ public class AddCustomerController {
   private Map<String, TextField> textFields = new HashMap<>();
   private Map<String, CheckBox> checkBoxes = new HashMap<>();
   private Map<String, ComboBox<FXCollections>> comboBoxes = new HashMap<>();
+  private Map<String, Node> customerDetailFields = new HashMap<>();
 
   private Alert alert;
   private StringBuilder errorString;
@@ -112,6 +114,11 @@ public class AddCustomerController {
     alert.setHeaderText("Please fix the following issues:");
     errorString = new StringBuilder();
 
+    addAllElementsToMap();
+  }
+
+  private void addAllElementsToMap() {
+    customerDetailFields.clear();
     addElementsToMap(addressPane);
     addElementsToMap(emailPane);
     addElementsToMap(phonePane);
@@ -120,36 +127,34 @@ public class AddCustomerController {
 
   private void addElementsToMap(Pane pane) {
     for (var node : pane.getChildren()) {
-      if (node instanceof TextField) {
-        textFields.put(node.getId(), (TextField) node);
-      }
-      else if (node instanceof CheckBox) {
-        checkBoxes.put(node.getId(), (CheckBox) node);
-      }
-      else if (node instanceof ComboBox) {
-        comboBoxes.put(node.getId(), (ComboBox<FXCollections>) node);
-      }
-      else {
-        continue;
+      if ((node instanceof TextField) || (node instanceof CheckBox) || (node instanceof ComboBox)) {
+        customerDetailFields.put(node.getId(), node);
       }
     }
   }
 
   @FXML
   private void onClickHome(ActionEvent event) throws IOException {
-    clearAllFields();
-    resetFieldStyle();
-    resetAddresses();
+    resetScene();
     Main.setScene(SceneManager.AppScene.START);
   }
 
   private Pane addNewField(Pane pane, int counter) {
     List<Node> nodesCopy = new ArrayList<>(pane.getChildrenUnmodifiable());
+    String counterString;
+    if (counter != 0) {
+      counterString = "_" + counter;
+    }
+    else {
+      counterString = "";
+    }
     Pane newPane = new Pane();
-    newPane.setId(pane.getId() + counter);
+    newPane.setId(pane.getId() + counterString);
     newPane.setPrefWidth(pane.getPrefWidth());
     newPane.setPrefHeight(pane.getPrefHeight());
+
     for (var node : nodesCopy) {
+      String newFxId = node.getId() + counterString;
       if (node instanceof TextField) {
         TextField newTextField = new TextField();
         newTextField.setPromptText(((TextField) node).getPromptText());
@@ -157,19 +162,23 @@ public class AddCustomerController {
         newTextField.setLayoutY(node.getLayoutY());
         newTextField.setPrefWidth(((TextField) node).getPrefWidth());
         newTextField.setPrefHeight(((TextField) node).getPrefHeight());
-        String newFxId = node.getId() + counter;
         newTextField.setId(newFxId);
         newPane.getChildren().add(newTextField);
-        textFields.put(newFxId, newTextField);
+        customerDetailFields.put(newFxId, newTextField);
       }
       else if (node instanceof CheckBox) {
+//        System.out.println(node);
         CheckBox newCheckBox = new CheckBox(((CheckBox) node).getText());
         newCheckBox.setLayoutX(node.getLayoutX());
         newCheckBox.setLayoutY(node.getLayoutY());
-        String newFxId = node.getId() + counter;
+        EventHandler<ActionEvent> handler = ((CheckBox) node).getOnAction();
+        newCheckBox.setOnAction(handler);
         newCheckBox.setId(newFxId);
         newPane.getChildren().add(newCheckBox);
-        checkBoxes.put(newFxId, newCheckBox);
+        customerDetailFields.put(newFxId, newCheckBox);
+        if (findSelected((CheckBox) node) != null && ((CheckBox) node).getOnAction() != null) {
+          disableOthers((CheckBox) customerDetailFields.get(findSelected((CheckBox) node)));
+        }
       }
       else if (node instanceof ComboBox) {
         ComboBox<FXCollections> newComboBox = new ComboBox<>();
@@ -179,10 +188,9 @@ public class AddCustomerController {
         newComboBox.setLayoutY(node.getLayoutY());
         newComboBox.setPrefWidth(((ComboBox<FXCollections>) node).getPrefWidth());
         newComboBox.setPrefHeight(((ComboBox<FXCollections>) node).getPrefHeight());
-        String newFxId = node.getId() + counter;
         newComboBox.setId(newFxId);
         newPane.getChildren().add(newComboBox);
-        comboBoxes.put(newFxId, newComboBox);
+        customerDetailFields.put(newFxId, newComboBox);
       }
       else if (node instanceof Separator) {
         Separator newSeparator = new Separator();
@@ -196,7 +204,45 @@ public class AddCustomerController {
         continue;
       }
     }
+//    System.out.println(customerDetailFields.keySet());
     return newPane;
+  }
+
+  private String findSelected(CheckBox checkBox) {
+    for (String nodeId : customerDetailFields.keySet()) {
+      if (nodeId.contains(checkBox.getId()) && ((CheckBox) customerDetailFields.get(nodeId)).isSelected()) {
+        return nodeId;
+      }
+    }
+    return null;
+  }
+  private void disableOthers(CheckBox checkBox) {
+    String selectedFxId = (checkBox).getId();
+    String checkingFxId = ((selectedFxId).split("_"))[0];
+    for (String nodeId : customerDetailFields.keySet()) {
+      if (customerDetailFields.get(nodeId).getClass().getName().equals(customerDetailFields.get(selectedFxId).getClass().getName())){
+        if (!(nodeId.equals(selectedFxId)) && nodeId.contains(checkingFxId)) {
+          if (checkBox.isSelected()) {
+            CheckBox toDisableCheckBox = (CheckBox) customerDetailFields.get(nodeId);
+            toDisableCheckBox.setSelected(false);
+            toDisableCheckBox.setDisable(true);
+            customerDetailFields.replace(nodeId, toDisableCheckBox);
+          }
+          else {
+            CheckBox disabledCheckBox = (CheckBox) customerDetailFields.get(nodeId);
+            disabledCheckBox.setSelected(false);
+            disabledCheckBox.setDisable(false);
+            customerDetailFields.replace(nodeId, disabledCheckBox);
+          }
+          System.out.println(nodeId);
+        }
+      }
+    }
+  }
+
+  @FXML private void onUniqueCheckBoxClick(ActionEvent event) {
+    CheckBox selectedCheckBox = (CheckBox) event.getSource();
+    disableOthers(selectedCheckBox);
   }
 
   @FXML
@@ -297,6 +343,7 @@ public class AddCustomerController {
         successAlert.setTitle("Success");
         successAlert.setHeaderText("Customer has been added");
         if (successAlert.showAndWait().get() == ButtonType.OK) {
+          resetScene();
           Main.setScene(SceneManager.AppScene.START);
         }
       } catch (Exception e) {
@@ -321,8 +368,7 @@ public class AddCustomerController {
     alertCancel.setHeaderText("If you cancel, all progress will be lost.");
     alertCancel.setContentText("Are you sure you want to cancel?");
     if (alertCancel.showAndWait().get() == ButtonType.OK) {
-      clearAllFields();
-      resetFieldStyle();
+      resetScene();
       Main.setScene(SceneManager.AppScene.START);
     }
   }
@@ -332,12 +378,30 @@ public class AddCustomerController {
     System.out.println("Info button clicked");
   }
 
-  private void resetAddresses() {
-    Pane temp = addressPane;
-    addressFlowPane.getChildren().clear();
-    addressFlowPane.getChildren().add(temp);
-    addressScrollAnchorPane.setPrefHeight(addressScrollAnchorPane.getPrefHeight()-(addressCounter- initialCounter)*(addressPane.getPrefHeight()+addressFlowPane.getVgap()));
-    addressCounter = 1;
+  private void resetScene() {
+    clearAllFields();
+    resetFieldStyle();
+    resetAllDetailFields();
+  }
+
+  private void resetDetailFields(Pane pane, FlowPane flowPane, AnchorPane scrollAnchorPane, int counter) {
+    Pane temp = addNewField(pane, 0);
+    flowPane.getChildren().clear();
+    flowPane.getChildren().add(temp);
+    if (counter > initialCounter) {
+      scrollAnchorPane.setPrefHeight(scrollAnchorPane.getPrefHeight()-(counter- initialCounter)*(pane.getPrefHeight()+flowPane.getVgap()));
+    }
+  }
+
+  private void resetAllDetailFields() {
+    resetDetailFields(addressPane, addressFlowPane, addressScrollAnchorPane, addressCounter);
+    addressCounter = initialCounter;
+    resetDetailFields(phonePane, phoneFlowPane, contactScrollAnchorPane, phoneCounter);
+    phoneCounter = initialCounter;
+    resetDetailFields(emailPane, emailFlowPane, contactScrollAnchorPane, emailCounter);
+    emailCounter = initialCounter;
+    resetDetailFields(employmentPane, employmentFlowPane, employmentScrollAnchorPane, employmentCounter);
+    employmentCounter = initialCounter;
     detailsTabPane.getSelectionModel().select(0);
   }
 

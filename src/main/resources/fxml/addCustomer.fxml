@@ -103,8 +103,8 @@
                                                 <TextField fx:id="cityField" layoutX="480.0" layoutY="50.0" prefHeight="35.0" prefWidth="470.0" promptText="City" stylesheets="@../css/primer-light.css" />
                                                 <TextField fx:id="postcodeField" layoutY="100.0" prefHeight="35.0" prefWidth="470.0" promptText="Postcode" stylesheets="@../css/primer-light.css" />
                                                 <TextField fx:id="countryField" layoutX="480.0" layoutY="100.0" prefHeight="35.0" prefWidth="470.0" promptText="Country" stylesheets="@../css/primer-light.css" />
-                                                <CheckBox fx:id="isPrimaryAddress" layoutX="26.0" layoutY="151.0" mnemonicParsing="false" text="Primary address" />
-                                                <CheckBox fx:id="isMailingAddress" layoutX="187.0" layoutY="151.0" mnemonicParsing="false" text="Use as mailing address" />
+                                                <CheckBox fx:id="isPrimaryAddress" layoutX="26.0" layoutY="151.0" mnemonicParsing="false" onAction="#onUniqueCheckBoxClick" text="Primary address" />
+                                                <CheckBox fx:id="isMailingAddress" layoutX="187.0" layoutY="151.0" mnemonicParsing="false" onAction="#onUniqueCheckBoxClick" text="Use as mailing address" />
                                                 <Separator layoutY="180.0" prefWidth="950.0" />
                                              </children>
                                           </Pane>
@@ -165,7 +165,7 @@
                                                 <Pane fx:id="emailPane" layoutX="25.0" layoutY="25.0" prefHeight="50.0" prefWidth="1000.0">
                                                    <children>
                                                       <TextField fx:id="emailField" layoutX="25.0" prefHeight="35.0" prefWidth="791.0" promptText="Email" stylesheets="@../css/primer-light.css" />
-                                                      <CheckBox fx:id="isPrimaryEmail" layoutX="838.0" layoutY="7.0" mnemonicParsing="false" text="Primary email" />
+                                                      <CheckBox fx:id="isPrimaryEmail" layoutX="838.0" layoutY="7.0" mnemonicParsing="false" onAction="#onUniqueCheckBoxClick" text="Primary email" />
                                                       <Separator layoutX="25.0" layoutY="40.0" prefWidth="950.0" />
                                                    </children>
                                                 </Pane>
@@ -204,7 +204,7 @@
                                                       <TextField fx:id="prefixField" layoutX="185.0" prefHeight="35.0" prefWidth="125.0" promptText="Prefix" stylesheets="@../css/primer-light.css" />
                                                       <TextField fx:id="numberField" layoutX="320.0" prefHeight="35.0" prefWidth="275.0" promptText="Number" stylesheets="@../css/primer-light.css" />
                                                       <CheckBox fx:id="isTextingNumber" layoutX="620.0" layoutY="7.0" mnemonicParsing="false" text="Send texts to this number" />
-                                                      <CheckBox fx:id="isPrimaryNumber" layoutX="825.0" layoutY="7.0" mnemonicParsing="false" text="Primary number" />
+                                                      <CheckBox fx:id="isPrimaryNumber" layoutX="839.0" layoutY="7.0" mnemonicParsing="false" onAction="#onUniqueCheckBoxClick" text="Primary number" />
                                                       <Separator layoutX="25.0" layoutY="40.0" prefWidth="950.0" />
                                                    </children>
                                                 </Pane>
@@ -243,7 +243,7 @@
                                                 <TextField fx:id="employerEmailField" layoutX="480.0" layoutY="200.0" prefHeight="35.0" prefWidth="470.0" promptText="Employer email" stylesheets="@../css/primer-light.css" />
                                                 <TextField fx:id="companyWebsiteField" layoutY="250.0" prefHeight="36.0" prefWidth="792.0" promptText="Company website" stylesheets="@../css/primer-light.css" />
                                                 <TextField fx:id="jobField" prefHeight="35.0" prefWidth="470.0" promptText="Job" stylesheets="@../css/primer-light.css" />
-                                                <CheckBox fx:id="isOwner" layoutX="816.0" layoutY="255.0" mnemonicParsing="false" text="Is the owner" />
+                                                <CheckBox fx:id="isOwner" layoutX="816.0" layoutY="256.0" mnemonicParsing="false" text="Is the owner" />
                                                 <Separator layoutY="295.0" prefWidth="950.0" />
                                              </children>
                                           </Pane>
