@@ -36,7 +36,7 @@ public class SearchController {
         idColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));
         dobColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("dob"));
-        searchCustomers();
+        searchTable.setPlaceholder(new Label(""));
 
         searchTable.setRowFactory(tableView -> {
             final TableRow<Customer> row = new TableRow<Customer>();
@@ -51,8 +51,6 @@ public class SearchController {
 
             row.selectedProperty().addListener((observable) -> {
                 if (row.isSelected() && !row.isEmpty()) {
-                    searchField.clear();
-                    searchCustomers();
                     Main.setScene(AppScene.CUSTOMER_DETAILS);
                 }
             });
@@ -62,6 +60,15 @@ public class SearchController {
 
     private void searchCustomers() {
         String customerName = searchField.getText();
+
+        if (customerName == "") {
+            Platform.runLater(() -> {
+                searchTable.getItems().clear();
+                searchTable.setPlaceholder(new Label("Please enter a name"));
+            });
+            return;
+        }
+
         List<Customer> customers = CustomerFinder.findCustomerByName(customerName);
 
         if (customers.isEmpty()) {
