@@ -16,17 +16,17 @@ public class LoanLoader {
   public static Loan loadData(String loanId) {
     Loan loan = new Loan();
     try {
-      loan = loadFromDatabase(loanId);
-      if (loan.getCustomerName() == null) {
-        throw new Exception("Loan not in database");
-      }
+      loan = loadFromMainframe(loanId);
     } catch (Exception e) {
-      System.out.println("Database load failed: " + e.getMessage());
-      System.out.println("Trying to load from mainframe");
+      System.out.println("Mainframe load failed: " + e.getMessage());
+      System.out.println("Trying to load from database");
       try {
-        loan = loadFromMainframe(loanId);
+        loan = loadFromDatabase(loanId);
+        if (loan.getCustomerName() == null) {
+          throw new Exception("Loan not in database");
+        }
       } catch (Exception e1) {
-        System.out.println("Mainframe load failed: " + e1.getMessage());
+        System.out.println("Database load failed: " + e1.getMessage());
       }
     }
     return loan;
