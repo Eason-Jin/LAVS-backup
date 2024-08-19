@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import org.springframework.stereotype.Controller;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -16,6 +15,7 @@ import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager;
 import uoa.lavs.dataoperations.customer.AddressUpdater;
@@ -124,10 +124,12 @@ public class AddCustomerController {
                 postcodeField.getText(),
                 countryField.getText(),
                 isPrimaryAddress.isSelected(),
-                isMailingAddress.isSelected());
+                isMailingAddress.isSelected(),
+                null);
         AddressUpdater.updateData(customerID, address);
 
-        Email email = new Email(customerID, emailField.getText(), isPrimaryEmail.isSelected());
+        Email email =
+            new Email(customerID, emailField.getText(), isPrimaryEmail.isSelected(), null);
         EmailUpdater.updateData(customerID, email);
 
         Phone phone =
@@ -137,7 +139,8 @@ public class AddCustomerController {
                 prefixField.getText(),
                 numberField.getText(),
                 isPrimaryNumber.isSelected(),
-                isTextingNumber.isSelected());
+                isTextingNumber.isSelected(),
+                null);
         PhoneUpdater.updateData(customerID, phone);
 
         Employer employer =
@@ -153,7 +156,8 @@ public class AddCustomerController {
                 employerPhoneField.getText(),
                 employerEmailField.getText(),
                 companyWebsiteField.getText(),
-                isOwner.isSelected());
+                isOwner.isSelected(),
+                null);
         EmployerUpdater.updateData(customerID, employer);
 
         Alert successAlert = new Alert(AlertType.INFORMATION);
