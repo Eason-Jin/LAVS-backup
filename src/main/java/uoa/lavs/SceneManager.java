@@ -10,7 +10,8 @@ public class SceneManager {
     public enum AppScene {
         START,
         ADD_CUSTOMER,
-        SEARCH
+        SEARCH,
+        ADD_LOAN
     }
 
     public static HashMap<AppScene, Parent> sceneMap = new HashMap<AppScene, Parent>();

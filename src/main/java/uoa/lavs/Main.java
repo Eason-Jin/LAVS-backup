@@ -45,6 +45,7 @@ public class Main extends Application {
     SceneManager.addScene(AppScene.START, loadLoader("start").load());
     SceneManager.addScene(AppScene.ADD_CUSTOMER, loadLoader("addCustomer").load());
     SceneManager.addScene(AppScene.SEARCH, loadLoader("search").load());
+    SceneManager.addScene(AppScene.ADD_LOAN, loadLoader("addLoan").load());
 
     currentStage = stage;
     currentScene = new Scene(loadLoader("start").load(), 1152, 648);
