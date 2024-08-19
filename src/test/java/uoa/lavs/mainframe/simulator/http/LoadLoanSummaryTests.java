@@ -51,10 +51,10 @@ class LoadLoanSummaryTests {
                 () -> assertEquals(500, message.getPaymentAmountFromServer()),
                 () -> assertEquals(Frequency.Weekly, message.getPaymentFrequencyFromServer()),
                 () -> assertEquals(6.54, message.getRateValueFromServer()),
-                () -> assertEquals(LocalDate.of(2024, 12, 30), message.getPayoffDateFromServer()),
                 () -> assertEquals(10000.00, message.getPrincipalFromServer()),
                 () -> assertEquals(133.97, message.getTotalInterestFromServer()),
-                () -> assertEquals(10133.97, message.getTotalLoanCostFromServer())
+                () -> assertEquals(10133.97, message.getTotalLoanCostFromServer()),
+                () -> assertEquals(LocalDate.of(2024, 12, 30), message.getPayoffDateFromServer())
         );
     }
 }

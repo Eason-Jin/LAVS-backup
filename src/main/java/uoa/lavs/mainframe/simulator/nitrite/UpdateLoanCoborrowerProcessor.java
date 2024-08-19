@@ -32,11 +32,7 @@ public class UpdateLoanCoborrowerProcessor extends BaseProcessor {
         }
 
         String number = request.getValue("number");
-        if (number == null) {
-            return MessageErrorStatus.INVALID_REQUEST_NUMBER.generateEmptyResponse(transactionId);
-        }
-
-        Integer index = Integer.parseInt(number) - 1;
+        Integer index = number == null ? Integer.MAX_VALUE : Integer.parseInt(number) - 1;
         ArrayList<Document> items = doc.get(NitriteConnection.Internal.ITEM_COBORROWERS, ArrayList.class);
         if (items == null) {
             items = new ArrayList<>();

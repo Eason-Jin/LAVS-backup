@@ -7,6 +7,8 @@ import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.loan.LoadLoanPayments;
 import uoa.lavs.mainframe.simulator.HttpConnection;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static uoa.lavs.mainframe.MessageErrorStatus.LOAN_NOT_FOUND;
 
@@ -60,7 +62,8 @@ class LoadLoanPaymentsTests {
                 () -> assertEquals(12.54, message.getPaymentInterestFromServer(1)),
                 () -> assertEquals(1, message.getPaymentNumberFromServer(1)),
                 () -> assertEquals(487.46, message.getPaymentPrincipalFromServer(1)),
-                () -> assertEquals(9512.54, message.getPaymentRemainingFromServer(1))
+                () -> assertEquals(9512.54, message.getPaymentRemainingFromServer(1)),
+                () -> assertEquals(LocalDate.of(2024, 8, 12), message.getPaymentDateFromServer(1))
         );
     }
 

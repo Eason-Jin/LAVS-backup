@@ -47,6 +47,9 @@ public class LoadLoanCoborrowersProcessor extends LoanBaseProcessor {
                 data.put(
                         String.format(LoadLoanCoborrowers.Fields.COBORROWER_NAME, key + 1),
                         item.get(LoadCustomer.Fields.NAME, String.class));
+                data.put(
+                        String.format(LoadLoanCoborrowers.Fields.COBORROWER_NUMBER, key + 1),
+                        String.format("%d", key + 1));
             }
         }
 
