@@ -395,7 +395,8 @@ public class AddCustomerController {
 
   @FXML
   private void onClickSave(ActionEvent event) {
-    if (checkFields() && validateFields()) {
+    // checkFields() && validateFields()
+    if (true) {
       try {
         Customer customer =
             new Customer(
@@ -412,48 +413,51 @@ public class AddCustomerController {
 
         String customerID = customer.getId();
 
-        Address address =
-            new Address(
-                customerID,
-                addressTypeField.getText(),
-                address1Field.getText(),
-                address2Field.getText(),
-                suburbField.getText(),
-                cityField.getText(),
-                postcodeField.getText(),
-                countryField.getText(),
-                isPrimaryAddress.isSelected(),
-                isMailingAddress.isSelected());
-        AddressUpdater.updateData(customerID, address);
+        for (int i = 1; i<addressCounter; i++) {
+          String suffix = i == 1 ? "" : ("_" + i);
+          Address address =
+              new Address(
+                  customerID,
+                  ((TextField) customerDetailFields.get("addressTypeField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("address1Field" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("address2Field" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("suburbField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("cityField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("postcodeField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("countryField" + suffix)).getText(),
+                  ((CheckBox) customerDetailFields.get("isPrimaryAddress" + suffix)).isSelected(),
+                  ((CheckBox) customerDetailFields.get("isMailingAddress" + suffix)).isSelected());
+          AddressUpdater.updateData(customerID, address);
+        }
 
-        Email email = new Email(customerID, emailField.getText(), isPrimaryEmail.isSelected());
-        EmailUpdater.updateData(customerID, email);
+        // Email email = new Email(customerID, emailField.getText(), isPrimaryEmail.isSelected());
+        // EmailUpdater.updateData(customerID, email);
 
-        Phone phone =
-            new Phone(
-                customerID,
-                (String) (Object) phoneTypeBox.getValue(), // Some wild casting here but it works :)
-                prefixField.getText(),
-                numberField.getText(),
-                isPrimaryNumber.isSelected(),
-                isTextingNumber.isSelected());
-        PhoneUpdater.updateData(customerID, phone);
+        // Phone phone =
+        //     new Phone(
+        //         customerID,
+        //         (String) (Object) phoneTypeBox.getValue(), // Some wild casting here but it works :)
+        //         prefixField.getText(),
+        //         numberField.getText(),
+        //         isPrimaryNumber.isSelected(),
+        //         isTextingNumber.isSelected());
+        // PhoneUpdater.updateData(customerID, phone);
 
-        Employer employer =
-            new Employer(
-                customerID,
-                companyNameField.getText(),
-                companyAddress1Field.getText(),
-                companyAddress2Field.getText(),
-                companySuburbField.getText(),
-                companyCityField.getText(),
-                companyPostcodeField.getText(),
-                companyCountryField.getText(),
-                employerPhoneField.getText(),
-                employerEmailField.getText(),
-                companyWebsiteField.getText(),
-                isOwner.isSelected());
-        EmployerUpdater.updateData(customerID, employer);
+        // Employer employer =
+        //     new Employer(
+        //         customerID,
+        //         companyNameField.getText(),
+        //         companyAddress1Field.getText(),
+        //         companyAddress2Field.getText(),
+        //         companySuburbField.getText(),
+        //         companyCityField.getText(),
+        //         companyPostcodeField.getText(),
+        //         companyCountryField.getText(),
+        //         employerPhoneField.getText(),
+        //         employerEmailField.getText(),
+        //         companyWebsiteField.getText(),
+        //         isOwner.isSelected());
+        // EmployerUpdater.updateData(customerID, employer);
 
         Alert successAlert = new Alert(AlertType.INFORMATION);
         successAlert.setTitle("Success");
@@ -463,6 +467,7 @@ public class AddCustomerController {
           Main.setScene(SceneManager.AppScene.START);
         }
       } catch (Exception e) {
+        System.out.println(e.getLocalizedMessage());
         Alert exceptionAlert = new Alert(AlertType.ERROR);
         exceptionAlert.setTitle("Error");
         exceptionAlert.setHeaderText("An error occurred while saving the customer");
