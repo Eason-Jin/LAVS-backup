@@ -82,6 +82,12 @@ public class SearchController {
         }
     }
 
+    public void clearSearch() {
+        searchField.clear();
+        searchTable.getItems().clear();
+        searchTable.setPlaceholder(new Label(""));
+    }
+
     @FXML
     private void keyPressed(KeyEvent event) {
         if (event.getCode().toString().equals("ENTER")) {
