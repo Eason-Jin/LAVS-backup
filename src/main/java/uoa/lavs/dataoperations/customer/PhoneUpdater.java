@@ -97,6 +97,20 @@ public class PhoneUpdater {
               + "CanSendText = COALESCE(?, CanSendText) "
               + "WHERE CustomerID = ? AND Number = ?";
     } else {
+      if (phone.getNumber() == null) {
+        String GET_MAX_NUMBER_SQL =
+            "SELECT COALESCE(MAX(Number), 0) + 1 FROM Phone WHERE CustomerID = ?";
+        try (Connection connection = Instance.getDatabaseConnection();
+            PreparedStatement getMaxNumberStatement =
+                connection.prepareStatement(GET_MAX_NUMBER_SQL)) {
+          getMaxNumberStatement.setString(1, customerID);
+          try (ResultSet resultSet = getMaxNumberStatement.executeQuery()) {
+            if (resultSet.next()) {
+              phone.setNumber(resultSet.getInt(1));
+            }
+          }
+        }
+      }
       sql =
           "INSERT INTO Phone (Type, Prefix, PhoneNumber, IsPrimary, CanSendText, CustomerID,"
               + " Number) VALUES (?, ?, ?, ?, ?, ?, ?)";

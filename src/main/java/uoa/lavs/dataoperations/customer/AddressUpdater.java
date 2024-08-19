@@ -106,6 +106,20 @@ public class AddressUpdater {
               + "IsMailing = COALESCE(?, IsMailing) "
               + "WHERE CustomerID = ? AND Number = ?";
     } else {
+      if (address.getNumber() == null) {
+        String GET_MAX_NUMBER_SQL =
+            "SELECT COALESCE(MAX(Number), 0) + 1 FROM Address WHERE CustomerID = ?";
+        try (Connection connection = Instance.getDatabaseConnection();
+            PreparedStatement getMaxNumberStatement =
+                connection.prepareStatement(GET_MAX_NUMBER_SQL)) {
+          getMaxNumberStatement.setString(1, customerID);
+          try (ResultSet resultSet = getMaxNumberStatement.executeQuery()) {
+            if (resultSet.next()) {
+              address.setNumber(resultSet.getInt(1));
+            }
+          }
+        }
+      }
       sql =
           "INSERT INTO Address (Type, Line1, Line2, Suburb, City, PostCode, Country, IsPrimary,"
               + " IsMailing, CustomerID, Number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";

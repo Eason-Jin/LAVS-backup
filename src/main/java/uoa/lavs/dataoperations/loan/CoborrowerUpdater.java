@@ -11,16 +11,12 @@ import uoa.lavs.mainframe.messages.loan.UpdateLoanCoborrower;
 public class CoborrowerUpdater {
 
   public static void updateData(String loanId, String coborrowerId, Integer number) {
-    Integer coborrowerNumber = null;
     try {
-      coborrowerNumber = updateMainframe(loanId, coborrowerId, number);
+      updateMainframe(loanId, coborrowerId, number);
     } catch (Exception e) {
       System.out.println("Mainframe update failed: " + e.getMessage());
     } finally {
       try {
-        if (coborrowerNumber == null) {
-          coborrowerNumber = number;
-        }
         updateDatabase(loanId, coborrowerId);
       } catch (Exception e) {
         System.out.println("Database update failed: " + e.getMessage());

@@ -118,6 +118,20 @@ public class EmployerUpdater {
               + "IsOwner = COALESCE(?, IsOwner) "
               + "WHERE CustomerID = ? AND Number = ?";
     } else {
+      if (employer.getNumber() == null) {
+        String GET_MAX_NUMBER_SQL =
+            "SELECT COALESCE(MAX(Number), 0) + 1 FROM Employer WHERE CustomerID = ?";
+        try (Connection connection = Instance.getDatabaseConnection();
+            PreparedStatement getMaxNumberStatement =
+                connection.prepareStatement(GET_MAX_NUMBER_SQL)) {
+          getMaxNumberStatement.setString(1, customerID);
+          try (ResultSet resultSet = getMaxNumberStatement.executeQuery()) {
+            if (resultSet.next()) {
+              employer.setNumber(resultSet.getInt(1));
+            }
+          }
+        }
+      }
       sql =
           "INSERT INTO Employer (Name, Line1, Line2, Suburb, City, PostCode, Country, PhoneNumber,"
               + " EmailAddress, Website, IsOwner, CustomerID, Number) VALUES (?, ?, ?, ?, ?, ?, ?,"

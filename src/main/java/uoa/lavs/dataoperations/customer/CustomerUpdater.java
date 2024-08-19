@@ -64,10 +64,14 @@ public class CustomerUpdater {
               + "VisaType = COALESCE(?, VisaType), "
               + "Status = COALESCE(?, Status) "
               + "WHERE CustomerID = ?";
-    } else {
+    } else if (customerID != null) {
       sql =
           "INSERT INTO Customer (Title, Name, Dob, Occupation, Citizenship, VisaType, Status,"
               + " CustomerID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    } else {
+      sql =
+          "INSERT INTO Customer (Title, Name, Dob, Occupation, Citizenship, VisaType, Status)"
+              + " VALUES (?, ?, ?, ?, ?, ?, ?)";
     }
 
     try (Connection connection = Instance.getDatabaseConnection();
@@ -81,7 +85,10 @@ public class CustomerUpdater {
       statement.setString(5, customer.getCitizenship());
       statement.setString(6, customer.getVisaType());
       statement.setString(7, customer.getStatus());
-      statement.setString(8, customerID);
+
+      if (exists || customerID != null) {
+        statement.setString(8, customerID);
+      }
 
       statement.executeUpdate();
 
