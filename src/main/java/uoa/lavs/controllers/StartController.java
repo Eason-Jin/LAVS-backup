@@ -24,4 +24,8 @@ public class StartController {
     private void onClickSearch(ActionEvent event) throws IOException {
         Main.setScene(AppScene.SEARCH);
     }
+    @FXML
+    private void onClickLoan(ActionEvent event) throws IOException {
+        Main.setScene(AppScene.ADD_LOAN);
+    }
 }
