@@ -65,7 +65,7 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="1000.0">
                      <children>
-                        <Pane layoutX="25.0" layoutY="55.0" prefHeight="389.0" prefWidth="950.0">
+                        <Pane layoutX="25.0" layoutY="55.0" prefHeight="183.0" prefWidth="950.0">
                            <children>
                               <TextField fx:id="principalField" prefHeight="36.0" prefWidth="450.0" promptText="Principal" stylesheets="@../css/primer-light.css" />
                               <TextField fx:id="rateValueField" layoutX="670.0" prefHeight="36.0" prefWidth="280.0" promptText="Rate" stylesheets="@../css/primer-light.css" />
@@ -74,7 +74,7 @@
                               <ComboBox fx:id="rateTypeBox" layoutX="460.0" prefHeight="35.0" prefWidth="200.0" promptText="Rate type" />
                               <TextField fx:id="loanTermField" layoutX="640.0" layoutY="50.0" prefHeight="35.0" prefWidth="310.0" promptText="Loan term" stylesheets="@../css/primer-light.css" />
                               <TextField fx:id="paymentAmountField" layoutX="520.0" layoutY="100.0" prefHeight="35.0" prefWidth="430.0" promptText="Payment amount" stylesheets="@../css/primer-light.css" />
-                              <CheckBox fx:id="isInterestOnly" layoutX="20.0" layoutY="150.0" mnemonicParsing="false" onAction="#onUniqueCheckBoxClick" text="Interest only" />
+                              <CheckBox fx:id="isInterestOnly" layoutX="18.0" layoutY="147.0" mnemonicParsing="false" onAction="#onUniqueCheckBoxClick" text="Interest only" />
                               <ComboBox fx:id="compoundingBox" layoutY="100.0" prefHeight="35.0" prefWidth="250.0" promptText="Compounding" />
                               <ComboBox fx:id="paymentFrequencyBox" layoutX="260.0" layoutY="100.0" prefHeight="36.0" prefWidth="250.0" promptText="Payment frequency" />
                            </children>
@@ -92,25 +92,18 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="176.0" prefWidth="1000.0">
                      <children>
-                        <ScrollPane fx:id="addressScrollPane" hbarPolicy="NEVER" prefHeight="486.0" prefWidth="1000.0">
+                        <ScrollPane fx:id="coBorrowersScrollPane" hbarPolicy="NEVER" prefHeight="486.0" prefWidth="1000.0">
                            <content>
-                              <AnchorPane fx:id="addressScrollAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="248.0" prefWidth="1000.0">
+                              <AnchorPane fx:id="coBorrowersScrollAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="248.0" prefWidth="1000.0">
                                  <children>
-                                    <FlowPane fx:id="addressFlowPane" layoutX="25.0" layoutY="55.0" prefHeight="67.0" prefWidth="950.0" vgap="15.0">
+                                    <FlowPane fx:id="coBorrowersFlowPane" layoutX="25.0" layoutY="55.0" prefHeight="67.0" prefWidth="950.0" vgap="15.0">
                                        <children>
-                                          <Pane fx:id="addressPane" prefHeight="190.0" prefWidth="950.0" stylesheets="@../css/primer-light.css">
+                                          <Pane fx:id="coBorrowersPane" prefHeight="45.0" prefWidth="950.0" stylesheets="@../css/primer-light.css">
                                              <children>
-                                                <TextField fx:id="addressTypeField" prefHeight="35.0" prefWidth="200.0" promptText="Address type" stylesheets="@../css/primer-light.css" />
-                                                <TextField fx:id="address1Field" layoutX="210.0" prefHeight="35.0" prefWidth="365.0" promptText="Address line 1" stylesheets="@../css/primer-light.css" />
-                                                <TextField fx:id="address2Field" layoutX="585.0" prefHeight="35.0" prefWidth="365.0" promptText="Address line 2" stylesheets="@../css/primer-light.css" />
-                                                <TextField fx:id="suburbField" layoutY="50.0" prefHeight="35.0" prefWidth="470.0" promptText="Suburb" stylesheets="@../css/primer-light.css" />
-                                                <TextField fx:id="cityField" layoutX="480.0" layoutY="50.0" prefHeight="35.0" prefWidth="470.0" promptText="City" stylesheets="@../css/primer-light.css" />
-                                                <TextField fx:id="postcodeField" layoutY="100.0" prefHeight="35.0" prefWidth="470.0" promptText="Postcode" stylesheets="@../css/primer-light.css" />
-                                                <TextField fx:id="countryField" layoutX="480.0" layoutY="100.0" prefHeight="35.0" prefWidth="470.0" promptText="Country" stylesheets="@../css/primer-light.css" />
-                                                <CheckBox fx:id="isPrimaryAddress" layoutX="26.0" layoutY="151.0" mnemonicParsing="false" onAction="#onUniqueCheckBoxClick" text="Primary address" />
-                                                <CheckBox fx:id="isMailingAddress" layoutX="187.0" layoutY="151.0" mnemonicParsing="false" onAction="#onUniqueCheckBoxClick" text="Use as mailing address" />
-                                                <Separator layoutY="180.0" prefWidth="950.0" />
-                                                <Button fx:id="deleteAddressButton" alignment="CENTER" disable="true" layoutX="920.0" layoutY="147.0" mnemonicParsing="false" onAction="#onClickDeleteAddress" prefHeight="30.0" prefWidth="30.0" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
+                                                <TextField fx:id="coBorrowerNameField" editable="false" prefHeight="35.0" prefWidth="400.0" stylesheets="@../css/primer-light.css" />
+                                                <TextField fx:id="coBorrowerIdField" editable="false" layoutX="410.0" prefHeight="35.0" prefWidth="250.0" stylesheets="@../css/primer-light.css" />
+                                                <Separator layoutY="35.0" prefWidth="950.0" />
+                                                <Button fx:id="deleteCoBorrowersButton" alignment="CENTER" disable="true" layoutX="920.0" layoutY="7.0" mnemonicParsing="false" onAction="#onClickDeleteCoBorrowers" prefHeight="30.0" prefWidth="30.0" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
                                                    <font>
                                                       <Font size="1.0" />
                                                    </font>
@@ -123,7 +116,7 @@
                                           </Pane>
                                        </children>
                                     </FlowPane>
-                                    <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="945.0" layoutY="15.0" mnemonicParsing="false" onAction="#onClickAddAddress" prefHeight="30.0" prefWidth="30.0" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
+                                    <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="945.0" layoutY="15.0" mnemonicParsing="false" onAction="#onClickAddCoBorrower" prefHeight="30.0" prefWidth="30.0" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
                                        <font>
                                           <Font size="1.0" />
                                        </font>
