@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import uoa.lavs.dataoperations.customer.CustomerUpdater;
 import uoa.lavs.mainframe.Instance;
 import uoa.lavs.models.Customer;
@@ -26,7 +25,15 @@ public class CustomerUpdaterTests {
     // Arrange
     Customer customer =
         new Customer(
-            null, "Ms", "Jessica", LocalDate.of(2001, 4, 10), "Student", "NZ", "Work", "Note");
+            null,
+            "Ms",
+            "Jessica",
+            LocalDate.of(2001, 4, 10),
+            "Student",
+            "NZ",
+            "Work",
+            null,
+            "Note");
 
     // Act
     CustomerUpdater.updateDatabase(null, customer);
@@ -45,7 +52,7 @@ public class CustomerUpdaterTests {
         assertEquals("Student", resultSet.getString("Occupation"));
         assertEquals("NZ", resultSet.getString("Citizenship"));
         assertEquals("Work", resultSet.getString("VisaType"));
-        assertEquals("Active", resultSet.getString("Status"));
+        assertEquals("Pending", resultSet.getString("Status"));
       }
     }
   }
@@ -63,7 +70,8 @@ public class CustomerUpdaterTests {
             "Engineer",
             "NZ",
             "Permanent",
-            "Active");
+            "Active",
+            null);
 
     // Act
     CustomerUpdater.updateDatabase("1", updatedCustomer);
