@@ -114,7 +114,6 @@ public class AddCustomerController {
     alert.setTitle("Error");
     alert.setHeaderText("Please fix the following issues:");
     errorString = new StringBuilder();
-
     addAllElementsToMap();
     disableAllDeleteButtons();
   }
@@ -125,7 +124,6 @@ public class AddCustomerController {
     addElementsToMap(emailPane);
     addElementsToMap(phonePane);
     addElementsToMap(employmentPane);
-//    System.out.println(customerDetailFields.keySet());
   }
 
   private void addElementsToMap(Pane pane) {
@@ -340,12 +338,9 @@ public class AddCustomerController {
   private void enableDeleteButton(String field) {
     for (String nodeId : customerDetailFields.keySet()) {
       if (nodeId.contains("delete" + field + "Button")) {
-        System.out.println(nodeId);
         Button newButton = (Button) customerDetailFields.get(nodeId);
         newButton.setDisable(false);
 //        customerDetailFields.replace(nodeId, newButton);
-        System.out.println(((Button) customerDetailFields.get(nodeId)).getOnAction());
-        System.out.println(customerDetailFields.get(nodeId));
       }
     }
   }
