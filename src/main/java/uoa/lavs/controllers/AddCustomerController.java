@@ -103,9 +103,6 @@ public class AddCustomerController {
   private int numPhones = 1;
   private int numEmails = 1;
   private int numEmployments = 1;
-  private Map<String, TextField> textFields = new HashMap<>();
-  private Map<String, CheckBox> checkBoxes = new HashMap<>();
-  private Map<String, ComboBox<FXCollections>> comboBoxes = new HashMap<>();
   private Map<String, Node> customerDetailFields = new HashMap<>();
 
   private Alert alert;
@@ -119,6 +116,7 @@ public class AddCustomerController {
     errorString = new StringBuilder();
 
     addAllElementsToMap();
+    disableAllDeleteButtons();
   }
 
   private void addAllElementsToMap() {
@@ -342,9 +340,12 @@ public class AddCustomerController {
   private void enableDeleteButton(String field) {
     for (String nodeId : customerDetailFields.keySet()) {
       if (nodeId.contains("delete" + field + "Button")) {
+        System.out.println(nodeId);
         Button newButton = (Button) customerDetailFields.get(nodeId);
         newButton.setDisable(false);
-        customerDetailFields.replace(nodeId, newButton);
+//        customerDetailFields.replace(nodeId, newButton);
+        System.out.println(((Button) customerDetailFields.get(nodeId)).getOnAction());
+        System.out.println(customerDetailFields.get(nodeId));
       }
     }
   }
@@ -354,7 +355,7 @@ public class AddCustomerController {
     Pane newAddressPane = addNewField(addressPane, addressCounter);
     addressCounter++;
     numAddresses++;
-    if (numAddresses == 2) {
+    if (numAddresses >= 2) {
       enableDeleteButton("Address");
     }
     addressScrollAnchorPane.setPrefHeight(addressScrollAnchorPane.getPrefHeight()+newAddressPane.getPrefHeight()+addressFlowPane.getVgap());
@@ -366,7 +367,7 @@ public class AddCustomerController {
     Pane newPhonePane = addNewField(phonePane, phoneCounter);
     phoneCounter++;
     numPhones++;
-    if (numPhones == 2) {
+    if (numPhones >= 2) {
       enableDeleteButton("Phone");
     }
     contactScrollAnchorPane.setPrefHeight(contactScrollAnchorPane.getPrefHeight()+newPhonePane.getPrefHeight()+phoneFlowPane.getVgap());
@@ -378,7 +379,7 @@ public class AddCustomerController {
     Pane newEmailPane = addNewField(emailPane, emailCounter);
     emailCounter++;
     numEmails++;
-    if (numEmails == 2) {
+    if (numEmails >= 2) {
       enableDeleteButton("Email");
     }
     contactScrollAnchorPane.setPrefHeight(contactScrollAnchorPane.getPrefHeight()+newEmailPane.getPrefHeight()+emailFlowPane.getVgap());
@@ -390,7 +391,7 @@ public class AddCustomerController {
     Pane newEmploymentPane = addNewField(employmentPane, employmentCounter);
     employmentCounter++;
     numEmployments++;
-    if (numEmployments == 2) {
+    if (numEmployments >= 2) {
       enableDeleteButton("Employment");
     }
     employmentScrollAnchorPane.setPrefHeight(employmentScrollAnchorPane.getPrefHeight()+newEmploymentPane.getPrefHeight()+employmentFlowPane.getVgap());
@@ -502,6 +503,17 @@ public class AddCustomerController {
     clearAllFields();
     resetFieldStyle();
     resetAllDetailFields();
+    disableAllDeleteButtons();
+  }
+
+  private void disableAllDeleteButtons() {
+    for (String nodeId : customerDetailFields.keySet()) {
+      if (nodeId.contains("delete") && nodeId.contains("Button")) {
+        Button deleteButton = (Button) customerDetailFields.get(nodeId);
+        deleteButton.setDisable(true);
+        customerDetailFields.replace(nodeId, deleteButton);
+      }
+    }
   }
 
   private void resetDetailFields(Pane pane, FlowPane flowPane, AnchorPane scrollAnchorPane, int counter) {
@@ -516,12 +528,16 @@ public class AddCustomerController {
   private void resetAllDetailFields() {
     resetDetailFields(addressPane, addressFlowPane, addressScrollAnchorPane, addressCounter);
     addressCounter = initialCounter;
+    numAddresses = 1;
     resetDetailFields(phonePane, phoneFlowPane, contactScrollAnchorPane, phoneCounter);
     phoneCounter = initialCounter;
+    numPhones = 1;
     resetDetailFields(emailPane, emailFlowPane, contactScrollAnchorPane, emailCounter);
     emailCounter = initialCounter;
+    numEmails = 1;
     resetDetailFields(employmentPane, employmentFlowPane, employmentScrollAnchorPane, employmentCounter);
     employmentCounter = initialCounter;
+    numEmployments = 1;
     detailsTabPane.getSelectionModel().select(0);
   }
 

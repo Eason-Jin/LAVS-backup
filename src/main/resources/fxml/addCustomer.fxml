@@ -90,7 +90,7 @@
                      <children>
                         <ScrollPane fx:id="addressScrollPane" hbarPolicy="NEVER" prefHeight="486.0" prefWidth="1000.0">
                           <content>
-                            <AnchorPane fx:id="addressScrollAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="247.0" prefWidth="1000.0">
+                            <AnchorPane fx:id="addressScrollAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="248.0" prefWidth="1000.0">
                                  <children>
                                     <FlowPane fx:id="addressFlowPane" layoutX="25.0" layoutY="55.0" prefHeight="67.0" prefWidth="950.0" vgap="15.0">
                                        <children>
