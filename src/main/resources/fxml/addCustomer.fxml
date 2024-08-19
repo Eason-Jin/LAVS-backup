@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="648.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.AddCustomerController">
+<AnchorPane prefHeight="648.0" prefWidth="1152.0" stylesheets="@../css/primer-light.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.AddCustomerController">
    <children>
       <Button fx:id="cancelButton" layoutX="1025.0" layoutY="77.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="40.0" prefWidth="40.0" stylesheets="@../css/primer-light.css">
          <styleClass>
@@ -106,11 +106,20 @@
                                                 <CheckBox fx:id="isPrimaryAddress" layoutX="26.0" layoutY="151.0" mnemonicParsing="false" onAction="#onUniqueCheckBoxClick" text="Primary address" />
                                                 <CheckBox fx:id="isMailingAddress" layoutX="187.0" layoutY="151.0" mnemonicParsing="false" onAction="#onUniqueCheckBoxClick" text="Use as mailing address" />
                                                 <Separator layoutY="180.0" prefWidth="950.0" />
+                                                <Button fx:id="deleteAddressButton" alignment="CENTER" disable="true" layoutX="920.0" layoutY="147.0" mnemonicParsing="false" onAction="#onClickDeleteAddress" prefHeight="30.0" prefWidth="30.0" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
+                                                   <font>
+                                                      <Font size="1.0" />
+                                                   </font>
+                                                   <styleClass>
+                                                      <String fx:value="delete" />
+                                                      <String fx:value="button-circle" />
+                                                   </styleClass>
+                                                </Button>
                                              </children>
                                           </Pane>
                                        </children>
                                     </FlowPane>
-                                    <Button alignment="CENTER" layoutX="945.0" layoutY="15.0" mnemonicParsing="false" onAction="#onClickAddAddress" prefHeight="30.0" prefWidth="30.0" style="-color-button-bg: -color-accent-5;" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
+                                    <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="945.0" layoutY="15.0" mnemonicParsing="false" onAction="#onClickAddAddress" prefHeight="30.0" prefWidth="30.0" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
                                        <font>
                                           <Font size="1.0" />
                                        </font>
@@ -147,7 +156,7 @@
                                                 <Font name="Calibri" size="30.0" />
                                              </font>
                                           </Label>
-                                          <Button alignment="CENTER" layoutX="945.0" layoutY="15.0" mnemonicParsing="false" onAction="#onClickAddEmail" prefHeight="30.0" prefWidth="30.0" style="-color-button-bg: -color-accent-5;" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
+                                          <Button alignment="CENTER" layoutX="945.0" layoutY="15.0" mnemonicParsing="false" onAction="#onClickAddEmail" prefHeight="30.0" prefWidth="30.0" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
                                              <font>
                                                 <Font size="1.0" />
                                              </font>
@@ -164,9 +173,18 @@
                                              <children>
                                                 <Pane fx:id="emailPane" layoutX="25.0" layoutY="25.0" prefHeight="50.0" prefWidth="1000.0">
                                                    <children>
-                                                      <TextField fx:id="emailField" layoutX="25.0" prefHeight="35.0" prefWidth="791.0" promptText="Email" stylesheets="@../css/primer-light.css" />
-                                                      <CheckBox fx:id="isPrimaryEmail" layoutX="838.0" layoutY="7.0" mnemonicParsing="false" onAction="#onUniqueCheckBoxClick" text="Primary email" />
+                                                      <TextField fx:id="emailField" layoutX="25.0" prefHeight="35.0" prefWidth="750.0" promptText="Email" stylesheets="@../css/primer-light.css" />
+                                                      <CheckBox fx:id="isPrimaryEmail" layoutX="805.0" layoutY="7.0" mnemonicParsing="false" onAction="#onUniqueCheckBoxClick" text="Primary email" />
                                                       <Separator layoutX="25.0" layoutY="40.0" prefWidth="950.0" />
+                                                      <Button fx:id="deleteEmailButton" alignment="CENTER" disable="true" layoutX="945.0" layoutY="3.0" mnemonicParsing="false" onAction="#onClickDeleteEmail" prefHeight="30.0" prefWidth="30.0" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
+                                                         <font>
+                                                            <Font size="1.0" />
+                                                         </font>
+                                                         <styleClass>
+                                                            <String fx:value="delete" />
+                                                            <String fx:value="button-circle" />
+                                                         </styleClass>
+                                                      </Button>
                                                    </children>
                                                 </Pane>
                                              </children>
@@ -178,7 +196,7 @@
                                                       <Font name="Calibri" size="30.0" />
                                                    </font>
                                                 </Label>
-                                                <Button alignment="CENTER" layoutX="945.0" layoutY="15.0" mnemonicParsing="false" onAction="#onClickAddPhone" prefHeight="30.0" prefWidth="30.0" style="-color-button-bg: -color-accent-5;" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
+                                                <Button alignment="CENTER" layoutX="945.0" layoutY="15.0" mnemonicParsing="false" onAction="#onClickAddPhone" prefHeight="30.0" prefWidth="30.0" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
                                                    <font>
                                                       <Font size="1.0" />
                                                    </font>
@@ -193,7 +211,7 @@
                                              <children>
                                                 <Pane fx:id="phonePane" prefHeight="50.0" prefWidth="1000.0">
                                                    <children>
-                                                      <ComboBox fx:id="phoneTypeBox" layoutX="25.0" prefHeight="35.0" prefWidth="150.0" promptText="Phone type">
+                                                      <ComboBox fx:id="phoneTypeBox" layoutX="25.0" prefHeight="35.0" prefWidth="145.0" promptText="Phone type">
                                                          <items>
                                                             <FXCollections fx:factory="observableArrayList">
                                                                <String fx:value="Mobile" />
@@ -201,11 +219,20 @@
                                                             </FXCollections>
                                                          </items>
                                                       </ComboBox>
-                                                      <TextField fx:id="prefixField" layoutX="185.0" prefHeight="35.0" prefWidth="125.0" promptText="Prefix" stylesheets="@../css/primer-light.css" />
-                                                      <TextField fx:id="numberField" layoutX="320.0" prefHeight="35.0" prefWidth="275.0" promptText="Number" stylesheets="@../css/primer-light.css" />
-                                                      <CheckBox fx:id="isTextingNumber" layoutX="620.0" layoutY="7.0" mnemonicParsing="false" text="Send texts to this number" />
-                                                      <CheckBox fx:id="isPrimaryNumber" layoutX="839.0" layoutY="7.0" mnemonicParsing="false" onAction="#onUniqueCheckBoxClick" text="Primary number" />
+                                                      <TextField fx:id="prefixField" layoutX="180.0" prefHeight="35.0" prefWidth="115.0" promptText="Prefix" stylesheets="@../css/primer-light.css" />
+                                                      <TextField fx:id="numberField" layoutX="305.0" prefHeight="35.0" prefWidth="265.0" promptText="Number" stylesheets="@../css/primer-light.css" />
+                                                      <CheckBox fx:id="isTextingNumber" layoutX="589.0" layoutY="7.0" mnemonicParsing="false" text="Send texts to this number" />
+                                                      <CheckBox fx:id="isPrimaryNumber" layoutX="795.0" layoutY="7.0" mnemonicParsing="false" onAction="#onUniqueCheckBoxClick" text="Primary number" />
                                                       <Separator layoutX="25.0" layoutY="40.0" prefWidth="950.0" />
+                                                      <Button fx:id="deletePhoneButton" alignment="CENTER" disable="true" layoutX="945.0" layoutY="3.0" mnemonicParsing="false" onAction="#onClickDeletePhone" prefHeight="30.0" prefWidth="30.0" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
+                                                         <font>
+                                                            <Font size="1.0" />
+                                                         </font>
+                                                         <styleClass>
+                                                            <String fx:value="delete" />
+                                                            <String fx:value="button-circle" />
+                                                         </styleClass>
+                                                      </Button>
                                                    </children>
                                                 </Pane>
                                              </children>
@@ -241,15 +268,24 @@
                                                 <TextField fx:id="companyCountryField" layoutX="480.0" layoutY="150.0" prefHeight="35.0" prefWidth="470.0" promptText="Country" stylesheets="@../css/primer-light.css" />
                                                 <TextField fx:id="employerPhoneField" layoutY="200.0" prefHeight="35.0" prefWidth="470.0" promptText="Employer phone" stylesheets="@../css/primer-light.css" />
                                                 <TextField fx:id="employerEmailField" layoutX="480.0" layoutY="200.0" prefHeight="35.0" prefWidth="470.0" promptText="Employer email" stylesheets="@../css/primer-light.css" />
-                                                <TextField fx:id="companyWebsiteField" layoutY="250.0" prefHeight="36.0" prefWidth="792.0" promptText="Company website" stylesheets="@../css/primer-light.css" />
+                                                <TextField fx:id="companyWebsiteField" layoutY="250.0" prefHeight="36.0" prefWidth="775.0" promptText="Company website" stylesheets="@../css/primer-light.css" />
                                                 <TextField fx:id="jobField" prefHeight="35.0" prefWidth="470.0" promptText="Job" stylesheets="@../css/primer-light.css" />
-                                                <CheckBox fx:id="isOwner" layoutX="816.0" layoutY="256.0" mnemonicParsing="false" text="Is the owner" />
+                                                <CheckBox fx:id="isOwner" layoutX="796.0" layoutY="256.0" mnemonicParsing="false" text="Is the owner" />
                                                 <Separator layoutY="295.0" prefWidth="950.0" />
+                                                <Button fx:id="deleteEmploymentButton" alignment="CENTER" disable="true" layoutX="920.0" layoutY="251.0" mnemonicParsing="false" onAction="#onClickDeleteEmployment" prefHeight="30.0" prefWidth="30.0" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
+                                                   <font>
+                                                      <Font size="1.0" />
+                                                   </font>
+                                                   <styleClass>
+                                                      <String fx:value="delete" />
+                                                      <String fx:value="button-circle" />
+                                                   </styleClass>
+                                                </Button>
                                              </children>
                                           </Pane>
                                        </children>
                                     </FlowPane>
-                                    <Button alignment="CENTER" layoutX="945.0" layoutY="15.0" mnemonicParsing="false" onAction="#onClickAddEmployment" prefHeight="30.0" prefWidth="30.0" style="-color-button-bg: -color-accent-5;" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
+                                    <Button alignment="CENTER" layoutX="945.0" layoutY="15.0" mnemonicParsing="false" onAction="#onClickAddEmployment" prefHeight="30.0" prefWidth="30.0" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
                                        <font>
                                           <Font size="1.0" />
                                        </font>

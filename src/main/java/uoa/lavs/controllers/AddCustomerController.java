@@ -99,6 +99,10 @@ public class AddCustomerController {
   private int phoneCounter = initialCounter;
   private int emailCounter = initialCounter;
   private int employmentCounter = initialCounter;
+  private int numAddresses = 1;
+  private int numPhones = 1;
+  private int numEmails = 1;
+  private int numEmployments = 1;
   private Map<String, TextField> textFields = new HashMap<>();
   private Map<String, CheckBox> checkBoxes = new HashMap<>();
   private Map<String, ComboBox<FXCollections>> comboBoxes = new HashMap<>();
@@ -123,14 +127,16 @@ public class AddCustomerController {
     addElementsToMap(emailPane);
     addElementsToMap(phonePane);
     addElementsToMap(employmentPane);
+//    System.out.println(customerDetailFields.keySet());
   }
 
   private void addElementsToMap(Pane pane) {
     for (var node : pane.getChildren()) {
-      if ((node instanceof TextField) || (node instanceof CheckBox) || (node instanceof ComboBox)) {
+      if (node.getId() != null) {
         customerDetailFields.put(node.getId(), node);
       }
     }
+    customerDetailFields.put(pane.getId(), pane);
   }
 
   @FXML
@@ -167,7 +173,6 @@ public class AddCustomerController {
         customerDetailFields.put(newFxId, newTextField);
       }
       else if (node instanceof CheckBox) {
-//        System.out.println(node);
         CheckBox newCheckBox = new CheckBox(((CheckBox) node).getText());
         newCheckBox.setLayoutX(node.getLayoutX());
         newCheckBox.setLayoutY(node.getLayoutY());
@@ -177,7 +182,7 @@ public class AddCustomerController {
         newPane.getChildren().add(newCheckBox);
         customerDetailFields.put(newFxId, newCheckBox);
         if (findSelected((CheckBox) node) != null && ((CheckBox) node).getOnAction() != null) {
-          disableOthers((CheckBox) customerDetailFields.get(findSelected((CheckBox) node)));
+          disableCheckboxes((CheckBox) customerDetailFields.get(findSelected((CheckBox) node)));
         }
       }
       else if (node instanceof ComboBox) {
@@ -200,11 +205,24 @@ public class AddCustomerController {
         newSeparator.setLayoutY(node.getLayoutY());
         newPane.getChildren().add(newSeparator);
       }
+      else if (node instanceof Button) {
+        Button newButton = new Button("");
+        newButton.setPrefWidth(((Button) node).getPrefWidth());
+        newButton.setPrefHeight(((Button) node).getPrefHeight());
+        newButton.setLayoutX(node.getLayoutX());
+        newButton.setLayoutY(node.getLayoutY());
+        newButton.getStyleClass().addAll(node.getStyleClass());
+        EventHandler<ActionEvent> handler = ((Button) node).getOnAction();
+        newButton.setOnAction(handler);
+        newButton.setId(newFxId);
+        newPane.getChildren().add(newButton);
+        customerDetailFields.put(newFxId, newButton);
+      }
       else {
         continue;
       }
     }
-//    System.out.println(customerDetailFields.keySet());
+    customerDetailFields.put(newPane.getId(), newPane);
     return newPane;
   }
 
@@ -216,7 +234,8 @@ public class AddCustomerController {
     }
     return null;
   }
-  private void disableOthers(CheckBox checkBox) {
+
+  private void disableCheckboxes(CheckBox checkBox) {
     String selectedFxId = (checkBox).getId();
     String checkingFxId = ((selectedFxId).split("_"))[0];
     for (String nodeId : customerDetailFields.keySet()) {
@@ -234,21 +253,110 @@ public class AddCustomerController {
             disabledCheckBox.setDisable(false);
             customerDetailFields.replace(nodeId, disabledCheckBox);
           }
-          System.out.println(nodeId);
         }
       }
     }
   }
 
-  @FXML private void onUniqueCheckBoxClick(ActionEvent event) {
+  @FXML
+  private void onUniqueCheckBoxClick(ActionEvent event) {
     CheckBox selectedCheckBox = (CheckBox) event.getSource();
-    disableOthers(selectedCheckBox);
+    disableCheckboxes(selectedCheckBox);
+  }
+
+  @FXML
+  private void onClickDeleteEmail(ActionEvent event) {
+    String buttonClickedFxId = ((Button) event.getSource()).getId();
+    Pane paneToDelete = deleteField(buttonClickedFxId, emailPane);
+    contactScrollAnchorPane.setPrefHeight(contactScrollAnchorPane.getPrefHeight()-(emailPane.getPrefHeight()+emailFlowPane.getVgap()));
+    emailFlowPane.getChildren().remove(paneToDelete);
+    numEmails--;
+    if (numEmails == 1) {
+      disableDeleteButton((buttonClickedFxId.split("_"))[0]);
+    }
+  }
+
+  @FXML
+  private void onClickDeletePhone(ActionEvent event) {
+    String buttonClickedFxId = ((Button) event.getSource()).getId();
+    Pane paneToDelete = deleteField(buttonClickedFxId, phonePane);
+    contactScrollAnchorPane.setPrefHeight(contactScrollAnchorPane.getPrefHeight()-(phonePane.getPrefHeight()+phoneFlowPane.getVgap()));
+    phoneFlowPane.getChildren().remove(paneToDelete);
+    numPhones--;
+    if (numPhones == 1) {
+      disableDeleteButton((buttonClickedFxId.split("_"))[0]);
+    }
+  }
+
+  @FXML
+  private void onClickDeleteAddress(ActionEvent event) {
+    String buttonClickedFxId = ((Button) event.getSource()).getId();
+    Pane paneToDelete = deleteField(buttonClickedFxId, addressPane);
+    addressScrollAnchorPane.setPrefHeight(addressScrollAnchorPane.getPrefHeight()-(addressPane.getPrefHeight()+addressFlowPane.getVgap()));
+    addressFlowPane.getChildren().remove(paneToDelete);
+    numAddresses--;
+    if (numAddresses == 1) {
+      disableDeleteButton((buttonClickedFxId.split("_"))[0]);
+    }
+  }
+
+  @FXML
+  private void onClickDeleteEmployment(ActionEvent event) {
+    String buttonClickedFxId = ((Button) event.getSource()).getId();
+    Pane paneToDelete = deleteField(buttonClickedFxId, employmentPane);
+    employmentScrollAnchorPane.setPrefHeight(employmentScrollAnchorPane.getPrefHeight()-(employmentPane.getPrefHeight()+employmentFlowPane.getVgap()));
+    employmentFlowPane.getChildren().remove(paneToDelete);
+    numEmployments--;
+    if (numEmployments == 1) {
+      disableDeleteButton((buttonClickedFxId.split("_"))[0]);
+    }
+  }
+
+  private Pane deleteField(String buttonClickedFxId, Pane pane) {
+    String paneToDeleteFxId;
+    if ((buttonClickedFxId.split("_")).length >= 2) {
+      paneToDeleteFxId = pane.getId() + "_" + buttonClickedFxId.split("_")[1];
+    }
+    else {
+      paneToDeleteFxId = pane.getId();
+    }
+    Pane paneToDelete = (Pane) customerDetailFields.get(paneToDeleteFxId);
+    List<Node> nodesCopy = paneToDelete.getChildrenUnmodifiable();
+    for (var node : nodesCopy) {
+      customerDetailFields.remove(node.getId());
+    }
+    customerDetailFields.remove(paneToDeleteFxId);
+    return paneToDelete;
+  }
+
+  private void disableDeleteButton(String fxId) {
+    for (var nodeId : customerDetailFields.keySet()) {
+      if (nodeId.contains(fxId)) {
+        Button newButton = (Button) customerDetailFields.get(nodeId);
+        newButton.setDisable(true);
+        customerDetailFields.replace(nodeId, newButton);
+      }
+    }
+  }
+
+  private void enableDeleteButton(String field) {
+    for (String nodeId : customerDetailFields.keySet()) {
+      if (nodeId.contains("delete" + field + "Button")) {
+        Button newButton = (Button) customerDetailFields.get(nodeId);
+        newButton.setDisable(false);
+        customerDetailFields.replace(nodeId, newButton);
+      }
+    }
   }
 
   @FXML
   private void onClickAddAddress(ActionEvent event) throws IOException {
     Pane newAddressPane = addNewField(addressPane, addressCounter);
     addressCounter++;
+    numAddresses++;
+    if (numAddresses == 2) {
+      enableDeleteButton("Address");
+    }
     addressScrollAnchorPane.setPrefHeight(addressScrollAnchorPane.getPrefHeight()+newAddressPane.getPrefHeight()+addressFlowPane.getVgap());
     addressFlowPane.getChildren().add(newAddressPane);
   }
@@ -257,6 +365,10 @@ public class AddCustomerController {
   private void onClickAddPhone(ActionEvent event) throws IOException {
     Pane newPhonePane = addNewField(phonePane, phoneCounter);
     phoneCounter++;
+    numPhones++;
+    if (numPhones == 2) {
+      enableDeleteButton("Phone");
+    }
     contactScrollAnchorPane.setPrefHeight(contactScrollAnchorPane.getPrefHeight()+newPhonePane.getPrefHeight()+phoneFlowPane.getVgap());
     phoneFlowPane.getChildren().add(newPhonePane);
   }
@@ -265,6 +377,10 @@ public class AddCustomerController {
   private void onClickAddEmail(ActionEvent event) throws IOException {
     Pane newEmailPane = addNewField(emailPane, emailCounter);
     emailCounter++;
+    numEmails++;
+    if (numEmails == 2) {
+      enableDeleteButton("Email");
+    }
     contactScrollAnchorPane.setPrefHeight(contactScrollAnchorPane.getPrefHeight()+newEmailPane.getPrefHeight()+emailFlowPane.getVgap());
     emailFlowPane.getChildren().add(newEmailPane);
   }
@@ -273,6 +389,10 @@ public class AddCustomerController {
   private void onClickAddEmployment(ActionEvent event) throws IOException {
     Pane newEmploymentPane = addNewField(employmentPane, employmentCounter);
     employmentCounter++;
+    numEmployments++;
+    if (numEmployments == 2) {
+      enableDeleteButton("Employment");
+    }
     employmentScrollAnchorPane.setPrefHeight(employmentScrollAnchorPane.getPrefHeight()+newEmploymentPane.getPrefHeight()+employmentFlowPane.getVgap());
     employmentFlowPane.getChildren().add(newEmploymentPane);
   }
