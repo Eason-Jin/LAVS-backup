@@ -17,12 +17,12 @@ public class EmailFinder {
     try {
       emails = findFromMainframe(customerId);
     } catch (Exception e) {
-      System.out.println("Mainframe load failed: " + e.getMessage());
-      System.out.println("Trying to load from database");
+      System.out.println("Mainframe find failed: " + e.getMessage());
+      System.out.println("Trying to find from database");
       try {
         emails = findFromDatabase(customerId);
       } catch (Exception e1) {
-        System.out.println("Database load failed: " + e1.getMessage());
+        System.out.println("Database find failed: " + e1.getMessage());
       }
     }
     return emails;

@@ -15,14 +15,14 @@ public class PhoneFinder {
   public static List<Phone> findData(String customerId) {
     List<Phone> phones = new ArrayList<>();
     try {
-      phones = findFromDatabase(customerId);
+      phones = findFromMainframe(customerId);
     } catch (Exception e) {
-      System.out.println("Database find failed: " + e.getMessage());
-      System.out.println("Trying to find from mainframe");
+      System.out.println("Mainframe find failed: " + e.getMessage());
+      System.out.println("Trying to find from database");
       try {
-        phones = findFromMainframe(customerId);
+        phones = findFromDatabase(customerId);
       } catch (Exception e1) {
-        System.out.println("Mainframe find failed: " + e1.getMessage());
+        System.out.println("Database find failed: " + e1.getMessage());
       }
     }
     return phones;

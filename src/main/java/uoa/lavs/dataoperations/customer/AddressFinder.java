@@ -15,14 +15,14 @@ public class AddressFinder {
   public static List<Address> findData(String customerId) {
     List<Address> addresses = new ArrayList<>();
     try {
-      addresses = findFromDatabase(customerId);
+      addresses = findFromMainframe(customerId);
     } catch (Exception e) {
-      System.out.println("Database find failed: " + e.getMessage());
-      System.out.println("Trying to find from mainframe");
+      System.out.println("Mainframe find failed: " + e.getMessage());
+      System.out.println("Trying to find from database");
       try {
-        addresses = findFromMainframe(customerId);
+        addresses = findFromDatabase(customerId);
       } catch (Exception e1) {
-        System.out.println("Mainframe find failed: " + e1.getMessage());
+        System.out.println("Database find failed: " + e1.getMessage());
       }
     }
     return addresses;
