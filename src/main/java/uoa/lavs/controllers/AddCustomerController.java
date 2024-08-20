@@ -412,8 +412,7 @@ public class AddCustomerController {
 
   @FXML
   private void onClickSave(ActionEvent event) {
-    // checkFields() && validateFields()
-    if (validateFields()) {
+    if (checkFields() && validateFields()) {
       try {
         Customer customer =
             new Customer(
@@ -652,26 +651,147 @@ public class AddCustomerController {
     boolean givenNameFieldFlag = checkField(givenNameField);
     boolean dobPickerFlag = checkField(dobPicker);
     boolean citizenshipFieldFlag = checkField(citizenshipField);
-    boolean addressTypeFieldFlag = checkField(addressTypeField);
-    boolean address1FieldFlag = checkField(address1Field);
-    boolean suburbFieldFlag = checkField(suburbField);
-    boolean cityFieldFlag = checkField(cityField);
-    boolean postcodeFieldFlag = checkField(postcodeField);
-    boolean countryFieldFlag = checkField(countryField);
-    boolean emailFieldFlag = checkField(emailField);
-    boolean phoneTypeBoxFlag = checkField(phoneTypeBox);
-    boolean prefixFieldFlag = checkField(prefixField);
-    boolean numberFieldFlag = checkField(numberField);
-    boolean jobFieldFlag = checkField(jobField);
-    boolean companyNameFieldFlag = checkField(companyNameField);
-    boolean companyAddress1FieldFlag = checkField(companyAddress1Field);
-    boolean companySuburbFieldFlag = checkField(companySuburbField);
-    boolean companyCityFieldFlag = checkField(companyCityField);
-    boolean companyPostcodeFieldFlag = checkField(companyPostcodeField);
-    boolean companyCountryFieldFlag = checkField(companyCountryField);
-    boolean employerPhoneFieldFlag = checkField(employerPhoneField);
-    boolean employerEmailFieldFlag = checkField(employerEmailField);
-    boolean companyWebsiteFieldFlag = checkField(companyWebsiteField);
+    String suffix;
+    boolean addressTypeFieldFlag = true;
+    for (int i = 1; i < addressCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!checkField((TextField) customerDetailFields.get("addressTypeField" + suffix))) {
+        addressTypeFieldFlag = false;
+      }
+    }
+    boolean address1FieldFlag = true;
+    for (int i = 1; i < addressCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!checkField((TextField) customerDetailFields.get("address1Field" + suffix))) {
+        address1FieldFlag = false;
+      }
+    }
+    boolean suburbFieldFlag = true;
+    for (int i = 1; i < addressCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!checkField((TextField) customerDetailFields.get("suburbField" + suffix))) {
+        suburbFieldFlag = false;
+      }
+    }
+    boolean cityFieldFlag = true;
+    for (int i = 1; i < addressCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!checkField((TextField) customerDetailFields.get("cityField" + suffix))) {
+        cityFieldFlag = false;
+      }
+    }
+    boolean postcodeFieldFlag = true;
+    for (int i = 1; i < addressCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!checkField((TextField) customerDetailFields.get("postcodeField" + suffix))) {
+        postcodeFieldFlag = false;
+      }
+    }
+    boolean countryFieldFlag = true;
+    for (int i = 1; i < addressCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!checkField((TextField) customerDetailFields.get("countryField" + suffix))) {
+        countryFieldFlag = false;
+      }
+    }
+    boolean emailFieldFlag = true;
+    for (int i = 1; i < emailCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!checkField((TextField) customerDetailFields.get("emailField" + suffix))) {
+        emailFieldFlag = false;
+      }
+    }
+    boolean phoneTypeBoxFlag = true;
+    for (int i = 1; i < phoneCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!checkField((ComboBox) customerDetailFields.get("phoneTypeBox" + suffix))) {
+        phoneTypeBoxFlag = false;
+      }
+    }
+    boolean prefixFieldFlag = true;
+    for (int i = 1; i < phoneCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!checkField((TextField) customerDetailFields.get("prefixField" + suffix))) {
+        prefixFieldFlag = false;
+      }
+    }
+    boolean numberFieldFlag = true;
+    for (int i = 1; i < phoneCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!checkField((TextField) customerDetailFields.get("numberField" + suffix))) {
+        numberFieldFlag = false;
+      }
+    }
+    boolean jobFieldFlag = true;
+    for (int i = 1; i < employmentCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!checkField((TextField) customerDetailFields.get("jobField" + suffix))) {
+        jobFieldFlag = false;
+      }
+    }
+    boolean companyNameFieldFlag = true;
+    for (int i = 1; i < employmentCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!checkField((TextField) customerDetailFields.get("companyNameField" + suffix))) {
+        companyNameFieldFlag = false;
+      }
+    }
+    boolean companyAddress1FieldFlag = true;
+    for (int i = 1; i < employmentCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!checkField((TextField) customerDetailFields.get("companyAddress1Field" + suffix))) {
+        companyAddress1FieldFlag = false;
+      }
+    }
+    boolean companySuburbFieldFlag = true;
+    for (int i = 1; i < employmentCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!checkField((TextField) customerDetailFields.get("companySuburbField" + suffix))) {
+        companySuburbFieldFlag = false;
+      }
+    }
+    boolean companyCityFieldFlag = true;
+    for (int i = 1; i < employmentCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!checkField((TextField) customerDetailFields.get("companyCityField" + suffix))) {
+        companyCityFieldFlag = false;
+      }
+    }
+    boolean companyPostcodeFieldFlag = true;
+    for (int i = 1; i < employmentCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!checkField((TextField) customerDetailFields.get("companyPostcodeField" + suffix))) {
+        companyPostcodeFieldFlag = false;
+      }
+    }
+    boolean companyCountryFieldFlag = true;
+    for (int i = 1; i < employmentCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!checkField((TextField) customerDetailFields.get("companyCountryField" + suffix))) {
+        companyCountryFieldFlag = false;
+      }
+    }
+    boolean employerPhoneFieldFlag = true;
+    for (int i = 1; i < employmentCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!checkField((TextField) customerDetailFields.get("employerPhoneField" + suffix))) {
+        employerPhoneFieldFlag = false;
+      }
+    }
+    boolean employerEmailFieldFlag = true;
+    for (int i = 1; i < employmentCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!checkField((TextField) customerDetailFields.get("employerEmailField" + suffix))) {
+        employerEmailFieldFlag = false;
+      }
+    }
+    boolean companyWebsiteFieldFlag = true;
+    for (int i = 1; i < employmentCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!checkField((TextField) customerDetailFields.get("companyWebsiteField" + suffix))) {
+        companyWebsiteFieldFlag = false;
+      }
+    }
 
     // Only address line 2 can be empty
     if (titleFieldFlag
