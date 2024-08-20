@@ -787,7 +787,9 @@ public class AddCustomerController {
       flag = ui.getText().matches("^.+@.+\\..+$");
       if (!flag) {
         ui.setStyle("-fx-border-color: red");
-        errorString.append("\tInvalid email format\n");
+        if (errorString.indexOf("\tInvalid email format") == -1) {
+          errorString.append("\tInvalid email format\n");
+        }
       }
     } else if (type == Type.PHONE) {
       // Phone should be numbers
@@ -797,14 +799,18 @@ public class AddCustomerController {
       } catch (Exception e) {
         flag = false;
         ui.setStyle("-fx-border-color: red");
-        errorString.append("\tPhone should only contain numbers\n");
+        if (errorString.indexOf("\tPhone should only contain numbers") == -1) {
+          errorString.append("\tPhone should only contain numbers\n");
+        }
       }
     } else if (type == Type.WEBSITE) {
       // Website should be "text.text"
       flag = ui.getText().matches("^.+\\..+$");
       if (!flag) {
         ui.setStyle("-fx-border-color: red");
-        errorString.append("\tInvalid website format\n");
+        if (errorString.indexOf("\tInvalid website format") == -1) {
+          errorString.append("\tInvalid website format\n");
+        }
       }
     } else {
       flag = false;
