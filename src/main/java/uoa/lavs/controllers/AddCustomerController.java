@@ -800,7 +800,7 @@ public class AddCustomerController {
         errorString.append("\tPhone should only contain numbers\n");
       }
     } else if (type == Type.WEBSITE) {
-      // Website should contain a dot after some text
+      // Website should be "text.text"
       flag = ui.getText().matches("^.+\\..+$");
       if (!flag) {
         ui.setStyle("-fx-border-color: red");
