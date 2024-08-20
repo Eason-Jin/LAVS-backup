@@ -7,11 +7,11 @@ public class UpdateCustomerNote implements Message, MessageDescription, UpdateCu
     private Response response;
     private String customerId;
     private Integer number;
-    private String[] line= new String[20];
+    private String[] line= new String[19];
 
     public class Fields {
-        public static final String[] INPUT = {"[01].line", "[02].line", "[03].line", "[04].line", "[05].line", "[06].line", "[07].line", "[08].line", "[09].line", "[10].line", "[11].line", "[12].line", "[13].line", "[14].line", "[15].line", "[16].line", "[17].line", "[18].line", "[19].line", "[20].line", "id", "number"};
-        public static final String[] OUTPUT = {"[01].line", "[02].line", "[03].line", "[04].line", "[05].line", "[06].line", "[07].line", "[08].line", "[09].line", "[10].line", "[11].line", "[12].line", "[13].line", "[14].line", "[15].line", "[16].line", "[17].line", "[18].line", "[19].line", "[20].line", "lines", "number", "pages"};
+        public static final String[] INPUT = {"[01].line", "[02].line", "[03].line", "[04].line", "[05].line", "[06].line", "[07].line", "[08].line", "[09].line", "[10].line", "[11].line", "[12].line", "[13].line", "[14].line", "[15].line", "[16].line", "[17].line", "[18].line", "[19].line", "id", "number"};
+        public static final String[] OUTPUT = {"[01].line", "[02].line", "[03].line", "[04].line", "[05].line", "[06].line", "[07].line", "[08].line", "[09].line", "[10].line", "[11].line", "[12].line", "[13].line", "[14].line", "[15].line", "[16].line", "[17].line", "[18].line", "[19].line", "lines", "number", "pages"};
 
         public static final String CUSTOMER_ID = "id";
         public static final String NUMBER = "number";
@@ -25,10 +25,10 @@ public class UpdateCustomerNote implements Message, MessageDescription, UpdateCu
         Request request = new Request(REQUEST_CODE);
         if (customerId != null) request.setValue(Fields.CUSTOMER_ID, customerId);
         if (number != null) request.setValue(Fields.NUMBER, number.toString());
-        for (int loop = 0; loop < 20; loop++) {
+        for (int loop = 0; loop < 19; loop++) {
             if (line[loop] != null) {
                 request.setValue(
-                    String.format(Fields.LINE, loop),
+                    String.format(Fields.LINE, loop + 1),
                     line[loop].toString());
             }
         }
@@ -55,7 +55,10 @@ public class UpdateCustomerNote implements Message, MessageDescription, UpdateCu
     // sets line [line]
     public void setLine(Integer row, String value)
      {
-        line[row] = value;
+        if (row < 1 || row > 19) {
+            throw new IllegalArgumentException("row is outside the allowed range of 1 to 19");
+        }
+        line[row - 1] = value;
      }
 
     // gets number from server

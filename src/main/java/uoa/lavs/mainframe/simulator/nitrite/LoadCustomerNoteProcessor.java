@@ -37,8 +37,18 @@ public final class LoadCustomerNoteProcessor extends BaseCustomerProcessor {
 
         Document doc = items.get(index);
         HashMap<String, String> data = new HashMap<>();
-        copyOutputData(doc, data, LoadCustomerNote.Fields.OUTPUT);
+        Integer count = 1;
+        for (int loop = 1; loop <= 19; loop++) {
+            String name = String.format(LoadCustomerNote.Fields.LINE, count);
+            String value = doc.get(name, String.class);
+            if (value != null) {
+                data.put(name, value);
+                count++;
+            }
+        }
+
         data.put(LoadCustomerNote.Fields.PAGE_COUNT, Integer.toString(items.size()));
+        data.put(LoadCustomerNote.Fields.LINE_COUNT, Integer.toString(count - 1));
         return new Response(
                 new Status(transactionId),
                 data);

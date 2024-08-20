@@ -12,7 +12,7 @@ public class FindCustomerAdvanced implements Message, MessageDescription {
 
     public class Fields {
         public static final String[] INPUT = {"name"};
-        public static final String[] OUTPUT = {"[01].dob", "[01].id", "[01].name", "[02].dob", "[02].id", "[02].name", "[03].dob", "[03].id", "[03].name", "[04].dob", "[04].id", "[04].name", "[05].dob", "[05].id", "[05].name", "count"};
+        public static final String[] OUTPUT = {"[01].dob", "[01].id", "[01].name", "[02].dob", "[02].id", "[02].name", "[03].dob", "[03].id", "[03].name", "[04].dob", "[04].id", "[04].name", "[05].dob", "[05].id", "[05].name", "[06].dob", "[06].id", "[06].name", "[07].dob", "[07].id", "[07].name", "[08].dob", "[08].id", "[08].name", "[09].dob", "[09].id", "[09].name", "[10].dob", "[10].id", "[10].name", "[11].dob", "[11].id", "[11].name", "[12].dob", "[12].id", "[12].name", "[13].dob", "[13].id", "[13].name", "[14].dob", "[14].id", "[14].name", "[15].dob", "[15].id", "[15].name", "count"};
 
         public static final String SEARCH_NAME = "name";
         public static final String CUSTOMER_COUNT = "count";
