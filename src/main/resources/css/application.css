@@ -12,3 +12,9 @@
 /*#btnSearch {*/
 /*    -fx-background-color: linear-gradient(#DBF1FE 75%, white 25%) no-repeat;*/
 /*}*/
+
+.button {
+    -fx-text-alignment: left;
+    -fx-alignment: center-left;
+    -fx-padding: 0 0 0 30;
+}
