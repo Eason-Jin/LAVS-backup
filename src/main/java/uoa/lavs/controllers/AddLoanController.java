@@ -19,29 +19,31 @@ import java.util.List;
 @Controller
 public class AddLoanController {
 
-    @FXML private ScrollPane coBorrowerScrollpane;
     @FXML private AnchorPane coBorrowerScrollAnchorPane;
     @FXML private FlowPane coBorrowerFlowPane;
     @FXML private Pane coBorrowerPane;
+    @FXML private Pane loanDetailsPane;
+    @FXML private TabPane detailsTabPane;
 
-    private int initialCoBorrowerCounter = 2;
+
+    private int initialCoBorrowerCounter = 1;
     private int coBorrowerCounter = initialCoBorrowerCounter;
-    private int numCoBorrowers = 0;
     private HashMap<String, Node> coBorrowerFields = new HashMap<>();
+    private HashMap<String, Node> loanDetailsFields = new HashMap<>();
 
     @FXML
     private void initialize() {
-        coBorrowerPane.setVisible(false);
-        addInitialCoBorrowerToMap();
+        coBorrowerFlowPane.getChildren().remove(coBorrowerPane);
+        addToMap(loanDetailsFields, loanDetailsPane);
     }
 
-    private void addInitialCoBorrowerToMap() {
-        for (var node : coBorrowerPane.getChildren()) {
+    private void addToMap(HashMap<String, Node> map, Pane pane) {
+        for (var node : pane.getChildren()) {
             if (node.getId() != null) {
-                coBorrowerFields.put(node.getId(), node);
+                map.put(node.getId(), node);
             }
         }
-        coBorrowerFields.put(coBorrowerPane.getId(), coBorrowerPane);
+        map.put(pane.getId(), pane);
     }
 
     @FXML
@@ -64,17 +66,6 @@ public class AddLoanController {
 
         coBorrowerScrollAnchorPane.setPrefHeight(coBorrowerScrollAnchorPane.getPrefHeight()-(coBorrowerPane.getPrefHeight()+coBorrowerFlowPane.getVgap()));
         coBorrowerFlowPane.getChildren().remove(paneToDelete);
-        numCoBorrowers--;
-        if (numCoBorrowers == 1) {
-            disableDeleteButton((buttonClickedFxId.split("_"))[0]);
-        }
-
-    }
-
-    private void disableDeleteButton(String s) {
-    }
-
-    private void enableDeleteButton() {
     }
 
     @FXML
@@ -84,11 +75,6 @@ public class AddLoanController {
     }
 
     private void addCoBorrower() {
-        numCoBorrowers++;
-        if (numCoBorrowers == 1) {
-            coBorrowerPane.setVisible(true);
-            return;
-        }
         List<Node> nodesCopy = new ArrayList<>(coBorrowerPane.getChildrenUnmodifiable());
         String counterString;
         if (coBorrowerCounter != 0) {
@@ -106,7 +92,7 @@ public class AddLoanController {
             String newFxId = node.getId() + counterString;
             if (node instanceof TextField) {
                 TextField newTextField = new TextField();
-                newTextField.setPromptText(((TextField) node).getPromptText());
+                newTextField.setText(newFxId);
                 newTextField.setLayoutX(node.getLayoutX());
                 newTextField.setLayoutY(node.getLayoutY());
                 newTextField.setPrefWidth(((TextField) node).getPrefWidth());
@@ -141,14 +127,59 @@ public class AddLoanController {
                 continue;
             }
         }
-        coBorrowerFields.put(newPane.getId(), newPane);
-        coBorrowerCounter++;
-        if (numCoBorrowers >= 2) {
-            enableDeleteButton();
-        }
-        coBorrowerScrollAnchorPane.setPrefHeight(coBorrowerScrollAnchorPane.getPrefHeight()+newPane.getPrefHeight()+coBorrowerFlowPane.getVgap());
         coBorrowerFlowPane.getChildren().add(newPane);
+        coBorrowerFields.put(newPane.getId(), newPane);
+        System.out.println(counterString);
+        coBorrowerCounter++;
+        coBorrowerScrollAnchorPane.setPrefHeight(coBorrowerScrollAnchorPane.getPrefHeight()+coBorrowerPane.getPrefHeight()+coBorrowerFlowPane.getVgap());
     }
+
+    private void resetScene() {
+        resetCoBorrowerFields();
+        clearAllFields();
+        detailsTabPane.getSelectionModel().select(0);
+    }
+
+    private void clearAllFields() {
+        for (String nodeId : loanDetailsFields.keySet()) {
+            Node node = loanDetailsFields.get(nodeId);
+            if (node instanceof TextField) {
+                ((TextField) node).clear();
+            }
+            else if (node instanceof DatePicker) {
+                ((DatePicker) node).setValue(null);
+            }
+            else if (node instanceof ComboBox) {
+                System.out.println(nodeId);
+                remakeComboBox(node);
+            }
+            else if (node instanceof CheckBox) {
+                ((CheckBox) node).setSelected(false);
+            }
+        }
+    }
+
+    private void remakeComboBox(Node node) {
+        loanDetailsPane.getChildren().remove(node);
+        ComboBox<FXCollections> newComboBox = new ComboBox<>();
+        newComboBox.setPromptText(((ComboBox<FXCollections>) node).getPromptText());
+        newComboBox.setItems(FXCollections.observableArrayList(((ComboBox<FXCollections>) node).getItems()));
+        newComboBox.setLayoutX(node.getLayoutX());
+        newComboBox.setLayoutY(node.getLayoutY());
+        newComboBox.setPrefWidth(((ComboBox<FXCollections>) node).getPrefWidth());
+        newComboBox.setPrefHeight(((ComboBox<FXCollections>) node).getPrefHeight());
+        newComboBox.setId(node.getId());
+        loanDetailsPane.getChildren().add(newComboBox);
+        loanDetailsFields.replace(node.getId(), newComboBox);
+    }
+
+    private void resetCoBorrowerFields() {
+        coBorrowerFlowPane.getChildren().clear();
+        coBorrowerScrollAnchorPane.setPrefHeight(coBorrowerFlowPane.getLayoutY());
+        coBorrowerFields.clear();
+        coBorrowerCounter = initialCoBorrowerCounter;
+    }
+
 
     @FXML
     private void onClickCancel(ActionEvent event) throws IOException {
@@ -160,6 +191,7 @@ public class AddLoanController {
 
     @FXML
     private void onClickHome(ActionEvent event) throws IOException {
+        resetScene();
         Main.setScene(SceneManager.AppScene.START);
     }
 
