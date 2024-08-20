@@ -776,6 +776,10 @@ public class AddCustomerController {
   }
 
   private boolean validate(TextField ui, Type type) {
+    // Check fields have higher priority in error messages
+    if (ui.getText().isEmpty()) {
+      return true;
+    }
     boolean flag;
 
     if (type == Type.EMAIL) {
@@ -796,8 +800,8 @@ public class AddCustomerController {
         errorString.append("\tPhone should only contain numbers\n");
       }
     } else if (type == Type.WEBSITE) {
-      // Website should start with www. or https://
-      flag = ui.getText().matches("^(www\\..+|https://.+)$");
+      // Website should contain a dot after some text
+      flag = ui.getText().matches("^.+\\..+$");
       if (!flag) {
         ui.setStyle("-fx-border-color: red");
         errorString.append("\tInvalid website format\n");
