@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +30,22 @@ public class StartController {
     @FXML private Button searchButton;
     @FXML private StackPane stackPane;
     @FXML private Label timeLabel;
+    @FXML private HBox statusBar;
 
     public void initialize() {
         pulseStackPane();
         startClock();
+        slideInStatusBar();
     }
 
     private void pulseStackPane() {
         var pulse = Animations.pulse(stackPane);
         pulse.playFromStart();
+    }
+
+    private void slideInStatusBar() {
+        var slideIn = Animations.slideInDown(statusBar, Duration.millis(1000));
+        slideIn.playFromStart();
     }
 
     private void startClock() {

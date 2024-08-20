@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
@@ -8,20 +9,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="648.0" prefWidth="1152.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.StartController">
    <children>
-      <Button focusTraversable="false" layoutX="55.0" layoutY="44.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="65.0" style="-fx-background-radius: 100;">
-         <graphic>
-            <ImageView fitHeight="32.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/start/about.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
       <StackPane fx:id="stackPane" layoutX="284.0" layoutY="202.0" prefHeight="210.0" prefWidth="585.0">
          <children>
             <Rectangle arcHeight="40.0" arcWidth="40.0" fill="WHITE" height="210.0" stroke="#ddddde" strokeType="INSIDE" width="585.0" />
@@ -56,25 +49,63 @@
             </HBox>
          </children>
       </StackPane>
-      <StackPane layoutX="489.0" layoutY="43.0" prefHeight="65.0" prefWidth="185.0">
+      <HBox fx:id="statusBar" alignment="CENTER" layoutX="55.0" layoutY="48.0" prefHeight="100.0" prefWidth="1042.0">
          <children>
-            <Rectangle arcHeight="60.0" arcWidth="60.0" fill="#f6f8fa" height="65.0" stroke="#d0d7de" strokeType="INSIDE" width="185.0" />
-            <HBox alignment="CENTER" prefHeight="31.0" prefWidth="171.0">
+            <HBox alignment="CENTER" prefHeight="65.0" prefWidth="149.0">
                <children>
-                  <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/start/clock.png" />
-                     </image>
-                  </ImageView>
-                  <Separator opacity="0.0" prefHeight="24.0" prefWidth="10.0" />
-                  <Label fx:id="timeLabel" text="00:00 PM" textFill="#6d7175">
+                  <StackPane prefHeight="65.0" prefWidth="65.0">
+                     <children>
+                        <Circle fill="#f6f8fa" radius="32.5" stroke="#d0d7de" strokeType="INSIDE" />
+                        <ImageView fitHeight="34.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/start/lavs.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </StackPane>
+                  <Separator opacity="0.0" prefWidth="10.0" />
+                  <Label text="LAVS" textFill="#6d7175">
                      <font>
-                        <Font size="25.0" />
+                        <Font name="System Bold" size="30.0" />
                      </font>
                   </Label>
                </children>
             </HBox>
+            <Separator opacity="0.0" prefWidth="250.0" />
+            <StackPane prefHeight="65.0" prefWidth="185.0">
+               <children>
+                  <Rectangle arcHeight="60.0" arcWidth="60.0" fill="#f6f8fa" height="65.0" stroke="#d0d7de" strokeType="INSIDE" width="185.0" />
+                  <HBox alignment="CENTER" prefHeight="31.0" prefWidth="171.0">
+                     <children>
+                        <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/start/clock.png" />
+                           </image>
+                        </ImageView>
+                        <Separator opacity="0.0" prefHeight="24.0" prefWidth="10.0" />
+                        <Label fx:id="timeLabel" text="00:00 PM" textFill="#6d7175">
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </StackPane>
+            <Separator opacity="0.0" prefWidth="320.0" />
+            <Button focusTraversable="false" mnemonicParsing="false" prefHeight="65.0" prefWidth="65.0" style="-fx-background-radius: 100;">
+               <graphic>
+                  <ImageView fitHeight="32.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/start/about.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
-      </StackPane>
+      </HBox>
    </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
 </AnchorPane>
