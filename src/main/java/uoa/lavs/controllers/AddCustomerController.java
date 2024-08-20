@@ -6,15 +6,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.*;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager;
@@ -146,8 +145,7 @@ public class AddCustomerController {
     String counterString;
     if (counter != 0) {
       counterString = "_" + counter;
-    }
-    else {
+    } else {
       counterString = "";
     }
     Pane newPane = new Pane();
@@ -167,8 +165,7 @@ public class AddCustomerController {
         newTextField.setId(newFxId);
         newPane.getChildren().add(newTextField);
         customerDetailFields.put(newFxId, newTextField);
-      }
-      else if (node instanceof CheckBox) {
+      } else if (node instanceof CheckBox) {
         CheckBox newCheckBox = new CheckBox(((CheckBox) node).getText());
         newCheckBox.setLayoutX(node.getLayoutX());
         newCheckBox.setLayoutY(node.getLayoutY());
@@ -180,11 +177,11 @@ public class AddCustomerController {
         if (findSelected((CheckBox) node) != null && ((CheckBox) node).getOnAction() != null) {
           disableCheckboxes((CheckBox) customerDetailFields.get(findSelected((CheckBox) node)));
         }
-      }
-      else if (node instanceof ComboBox) {
+      } else if (node instanceof ComboBox) {
         ComboBox<FXCollections> newComboBox = new ComboBox<>();
         newComboBox.setPromptText(((ComboBox<FXCollections>) node).getPromptText());
-        newComboBox.setItems(FXCollections.observableArrayList(((ComboBox<FXCollections>) node).getItems()));
+        newComboBox.setItems(
+            FXCollections.observableArrayList(((ComboBox<FXCollections>) node).getItems()));
         newComboBox.setLayoutX(node.getLayoutX());
         newComboBox.setLayoutY(node.getLayoutY());
         newComboBox.setPrefWidth(((ComboBox<FXCollections>) node).getPrefWidth());
@@ -192,16 +189,14 @@ public class AddCustomerController {
         newComboBox.setId(newFxId);
         newPane.getChildren().add(newComboBox);
         customerDetailFields.put(newFxId, newComboBox);
-      }
-      else if (node instanceof Separator) {
+      } else if (node instanceof Separator) {
         Separator newSeparator = new Separator();
         newSeparator.setPrefWidth(((Separator) node).getPrefWidth());
         newSeparator.setPrefHeight(((Separator) node).getPrefHeight());
         newSeparator.setLayoutX(node.getLayoutX());
         newSeparator.setLayoutY(node.getLayoutY());
         newPane.getChildren().add(newSeparator);
-      }
-      else if (node instanceof Button) {
+      } else if (node instanceof Button) {
         Button newButton = new Button("");
         newButton.setPrefWidth(((Button) node).getPrefWidth());
         newButton.setPrefHeight(((Button) node).getPrefHeight());
@@ -213,8 +208,7 @@ public class AddCustomerController {
         newButton.setId(newFxId);
         newPane.getChildren().add(newButton);
         customerDetailFields.put(newFxId, newButton);
-      }
-      else {
+      } else {
         continue;
       }
     }
@@ -224,7 +218,8 @@ public class AddCustomerController {
 
   private String findSelected(CheckBox checkBox) {
     for (String nodeId : customerDetailFields.keySet()) {
-      if (nodeId.contains(checkBox.getId()) && ((CheckBox) customerDetailFields.get(nodeId)).isSelected()) {
+      if (nodeId.contains(checkBox.getId())
+          && ((CheckBox) customerDetailFields.get(nodeId)).isSelected()) {
         return nodeId;
       }
     }
@@ -235,15 +230,18 @@ public class AddCustomerController {
     String selectedFxId = (checkBox).getId();
     String checkingFxId = ((selectedFxId).split("_"))[0];
     for (String nodeId : customerDetailFields.keySet()) {
-      if (customerDetailFields.get(nodeId).getClass().getName().equals(customerDetailFields.get(selectedFxId).getClass().getName())){
+      if (customerDetailFields
+          .get(nodeId)
+          .getClass()
+          .getName()
+          .equals(customerDetailFields.get(selectedFxId).getClass().getName())) {
         if (!(nodeId.equals(selectedFxId)) && nodeId.contains(checkingFxId)) {
           if (checkBox.isSelected()) {
             CheckBox toDisableCheckBox = (CheckBox) customerDetailFields.get(nodeId);
             toDisableCheckBox.setSelected(false);
             toDisableCheckBox.setDisable(true);
             customerDetailFields.replace(nodeId, toDisableCheckBox);
-          }
-          else {
+          } else {
             CheckBox disabledCheckBox = (CheckBox) customerDetailFields.get(nodeId);
             disabledCheckBox.setSelected(false);
             disabledCheckBox.setDisable(false);
@@ -264,7 +262,9 @@ public class AddCustomerController {
   private void onClickDeleteEmail(ActionEvent event) {
     String buttonClickedFxId = ((Button) event.getSource()).getId();
     Pane paneToDelete = deleteField(buttonClickedFxId, emailPane);
-    contactScrollAnchorPane.setPrefHeight(contactScrollAnchorPane.getPrefHeight()-(emailPane.getPrefHeight()+emailFlowPane.getVgap()));
+    contactScrollAnchorPane.setPrefHeight(
+        contactScrollAnchorPane.getPrefHeight()
+            - (emailPane.getPrefHeight() + emailFlowPane.getVgap()));
     emailFlowPane.getChildren().remove(paneToDelete);
     numEmails--;
     if (numEmails == 1) {
@@ -276,7 +276,9 @@ public class AddCustomerController {
   private void onClickDeletePhone(ActionEvent event) {
     String buttonClickedFxId = ((Button) event.getSource()).getId();
     Pane paneToDelete = deleteField(buttonClickedFxId, phonePane);
-    contactScrollAnchorPane.setPrefHeight(contactScrollAnchorPane.getPrefHeight()-(phonePane.getPrefHeight()+phoneFlowPane.getVgap()));
+    contactScrollAnchorPane.setPrefHeight(
+        contactScrollAnchorPane.getPrefHeight()
+            - (phonePane.getPrefHeight() + phoneFlowPane.getVgap()));
     phoneFlowPane.getChildren().remove(paneToDelete);
     numPhones--;
     if (numPhones == 1) {
@@ -288,7 +290,9 @@ public class AddCustomerController {
   private void onClickDeleteAddress(ActionEvent event) {
     String buttonClickedFxId = ((Button) event.getSource()).getId();
     Pane paneToDelete = deleteField(buttonClickedFxId, addressPane);
-    addressScrollAnchorPane.setPrefHeight(addressScrollAnchorPane.getPrefHeight()-(addressPane.getPrefHeight()+addressFlowPane.getVgap()));
+    addressScrollAnchorPane.setPrefHeight(
+        addressScrollAnchorPane.getPrefHeight()
+            - (addressPane.getPrefHeight() + addressFlowPane.getVgap()));
     addressFlowPane.getChildren().remove(paneToDelete);
     numAddresses--;
     if (numAddresses == 1) {
@@ -300,7 +304,9 @@ public class AddCustomerController {
   private void onClickDeleteEmployment(ActionEvent event) {
     String buttonClickedFxId = ((Button) event.getSource()).getId();
     Pane paneToDelete = deleteField(buttonClickedFxId, employmentPane);
-    employmentScrollAnchorPane.setPrefHeight(employmentScrollAnchorPane.getPrefHeight()-(employmentPane.getPrefHeight()+employmentFlowPane.getVgap()));
+    employmentScrollAnchorPane.setPrefHeight(
+        employmentScrollAnchorPane.getPrefHeight()
+            - (employmentPane.getPrefHeight() + employmentFlowPane.getVgap()));
     employmentFlowPane.getChildren().remove(paneToDelete);
     numEmployments--;
     if (numEmployments == 1) {
@@ -312,8 +318,7 @@ public class AddCustomerController {
     String paneToDeleteFxId;
     if ((buttonClickedFxId.split("_")).length >= 2) {
       paneToDeleteFxId = pane.getId() + "_" + buttonClickedFxId.split("_")[1];
-    }
-    else {
+    } else {
       paneToDeleteFxId = pane.getId();
     }
     Pane paneToDelete = (Pane) customerDetailFields.get(paneToDeleteFxId);
@@ -340,7 +345,7 @@ public class AddCustomerController {
       if (nodeId.contains("delete" + field + "Button")) {
         Button newButton = (Button) customerDetailFields.get(nodeId);
         newButton.setDisable(false);
-//        customerDetailFields.replace(nodeId, newButton);
+        //        customerDetailFields.replace(nodeId, newButton);
       }
     }
   }
@@ -353,7 +358,10 @@ public class AddCustomerController {
     if (numAddresses >= 2) {
       enableDeleteButton("Address");
     }
-    addressScrollAnchorPane.setPrefHeight(addressScrollAnchorPane.getPrefHeight()+newAddressPane.getPrefHeight()+addressFlowPane.getVgap());
+    addressScrollAnchorPane.setPrefHeight(
+        addressScrollAnchorPane.getPrefHeight()
+            + newAddressPane.getPrefHeight()
+            + addressFlowPane.getVgap());
     addressFlowPane.getChildren().add(newAddressPane);
   }
 
@@ -365,7 +373,10 @@ public class AddCustomerController {
     if (numPhones >= 2) {
       enableDeleteButton("Phone");
     }
-    contactScrollAnchorPane.setPrefHeight(contactScrollAnchorPane.getPrefHeight()+newPhonePane.getPrefHeight()+phoneFlowPane.getVgap());
+    contactScrollAnchorPane.setPrefHeight(
+        contactScrollAnchorPane.getPrefHeight()
+            + newPhonePane.getPrefHeight()
+            + phoneFlowPane.getVgap());
     phoneFlowPane.getChildren().add(newPhonePane);
   }
 
@@ -377,7 +388,10 @@ public class AddCustomerController {
     if (numEmails >= 2) {
       enableDeleteButton("Email");
     }
-    contactScrollAnchorPane.setPrefHeight(contactScrollAnchorPane.getPrefHeight()+newEmailPane.getPrefHeight()+emailFlowPane.getVgap());
+    contactScrollAnchorPane.setPrefHeight(
+        contactScrollAnchorPane.getPrefHeight()
+            + newEmailPane.getPrefHeight()
+            + emailFlowPane.getVgap());
     emailFlowPane.getChildren().add(newEmailPane);
   }
 
@@ -389,7 +403,10 @@ public class AddCustomerController {
     if (numEmployments >= 2) {
       enableDeleteButton("Employment");
     }
-    employmentScrollAnchorPane.setPrefHeight(employmentScrollAnchorPane.getPrefHeight()+newEmploymentPane.getPrefHeight()+employmentFlowPane.getVgap());
+    employmentScrollAnchorPane.setPrefHeight(
+        employmentScrollAnchorPane.getPrefHeight()
+            + newEmploymentPane.getPrefHeight()
+            + employmentFlowPane.getVgap());
     employmentFlowPane.getChildren().add(newEmploymentPane);
   }
 
@@ -413,7 +430,7 @@ public class AddCustomerController {
 
         String customerID = customer.getId();
 
-        for (int i = 1; i<addressCounter; i++) {
+        for (int i = 1; i < addressCounter; i++) {
           String suffix = i == 1 ? "" : ("_" + i);
           Address address =
               new Address(
@@ -430,34 +447,49 @@ public class AddCustomerController {
           AddressUpdater.updateData(customerID, address);
         }
 
-        // Email email = new Email(customerID, emailField.getText(), isPrimaryEmail.isSelected());
-        // EmailUpdater.updateData(customerID, email);
+        for (int i = 1; i < emailCounter; i++) {
+          String suffix = i == 1 ? "" : ("_" + i);
+          Email email =
+              new Email(
+                  customerID,
+                  ((TextField) customerDetailFields.get("emailField" + suffix)).getText(),
+                  ((CheckBox) customerDetailFields.get("isPrimaryEmail" + suffix)).isSelected());
+          EmailUpdater.updateData(customerID, email);
+        }
 
-        // Phone phone =
-        //     new Phone(
-        //         customerID,
-        //         (String) (Object) phoneTypeBox.getValue(), // Some wild casting here but it works :)
-        //         prefixField.getText(),
-        //         numberField.getText(),
-        //         isPrimaryNumber.isSelected(),
-        //         isTextingNumber.isSelected());
-        // PhoneUpdater.updateData(customerID, phone);
+        for (int i = 1; i < phoneCounter; i++) {
+          String suffix = i == 1 ? "" : ("_" + i);
+          Phone phone =
+              new Phone(
+                  customerID,
+                  (String)
+                      (Object)
+                          ((ComboBox) customerDetailFields.get("phoneTypeBox" + suffix)).getValue(),
+                  ((TextField) customerDetailFields.get("prefixField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("numberField" + suffix)).getText(),
+                  ((CheckBox) customerDetailFields.get("isPrimaryNumber" + suffix)).isSelected(),
+                  ((CheckBox) customerDetailFields.get("isTextingNumber" + suffix)).isSelected());
+          PhoneUpdater.updateData(customerID, phone);
+        }
 
-        // Employer employer =
-        //     new Employer(
-        //         customerID,
-        //         companyNameField.getText(),
-        //         companyAddress1Field.getText(),
-        //         companyAddress2Field.getText(),
-        //         companySuburbField.getText(),
-        //         companyCityField.getText(),
-        //         companyPostcodeField.getText(),
-        //         companyCountryField.getText(),
-        //         employerPhoneField.getText(),
-        //         employerEmailField.getText(),
-        //         companyWebsiteField.getText(),
-        //         isOwner.isSelected());
-        // EmployerUpdater.updateData(customerID, employer);
+        for (int i = 1; i < employmentCounter; i++) {
+          String suffix = i == 1 ? "" : ("_" + i);
+          Employer employer =
+              new Employer(
+                  customerID,
+                  ((TextField) customerDetailFields.get("companyNameField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("companyAddress1Field" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("companyAddress2Field" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("companySuburbField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("companyCityField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("companyPostcodeField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("companyCountryField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("employerPhoneField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("employerEmailField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("companyWebsiteField" + suffix)).getText(),
+                  ((CheckBox) customerDetailFields.get("isOwner" + suffix)).isSelected());
+          EmployerUpdater.updateData(customerID, employer);
+        }
 
         Alert successAlert = new Alert(AlertType.INFORMATION);
         successAlert.setTitle("Success");
@@ -516,12 +548,15 @@ public class AddCustomerController {
     }
   }
 
-  private void resetDetailFields(Pane pane, FlowPane flowPane, AnchorPane scrollAnchorPane, int counter) {
+  private void resetDetailFields(
+      Pane pane, FlowPane flowPane, AnchorPane scrollAnchorPane, int counter) {
     Pane temp = addNewField(pane, 0);
     flowPane.getChildren().clear();
     flowPane.getChildren().add(temp);
     if (counter > initialCounter) {
-      scrollAnchorPane.setPrefHeight(scrollAnchorPane.getPrefHeight()-(counter- initialCounter)*(pane.getPrefHeight()+flowPane.getVgap()));
+      scrollAnchorPane.setPrefHeight(
+          scrollAnchorPane.getPrefHeight()
+              - (counter - initialCounter) * (pane.getPrefHeight() + flowPane.getVgap()));
     }
   }
 
@@ -535,7 +570,8 @@ public class AddCustomerController {
     resetDetailFields(emailPane, emailFlowPane, contactScrollAnchorPane, emailCounter);
     emailCounter = initialCounter;
     numEmails = 1;
-    resetDetailFields(employmentPane, employmentFlowPane, employmentScrollAnchorPane, employmentCounter);
+    resetDetailFields(
+        employmentPane, employmentFlowPane, employmentScrollAnchorPane, employmentCounter);
     employmentCounter = initialCounter;
     numEmployments = 1;
     detailsTabPane.getSelectionModel().select(0);
