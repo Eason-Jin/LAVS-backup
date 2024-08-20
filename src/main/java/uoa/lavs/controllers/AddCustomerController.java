@@ -413,7 +413,7 @@ public class AddCustomerController {
   @FXML
   private void onClickSave(ActionEvent event) {
     // checkFields() && validateFields()
-    if (true) {
+    if (validateFields()) {
       try {
         Customer customer =
             new Customer(
@@ -733,12 +733,45 @@ public class AddCustomerController {
   }
 
   private boolean validateFields() {
+    String suffix;
     boolean dobFlag = validate(dobPicker, Type.DATE);
-    boolean emailFlag = validate(emailField, Type.EMAIL);
-    boolean employerEmailFlag = validate(employerEmailField, Type.EMAIL);
-    boolean phonePrefixFlag = validate(prefixField, Type.PHONE);
-    boolean phoneFlag = validate(numberField, Type.PHONE);
-    boolean websiteFlag = validate(companyWebsiteField, Type.WEBSITE);
+    boolean emailFlag = true;
+    for (int i = 1; i < emailCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!validate((TextField) customerDetailFields.get("emailField" + suffix), Type.EMAIL)) {
+        emailFlag = false;
+      }
+    }
+    boolean employerEmailFlag = true;
+    for (int i = 1; i < employmentCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!validate(
+          (TextField) customerDetailFields.get("employerEmailField" + suffix), Type.EMAIL)) {
+        employerEmailFlag = false;
+      }
+    }
+    boolean phonePrefixFlag = true;
+    for (int i = 1; i < phoneCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!validate((TextField) customerDetailFields.get("prefixField" + suffix), Type.PHONE)) {
+        phonePrefixFlag = false;
+      }
+    }
+    boolean phoneFlag = true;
+    for (int i = 1; i < phoneCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!validate((TextField) customerDetailFields.get("numberField" + suffix), Type.PHONE)) {
+        phoneFlag = false;
+      }
+    }
+    boolean websiteFlag = true;
+    for (int i = 1; i < employmentCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (!validate(
+          (TextField) customerDetailFields.get("companyWebsiteField" + suffix), Type.WEBSITE)) {
+        websiteFlag = false;
+      }
+    }
     return dobFlag && emailFlag && employerEmailFlag && phonePrefixFlag && phoneFlag && websiteFlag;
   }
 
