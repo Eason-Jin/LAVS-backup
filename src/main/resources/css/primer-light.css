@@ -21,6 +21,7 @@
   -color-accent-7: #033d8b;
   -color-accent-8: #0a3069;
   -color-accent-9: #002155;
+  -color-accent-9: #002155;
   -color-success-0: #dafbe1;
   -color-success-1: #aceebb;
   -color-success-2: #6fdd8b;
@@ -561,7 +562,6 @@ Text {
   -color-button-fg-hover: -color-fg-emphasis;
 }
 .home {
-  -color-button-border-pressed: transparent;
   -fx-background-image: url("../images/home_black.png");
   -fx-background-repeat: no-repeat;
   -fx-background-position: center;
@@ -585,11 +585,22 @@ Text {
   -color-button-fg-pressed: -color-fg-emphasis;
 }
 .tick {
-  -color-button-border-pressed: transparent;
   -fx-background-image: url("../images/tick.png");
   -fx-background-repeat: no-repeat;
   -fx-background-position: center;
   -fx-background-size: 70%;
+}
+.add {
+  -fx-background-image: url("../images/add-dark.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: center;
+  -fx-background-size: 55%;
+}
+.delete {
+  -fx-background-image: url("../images/delete-dark.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: center;
+  -fx-background-size: 55%;
 }
 .button.success.button-outlined {
   -color-button-bg: -color-bg-default;

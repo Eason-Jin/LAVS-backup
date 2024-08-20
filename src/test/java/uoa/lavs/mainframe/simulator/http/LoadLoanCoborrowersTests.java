@@ -51,6 +51,7 @@ class LoadLoanCoborrowersTests {
                 () -> assertEquals(1, message.getPageCountFromServer()),
                 () -> assertEquals(1, message.getCountFromServer()),
                 () -> assertEquals("0000016", message.getCoborrowerIdFromServer(1)),
+                () -> assertEquals(1, message.getCoborrowerNumberFromServer(1)),
                 () -> assertEquals("John Doe", message.getCoborrowerNameFromServer(1))
         );
     }

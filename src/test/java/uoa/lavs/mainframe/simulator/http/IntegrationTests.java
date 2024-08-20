@@ -7,6 +7,7 @@ import uoa.lavs.mainframe.Frequency;
 import uoa.lavs.mainframe.RateType;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.*;
+import uoa.lavs.mainframe.messages.loan.LoadLoanPayments;
 import uoa.lavs.mainframe.messages.loan.UpdateLoan;
 import uoa.lavs.mainframe.simulator.HttpConnection;
 
@@ -213,5 +214,51 @@ public class IntegrationTests {
         } finally {
             connection.close();
         }
+    }
+
+    @Test
+    public void retrieveLoanRepayments() throws IOException {
+        Connection connection = new HttpConnection(Constants.BASE_URL);
+
+        // add a customer
+        UpdateCustomer addCustomer = new UpdateCustomer();
+        addCustomer.setCustomerId(null);
+        addCustomer.setName("John Doe");
+        Status addCustomerStatus = addCustomer.send(connection);
+        assertTrue(addCustomerStatus.getWasSuccessful());
+
+        // add a loan
+        UpdateLoan addLoan = new UpdateLoan();
+        addLoan.setLoanId(null);
+        addLoan.setCustomerId(addCustomer.getCustomerIdFromServer());
+        addLoan.setPrincipal(10_000.00);
+        addLoan.setRateValue(6.54);
+        addLoan.setStartDate(LocalDate.of(2024, 9, 1));
+        addLoan.setPeriod(12);
+        addLoan.setPaymentAmount(210.00);
+        addLoan.setRateType(RateType.Fixed);
+        addLoan.setCompounding(Frequency.Weekly);
+        addLoan.setPaymentFrequency(Frequency.Weekly);
+        addLoan.setTerm(360);
+        Status addLoanStatus = addLoan.send(connection);
+        assertAll(
+                () -> assertTrue(addLoanStatus.getWasSuccessful()),
+                () -> assertEquals(0, addLoanStatus.getErrorCode()),
+                () -> assertNull(addLoanStatus.getErrorMessage())
+        );
+
+        // retrieve payments
+        LoadLoanPayments loanPayments = new LoadLoanPayments();
+        String loanId = addLoan.getLoanIdFromServer();
+        loanPayments.setLoanId(loanId);
+        loanPayments.setNumber(1);
+        Status loadPaymentsStatus = loanPayments.send(connection);
+        assertAll(
+                () -> assertTrue(loadPaymentsStatus.getWasSuccessful()),
+                () -> assertEquals(0, loadPaymentsStatus.getErrorCode()),
+                () -> assertNull(loadPaymentsStatus.getErrorMessage())
+        );
+
+        connection.close();
     }
 }

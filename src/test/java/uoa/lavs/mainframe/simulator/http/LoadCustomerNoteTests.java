@@ -12,6 +12,8 @@ import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.LoadCustomerNote;
 import uoa.lavs.mainframe.simulator.HttpConnection;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static uoa.lavs.mainframe.MessageErrorStatus.*;
 
@@ -104,12 +106,40 @@ class LoadCustomerNoteTests {
         Status status = message.send(connection);
 
         // Assert
+        ArrayList<String> lines = new ArrayList<>();
+        for (int loop = 1; loop <= message.getLineCountFromServer(); loop++) {
+            lines.add(message.getLineFromServer(loop));
+        }
+
         assertAll(
                 () -> assertTrue(status.getWasSuccessful()),
                 () -> assertEquals(0, status.getErrorCode()),
                 () -> assertNull(status.getErrorMessage()),
-                () -> assertEquals(2, message.getLineCountFromServer()),
-                () -> assertEquals("Line #1", message.getLineFromServer(1))
+                () -> assertEquals(8, message.getLineCountFromServer()),
+                () -> assertEquals(
+                        "Line #1\nLine #2\nLine #3\nLine #4\nLine #5\nLine #6\nLine #7\nLine #8",
+                        String.join("\n", lines))
+        );
+    }
+
+    @Test
+    public void handlesNoteZero() {
+        // Arrange
+        Connection connection = new HttpConnection(Constants.BASE_URL);
+        LoadCustomerNote message = new LoadCustomerNote();
+        message.setCustomerId("0000022");
+        message.setNumber(0);
+
+        // Act
+        Status status = message.send(connection);
+
+        // Assert
+        assertAll(
+                () -> assertTrue(status.getWasSuccessful()),
+                () -> assertEquals(0, status.getErrorCode()),
+                () -> assertNull(status.getErrorMessage()),
+                () -> assertEquals(0, message.getLineCountFromServer()),
+                () -> assertEquals(1, message.getPageCountFromServer())
         );
     }
 

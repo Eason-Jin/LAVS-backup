@@ -14,20 +14,31 @@ public class RandomPolicy implements IntermittentFailurePolicy {
     public RandomPolicy() {
         threshold = 5;
         cumulative = false;
+        updateValue();
     }
 
     public RandomPolicy(int threshold, boolean cumulative) {
         this.threshold = threshold;
         this.cumulative = cumulative;
+        updateValue();
     }
 
     @Override
-    public boolean canSend() {
+    public boolean canSend(boolean checkOnly) {
+        try {
+            if (value < threshold) return true;
+            value = 0;
+            return false;
+        } finally {
+            if (!checkOnly) {
+                updateValue();
+            }
+        }
+    }
+
+    private void updateValue() {
         value = cumulative
                 ? value + rand.nextInt(0, 100)
                 : rand.nextInt(0, 100);
-        if (value < threshold) return true;
-        value = 0;
-        return false;
     }
 }

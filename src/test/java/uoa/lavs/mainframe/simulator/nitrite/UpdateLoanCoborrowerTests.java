@@ -7,7 +7,8 @@ import uoa.lavs.mainframe.messages.loan.UpdateLoanCoborrower;
 import uoa.lavs.mainframe.simulator.NitriteConnection;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static uoa.lavs.mainframe.MessageErrorStatus.*;
+import static uoa.lavs.mainframe.MessageErrorStatus.INVALID_COBORROWER_ID;
+import static uoa.lavs.mainframe.MessageErrorStatus.LOAN_NOT_FOUND;
 
 class UpdateLoanCoborrowerTests {
 
@@ -37,14 +38,19 @@ class UpdateLoanCoborrowerTests {
         UpdateLoanCoborrower message = new UpdateLoanCoborrower();
         message.setLoanId("123-09");
         message.setCoborrowerId("456");
+        message.setNumber(null);
 
         // Act
         Status status = message.send(connection);
 
         // Assert
         assertAll(
-                () -> assertEquals(INVALID_REQUEST_NUMBER.getCode(), status.getErrorCode()),
-                () -> assertEquals(INVALID_REQUEST_NUMBER.getMessage(), status.getErrorMessage())
+                () -> assertTrue(status.getWasSuccessful()),
+                () -> assertEquals(2, message.getNumberFromServer()),
+                () -> assertEquals("123", message.getCustomerIdFromServer()),
+                () -> assertEquals("John Doe", message.getCustomerNameFromServer()),
+                () -> assertEquals("456", message.getCoborrowerIdFromServer()),
+                () -> assertEquals("Jane Doe", message.getCoborrowerNameFromServer())
         );
     }
 

@@ -3,6 +3,7 @@ package uoa.lavs.mainframe.simulator;
 import org.junit.jupiter.api.Test;
 import uoa.lavs.mainframe.*;
 import uoa.lavs.mainframe.messages.customer.FindCustomer;
+import uoa.lavs.mainframe.simulator.failures.NFailsPerMRequestsPolicy;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -39,7 +40,10 @@ class IntermittentConnectionTests {
     public void isConnectedHandlesConnectionWithState() {
         // arrange
         ConnectionWithStateMock mock = new ConnectionWithStateMock();
-        ConnectionWithState conn = new IntermittentConnection(mock);
+        ConnectionWithState conn = new IntermittentConnection(
+                mock,
+                new NFailsPerMRequestsPolicy(1, 2)
+        );
 
         // act
         boolean isConnected = conn.isConnected();
@@ -55,7 +59,8 @@ class IntermittentConnectionTests {
     public void isConnectedHandlesPlainConnection() {
         // arrange
         ConnectionWithState conn = new IntermittentConnection(
-                new MockConnection()
+                new MockConnection(),
+                new NFailsPerMRequestsPolicy(1, 2)
         );
 
         // act
@@ -63,6 +68,27 @@ class IntermittentConnectionTests {
 
         // assert
         assertTrue(isConnected);
+    }
+
+    @Test
+    public void isConnectedHandlesFailure() {
+        // arrange
+        NFailsPerMRequestsPolicy policy = new NFailsPerMRequestsPolicy(1, 2);
+        ConnectionWithState conn = new IntermittentConnection(
+                new MockConnection(),
+                policy
+        );
+
+        // act
+        boolean firstCheck = conn.isConnected();
+        policy.canSend(false);
+        boolean secondCheck = conn.isConnected();
+
+        // assert
+        assertAll(
+                () -> assertTrue(firstCheck),
+                () -> assertFalse(secondCheck)
+        );
     }
 
     private class ConnectionWithStateMock implements ConnectionWithState {

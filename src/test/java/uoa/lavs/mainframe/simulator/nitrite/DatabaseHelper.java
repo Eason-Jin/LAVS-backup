@@ -16,6 +16,8 @@ public class DatabaseHelper {
                 .insert(generateCustomerDocument("123", "John Doe", true));
         database.getCollection(NitriteConnection.Internal.CUSTOMERS_COLLECTION)
                 .insert(generateCustomerDocument("456", "Jane Doe", false));
+        database.getCollection(NitriteConnection.Internal.CUSTOMERS_COLLECTION)
+                .insert(generateCustomerDocument("654", "Jane Doe", false));
         database.getCollection(NitriteConnection.Internal.LOANS_COLLECTION)
                 .insert(generateLoanDocument());
         database.getCollection(NitriteConnection.Internal.IDS_COLLECTION)
@@ -132,10 +134,14 @@ public class DatabaseHelper {
 
     private static Document appendCustomerNote(Document document) {
         Document note = Document.createDocument()
-                .put("lines", "3")
                 .put("[01].line", "Test line #1")
                 .put("[02].line", "Test line #2")
-                .put("[03].line", "Test line #3");
+                .put("[03].line", "Test line #3")
+                .put("[04].line", "Test line #4")
+                .put("[05].line", "Test line #5")
+                .put("[06].line", "Test line #6")
+                .put("[07].line", "Test line #7")
+                .put("[08].line", "Test line #8");
         ArrayList<Document> items = getItemArray(document, NitriteConnection.Internal.ITEM_NOTES);
         items.add(note);
         return document;

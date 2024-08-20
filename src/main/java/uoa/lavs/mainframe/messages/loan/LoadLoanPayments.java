@@ -2,6 +2,9 @@ package uoa.lavs.mainframe.messages.loan;
 
 import uoa.lavs.mainframe.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class LoadLoanPayments implements Message, MessageDescription {
     public static final int REQUEST_CODE = 2102;
     private Response response;
@@ -10,7 +13,7 @@ public class LoadLoanPayments implements Message, MessageDescription {
 
     public class Fields {
         public static final String[] INPUT = {"id", "number"};
-        public static final String[] OUTPUT = {"[01].interest", "[01].number", "[01].principal", "[01].remaining", "[02].interest", "[02].number", "[02].principal", "[02].remaining", "[03].interest", "[03].number", "[03].principal", "[03].remaining", "[04].interest", "[04].number", "[04].principal", "[04].remaining", "[05].interest", "[05].number", "[05].principal", "[05].remaining", "[06].interest", "[06].number", "[06].principal", "[06].remaining", "[07].interest", "[07].number", "[07].principal", "[07].remaining", "[08].interest", "[08].number", "[08].principal", "[08].remaining", "[09].interest", "[09].number", "[09].principal", "[09].remaining", "[10].interest", "[10].number", "[10].principal", "[10].remaining", "[11].interest", "[11].number", "[11].principal", "[11].remaining", "[12].interest", "[12].number", "[12].principal", "[12].remaining", "[13].interest", "[13].number", "[13].principal", "[13].remaining", "[14].interest", "[14].number", "[14].principal", "[14].remaining", "[15].interest", "[15].number", "[15].principal", "[15].remaining", "[16].interest", "[16].number", "[16].principal", "[16].remaining", "[17].interest", "[17].number", "[17].principal", "[17].remaining", "[18].interest", "[18].number", "[18].principal", "[18].remaining", "customerId", "customerName", "pages", "payments"};
+        public static final String[] OUTPUT = {"[01].date", "[01].interest", "[01].number", "[01].principal", "[01].remaining", "[02].date", "[02].interest", "[02].number", "[02].principal", "[02].remaining", "[03].date", "[03].interest", "[03].number", "[03].principal", "[03].remaining", "[04].date", "[04].interest", "[04].number", "[04].principal", "[04].remaining", "[05].date", "[05].interest", "[05].number", "[05].principal", "[05].remaining", "[06].date", "[06].interest", "[06].number", "[06].principal", "[06].remaining", "[07].date", "[07].interest", "[07].number", "[07].principal", "[07].remaining", "[08].date", "[08].interest", "[08].number", "[08].principal", "[08].remaining", "[09].date", "[09].interest", "[09].number", "[09].principal", "[09].remaining", "[10].date", "[10].interest", "[10].number", "[10].principal", "[10].remaining", "[11].date", "[11].interest", "[11].number", "[11].principal", "[11].remaining", "[12].date", "[12].interest", "[12].number", "[12].principal", "[12].remaining", "[13].date", "[13].interest", "[13].number", "[13].principal", "[13].remaining", "[14].date", "[14].interest", "[14].number", "[14].principal", "[14].remaining", "[15].date", "[15].interest", "[15].number", "[15].principal", "[15].remaining", "[16].date", "[16].interest", "[16].number", "[16].principal", "[16].remaining", "[17].date", "[17].interest", "[17].number", "[17].principal", "[17].remaining", "[18].date", "[18].interest", "[18].number", "[18].principal", "[18].remaining", "customerId", "customerName", "pages", "payments"};
 
         public static final String LOAN_ID = "id";
         public static final String CUSTOMER_ID = "customerId";
@@ -22,6 +25,7 @@ public class LoadLoanPayments implements Message, MessageDescription {
         public static final String PAYMENT_PRINCIPAL = "[%02d].principal";
         public static final String PAYMENT_REMAINING = "[%02d].remaining";
         public static final String PAYMENT_NUMBER = "[%02d].number";
+        public static final String PAYMENT_DATE = "[%02d].date";
     }
 
     @Override
@@ -115,6 +119,16 @@ public class LoadLoanPayments implements Message, MessageDescription {
         String value = response.getValue(key);
         if (value == null) return null;
         return Integer.parseInt(value);
+     }
+
+    // gets payment date [paymentDate] from server
+    public LocalDate getPaymentDateFromServer(Integer payment)
+     {
+        String key = String.format(Fields.PAYMENT_DATE, payment);
+        String value = response.getValue(key);
+        if (value == null) return null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return LocalDate.parse(value, formatter);
      }
 
     @Override

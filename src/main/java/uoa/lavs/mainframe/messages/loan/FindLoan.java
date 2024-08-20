@@ -9,7 +9,7 @@ public class FindLoan implements Message, MessageDescription {
 
     public class Fields {
         public static final String[] INPUT = {"id"};
-        public static final String[] OUTPUT = {"[01].id", "[01].principal", "[01].status", "[02].id", "[02].principal", "[02].status", "[03].id", "[03].principal", "[03].status", "[04].id", "[04].principal", "[04].status", "[05].id", "[05].principal", "[05].status", "count", "customerId", "customerName"};
+        public static final String[] OUTPUT = {"[01].id", "[01].principal", "[01].status", "[02].id", "[02].principal", "[02].status", "[03].id", "[03].principal", "[03].status", "[04].id", "[04].principal", "[04].status", "[05].id", "[05].principal", "[05].status", "[06].id", "[06].principal", "[06].status", "[07].id", "[07].principal", "[07].status", "[08].id", "[08].principal", "[08].status", "[09].id", "[09].principal", "[09].status", "[10].id", "[10].principal", "[10].status", "[11].id", "[11].principal", "[11].status", "[12].id", "[12].principal", "[12].status", "[13].id", "[13].principal", "[13].status", "[14].id", "[14].principal", "[14].status", "[15].id", "[15].principal", "[15].status", "count", "customerId", "customerName"};
 
         public static final String ID = "id";
         public static final String COUNT = "count";

@@ -6,14 +6,22 @@ import uoa.lavs.mainframe.Frequency;
 import uoa.lavs.mainframe.RateType;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.*;
+import uoa.lavs.mainframe.messages.loan.LoadLoanPayments;
 import uoa.lavs.mainframe.messages.loan.UpdateLoan;
 import uoa.lavs.mainframe.simulator.NitriteConnection;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class IntegrationTests {
+    private static String getTypeName(Object message) {
+        String fullName = message.getClass().getName();
+        String[] parts = fullName.split("\\.");
+        return parts[parts.length - 1];
+    }
+
     @Test
     public void addingMultipleCustomersWillUpdateTheNextId() throws IOException {
         // Arrange
@@ -50,6 +58,43 @@ public class IntegrationTests {
                     () -> assertNotEquals(firstId, thirdId),
                     () -> assertNotEquals(thirdId, secondId)
             );
+        } finally {
+            connection.close();
+        }
+    }
+
+    @Test
+    public void testDataPersistence() throws IOException {
+        // arrange
+        Connection connection = new NitriteConnection("testing/lavs-data.db");
+        String customerId;
+
+        // act #1: add a customer
+        try {
+            UpdateCustomer newCustomer = new UpdateCustomer();
+            newCustomer.setCustomerId(null);
+            newCustomer.setName("John Doe");
+            Status status = newCustomer.send(connection);
+            assertTrue(status.getWasSuccessful());
+            customerId = newCustomer.getCustomerIdFromServer();
+        } finally {
+            connection.close();
+        }
+
+        // act #2: load the customer
+        connection = new NitriteConnection("testing/lavs-data.db");
+        try {
+            LoadCustomer loadCustomer = new LoadCustomer();
+            loadCustomer.setCustomerId(customerId);
+            Status status = loadCustomer.send(connection);
+            assertAll(
+                    () -> assertTrue(status.getWasSuccessful()),
+                    () -> assertEquals(0, status.getErrorCode()),
+                    () -> assertNull(status.getErrorMessage())
+            );
+
+            // assert
+            assertEquals("John Doe", loadCustomer.getNameFromServer());
         } finally {
             connection.close();
         }
@@ -132,7 +177,12 @@ public class IntegrationTests {
         message.setCustomerId(customerId);
         message.setNumber(null);
         Status status = message.send(connection);
-        assertNotNull(message.getNumberFromServer());
+        assertAll(
+                () -> assertTrue(status.getWasSuccessful()),
+                () -> assertEquals(0, status.getErrorCode()),
+                () -> assertNull(status.getErrorMessage()),
+                () -> assertNotNull(message.getNumberFromServer(), "Child update message " + getTypeName(message) + " returned null")
+        );
         return status;
     }
 
@@ -181,5 +231,46 @@ public class IntegrationTests {
         } finally {
             connection.close();
         }
+    }
+
+    @Test
+    public void retrieveLoanRepayments() throws IOException {
+        Connection connection = new NitriteConnection();
+
+        // add a customer
+        UpdateCustomer addCustomer = new UpdateCustomer();
+        addCustomer.setCustomerId(null);
+        addCustomer.setName("John Doe");
+        Status addCustomerStatus = addCustomer.send(connection);
+        assertTrue(addCustomerStatus.getWasSuccessful());
+
+        // add a loan
+        UpdateLoan addLoan = new UpdateLoan();
+        addLoan.setLoanId(null);
+        addLoan.setCustomerId(addCustomer.getCustomerIdFromServer());
+        addLoan.setPrincipal(10_000.00);
+        addLoan.setRateValue(6.54);
+        addLoan.setStartDate(LocalDate.of(2024, 9, 1));
+        addLoan.setPeriod(12);
+        addLoan.setPaymentAmount(210.00);
+        addLoan.setRateType(RateType.Fixed);
+        addLoan.setCompounding(Frequency.Weekly);
+        addLoan.setPaymentFrequency(Frequency.Weekly);
+        Status addLoanStatus = addLoan.send(connection);
+        assertTrue(addLoanStatus.getWasSuccessful());
+
+        // retrieve payments
+        LoadLoanPayments loanPayments = new LoadLoanPayments();
+        String loanId = addLoan.getLoanIdFromServer();
+        loanPayments.setLoanId(loanId);
+        loanPayments.setNumber(1);
+        Status loadPaymentsStatus = loanPayments.send(connection);
+        assertAll(
+                () -> assertTrue(loadPaymentsStatus.getWasSuccessful()),
+                () -> assertEquals(0, loadPaymentsStatus.getErrorCode()),
+                () -> assertNull(loadPaymentsStatus.getErrorMessage())
+        );
+
+        connection.close();
     }
 }

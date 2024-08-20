@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import uoa.lavs.mainframe.Connection;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.loan.LoadLoanCoborrowers;
-import uoa.lavs.mainframe.messages.loan.LoadLoanCoborrowers;
 import uoa.lavs.mainframe.simulator.NitriteConnection;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -47,6 +46,7 @@ class LoadLoanCoborrowersTests {
                 () -> assertEquals(1, message.getPageCountFromServer()),
                 () -> assertEquals(1, message.getCountFromServer()),
                 () -> assertEquals("456", message.getCoborrowerIdFromServer(1)),
+                () -> assertEquals(1, message.getCoborrowerNumberFromServer(1)),
                 () -> assertEquals("John Doe", message.getCoborrowerNameFromServer(1))
         );
     }

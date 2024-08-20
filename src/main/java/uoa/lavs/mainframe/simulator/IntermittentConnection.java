@@ -28,7 +28,7 @@ public class IntermittentConnection implements ConnectionWithState {
 
     @Override
     public Response send(Request request) {
-        if (!policy.canSend()) {
+        if (!policy.canSend(false)) {
             return NETWORK_FAILURE_UNAVAILABLE.generateEmptyResponse(++transactionId);
         }
 
@@ -44,6 +44,7 @@ public class IntermittentConnection implements ConnectionWithState {
 
     @Override
     public boolean isConnected() {
+        if (!policy.canSend(true)) return false;
         if (conn instanceof ConnectionWithState) {
             return ((ConnectionWithState) conn).isConnected();
         }
