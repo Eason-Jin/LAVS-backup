@@ -17,7 +17,7 @@
             <Rectangle arcHeight="40.0" arcWidth="40.0" fill="WHITE" height="210.0" stroke="#ddddde" strokeType="INSIDE" width="585.0" />
             <HBox alignment="CENTER" prefHeight="140.0" prefWidth="515.0">
                <children>
-                  <Button fx:id="addCustomerButton" contentDisplay="TOP" focusTraversable="false" mnemonicParsing="false" onAction="#onClickAddCustomer" prefHeight="140.0" prefWidth="240.0" style="-fx-background-radius: 20;" stylesheets="@../css/application.css" text="Add Customer" textFill="#6d7175">
+                  <Button fx:id="addCustomerButton" contentDisplay="TOP" focusTraversable="false" mnemonicParsing="false" onAction="#onClickAddCustomer" prefHeight="140.0" prefWidth="240.0" style="-fx-background-radius: 20; -fx-text-alignment: left; -fx-alignment: center-left; -fx-padding: 0 0 0 30;" text="Add Customer" textFill="#6d7175">
                      <graphic>
                         <ImageView fitHeight="31.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true" translateX="-50.0">
                            <image>
@@ -30,7 +30,7 @@
                      </font>
                   </Button>
                   <Separator opacity="0.0" prefWidth="35.0" />
-                  <Button fx:id="searchButton" contentDisplay="TOP" focusTraversable="false" mnemonicParsing="false" onAction="#onClickSearch" prefHeight="140.0" prefWidth="240.0" style="-fx-background-radius: 20;" stylesheets="@../css/application.css" text="Search" textFill="#6d7175">
+                  <Button fx:id="searchButton" contentDisplay="TOP" focusTraversable="false" mnemonicParsing="false" onAction="#onClickSearch" prefHeight="140.0" prefWidth="240.0" style="-fx-background-radius: 20; -fx-text-alignment: left; -fx-alignment: center-left; -fx-padding: 0 0 0 30;" text="Search" textFill="#6d7175">
                      <font>
                         <Font size="25.0" />
                      </font>
