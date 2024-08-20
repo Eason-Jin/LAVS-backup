@@ -48,6 +48,9 @@ public class PhoneFinder {
       phone.setType(loadCustomerPhoneNumbers.getTypeFromServer(i));
       phone.setIsPrimary(loadCustomerPhoneNumbers.getIsPrimaryFromServer(i));
       phone.setCanSendTxt(loadCustomerPhoneNumbers.getCanSendTxtFromServer(i));
+      phone.setPhoneNumber(loadCustomerPhoneNumbers.getPhoneNumberFromServer(i));
+      phone.setPrefix(loadCustomerPhoneNumbers.getPrefixFromServer(i));
+      phone.setType(loadCustomerPhoneNumbers.getTypeFromServer(i));
       phones.add(phone);
     }
     return phones;
