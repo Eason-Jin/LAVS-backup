@@ -48,7 +48,7 @@
       </Button>
       <TabPane fx:id="detailsTabPane" layoutX="76.0" layoutY="130.0" prefHeight="518.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab fx:id="generalDetailsTab" text="General Details">
+          <Tab fx:id="generalDetailsTab" text="General details">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="1000.0">
                      <children>
@@ -60,7 +60,7 @@
                               <DatePicker fx:id="dobPicker" layoutY="50.0" prefHeight="35.0" prefWidth="950.0" promptText="Date of birth" stylesheets="@../css/primer-light.css" />
                            </children>
                         </Pane>
-                        <Label alignment="TOP_LEFT" contentDisplay="TOP" layoutX="15.0" layoutY="15.0" text="General Details">
+                        <Label alignment="TOP_LEFT" contentDisplay="TOP" layoutX="15.0" layoutY="15.0" text="General details">
                            <font>
                               <Font name="Calibri" size="30.0" />
                            </font>
@@ -74,7 +74,7 @@
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <TextField fx:id="citizenshipField" layoutX="25.0" layoutY="55.0" prefHeight="35.0" prefWidth="950.0" promptText="Citizenship status" stylesheets="@../css/primer-light.css" />
-                        <TextField fx:id="visaField" layoutX="25.0" layoutY="105.0" prefHeight="35.0" prefWidth="950.0" promptText="Visa Type" stylesheets="@../css/primer-light.css" />
+                        <TextField fx:id="visaField" layoutX="25.0" layoutY="105.0" prefHeight="35.0" prefWidth="950.0" promptText="Visa type" stylesheets="@../css/primer-light.css" />
                         <Label layoutX="15.0" layoutY="15.0" text="Status">
                            <font>
                               <Font name="Calibri" size="30.0" />
