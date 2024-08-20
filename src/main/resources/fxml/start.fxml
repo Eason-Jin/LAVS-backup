@@ -9,9 +9,9 @@
    <children>
       <HBox layoutX="320.0" layoutY="240.0" prefHeight="140.0" prefWidth="515.0">
          <children>
-            <Button fx:id="addCustomerButton" mnemonicParsing="false" onAction="#onClickAddCustomer" prefHeight="140.0" prefWidth="240.0" style="-fx-background-radius: 20;" text="Add Customer" />
+            <Button fx:id="addCustomerButton" focusTraversable="false" mnemonicParsing="false" onAction="#onClickAddCustomer" prefHeight="140.0" prefWidth="240.0" style="-fx-background-radius: 20;" stylesheets="@../css/application.css" text="Add Customer" />
             <Separator opacity="0.0" prefWidth="35.0" />
-            <Button fx:id="searchButton" mnemonicParsing="false" onAction="#onClickSearch" prefHeight="140.0" prefWidth="240.0" style="-fx-background-radius: 20;" text="Search" />
+            <Button fx:id="searchButton" focusTraversable="false" mnemonicParsing="false" onAction="#onClickSearch" prefHeight="140.0" prefWidth="240.0" style="-fx-background-radius: 20;" text="Search" />
          </children>
       </HBox>
    </children>
