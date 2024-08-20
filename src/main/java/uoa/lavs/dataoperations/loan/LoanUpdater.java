@@ -43,16 +43,11 @@ public class LoanUpdater {
           }
         }
       }
-      sql =
-          "INSERT INTO Loan (CustomerName, Status, Principal, RateValue, RateType, StartDate,"
-              + " Period, Term, PaymentAmount, PaymentFrequency, Compounding, CustomerID, LoanID)"
-              + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    } else {
-      sql =
-          "UPDATE Loan SET CustomerName = ?, Status = ?, Principal = ?, RateValue = ?, RateType ="
-              + " ?, StartDate = ?, Period = ?, Term = ?, PaymentAmount = ?, PaymentFrequency = ?,"
-              + " Compounding = ? WHERE LoanID = ?";
     }
+    sql =
+        "INSERT INTO Loan (CustomerName, Status, Principal, RateValue, RateType, StartDate,"
+            + " Period, Term, PaymentAmount, PaymentFrequency, Compounding, CustomerID, LoanID)"
+            + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     try (Connection connection = Instance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql)) {
