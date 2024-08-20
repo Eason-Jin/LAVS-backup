@@ -116,7 +116,7 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="176.0" prefWidth="1000.0">
                      <children>
-                        <ScrollPane fx:id="coBorrowerScrollPane" hbarPolicy="NEVER" prefHeight="486.0" prefWidth="1000.0">
+                        <ScrollPane fx:id="coBorrowerScrollPane" hbarPolicy="NEVER" prefHeight="478.0" prefWidth="1000.0">
                            <content>
                               <AnchorPane fx:id="coBorrowerScrollAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="55.0" prefWidth="1000.0">
                                  <children>

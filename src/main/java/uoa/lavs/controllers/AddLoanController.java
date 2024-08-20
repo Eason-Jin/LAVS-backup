@@ -24,10 +24,11 @@ public class AddLoanController {
     @FXML private Pane coBorrowerPane;
     @FXML private Pane loanDetailsPane;
     @FXML private TabPane detailsTabPane;
-
+    @FXML private Label customerNameLabel;
 
     private int initialCoBorrowerCounter = 1;
     private int coBorrowerCounter = initialCoBorrowerCounter;
+    private int numCoBorrowers = 0;
     private HashMap<String, Node> coBorrowerFields = new HashMap<>();
     private HashMap<String, Node> loanDetailsFields = new HashMap<>();
 
@@ -71,18 +72,18 @@ public class AddLoanController {
     @FXML
     private void onClickAddCoBorrower(ActionEvent event) throws IOException {
 //        Main.setScene(SceneManager.AppScene.SEARCH);
-        addCoBorrower();
+        addCoBorrower(("Name"+coBorrowerCounter), ("Id"+coBorrowerCounter));
     }
 
-    private void addCoBorrower() {
+    public void setCustomerName(String customerName) {
+        customerNameLabel.setText(customerName);
+    }
+
+    public void addCoBorrower(String coBorrowerName, String coBorrowerId) {
+        System.out.println(coBorrowerCounter);
         List<Node> nodesCopy = new ArrayList<>(coBorrowerPane.getChildrenUnmodifiable());
         String counterString;
-        if (coBorrowerCounter != 0) {
-            counterString = "_" + coBorrowerCounter;
-        }
-        else {
-            counterString = "";
-        }
+        counterString = "_" + coBorrowerCounter;
         Pane newPane = new Pane();
         newPane.setId(coBorrowerPane.getId() + counterString);
         newPane.setPrefWidth(coBorrowerPane.getPrefWidth());
@@ -91,8 +92,15 @@ public class AddLoanController {
         for (var node : nodesCopy) {
             String newFxId = node.getId() + counterString;
             if (node instanceof TextField) {
+                String newText="";
+                if (newFxId.contains("Name")) {
+                    newText = coBorrowerName;
+                }
+                else if (newFxId.contains("Id")) {
+                    newText = coBorrowerId;
+                }
                 TextField newTextField = new TextField();
-                newTextField.setText(newFxId);
+                newTextField.setText(newText);
                 newTextField.setLayoutX(node.getLayoutX());
                 newTextField.setLayoutY(node.getLayoutY());
                 newTextField.setPrefWidth(((TextField) node).getPrefWidth());
@@ -129,8 +137,8 @@ public class AddLoanController {
         }
         coBorrowerFlowPane.getChildren().add(newPane);
         coBorrowerFields.put(newPane.getId(), newPane);
-        System.out.println(counterString);
         coBorrowerCounter++;
+        numCoBorrowers++;
         coBorrowerScrollAnchorPane.setPrefHeight(coBorrowerScrollAnchorPane.getPrefHeight()+coBorrowerPane.getPrefHeight()+coBorrowerFlowPane.getVgap());
     }
 
