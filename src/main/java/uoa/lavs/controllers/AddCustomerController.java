@@ -892,7 +892,59 @@ public class AddCustomerController {
         websiteFlag = false;
       }
     }
-    return dobFlag && emailFlag && employerEmailFlag && phonePrefixFlag && phoneFlag && websiteFlag;
+    // Only one address can be primary
+    int addressNum = 0;
+    for (int i = 1; i < addressCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (((CheckBox) customerDetailFields.get("isPrimaryAddress" + suffix)).isSelected()) {
+        addressNum++;
+      }
+    }
+    if (addressNum > 1) {
+      if (errorString.indexOf("\tOnly one address can be primary") == -1) {
+        errorString.append("\tOnly one address can be primary\n");
+      }
+    } else if (addressNum == 0) {
+      if (errorString.indexOf("\tPlease select a primary address") == -1) {
+        errorString.append("\tPlease select a primary address\n");
+      }
+    }
+    // Only one email can be primary
+    int emailNum = 0;
+    for (int i = 1; i < emailCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (((CheckBox) customerDetailFields.get("isPrimaryEmail" + suffix)).isSelected()) {
+        emailNum++;
+      }
+    }
+    if (emailNum > 1) {
+      if (errorString.indexOf("\tOnly one email can be primary") == -1) {
+        errorString.append("\tOnly one email can be primary\n");
+      }
+    } else if (emailNum == 0) {
+      if (errorString.indexOf("\tPlease select a primary email") == -1) {
+        errorString.append("\tPlease select a primary email\n");
+      }
+    }
+    // Only one phone can be primary
+    int phoneNum = 0;
+    for (int i = 1; i < phoneCounter; i++) {
+      suffix = i == 1 ? "" : ("_" + i);
+      if (((CheckBox) customerDetailFields.get("isPrimaryNumber" + suffix)).isSelected()) {
+        phoneNum++;
+      }
+    }
+    if (phoneNum > 1) {
+      if (errorString.indexOf("\tOnly one phone can be primary") == -1) {
+        errorString.append("\tOnly one phone can be primary\n");
+      }
+    } else if (phoneNum == 0) {
+      if (errorString.indexOf("\tPlease select a primary phone") == -1) {
+        errorString.append("\tPlease select a primary phone\n");
+      }
+      
+    }
+    return dobFlag && emailFlag && employerEmailFlag && phonePrefixFlag && phoneFlag && websiteFlag && addressNum == 1 && emailNum == 1 && phoneNum == 1;
   }
 
   private boolean validate(TextField ui, Type type) {
@@ -957,6 +1009,10 @@ public class AddCustomerController {
     DATE,
     EMAIL,
     PHONE,
-    WEBSITE
+    WEBSITE,
+    PRIMARY
   }
 }
+
+
+// TODO: Refactor duplicate codes
