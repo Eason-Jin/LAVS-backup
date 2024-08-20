@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
+
 import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomerAddress;
@@ -32,7 +34,14 @@ public class AddressUpdater {
     updateCustomerAddress.setNumber(address.getNumber());
 
     if (address.getNumber() != null) {
-      Address existingAddress = AddressLoader.loadData(customerID, address.getNumber());
+      List<Address> existingAddresses = AddressFinder.findData(customerID);
+      Address existingAddress = new Address();
+      for (Address addressOnAccount : existingAddresses) {
+        if (addressOnAccount.getNumber().equals(address.getNumber())
+            && addressOnAccount.getCustomerId().equals(address.getCustomerId())) {
+          existingAddress = addressOnAccount;
+        }
+      }
 
       updateCustomerAddress.setType(
           address.getType() != null ? address.getType() : existingAddress.getType());
