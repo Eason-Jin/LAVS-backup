@@ -1,11 +1,19 @@
 package uoa.lavs.controllers;
 
 import java.io.IOException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
+import atlantafx.base.util.Animations;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
@@ -19,6 +27,32 @@ public class StartController {
 
     @FXML private Button addCustomerButton;
     @FXML private Button searchButton;
+    @FXML private StackPane stackPane;
+    @FXML private Label timeLabel;
+
+    public void initialize() {
+        pulseStackPane();
+        startClock();
+    }
+
+    private void pulseStackPane() {
+        var pulse = Animations.pulse(stackPane);
+        pulse.playFromStart();
+    }
+
+    private void startClock() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+
+        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
+            LocalTime currentTime = LocalTime.now();
+            timeLabel.setText(currentTime.format(formatter).toUpperCase());
+        }),
+                new KeyFrame(Duration.seconds(1)));
+
+        clock.setCycleCount(Timeline.INDEFINITE);
+        clock.play();
+    }
+
 
     @FXML
     private void onClickAddCustomer(ActionEvent event) throws IOException {
