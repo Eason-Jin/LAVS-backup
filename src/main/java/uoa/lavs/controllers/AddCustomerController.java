@@ -566,6 +566,7 @@ public class AddCustomerController {
     familyNameField.clear();
     givenNameField.clear();
     dobPicker.setValue(null);
+    jobField.clear();
     citizenshipField.clear();
     visaField.clear();
 
@@ -589,6 +590,7 @@ public class AddCustomerController {
     familyNameField.setStyle(noBorder);
     givenNameField.setStyle(noBorder);
     dobPicker.setStyle(noBorder);
+    jobField.setStyle(noBorder);
     citizenshipField.setStyle(noBorder);
     visaField.setStyle(noBorder);
     for (Node node : customerDetailFields.values()) {
