@@ -12,6 +12,8 @@ import javafx.fxml.FXML;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -81,15 +83,25 @@ public class StartController {
         background.setArcWidth(40);
 
         Label popupLabel = new Label("About");
-        popupLabel.setStyle("-fx-font-weight: bold;");
+        popupLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #6d7175; -fx-font-size: 25px");
 
         Label paragraph = new Label("This is a paragraph that provides additional information about the topic. "
                 + "You can add more text here to explain details or provide context.");
-        paragraph.setWrapText(true); // Enable text wrapping
-        paragraph.setMaxWidth(450); // Set the maximum width for the paragraph
+        paragraph.setStyle("-fx-text-fill: #6d7175; -fx-font-size: 20px;");
+        paragraph.setWrapText(true);
+        paragraph.setMaxWidth(450);
 
-        Button closeButton = new Button("X");
+        Button closeButton = new Button();
         closeButton.setFocusTraversable(false);
+
+        Image closeImage = new Image(getClass().getResourceAsStream("/images/start/cross.png"));
+        ImageView closeIcon = new ImageView(closeImage);
+        closeIcon.setFitWidth(22);
+        closeIcon.setFitHeight(22);
+
+        closeButton.setGraphic(closeIcon);
+
+        closeButton.setStyle("-fx-background-radius: 100; -fx-border-radius: 20; -fx-padding: 15;");
         closeButton.setOnAction(e -> {
             popupPane.setVisible(false);
             currentRoot.getChildren().remove(popupPane);
