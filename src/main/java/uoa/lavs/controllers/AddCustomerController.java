@@ -37,8 +37,7 @@ public class AddCustomerController {
   @FXML private Button infoButton;
 
   @FXML private TextField titleField;
-  @FXML private TextField familyNameField;
-  @FXML private TextField givenNameField;
+  @FXML private TextField nameField;
   @FXML private DatePicker dobPicker;
   @FXML private TextField jobField;
 
@@ -399,7 +398,7 @@ public class AddCustomerController {
             new Customer(
                 null,
                 titleField.getText(),
-                givenNameField.getText() + " " + familyNameField.getText(),
+                nameField.getText(),
                 dobPicker.getValue(),
                 jobField.getText(),
                 citizenshipField.getText(),
@@ -563,8 +562,7 @@ public class AddCustomerController {
 
   private void clearAllFields() {
     titleField.clear();
-    familyNameField.clear();
-    givenNameField.clear();
+    nameField.clear();
     dobPicker.setValue(null);
     jobField.clear();
     citizenshipField.clear();
@@ -587,8 +585,7 @@ public class AddCustomerController {
 
   private void resetFieldStyle() {
     titleField.setStyle(noBorder);
-    familyNameField.setStyle(noBorder);
-    givenNameField.setStyle(noBorder);
+    nameField.setStyle(noBorder);
     dobPicker.setStyle(noBorder);
     jobField.setStyle(noBorder);
     citizenshipField.setStyle(noBorder);
@@ -600,8 +597,7 @@ public class AddCustomerController {
 
   private boolean checkFields() {
     boolean titleFieldFlag = checkField(titleField);
-    boolean familyNameFieldFlag = checkField(familyNameField);
-    boolean givenNameFieldFlag = checkField(givenNameField);
+    boolean nameFieldFlag = checkField(nameField);
     boolean dobPickerFlag = checkField(dobPicker);
     boolean occupationFlag = checkField(jobField);
     boolean citizenshipFieldFlag = checkField(citizenshipField);
@@ -623,8 +619,7 @@ public class AddCustomerController {
 
     // Only address line 2 can be empty
     if (titleFieldFlag
-        && familyNameFieldFlag
-        && givenNameFieldFlag
+        && nameFieldFlag
         && dobPickerFlag
         && occupationFlag
         && citizenshipFieldFlag
@@ -852,7 +847,7 @@ public class AddCustomerController {
 
   private boolean checkLengths() {
     boolean titleFieldFlag = checkLength(titleField, 10);
-    boolean nameFieldFlag = checkNameLength(familyNameField, givenNameField, 60);
+    boolean nameFieldFlag = checkLength(nameField, 60);
     boolean occupationFlag = checkLength(jobField, 40);
     boolean citizenshipFieldFlag = checkLength(citizenshipField, 40);
     boolean visaFieldFlag = checkLength(visaField, 40);
@@ -944,20 +939,6 @@ public class AddCustomerController {
       ui.setStyle(redBorder);
       if (errorString.indexOf(ui.getId() + " is too long") == -1) {
         errorString.append("\t" + ui.getId() + " is too long, the max length is: " + length + "\n");
-      }
-      return false;
-    }
-    return true;
-  }
-
-  private boolean checkNameLength(TextField familyNameField, TextField givenNameField, int length) {
-    int familyNameLength = familyNameField.getText().length();
-    int givenNameLength = givenNameField.getText().length();
-    if (familyNameLength + givenNameLength > length) {
-      familyNameField.setStyle(redBorder);
-      givenNameField.setStyle(redBorder);
-      if (errorString.indexOf("Name is too long") == -1) {
-        errorString.append("\tName is too long, the max length is: " + length + "\n");
       }
       return false;
     }
