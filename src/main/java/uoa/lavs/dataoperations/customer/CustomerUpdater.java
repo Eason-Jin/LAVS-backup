@@ -134,7 +134,7 @@ public class CustomerUpdater {
       updateCustomer.setVisa(customer.getVisaType());
       ArrayList<String> notes = customer.splitNotes();
       for (int i = 0; i < notes.size(); i++) {
-        updateCustomerNote.setLine(i, notes.get(i));
+        updateCustomerNote.setLine(i+1, notes.get(i));
       }
     }
 
