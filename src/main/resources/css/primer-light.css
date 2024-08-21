@@ -567,6 +567,12 @@ Text {
   -fx-background-position: center;
   -fx-background-size: 60%;
 }
+.edit {
+  -fx-background-image: url("../images/edit.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: center;
+  -fx-background-size: 55%;
+}
 .button:default.flat, .button.accent.flat {
   -color-button-fg: -color-accent-fg;
   -color-button-bg-hover: -color-accent-subtle;
@@ -592,6 +598,12 @@ Text {
 }
 .add {
   -fx-background-image: url("../images/add-dark.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: center;
+  -fx-background-size: 55%;
+}
+.add-loan {
+  -fx-background-image: url("../images/add-white.png");
   -fx-background-repeat: no-repeat;
   -fx-background-position: center;
   -fx-background-size: 55%;

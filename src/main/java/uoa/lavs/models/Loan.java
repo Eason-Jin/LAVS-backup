@@ -2,6 +2,7 @@ package uoa.lavs.models;
 
 import java.time.LocalDate;
 import uoa.lavs.mainframe.Frequency;
+import uoa.lavs.mainframe.LoanStatus;
 import uoa.lavs.mainframe.RateType;
 
 public class Loan {
@@ -77,7 +78,18 @@ public class Loan {
   }
 
   public String getStatus() {
-    return status;
+    switch (status) {
+      case "1":
+        return LoanStatus.New.toString();
+      case "2":
+        return LoanStatus.Pending.toString();
+      case "5":
+        return LoanStatus.Active.toString();
+      case "8":
+        return LoanStatus.Cancelled.toString();
+      default:
+        return LoanStatus.Unknown.toString();
+    }
   }
 
   public void setStatus(String status) {
