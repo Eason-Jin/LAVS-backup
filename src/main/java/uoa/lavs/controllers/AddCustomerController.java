@@ -684,22 +684,25 @@ public class AddCustomerController {
     boolean employerFlag = false;
     for (int i = 1; i < employmentCounter; i++) {
       suffix = setSuffix(i);
-      if (validate((TextField) customerDetailFields.get("employerEmailField" + suffix), Type.EMAIL)
-          && validate(
-              (TextField) customerDetailFields.get("companyPostcodeField" + suffix), Type.NUMBER)
-          && validate(
-              (TextField) customerDetailFields.get("employerPhoneField" + suffix), Type.NUMBER)) {
-        employerFlag = true;
-      }
+      boolean employerEmailFlag =
+          validate((TextField) customerDetailFields.get("employerEmailField" + suffix), Type.EMAIL);
+      boolean postCodeFlag =
+          validate(
+              (TextField) customerDetailFields.get("companyPostcodeField" + suffix), Type.NUMBER);
+      boolean phoneFlag =
+          validate(
+              (TextField) customerDetailFields.get("employerPhoneField" + suffix), Type.NUMBER);
+      employerFlag = employerEmailFlag && postCodeFlag && phoneFlag;
     }
 
     boolean phoneFlag = false;
     for (int i = 1; i < phoneCounter; i++) {
       suffix = setSuffix(i);
-      if (validate((TextField) customerDetailFields.get("prefixField" + suffix), Type.NUMBER)
-          && validate((TextField) customerDetailFields.get("numberField" + suffix), Type.NUMBER)) {
-        phoneFlag = true;
-      }
+      boolean prefixFlag =
+          validate((TextField) customerDetailFields.get("prefixField" + suffix), Type.NUMBER);
+      boolean numberFlag =
+          validate((TextField) customerDetailFields.get("numberField" + suffix), Type.NUMBER);
+      phoneFlag = prefixFlag && numberFlag;
     }
 
     boolean websiteFlag = false;
@@ -858,33 +861,64 @@ public class AddCustomerController {
     boolean addressFlag = false;
     for (int i = 1; i < addressCounter; i++) {
       suffix = setSuffix(i);
-      if (checkLength((TextField) customerDetailFields.get("addressTypeField" + suffix), 20)
-          && checkLength((TextField) customerDetailFields.get("address1Field" + suffix), 60)
-          && checkLength((TextField) customerDetailFields.get("address2Field" + suffix), 60)
-          && checkLength((TextField) customerDetailFields.get("suburbField" + suffix), 30)
-          && checkLength((TextField) customerDetailFields.get("cityField" + suffix), 30)
-          && checkLength((TextField) customerDetailFields.get("postcodeField" + suffix), 10)
-          && checkLength((TextField) customerDetailFields.get("countryField" + suffix), 30)) {
-        addressFlag = true;
-      }
+      boolean addressTypeFlag =
+          checkLength((TextField) customerDetailFields.get("addressTypeField" + suffix), 20);
+      boolean address1Flag =
+          checkLength((TextField) customerDetailFields.get("address1Field" + suffix), 60);
+      boolean address2Flag =
+          checkLength((TextField) customerDetailFields.get("address2Field" + suffix), 60);
+      boolean suburbFlag =
+          checkLength((TextField) customerDetailFields.get("suburbField" + suffix), 30);
+      boolean cityFlag =
+          checkLength((TextField) customerDetailFields.get("cityField" + suffix), 30);
+      boolean postCodeFlag =
+          checkLength((TextField) customerDetailFields.get("postcodeField" + suffix), 10);
+      boolean countryFlag =
+          checkLength((TextField) customerDetailFields.get("countryField" + suffix), 30);
+      addressFlag =
+          addressTypeFlag
+              && address1Flag
+              && address2Flag
+              && suburbFlag
+              && cityFlag
+              && postCodeFlag
+              && countryFlag;
     }
 
     boolean employerFlag = false;
     for (int i = 1; i < employmentCounter; i++) {
       suffix = setSuffix(i);
-      if (checkLength((TextField) customerDetailFields.get("companyNameField" + suffix), 60)
-          && checkLength((TextField) customerDetailFields.get("companyAddress1Field" + suffix), 60)
-          && checkLength((TextField) customerDetailFields.get("companyAddress2Field" + suffix), 60)
-          && checkLength((TextField) customerDetailFields.get("companySuburbField" + suffix), 30)
-          && checkLength((TextField) customerDetailFields.get("companyCityField" + suffix), 30)
-          && checkLength((TextField) customerDetailFields.get("companyPostcodeField" + suffix), 10)
-          && checkLength((TextField) customerDetailFields.get("companyCountryField" + suffix), 30)
-          && checkLength((TextField) customerDetailFields.get("employerPhoneField" + suffix), 30)
-          && checkLength((TextField) customerDetailFields.get("employerEmailField" + suffix), 60)
-          && checkLength(
-              (TextField) customerDetailFields.get("companyWebsiteField" + suffix), 60)) {
-        employerFlag = true;
-      }
+      boolean nameFlag =
+          checkLength((TextField) customerDetailFields.get("companyNameField" + suffix), 60);
+      boolean address1Flag =
+          checkLength((TextField) customerDetailFields.get("companyAddress1Field" + suffix), 60);
+      boolean address2Flag =
+          checkLength((TextField) customerDetailFields.get("companyAddress2Field" + suffix), 60);
+      boolean suburbFlag =
+          checkLength((TextField) customerDetailFields.get("companySuburbField" + suffix), 30);
+      boolean cityFlag =
+          checkLength((TextField) customerDetailFields.get("companyCityField" + suffix), 30);
+      boolean postCodeFlag =
+          checkLength((TextField) customerDetailFields.get("companyPostcodeField" + suffix), 10);
+      boolean countryFlag =
+          checkLength((TextField) customerDetailFields.get("companyCountryField" + suffix), 30);
+      boolean phoneFlag =
+          checkLength((TextField) customerDetailFields.get("employerPhoneField" + suffix), 30);
+      boolean emailFlag =
+          checkLength((TextField) customerDetailFields.get("employerEmailField" + suffix), 60);
+      boolean websiteFlag =
+          checkLength((TextField) customerDetailFields.get("companyWebsiteField" + suffix), 60);
+      employerFlag =
+          nameFlag
+              && address1Flag
+              && address2Flag
+              && suburbFlag
+              && cityFlag
+              && postCodeFlag
+              && countryFlag
+              && phoneFlag
+              && emailFlag
+              && websiteFlag;
     }
 
     return titleFieldFlag
