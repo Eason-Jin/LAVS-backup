@@ -90,8 +90,8 @@ public class SearchController {
                 searchTable.setPlaceholder(new Label("No customers found"));
             });
         } else {
-            ObservableList<Customer> observablecustomers = FXCollections.observableArrayList(customers);
-            Platform.runLater(() -> searchTable.setItems(observablecustomers));
+            ObservableList<Customer> observableCustomers = FXCollections.observableArrayList(customers);
+            Platform.runLater(() -> searchTable.setItems(observableCustomers));
         }
     }
 
