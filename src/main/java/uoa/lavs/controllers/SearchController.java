@@ -15,6 +15,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager.AppScene;
@@ -23,6 +25,9 @@ import uoa.lavs.models.Customer;
 
 @Controller
 public class SearchController {
+    @Autowired
+    private CustomerDetailsController customerDetailsController;
+
     @FXML private Button backButton;
     @FXML private Button searchButton;
     @FXML private TextField searchField;
@@ -44,6 +49,8 @@ public class SearchController {
                 if (row.isEmpty()) {
                     return;
                 }
+                String customerId = row.getItem().getId();
+                customerDetailsController.setCustomerDetails(customerId);
                 Main.setScene(AppScene.CUSTOMER_DETAILS);
             });
 
