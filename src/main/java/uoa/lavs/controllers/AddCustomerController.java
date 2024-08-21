@@ -423,7 +423,8 @@ public class AddCustomerController {
                   ((TextField) customerDetailFields.get("postcodeField" + suffix)).getText(),
                   ((TextField) customerDetailFields.get("countryField" + suffix)).getText(),
                   ((CheckBox) customerDetailFields.get("isPrimaryAddress" + suffix)).isSelected(),
-                  ((CheckBox) customerDetailFields.get("isMailingAddress" + suffix)).isSelected());
+                  ((CheckBox) customerDetailFields.get("isMailingAddress" + suffix)).isSelected(),
+                  null);
           AddressUpdater.updateData(customerID, address);
         }
 
@@ -433,7 +434,8 @@ public class AddCustomerController {
               new Email(
                   customerID,
                   ((TextField) customerDetailFields.get("emailField" + suffix)).getText(),
-                  ((CheckBox) customerDetailFields.get("isPrimaryEmail" + suffix)).isSelected());
+                  ((CheckBox) customerDetailFields.get("isPrimaryEmail" + suffix)).isSelected(),
+                  null);
           EmailUpdater.updateData(customerID, email);
         }
 
@@ -448,7 +450,8 @@ public class AddCustomerController {
                   ((TextField) customerDetailFields.get("prefixField" + suffix)).getText(),
                   ((TextField) customerDetailFields.get("numberField" + suffix)).getText(),
                   ((CheckBox) customerDetailFields.get("isPrimaryNumber" + suffix)).isSelected(),
-                  ((CheckBox) customerDetailFields.get("isTextingNumber" + suffix)).isSelected());
+                  ((CheckBox) customerDetailFields.get("isTextingNumber" + suffix)).isSelected(),
+                  null);
           PhoneUpdater.updateData(customerID, phone);
         }
 
@@ -467,7 +470,8 @@ public class AddCustomerController {
                   ((TextField) customerDetailFields.get("employerPhoneField" + suffix)).getText(),
                   ((TextField) customerDetailFields.get("employerEmailField" + suffix)).getText(),
                   ((TextField) customerDetailFields.get("companyWebsiteField" + suffix)).getText(),
-                  ((CheckBox) customerDetailFields.get("isOwner" + suffix)).isSelected());
+                  ((CheckBox) customerDetailFields.get("isOwner" + suffix)).isSelected(),
+                  null);
           EmployerUpdater.updateData(customerID, employer);
         }
 
