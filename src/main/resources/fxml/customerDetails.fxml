@@ -39,9 +39,9 @@
             <String fx:value="info" />
          </styleClass>
       </Button>
-      <Label alignment="CENTER" layoutX="376.0" layoutY="40.0" maxHeight="70.0" maxWidth="400.0" minHeight="70.0" minWidth="400.0" text="Customer Details">
+      <Label layoutX="92.0" layoutY="70.0" text="Customer Details">
          <font>
-            <Font size="48.0" />
+            <Font name="System Bold" size="50.0" />
          </font>
       </Label>
       <TabPane fx:id="detailsTabPane" layoutX="76.0" layoutY="130.0" prefHeight="518.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE">
