@@ -10,6 +10,7 @@ import java.util.List;
 import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomer;
+import uoa.lavs.mainframe.messages.customer.UpdateCustomerNote;
 import uoa.lavs.models.Customer;
 
 public class CustomerUpdater {
@@ -63,11 +64,12 @@ public class CustomerUpdater {
               + "Citizenship = COALESCE(?, Citizenship), "
               + "VisaType = COALESCE(?, VisaType), "
               + "Status = COALESCE(?, Status) "
+              + "Note = COALESCE(?, Note) "
               + "WHERE CustomerID = ?";
     } else {
       sql =
-          "INSERT INTO Customer (Title, Name, Dob, Occupation, Citizenship, VisaType, Status,"
-              + " CustomerID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+          "INSERT INTO Customer (Title, Name, Dob, Occupation, Citizenship, VisaType, Status, Note,"
+              + "  CustomerID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     }
 
     try (Connection connection = Instance.getDatabaseConnection();
@@ -81,7 +83,8 @@ public class CustomerUpdater {
       statement.setString(5, customer.getCitizenship());
       statement.setString(6, customer.getVisaType());
       statement.setString(7, customer.getStatus());
-      statement.setString(8, customerID);
+      statement.setString(8, customer.getNotes());
+      statement.setString(9, customerID);
 
       statement.executeUpdate();
 
@@ -98,7 +101,9 @@ public class CustomerUpdater {
 
   public static String updateMainframe(String customerID, Customer customer) throws Exception {
     UpdateCustomer updateCustomer = new UpdateCustomer();
+    UpdateCustomerNote updateCustomerNote = new UpdateCustomerNote();
     updateCustomer.setCustomerId(customerID);
+    updateCustomerNote.setCustomerId(customerID);
 
     if (customerID != null) {
       Customer existingCustomer = CustomerLoader.loadData(customerID);
@@ -119,6 +124,7 @@ public class CustomerUpdater {
               : existingCustomer.getCitizenship());
       updateCustomer.setVisa(
           customer.getVisaType() != null ? customer.getVisaType() : existingCustomer.getVisaType());
+      updateCustomerNote.setLine(0, customer.getNotes());
     } else {
       updateCustomer.setTitle(customer.getTitle());
       updateCustomer.setName(customer.getName());
@@ -126,6 +132,7 @@ public class CustomerUpdater {
       updateCustomer.setOccupation(customer.getOccupation());
       updateCustomer.setCitizenship(customer.getCitizenship());
       updateCustomer.setVisa(customer.getVisaType());
+      updateCustomerNote.setLine(0, customer.getNotes());
     }
 
     Status status = updateCustomer.send(Instance.getConnection());
