@@ -1,5 +1,8 @@
 package uoa.lavs.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Email {
   private String customerId;
   private Integer number;
@@ -45,5 +48,12 @@ public class Email {
 
   public void setIsPrimary(Boolean isPrimary) {
     this.isPrimary = isPrimary;
+  }
+
+  public List<String> getListRepresentation() {
+    List<String> list = new ArrayList<>();
+    list.add(address);
+    list.add(isPrimary.toString());
+    return list;
   }
 }
