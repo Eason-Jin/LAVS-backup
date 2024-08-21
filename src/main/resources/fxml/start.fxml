@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="648.0" prefWidth="1152.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.StartController">
+<AnchorPane fx:id="rootPane" prefHeight="648.0" prefWidth="1152.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.StartController">
    <children>
       <StackPane fx:id="stackPane" layoutX="284.0" layoutY="202.0" prefHeight="210.0" prefWidth="585.0">
          <children>
@@ -93,7 +93,7 @@
                </children>
             </StackPane>
             <Separator opacity="0.0" prefWidth="320.0" />
-            <Button focusTraversable="false" mnemonicParsing="false" prefHeight="65.0" prefWidth="65.0" style="-fx-background-radius: 100;">
+            <Button focusTraversable="false" mnemonicParsing="false" onAction="#createPopup" prefHeight="65.0" prefWidth="65.0" style="-fx-background-radius: 100;">
                <graphic>
                   <ImageView fitHeight="32.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
                      <image>
