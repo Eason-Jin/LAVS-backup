@@ -41,6 +41,7 @@ public class CustomerDetailsController {
     @FXML private TextField titleField;
     @FXML private TextField nameField;
     @FXML private TextField dateOfBirthField;
+    @FXML private TextField occupationField;
 
     @FXML private TextField citizenshipField;
     @FXML private TextField visaField;
@@ -78,6 +79,7 @@ public class CustomerDetailsController {
         titleField.setText(customer.getTitle());
         nameField.setText(customer.getName());
         dateOfBirthField.setText(customer.getDob().toString());
+        occupationField.setText(customer.getOccupation());
 
         citizenshipField.setText(customer.getCitizenship());
         visaField.setText(customer.getVisaType());
@@ -95,9 +97,7 @@ public class CustomerDetailsController {
         }
 
         for (int index = 0; index < employers.size(); index++) {
-            List<String> employerFields = employers.get(index).getListRepresentation();
-            employerFields.add(0, customer.getOccupation());
-            generateFields(employmentPane, employmentScrollAnchorPane, employmentFlowPane, employerFields, index);
+            generateFields(employmentPane, employmentScrollAnchorPane, employmentFlowPane, employers.get(index).getListRepresentation(), index);
         }
 
         notesArea.setText(customer.getNotes());

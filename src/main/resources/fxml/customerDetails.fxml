@@ -48,11 +48,12 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="1000.0">
                      <children>
-                        <Pane layoutX="25.0" layoutY="55.0" prefHeight="85.0" prefWidth="950.0">
+                        <Pane layoutX="25.0" layoutY="55.0" prefHeight="135.0" prefWidth="950.0">
                            <children>
                               <TextField fx:id="titleField" editable="false" maxHeight="35.0" maxWidth="120.0" minHeight="35.0" minWidth="120.0" promptText="Title" stylesheets="@../css/primer-light.css" />
                               <TextField fx:id="nameField" editable="false" layoutX="130.0" maxHeight="35.0" maxWidth="820.0" minHeight="35.0" minWidth="820.0" promptText="Name" stylesheets="@../css/primer-light.css" />
                               <TextField fx:id="dateOfBirthField" editable="false" layoutY="50.0" maxHeight="35.0" maxWidth="950.0" minHeight="35.0" minWidth="950.0" promptText="Date of Birth" />
+                              <TextField fx:id="occupationField" editable="false" layoutY="100.0" maxHeight="35.0" maxWidth="950.0" minHeight="35.0" minWidth="950.0" promptText="Occupation" />
                            </children>
                         </Pane>
                         <Label alignment="TOP_LEFT" contentDisplay="TOP" layoutX="15.0" layoutY="15.0" text="General Details">
@@ -193,8 +194,7 @@
                                        <children>
                                           <Pane fx:id="employmentPane" prefHeight="305.0" prefWidth="950.0">
                                              <children>
-                                                <TextField fx:id="jobField" editable="false" maxHeight="35.0" maxWidth="470.0" minHeight="35.0" minWidth="470.0" promptText="Job" stylesheets="@../css/primer-light.css" />
-                                                <TextField fx:id="companyNameField" editable="false" layoutX="480.0" maxHeight="35.0" maxWidth="470.0" minHeight="35.0" minWidth="470.0" promptText="Company name" stylesheets="@../css/primer-light.css" />
+                                                <TextField fx:id="companyNameField" editable="false" maxHeight="35.0" maxWidth="950.0" minHeight="35.0" minWidth="950.0" promptText="Company name" stylesheets="@../css/primer-light.css" />
                                                 <TextField fx:id="companyAddress1Field" editable="false" layoutY="50.0" maxHeight="35.0" maxWidth="470.0" minHeight="35.0" minWidth="470.0" promptText="Address line 1" stylesheets="@../css/primer-light.css" />
                                                 <TextField fx:id="companyAddress2Field" editable="false" layoutX="480.0" layoutY="50.0" maxHeight="35.0" maxWidth="470.0" minHeight="35.0" minWidth="470.0" promptText="Address line 2" stylesheets="@../css/primer-light.css" />
                                                 <TextField fx:id="companySuburbField" editable="false" layoutY="100.0" maxHeight="35.0" maxWidth="470.0" minHeight="35.0" minWidth="470.0" promptText="Suburb" stylesheets="@../css/primer-light.css" />
