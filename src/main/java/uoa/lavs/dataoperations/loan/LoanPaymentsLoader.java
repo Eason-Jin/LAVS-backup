@@ -3,28 +3,56 @@ package uoa.lavs.dataoperations.loan;
 import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.loan.LoadLoanPayments;
+import uoa.lavs.utility.AmortizingLoanCalculator;
 import uoa.lavs.utility.LoanRepayment;
+import uoa.lavs.utility.PaymentFrequency;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
 
 public class LoanPaymentsLoader {
 
-//    private static List<LoanPayment> calculateLocally(String loanId, int number) throws Exception {
-//        // Calculate locally
-//        AmortizingLoanCalculator calculator = new AmortizingLoanCalculator();
-//        List<LoanPayment> loanPayments = new ArrayList<>();
-//
-//        // Load in the loan
-//        LoanFinder loanFinder = new LoanFinder();
-//
-//        loanPayments = calculator.generateRepaymentSchedule();
-//
-//        return loanPayments;
-//    }
+    public static List<LoanRepayment> calculateLoanRepayments(String loanId) {
+        List<LoanRepayment> loanRepayments = new ArrayList<>();
+        try {
+            loanRepayments = calculateFromMainframe(loanId);
+        } catch (Exception e) {
+            System.out.println("Mainframe calculation failed: " + e.getMessage());
+            System.out.println("Trying to find and calculate from database");
+            try {
+                loanRepayments = calculateLocally(loanId);
+            } catch (Exception e1) {
+                System.out.println("Database find and calculation failed: " + e1.getMessage());
+            }
+        }
+        return loanRepayments;
+    }
 
-    public static List<LoanRepayment> calculateFromMainframe(String loanId) throws Exception {
+    private static List<LoanRepayment> calculateLocally(String loanId) throws Exception {
+        // Find the loan in the database
+        Connection connection = Instance.getDatabaseConnection();
+        String query = "SELECT * FROM loan WHERE LoanID = ?;";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, loanId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        // Calculate repayments
+        AmortizingLoanCalculator calculator = new AmortizingLoanCalculator();
+        ArrayList<LoanRepayment> loanRepayments = calculator.generateRepaymentSchedule(
+                resultSet.getDouble("Principal"),
+                resultSet.getDouble("RateValue"),
+                resultSet.getDouble("PaymentAmount"),
+                PaymentFrequency.valueOf(resultSet.getString("PaymentFrequency")),
+                resultSet.getObject("StartDate", LocalDate.class)
+        );
+        return loanRepayments;
+    }
+
+    private static List<LoanRepayment> calculateFromMainframe(String loanId) throws Exception {
         // Initialise LoadLoanPayments message
         LoadLoanPayments loadLoanPayments = new LoadLoanPayments();
         loadLoanPayments.setLoanId(loanId);
@@ -44,7 +72,7 @@ public class LoanPaymentsLoader {
             throw new Exception("Failed to retrieve page count from server.");
         }
 
-        List<LoanRepayment> loanPayments = new ArrayList<>();
+        List<LoanRepayment> loanRepayments = new ArrayList<>();
 
         // Loop over all pages
         for (int pageNumber = 1; pageNumber <= pageCount; pageNumber++) {
@@ -72,13 +100,12 @@ public class LoanPaymentsLoader {
                 Double remaining = loadLoanPayments.getPaymentRemainingFromServer(i);
 
                 if (month != null && principal != null && interest != null && remaining != null) {
-                    loanPayments.add(new LoanRepayment(number, month, principal, interest, remaining));
+                    loanRepayments.add(new LoanRepayment(number, month, principal, interest, remaining));
                 } else {
                     System.out.println("Warning: Skipping payment " + i + " on page " + pageNumber + " due to missing data.");
                 }
             }
         }
-
-        return loanPayments;
+        return loanRepayments;
     }
 }
