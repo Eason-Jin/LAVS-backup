@@ -40,6 +40,7 @@ public class AddCustomerController {
   @FXML private TextField familyNameField;
   @FXML private TextField givenNameField;
   @FXML private DatePicker dobPicker;
+  @FXML private TextField jobField;
 
   @FXML private TextField citizenshipField;
   @FXML private TextField visaField;
@@ -400,7 +401,7 @@ public class AddCustomerController {
                 titleField.getText(),
                 givenNameField.getText() + " " + familyNameField.getText(),
                 dobPicker.getValue(),
-                ((TextField) customerDetailFields.get("jobField")).getText(),
+                jobField.getText(),
                 citizenshipField.getText(),
                 visaField.getText().isEmpty() ? null : visaField.getText(),
                 "Active",
