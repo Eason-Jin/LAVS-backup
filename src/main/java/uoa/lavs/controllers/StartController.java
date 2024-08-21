@@ -30,8 +30,4 @@ public class StartController {
         searchController.clearSearch();
         Main.setScene(AppScene.SEARCH);
     }
-    @FXML
-    private void onClickLoan(ActionEvent event) throws IOException {
-        Main.setScene(AppScene.ADD_LOAN);
-    }
 }
