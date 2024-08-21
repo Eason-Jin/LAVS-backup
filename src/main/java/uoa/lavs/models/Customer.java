@@ -111,6 +111,9 @@ public class Customer {
   }
 
   public ArrayList<String> splitNotes() {
+    if (notes == null) {
+      return new ArrayList<>();
+    }
     ArrayList<String> lines = new ArrayList<>();
     int l = 0;
     int r = 70;
