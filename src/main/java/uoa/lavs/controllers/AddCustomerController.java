@@ -594,7 +594,7 @@ public class AddCustomerController {
     boolean repeatFlag = true;
     for (Node node : customerDetailFields.values()) {
       // Skip address2Field
-      if (node.getId().contains("address2Field")) {
+      if (node.getId().toLowerCase().contains("address2field")) {
         continue;
       }
       try {
