@@ -13,6 +13,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -25,10 +27,13 @@ import uoa.lavs.dataoperations.customer.CustomerLoader;
 import uoa.lavs.dataoperations.customer.EmailFinder;
 import uoa.lavs.dataoperations.customer.EmployerFinder;
 import uoa.lavs.dataoperations.customer.PhoneFinder;
+import uoa.lavs.mainframe.Frequency;
+import uoa.lavs.mainframe.LoanStatus;
 import uoa.lavs.models.Address;
 import uoa.lavs.models.Customer;
 import uoa.lavs.models.Email;
 import uoa.lavs.models.Employer;
+import uoa.lavs.models.Loan;
 import uoa.lavs.models.Phone;
 
 @Controller
@@ -61,6 +66,14 @@ public class CustomerDetailsController {
     @FXML private FlowPane employmentFlowPane;
     @FXML private Pane employmentPane;
     @FXML private AnchorPane employmentScrollAnchorPane;
+
+    @FXML private TableView<Loan> loanTable;
+    @FXML private TableColumn<Loan, String> loanIdColumn;
+    @FXML private TableColumn<Loan, LoanStatus> statusColumn;
+    @FXML private TableColumn<Loan, String> principalColumn;
+    @FXML private TableColumn<Loan, String> startDateColumn;
+    @FXML private TableColumn<Loan, Frequency> paymentFrequencyColumn;
+    @FXML private Button addLoanButton;
 
     private Map<String, Node> customerDetailFields = new HashMap<>();
 
@@ -207,5 +220,10 @@ public class CustomerDetailsController {
     @FXML
     private void onClickEdit(ActionEvent event) {
         System.out.println("Edit button clicked");
+    }
+
+    @FXML
+    private void onClickAddLoan(ActionEvent event) {
+        // Main.setScene(AppScene.ADD_LOAN);
     }
 }
