@@ -593,8 +593,16 @@ public class AddCustomerController {
 
     boolean repeatFlag = true;
     for (Node node : customerDetailFields.values()) {
-      if (!checkField((Control) node)) {
-        repeatFlag = false;
+      // Skip address2Field
+      if (node.getId().contains("address2Field")) {
+        continue;
+      }
+      try {
+        if (!checkField((Control) node)) {
+          repeatFlag = false;
+        }
+      } catch (Exception e) {
+        continue;
       }
     }
 
