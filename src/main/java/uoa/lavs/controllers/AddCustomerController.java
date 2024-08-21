@@ -393,7 +393,7 @@ public class AddCustomerController {
 
   @FXML
   private void onClickSave(ActionEvent event) {
-    if (checkFields() && validateFields()) {
+    if (checkFields() && validateFields() && checkLengths()) {
       try {
         Customer customer =
             new Customer(
@@ -844,6 +844,89 @@ public class AddCustomerController {
     }
 
     return flag;
+  }
+
+  private boolean checkLengths() {
+    boolean titleFieldFlag = checkLength(titleField, 10);
+    boolean nameFieldFlag = checkNameLength(familyNameField, givenNameField, 60);
+    boolean occupationFlag = checkLength(jobField, 40);
+    boolean citizenshipFieldFlag = checkLength(citizenshipField, 40);
+    boolean visaFieldFlag = checkLength(visaField, 40);
+    boolean notesAreaFlag = checkLength(notesArea, 1400);
+
+    boolean addressFlag = true;
+    for (int i = 1; i < addressCounter; i++) {
+      suffix = setSuffix(i);
+      if (!checkLength((TextField) customerDetailFields.get("addressTypeField" + suffix), 20)
+          || !checkLength((TextField) customerDetailFields.get("address1Field" + suffix), 60)
+          || !checkLength((TextField) customerDetailFields.get("address2Field" + suffix), 60)
+          || !checkLength((TextField) customerDetailFields.get("suburbField" + suffix), 30)
+          || !checkLength((TextField) customerDetailFields.get("cityField" + suffix), 30)
+          || !checkLength((TextField) customerDetailFields.get("postcodeField" + suffix), 10)
+          || !checkLength((TextField) customerDetailFields.get("countryField" + suffix), 30)) {
+        addressFlag = false;
+      }
+    }
+
+    boolean employerFlag = true;
+    for (int i = 1; i < employmentCounter; i++) {
+      suffix = setSuffix(i);
+      if (!checkLength((TextField) customerDetailFields.get("companyNameField" + suffix), 60)
+          || !checkLength((TextField) customerDetailFields.get("companyAddress1Field" + suffix), 60)
+          || !checkLength((TextField) customerDetailFields.get("companyAddress2Field" + suffix), 60)
+          || !checkLength((TextField) customerDetailFields.get("companySuburbField" + suffix), 30)
+          || !checkLength((TextField) customerDetailFields.get("companyCityField" + suffix), 30)
+          || !checkLength((TextField) customerDetailFields.get("companyPostcodeField" + suffix), 10)
+          || !checkLength((TextField) customerDetailFields.get("companyCountryField" + suffix), 30)
+          || !checkLength((TextField) customerDetailFields.get("employerPhoneField" + suffix), 30)
+          || !checkLength((TextField) customerDetailFields.get("employerEmailField" + suffix), 60)
+          || !checkLength(
+              (TextField) customerDetailFields.get("companyWebsiteField" + suffix), 60)) {
+        employerFlag = false;
+      }
+    }
+
+    return titleFieldFlag
+        && nameFieldFlag
+        && occupationFlag
+        && citizenshipFieldFlag
+        && visaFieldFlag
+        && notesAreaFlag
+        && addressFlag
+        && employerFlag;
+  }
+
+  private boolean checkLength(Control ui, int length) {
+    int len;
+    if (ui instanceof TextField) {
+      len = ((TextField) ui).getText().length();
+    } else if (ui instanceof TextArea) {
+      len = ((TextArea) ui).getText().length();
+    } else {
+      return false;
+    }
+    if (len > length) {
+      ui.setStyle(redBorder);
+      if (errorString.indexOf(ui.getId() + " is too long") == -1) {
+        errorString.append("\t" + ui.getId() + " is too long, the max length is: " + length + "\n");
+      }
+      return false;
+    }
+    return true;
+  }
+
+  private boolean checkNameLength(TextField familyNameField, TextField givenNameField, int length) {
+    int familyNameLength = familyNameField.getText().length();
+    int givenNameLength = givenNameField.getText().length();
+    if (familyNameLength + givenNameLength > length) {
+      familyNameField.setStyle(redBorder);
+      givenNameField.setStyle(redBorder);
+      if (errorString.indexOf("Name is too long") == -1) {
+        errorString.append("\tName is too long, the max length is: " + length + "\n");
+      }
+      return false;
+    }
+    return true;
   }
 
   private String setSuffix(int counter) {

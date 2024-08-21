@@ -111,7 +111,6 @@ public class Customer {
   }
 
   public ArrayList<String> splitNotes() {
-    // Split notes into lines of 70 characters max, do not split words
     ArrayList<String> lines = new ArrayList<>();
     int l = 0;
     int r = 70;
