@@ -20,27 +20,6 @@ public class LoanSummary {
         this.payOffDate = payOffDate;
     }
 
-    public LoanSummary(ArrayList<LoanRepayment> repayments, Frequency paymentFrequency) {
-
-        for (LoanRepayment repayment : repayments) {
-            totalInterest += repayment.getInterestAmount();
-            totalCost += repayment.getPrincipalAmount();
-        }
-        totalCost += totalInterest;
-
-        // Round totalInterest and totalCost to 2 decimal places using BigDecimal
-        totalInterest = new BigDecimal(totalInterest).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        totalCost = new BigDecimal(totalCost).setScale(2, RoundingMode.HALF_UP).doubleValue();
-
-        // Adjust the payoff date based on the payment frequency
-        LocalDate lastRepaymentDate = repayments.get(repayments.size() - 1).getRepaymentDate();
-        switch (paymentFrequency) {
-            case Weekly -> this.payOffDate = lastRepaymentDate.plusWeeks(1);
-            case Fortnightly -> this.payOffDate = lastRepaymentDate.plusWeeks(2);
-            case Monthly -> this.payOffDate = lastRepaymentDate.plusMonths(1);
-        }
-    }
-
     public LoanSummary(ArrayList<LoanRepayment> repayments) {
 
         for (LoanRepayment repayment : repayments) {
@@ -48,6 +27,7 @@ public class LoanSummary {
             totalCost += repayment.getPrincipalAmount();
         }
         totalCost += totalInterest;
+        this.payOffDate = repayments.get(repayments.size() - 1).getRepaymentDate();
     }
 
     public Double getTotalInterest() {
