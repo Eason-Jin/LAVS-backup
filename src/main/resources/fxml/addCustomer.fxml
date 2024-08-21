@@ -323,5 +323,10 @@
             </Tab>
         </tabs>
       </TabPane>
+      <Label layoutX="82.0" layoutY="60.0" text="Add Customer">
+         <font>
+            <Font name="System Bold" size="50.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
