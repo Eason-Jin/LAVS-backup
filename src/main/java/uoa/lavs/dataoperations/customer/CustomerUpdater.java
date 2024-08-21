@@ -132,7 +132,10 @@ public class CustomerUpdater {
       updateCustomer.setOccupation(customer.getOccupation());
       updateCustomer.setCitizenship(customer.getCitizenship());
       updateCustomer.setVisa(customer.getVisaType());
-      updateCustomerNote.setLine(0, customer.getNotes());
+      ArrayList<String> notes = customer.splitNotes();
+      for (int i = 0; i < notes.size(); i++) {
+        updateCustomerNote.setLine(i, notes.get(i));
+      }
     }
 
     Status status = updateCustomer.send(Instance.getConnection());
