@@ -602,6 +602,12 @@ Text {
   -fx-background-position: center;
   -fx-background-size: 55%;
 }
+.add-loan {
+  -fx-background-image: url("../images/add-white.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: center;
+  -fx-background-size: 55%;
+}
 .delete {
   -fx-background-image: url("../images/delete-dark.png");
   -fx-background-repeat: no-repeat;

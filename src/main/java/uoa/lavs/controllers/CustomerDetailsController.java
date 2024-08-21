@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -48,6 +49,10 @@ public class CustomerDetailsController {
     @FXML private Button homeButton;
     @FXML private Button backButton;
     @FXML private Button editButton;
+
+    @FXML private Label customerIdLabel;
+
+    @FXML private TabPane detailsTabPane;
 
     @FXML private TextField titleField;
     @FXML private TextField nameField;
@@ -123,12 +128,16 @@ public class CustomerDetailsController {
     }
 
     public void setCustomerDetails(String customerId) {
+        detailsTabPane.getSelectionModel().select(0);
+
         Customer customer = CustomerLoader.loadData(customerId);
         List<Address> addresses = AddressFinder.findData(customerId);
         List<Email> emails = EmailFinder.findData(customerId);
         List<Phone> phones = PhoneFinder.findData(customerId);
         List<Employer> employers = EmployerFinder.findData(customerId);
         List<Loan> loans = LoanFinder.findData(customerId);
+
+        customerIdLabel.setText("ID: " + customer.getId());
 
         titleField.setText(customer.getTitle());
         nameField.setText(customer.getName());

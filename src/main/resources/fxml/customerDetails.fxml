@@ -37,6 +37,11 @@
             <Font name="System Bold" size="50.0" />
          </font>
       </Label>
+      <Label fx:id="customerIdLabel" alignment="CENTER_RIGHT" layoutX="826.0" layoutY="80.0" maxHeight="50.0" maxWidth="250.0" minHeight="50.0" minWidth="250.0" text="ID: ID" textAlignment="RIGHT">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
       <TabPane fx:id="detailsTabPane" layoutX="76.0" layoutY="130.0" prefHeight="518.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab fx:id="generalDetailsTab" text="General Details">
@@ -247,7 +252,8 @@
                            </font>
                            <styleClass>
                               <String fx:value="button-circle" />
-                              <String fx:value="add" />
+                              <String fx:value="add-loan" />
+                              <String fx:value="success" />
                            </styleClass>
                         </Button>
                         <TableView fx:id="loanTable" fixedCellSize="50.0" layoutX="15.0" layoutY="55.0" maxHeight="400.0" maxWidth="950.0" minHeight="400.0" minWidth="950.0">
