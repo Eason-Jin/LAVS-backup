@@ -17,6 +17,9 @@ import javafx.scene.layout.*;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager;
+import uoa.lavs.controllers.interfaces.CheckEmpty;
+import uoa.lavs.controllers.interfaces.CheckLength;
+import uoa.lavs.controllers.interfaces.ValidateType;
 import uoa.lavs.dataoperations.customer.AddressUpdater;
 import uoa.lavs.dataoperations.customer.CustomerUpdater;
 import uoa.lavs.dataoperations.customer.EmailUpdater;
@@ -29,7 +32,7 @@ import uoa.lavs.models.Employer;
 import uoa.lavs.models.Phone;
 
 @Controller
-public class AddCustomerController {
+public class AddCustomerController implements ValidateType, CheckLength, CheckEmpty {
 
   @FXML private Button homeButton;
   @FXML private Button saveButton;
@@ -595,7 +598,8 @@ public class AddCustomerController {
     }
   }
 
-  private boolean checkFields() {
+  @Override
+  public boolean checkFields() {
     boolean titleFieldFlag = checkField(titleField);
     boolean nameFieldFlag = checkField(nameField);
     boolean dobPickerFlag = checkField(dobPicker);
@@ -631,7 +635,8 @@ public class AddCustomerController {
     return false;
   }
 
-  private boolean checkField(Control ui) {
+  @Override
+  public boolean checkField(Control ui) {
     ui.setStyle(noBorder);
     if (ui instanceof TextField) {
       TextField tf = (TextField) ui;
@@ -657,7 +662,8 @@ public class AddCustomerController {
     return true;
   }
 
-  private boolean validateFields() {
+  @Override
+  public boolean validateFields() {
     boolean dobFlag = validate(dobPicker, Type.DATE);
 
     boolean addressFlag = false;
@@ -787,7 +793,8 @@ public class AddCustomerController {
         && textingPhoneNum >= 1;
   }
 
-  private boolean validate(Control element, Type type) {
+  @Override
+  public boolean validate(Control element, Type type) {
     boolean flag = true;
     if (element instanceof TextField) {
       // Check fields have higher priority in error messages
@@ -840,8 +847,9 @@ public class AddCustomerController {
 
     return flag;
   }
-  
-  private boolean checkLengths() {
+
+  @Override
+  public boolean checkLengths() {
     boolean titleFieldFlag = checkLength(titleField, 10);
     boolean nameFieldFlag = checkLength(nameField, 60);
     boolean occupationFlag = checkLength(jobField, 40);
@@ -922,7 +930,8 @@ public class AddCustomerController {
         && employerFlag;
   }
 
-  private boolean checkLength(Control ui, int length) {
+  @Override
+  public boolean checkLength(Control ui, int length) {
     int len;
     if (ui instanceof TextField) {
       len = ((TextField) ui).getText().length();
@@ -945,11 +954,4 @@ public class AddCustomerController {
     return counter == 1 ? "" : ("_" + counter);
   }
 
-  private enum Type {
-    DATE,
-    EMAIL,
-    NUMBER,
-    WEBSITE,
-    PRIMARY
-  }
 }
