@@ -321,6 +321,13 @@ public class AddCustomerController {
     Pane paneToDelete = (Pane) customerDetailFields.get(paneToDeleteFxId);
     List<Node> nodesCopy = paneToDelete.getChildrenUnmodifiable();
     for (var node : nodesCopy) {
+      if (node instanceof CheckBox && ((CheckBox) node).isSelected()) {
+        for (String id : customerDetailFields.keySet()) {
+          if (id.contains(((node.getId()).split("_"))[0])) {
+            customerDetailFields.get(id).setDisable(false);
+          }
+        }
+      }
       customerDetailFields.remove(node.getId());
     }
     customerDetailFields.remove(paneToDeleteFxId);
