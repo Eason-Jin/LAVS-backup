@@ -103,7 +103,6 @@ public class CustomerUpdater {
     UpdateCustomer updateCustomer = new UpdateCustomer();
     UpdateCustomerNote updateCustomerNote = new UpdateCustomerNote();
     updateCustomer.setCustomerId(customerID);
-    updateCustomerNote.setCustomerId(customerID);
 
     if (customerID != null) {
       Customer existingCustomer = CustomerLoader.loadData(customerID);
@@ -139,12 +138,14 @@ public class CustomerUpdater {
     }
 
     Status status = updateCustomer.send(Instance.getConnection());
+    updateCustomerNote.setCustomerId(updateCustomer.getCustomerIdFromServer());
     if (!status.getWasSuccessful()) {
       recordFailedCall(customerID, customer);
       System.out.println(
           "Something went wrong - the Mainframe send failed! The code is " + status.getErrorCode());
       throw new Exception("Mainframe send failed");
     }
+    updateCustomerNote.send(Instance.getConnection());
     customer.setId(updateCustomer.getCustomerIdFromServer());
     customer.setStatus(updateCustomer.getStatusFromServer());
     return updateCustomer.getCustomerIdFromServer();
