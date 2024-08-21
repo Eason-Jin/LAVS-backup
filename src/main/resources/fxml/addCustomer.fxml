@@ -316,7 +316,7 @@
                               <Font name="Calibri" size="30.0" />
                            </font>
                         </Label>
-                        <TextArea fx:id="notesArea" layoutX="25.0" layoutY="55.0" prefHeight="287.0" prefWidth="950.0" promptText="Extra notes" />
+                        <TextArea fx:id="notesArea" layoutX="25.0" layoutY="55.0" prefHeight="287.0" prefWidth="950.0" promptText="Extra notes" wrapText="true" />
                      </children>
                   </AnchorPane>
                </content>
