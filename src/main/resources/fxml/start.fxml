@@ -104,6 +104,15 @@
             </Button>
          </children>
       </HBox>
+      <Button focusTraversable="false" layoutX="1016.0" layoutY="457.0" mnemonicParsing="false" onAction="#onClickPending" prefHeight="65.0" prefWidth="65.0" style="-fx-background-radius: 100;">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/start/about.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
    <opaqueInsets>
       <Insets />
