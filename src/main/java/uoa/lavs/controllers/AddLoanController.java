@@ -1,6 +1,7 @@
 package uoa.lavs.controllers;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager;
 import uoa.lavs.dataoperations.customer.CustomerLoader;
+import uoa.lavs.dataoperations.customer.CustomerUpdater;
 import uoa.lavs.dataoperations.loan.CoborrowerUpdater;
 import uoa.lavs.dataoperations.loan.LoanUpdater;
 import uoa.lavs.mainframe.Frequency;
@@ -33,6 +35,7 @@ public class AddLoanController {
   @FXML private Pane loanDetailsPane;
   @FXML private TabPane detailsTabPane;
   @FXML private Label customerNameLabel;
+  @FXML private Label titleLabel;
 
   private int initialCoBorrowerCounter = 1;
   private int coBorrowerCounter = initialCoBorrowerCounter;
@@ -41,11 +44,28 @@ public class AddLoanController {
   private HashMap<String, Node> loanDetailsFields = new HashMap<>();
   private HashSet<String> coBorrowerIds = new HashSet<>();
   @Autowired SearchController searchController;
+  @Autowired CustomerDetailsController customerDetailsController;
 
   @FXML
   private void initialize() {
+    addDummy();
     coBorrowerFlowPane.getChildren().remove(coBorrowerPane);
     addToMap(loanDetailsFields, loanDetailsPane);
+  }
+
+  private void addDummy() {
+    Customer customer =
+        new Customer(
+            null,
+            "Mr",
+            "Eason Jin",
+            LocalDate.of(1999, 1, 1),
+            "intern",
+            "asdfdsa",
+            "asdfdsa",
+            "Pending",
+            "no notes");
+    CustomerUpdater.updateData(null, customer);
   }
 
   private void addToMap(HashMap<String, Node> map, Pane pane) {
@@ -92,7 +112,7 @@ public class AddLoanController {
   }
 
   public void setCustomerName(String customerName) {
-    customerNameLabel.setText(customerName);
+    titleLabel.setText("New loan for " + customerName);
   }
 
   public void addCoBorrower(TableRow<Customer> row) {
@@ -213,8 +233,7 @@ public class AddLoanController {
 
   @FXML
   private void onClickSave(ActionEvent event) throws IOException {
-    // TODO: pass in customer ID
-    String customerID = "11";
+    String customerID = customerDetailsController.getCustomerID();
     Loan loan =
         new Loan(
             null,
@@ -253,3 +272,5 @@ public class AddLoanController {
   @FXML
   private void onClickInfo(ActionEvent event) throws IOException {}
 }
+
+// TODO: fix interest only space in between

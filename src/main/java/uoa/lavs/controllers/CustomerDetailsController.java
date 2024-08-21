@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import javafx.application.Platform;
@@ -85,6 +86,8 @@ public class CustomerDetailsController {
     @FXML private TableColumn<Loan, String> startDateColumn;
     @FXML private TableColumn<Loan, Frequency> paymentFrequencyColumn;
     @FXML private Button addLoanButton;
+
+    @Autowired private AddLoanController addLoanController;
 
     private Map<String, Node> customerDetailFields = new HashMap<>();
 
@@ -286,6 +289,12 @@ public class CustomerDetailsController {
 
     @FXML
     private void onClickAddLoan(ActionEvent event) {
+        addLoanController.setCustomerName(CustomerLoader.loadData(getCustomerID()).getName());
         Main.setScene(AppScene.ADD_LOAN);
     }
+
+    public String getCustomerID() {
+        return customerIdLabel.getText().substring(4);
+    }
 }
+
