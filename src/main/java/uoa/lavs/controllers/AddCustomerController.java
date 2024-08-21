@@ -736,6 +736,32 @@ public class AddCustomerController {
         errorString.append("\tPlease select a primary phone\n");
       }
     }
+    // Need at least one mailing address
+    int mailingAddressNum = 0;
+    for (int i = 1; i < addressCounter; i++) {
+      suffix = setSuffix(i);
+      if (((CheckBox) customerDetailFields.get("isMailingAddress" + suffix)).isSelected()) {
+        mailingAddressNum++;
+      }
+    }
+    if (mailingAddressNum == 0) {
+      if (errorString.indexOf("\tPlease select a mailing address") == -1) {
+        errorString.append("\tPlease select a mailing address\n");
+      }
+    }
+    // Need at least one texting phone
+    int textingPhoneNum = 0;
+    for (int i = 1; i < phoneCounter; i++) {
+      suffix = setSuffix(i);
+      if (((CheckBox) customerDetailFields.get("isTextingNumber" + suffix)).isSelected()) {
+        textingPhoneNum++;
+      }
+    }
+    if (textingPhoneNum == 0) {
+      if (errorString.indexOf("\tPlease select a texting phone") == -1) {
+        errorString.append("\tPlease select a texting phone\n");
+      }
+    }
     return dobFlag
         && emailFlag
         && employerEmailFlag
@@ -744,7 +770,9 @@ public class AddCustomerController {
         && websiteFlag
         && addressNum == 1
         && emailNum == 1
-        && phoneNum == 1;
+        && phoneNum == 1
+        && mailingAddressNum >= 1
+        && textingPhoneNum >= 1;
   }
 
   private boolean validate(TextField ui, Type type) {
