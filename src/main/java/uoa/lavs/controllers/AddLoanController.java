@@ -7,13 +7,16 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager;
+import uoa.lavs.models.Customer;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 @Controller
@@ -31,6 +34,9 @@ public class AddLoanController {
     private int numCoBorrowers = 0;
     private HashMap<String, Node> coBorrowerFields = new HashMap<>();
     private HashMap<String, Node> loanDetailsFields = new HashMap<>();
+    private HashSet<String> coBorrowerIds = new HashSet<>();
+    @Autowired
+    SearchController searchController;
 
     @FXML
     private void initialize() {
@@ -60,10 +66,15 @@ public class AddLoanController {
         }
         Pane paneToDelete = (Pane) coBorrowerFields.get(paneToDeleteFxId);
         List<Node> nodesCopy = paneToDelete.getChildrenUnmodifiable();
+        String id = "";
         for (var node : nodesCopy) {
+            if (node.getId() != null && node.getId().contains("Id")) {
+                id = ((TextField) node).getText();
+            }
             coBorrowerFields.remove(node.getId());
         }
         coBorrowerFields.remove(paneToDeleteFxId);
+        coBorrowerIds.remove(id);
 
         coBorrowerScrollAnchorPane.setPrefHeight(coBorrowerScrollAnchorPane.getPrefHeight()-(coBorrowerPane.getPrefHeight()+coBorrowerFlowPane.getVgap()));
         coBorrowerFlowPane.getChildren().remove(paneToDelete);
@@ -71,36 +82,41 @@ public class AddLoanController {
 
     @FXML
     private void onClickAddCoBorrower(ActionEvent event) throws IOException {
-//        Main.setScene(SceneManager.AppScene.SEARCH);
-        addCoBorrower(("Name"+coBorrowerCounter), ("Id"+coBorrowerCounter));
+        searchController.setCoBorrowerSearch(true);
+        Main.setScene(SceneManager.AppScene.SEARCH);
     }
 
     public void setCustomerName(String customerName) {
         customerNameLabel.setText(customerName);
     }
 
-    public void addCoBorrower(String coBorrowerName, String coBorrowerId) {
-        System.out.println(coBorrowerCounter);
+    public void addCoBorrower(TableRow<Customer> row) {
+        String coBorrowerName = row.getItem().getName();
+        String coBorrowerId = row.getItem().getId();
+        if (coBorrowerIds.contains(coBorrowerId)) {
+            Alert exceptionAlert = new Alert(Alert.AlertType.ERROR);
+            exceptionAlert.setTitle("Error");
+            exceptionAlert.setHeaderText("This customer has already been added as a co-borrower.");
+            exceptionAlert.showAndWait();
+            return;
+        }
+
         List<Node> nodesCopy = new ArrayList<>(coBorrowerPane.getChildrenUnmodifiable());
-        String counterString;
-        counterString = "_" + coBorrowerCounter;
+        String counterString = "_" + coBorrowerCounter;
         Pane newPane = new Pane();
         newPane.setId(coBorrowerPane.getId() + counterString);
         newPane.setPrefWidth(coBorrowerPane.getPrefWidth());
         newPane.setPrefHeight(coBorrowerPane.getPrefHeight());
-
         for (var node : nodesCopy) {
             String newFxId = node.getId() + counterString;
             if (node instanceof TextField) {
-                String newText="";
+                TextField newTextField = new TextField();
                 if (newFxId.contains("Name")) {
-                    newText = coBorrowerName;
+                    newTextField.setText(coBorrowerName);
                 }
                 else if (newFxId.contains("Id")) {
-                    newText = coBorrowerId;
+                    newTextField.setText(coBorrowerId);
                 }
-                TextField newTextField = new TextField();
-                newTextField.setText(newText);
                 newTextField.setLayoutX(node.getLayoutX());
                 newTextField.setLayoutY(node.getLayoutY());
                 newTextField.setPrefWidth(((TextField) node).getPrefWidth());
@@ -137,6 +153,7 @@ public class AddLoanController {
         }
         coBorrowerFlowPane.getChildren().add(newPane);
         coBorrowerFields.put(newPane.getId(), newPane);
+        coBorrowerIds.add(coBorrowerId);
         coBorrowerCounter++;
         numCoBorrowers++;
         coBorrowerScrollAnchorPane.setPrefHeight(coBorrowerScrollAnchorPane.getPrefHeight()+coBorrowerPane.getPrefHeight()+coBorrowerFlowPane.getVgap());
@@ -146,6 +163,7 @@ public class AddLoanController {
         resetCoBorrowerFields();
         clearAllFields();
         detailsTabPane.getSelectionModel().select(0);
+        searchController.setCoBorrowerSearch(false);
     }
 
     private void clearAllFields() {
