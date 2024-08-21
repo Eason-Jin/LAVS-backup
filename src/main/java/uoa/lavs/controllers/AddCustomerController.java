@@ -664,51 +664,53 @@ public class AddCustomerController {
 
   private boolean validateFields() {
     boolean dobFlag = validate(dobPicker, Type.DATE);
-    boolean emailFlag = true;
+
+    boolean addressFlag = false;
+    for (int i = 1; i < addressCounter; i++) {
+      suffix = setSuffix(i);
+      if (validate((TextField) customerDetailFields.get("postcodeField" + suffix), Type.NUMBER)) {
+        addressFlag = true;
+      }
+    }
+
+    boolean emailFlag = false;
     for (int i = 1; i < emailCounter; i++) {
       suffix = setSuffix(i);
-      if (!validate((TextField) customerDetailFields.get("emailField" + suffix), Type.EMAIL)) {
-        emailFlag = false;
+      if (validate((TextField) customerDetailFields.get("emailField" + suffix), Type.EMAIL)) {
+        emailFlag = true;
       }
     }
-    boolean employerEmailFlag = true;
+
+    boolean employerFlag = false;
     for (int i = 1; i < employmentCounter; i++) {
       suffix = setSuffix(i);
-      if (!validate(
-          (TextField) customerDetailFields.get("employerEmailField" + suffix), Type.EMAIL)) {
-        employerEmailFlag = false;
+      if (validate((TextField) customerDetailFields.get("employerEmailField" + suffix), Type.EMAIL)
+          && validate(
+              (TextField) customerDetailFields.get("companyPostcodeField" + suffix), Type.NUMBER)
+          && validate(
+              (TextField) customerDetailFields.get("employerPhoneField" + suffix), Type.NUMBER)) {
+        employerFlag = true;
       }
     }
-    boolean employerPhoneFlag = true;
-    for (int i = 1; i < employmentCounter; i++) {
-      suffix = setSuffix(i);
-      if (!validate(
-          (TextField) customerDetailFields.get("employerPhoneField" + suffix), Type.PHONE)) {
-        employerPhoneFlag = false;
-      }
-    }
-    boolean phonePrefixFlag = true;
+
+    boolean phoneFlag = false;
     for (int i = 1; i < phoneCounter; i++) {
       suffix = setSuffix(i);
-      if (!validate((TextField) customerDetailFields.get("prefixField" + suffix), Type.PHONE)) {
-        phonePrefixFlag = false;
+      if (validate((TextField) customerDetailFields.get("prefixField" + suffix), Type.NUMBER)
+          && validate((TextField) customerDetailFields.get("numberField" + suffix), Type.NUMBER)) {
+        phoneFlag = true;
       }
     }
-    boolean phoneFlag = true;
-    for (int i = 1; i < phoneCounter; i++) {
-      suffix = setSuffix(i);
-      if (!validate((TextField) customerDetailFields.get("numberField" + suffix), Type.PHONE)) {
-        phoneFlag = false;
-      }
-    }
-    boolean websiteFlag = true;
+
+    boolean websiteFlag = false;
     for (int i = 1; i < employmentCounter; i++) {
       suffix = setSuffix(i);
-      if (!validate(
+      if (validate(
           (TextField) customerDetailFields.get("companyWebsiteField" + suffix), Type.WEBSITE)) {
-        websiteFlag = false;
+        websiteFlag = true;
       }
     }
+
     // Only one address can be primary
     int addressNum = 0;
     for (int i = 1; i < addressCounter; i++) {
@@ -775,10 +777,9 @@ public class AddCustomerController {
       }
     }
     return dobFlag
+        && addressFlag
         && emailFlag
-        && employerEmailFlag
-        && employerPhoneFlag
-        && phonePrefixFlag
+        && employerFlag
         && phoneFlag
         && websiteFlag
         && addressNum == 1
@@ -804,7 +805,7 @@ public class AddCustomerController {
           errorString.append("\tInvalid email format\n");
         }
       }
-    } else if (type == Type.PHONE) {
+    } else if (type == Type.NUMBER) {
       // Phone should be numbers
       try {
         Long.parseLong(ui.getText());
@@ -812,8 +813,8 @@ public class AddCustomerController {
       } catch (Exception e) {
         flag = false;
         ui.setStyle(redBorder);
-        if (errorString.indexOf("\tPhone should only contain numbers") == -1) {
-          errorString.append("\tPhone should only contain numbers\n");
+        if (errorString.indexOf("\t" + ui.getId() + "should only contain numbers") == -1) {
+          errorString.append("\t" + ui.getId() + "should only contain numbers\n");
         }
       }
     } else if (type == Type.WEBSITE) {
@@ -854,35 +855,35 @@ public class AddCustomerController {
     boolean visaFieldFlag = checkLength(visaField, 40);
     boolean notesAreaFlag = checkLength(notesArea, 1400);
 
-    boolean addressFlag = true;
+    boolean addressFlag = false;
     for (int i = 1; i < addressCounter; i++) {
       suffix = setSuffix(i);
-      if (!checkLength((TextField) customerDetailFields.get("addressTypeField" + suffix), 20)
-          || !checkLength((TextField) customerDetailFields.get("address1Field" + suffix), 60)
-          || !checkLength((TextField) customerDetailFields.get("address2Field" + suffix), 60)
-          || !checkLength((TextField) customerDetailFields.get("suburbField" + suffix), 30)
-          || !checkLength((TextField) customerDetailFields.get("cityField" + suffix), 30)
-          || !checkLength((TextField) customerDetailFields.get("postcodeField" + suffix), 10)
-          || !checkLength((TextField) customerDetailFields.get("countryField" + suffix), 30)) {
-        addressFlag = false;
+      if (checkLength((TextField) customerDetailFields.get("addressTypeField" + suffix), 20)
+          && checkLength((TextField) customerDetailFields.get("address1Field" + suffix), 60)
+          && checkLength((TextField) customerDetailFields.get("address2Field" + suffix), 60)
+          && checkLength((TextField) customerDetailFields.get("suburbField" + suffix), 30)
+          && checkLength((TextField) customerDetailFields.get("cityField" + suffix), 30)
+          && checkLength((TextField) customerDetailFields.get("postcodeField" + suffix), 10)
+          && checkLength((TextField) customerDetailFields.get("countryField" + suffix), 30)) {
+        addressFlag = true;
       }
     }
 
-    boolean employerFlag = true;
+    boolean employerFlag = false;
     for (int i = 1; i < employmentCounter; i++) {
       suffix = setSuffix(i);
-      if (!checkLength((TextField) customerDetailFields.get("companyNameField" + suffix), 60)
-          || !checkLength((TextField) customerDetailFields.get("companyAddress1Field" + suffix), 60)
-          || !checkLength((TextField) customerDetailFields.get("companyAddress2Field" + suffix), 60)
-          || !checkLength((TextField) customerDetailFields.get("companySuburbField" + suffix), 30)
-          || !checkLength((TextField) customerDetailFields.get("companyCityField" + suffix), 30)
-          || !checkLength((TextField) customerDetailFields.get("companyPostcodeField" + suffix), 10)
-          || !checkLength((TextField) customerDetailFields.get("companyCountryField" + suffix), 30)
-          || !checkLength((TextField) customerDetailFields.get("employerPhoneField" + suffix), 30)
-          || !checkLength((TextField) customerDetailFields.get("employerEmailField" + suffix), 60)
-          || !checkLength(
+      if (checkLength((TextField) customerDetailFields.get("companyNameField" + suffix), 60)
+          && checkLength((TextField) customerDetailFields.get("companyAddress1Field" + suffix), 60)
+          && checkLength((TextField) customerDetailFields.get("companyAddress2Field" + suffix), 60)
+          && checkLength((TextField) customerDetailFields.get("companySuburbField" + suffix), 30)
+          && checkLength((TextField) customerDetailFields.get("companyCityField" + suffix), 30)
+          && checkLength((TextField) customerDetailFields.get("companyPostcodeField" + suffix), 10)
+          && checkLength((TextField) customerDetailFields.get("companyCountryField" + suffix), 30)
+          && checkLength((TextField) customerDetailFields.get("employerPhoneField" + suffix), 30)
+          && checkLength((TextField) customerDetailFields.get("employerEmailField" + suffix), 60)
+          && checkLength(
               (TextField) customerDetailFields.get("companyWebsiteField" + suffix), 60)) {
-        employerFlag = false;
+        employerFlag = true;
       }
     }
 
@@ -936,7 +937,7 @@ public class AddCustomerController {
   private enum Type {
     DATE,
     EMAIL,
-    PHONE,
+    NUMBER,
     WEBSITE,
     PRIMARY
   }
