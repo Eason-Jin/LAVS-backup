@@ -2,6 +2,8 @@ package uoa.lavs.utility;
 
 import uoa.lavs.mainframe.Frequency;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -9,7 +11,6 @@ public class LoanSummary {
     private Double totalInterest = 0.0;
     private Double totalCost = 0.0;
     private LocalDate payOffDate;
-    private Frequency paymentFrequency;
 
     public LoanSummary(Double totalInterest, Double totalCost, LocalDate payOffDate) {
         this.totalInterest = totalInterest;
@@ -24,6 +25,10 @@ public class LoanSummary {
             totalCost += repayment.getPrincipalAmount();
         }
         totalCost += totalInterest;
+
+        // Round totalInterest and totalCost to 2 decimal places using BigDecimal
+        totalInterest = new BigDecimal(totalInterest).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        totalCost = new BigDecimal(totalCost).setScale(2, RoundingMode.HALF_UP).doubleValue();
 
         // Adjust the payoff date based on the payment frequency
         LocalDate lastRepaymentDate = repayments.get(repayments.size() - 1).getRepaymentDate();
