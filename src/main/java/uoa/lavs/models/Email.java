@@ -6,11 +6,10 @@ public class Email {
   private String address;
   private Boolean isPrimary;
 
-  public Email(String customerId, String address, Boolean isPrimary, Integer number) {
+  public Email(String customerId, String address, Boolean isPrimary) {
     this.customerId = customerId;
     this.address = address;
     this.isPrimary = isPrimary;
-    this.number = number;
   }
 
   public Email() {}

@@ -15,15 +15,13 @@ public class Phone {
       String prefix,
       String phoneNumber,
       Boolean isPrimary,
-      Boolean canSendText,
-      Integer number) {
+      Boolean canSendText) {
     this.customerId = customerId;
     this.type = type;
     this.prefix = prefix;
     this.phoneNumber = phoneNumber;
     this.isPrimary = isPrimary;
     this.canSendText = canSendText;
-    this.number = number;
   }
 
   public Phone() {}

@@ -23,8 +23,7 @@ public class Address {
       String postCode,
       String country,
       Boolean isPrimary,
-      Boolean isMailing, 
-      Integer number) {
+      Boolean isMailing) {
     this.customerId = customerId;
     this.type = type;
     this.line1 = line1;
@@ -35,7 +34,6 @@ public class Address {
     this.country = country;
     this.isPrimary = isPrimary;
     this.isMailing = isMailing;
-    this.number = number;
   }
 
   public Address() {}
