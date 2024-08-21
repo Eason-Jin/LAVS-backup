@@ -40,20 +40,27 @@ public class SearchController {
 
         searchTable.setRowFactory(tableView -> {
             final TableRow<Customer> row = new TableRow<Customer>();
-            row.hoverProperty().addListener((observable) -> {
-                if (row.isHover() && !row.isEmpty()) {
+
+            row.setOnMouseClicked(event -> {
+                if (row.isEmpty()) {
+                    return;
+                }
+                Main.setScene(AppScene.CUSTOMER_DETAILS);
+            });
+
+            row.setOnMouseEntered(event -> {
+                if (!row.isEmpty()) {
                     row.styleProperty().set("-fx-background-color: #f0f0f0");
-                } else {
+                }
+            });
+
+            row.setOnMouseExited(event -> {
+                if (!row.isEmpty()) {
                     row.styleProperty().set("-fx-background-color: none");
                     row.styleProperty().set("-fx-border-width: 5");
                 }
             });
 
-            row.selectedProperty().addListener((observable) -> {
-                if (row.isSelected() && !row.isEmpty()) {
-                    Main.setScene(AppScene.CUSTOMER_DETAILS);
-                }
-            });
             return row;
         });
     }
