@@ -557,49 +557,16 @@ public class AddCustomerController {
     citizenshipField.clear();
     visaField.clear();
 
-    for (int i = 1; i < addressCounter; i++) {
-      suffix = setSuffix(i);
-      ((TextField) customerDetailFields.get("addressTypeField" + suffix)).clear();
-      ((TextField) customerDetailFields.get("address1Field" + suffix)).clear();
-      ((TextField) customerDetailFields.get("address2Field" + suffix)).clear();
-      ((TextField) customerDetailFields.get("suburbField" + suffix)).clear();
-      ((TextField) customerDetailFields.get("cityField" + suffix)).clear();
-      ((TextField) customerDetailFields.get("postcodeField" + suffix)).clear();
-      ((TextField) customerDetailFields.get("countryField" + suffix)).clear();
-      ((CheckBox) customerDetailFields.get("isPrimaryAddress" + suffix)).setSelected(false);
-      ((CheckBox) customerDetailFields.get("isMailingAddress" + suffix)).setSelected(false);
-    }
-
-    for (int i = 1; i < emailCounter; i++) {
-      suffix = setSuffix(i);
-      ((TextField) customerDetailFields.get("emailField" + suffix)).clear();
-      ((CheckBox) customerDetailFields.get("isPrimaryEmail" + suffix)).setSelected(false);
-    }
-
-    for (int i = 1; i < phoneCounter; i++) {
-      suffix = setSuffix(i);
-      ((ComboBox) customerDetailFields.get("phoneTypeBox" + suffix)).setValue(null);
-      ((ComboBox) customerDetailFields.get("phoneTypeBox" + suffix)).setPromptText("Phone type");
-      ((TextField) customerDetailFields.get("prefixField" + suffix)).clear();
-      ((TextField) customerDetailFields.get("numberField" + suffix)).clear();
-      ((CheckBox) customerDetailFields.get("isPrimaryNumber" + suffix)).setSelected(false);
-      ((CheckBox) customerDetailFields.get("isTextingNumber" + suffix)).setSelected(false);
-    }
-
-    for (int i = 1; i < employmentCounter; i++) {
-      suffix = setSuffix(i);
-      ((TextField) customerDetailFields.get("jobField" + suffix)).clear();
-      ((TextField) customerDetailFields.get("companyNameField" + suffix)).clear();
-      ((TextField) customerDetailFields.get("companyAddress1Field" + suffix)).clear();
-      ((TextField) customerDetailFields.get("companyAddress2Field" + suffix)).clear();
-      ((TextField) customerDetailFields.get("companySuburbField" + suffix)).clear();
-      ((TextField) customerDetailFields.get("companyCityField" + suffix)).clear();
-      ((TextField) customerDetailFields.get("companyPostcodeField" + suffix)).clear();
-      ((TextField) customerDetailFields.get("companyCountryField" + suffix)).clear();
-      ((TextField) customerDetailFields.get("employerPhoneField" + suffix)).clear();
-      ((TextField) customerDetailFields.get("employerEmailField" + suffix)).clear();
-      ((TextField) customerDetailFields.get("companyWebsiteField" + suffix)).clear();
-      ((CheckBox) customerDetailFields.get("isOwner" + suffix)).setSelected(false);
+    for (Node node : customerDetailFields.values()) {
+      if (node instanceof TextField) {
+        ((TextField) node).clear();
+      } else if (node instanceof CheckBox) {
+        ((CheckBox) node).setSelected(false);
+      } else if (node instanceof ComboBox) {
+        // Right now only phoneTypeBox is a ComboBox
+        ((ComboBox) node).setValue(null);
+        ((ComboBox) node).setPromptText("Phone type");
+      }
     }
 
     notesArea.clear();
@@ -612,40 +579,8 @@ public class AddCustomerController {
     dobPicker.setStyle(noBorder);
     citizenshipField.setStyle(noBorder);
     visaField.setStyle(noBorder);
-    for (int i = 1; i < addressCounter; i++) {
-      suffix = setSuffix(i);
-      ((TextField) customerDetailFields.get("addressTypeField" + suffix)).setStyle(noBorder);
-      ((TextField) customerDetailFields.get("address1Field" + suffix)).setStyle(noBorder);
-      ((TextField) customerDetailFields.get("suburbField" + suffix)).setStyle(noBorder);
-      ((TextField) customerDetailFields.get("cityField" + suffix)).setStyle(noBorder);
-      ((TextField) customerDetailFields.get("postcodeField" + suffix)).setStyle(noBorder);
-      ((TextField) customerDetailFields.get("countryField" + suffix)).setStyle(noBorder);
-    }
-
-    for (int i = 1; i < emailCounter; i++) {
-      suffix = setSuffix(i);
-      ((TextField) customerDetailFields.get("emailField" + suffix)).setStyle(noBorder);
-    }
-
-    for (int i = 1; i < phoneCounter; i++) {
-      suffix = setSuffix(i);
-      ((ComboBox) customerDetailFields.get("phoneTypeBox" + suffix)).setStyle(noBorder);
-      ((TextField) customerDetailFields.get("prefixField" + suffix)).setStyle(noBorder);
-      ((TextField) customerDetailFields.get("numberField" + suffix)).setStyle(noBorder);
-    }
-
-    for (int i = 1; i < employmentCounter; i++) {
-      suffix = setSuffix(i);
-      ((TextField) customerDetailFields.get("jobField" + suffix)).setStyle(noBorder);
-      ((TextField) customerDetailFields.get("companyNameField" + suffix)).setStyle(noBorder);
-      ((TextField) customerDetailFields.get("companyAddress1Field" + suffix)).setStyle(noBorder);
-      ((TextField) customerDetailFields.get("companySuburbField" + suffix)).setStyle(noBorder);
-      ((TextField) customerDetailFields.get("companyCityField" + suffix)).setStyle(noBorder);
-      ((TextField) customerDetailFields.get("companyPostcodeField" + suffix)).setStyle(noBorder);
-      ((TextField) customerDetailFields.get("companyCountryField" + suffix)).setStyle(noBorder);
-      ((TextField) customerDetailFields.get("employerPhoneField" + suffix)).setStyle(noBorder);
-      ((TextField) customerDetailFields.get("employerEmailField" + suffix)).setStyle(noBorder);
-      ((TextField) customerDetailFields.get("companyWebsiteField" + suffix)).setStyle(noBorder);
+    for (Node node : customerDetailFields.values()) {
+      node.setStyle(noBorder);
     }
   }
 
@@ -655,144 +590,11 @@ public class AddCustomerController {
     boolean givenNameFieldFlag = checkField(givenNameField);
     boolean dobPickerFlag = checkField(dobPicker);
     boolean citizenshipFieldFlag = checkField(citizenshipField);
-    boolean addressTypeFieldFlag = true;
-    for (int i = 1; i < addressCounter; i++) {
-      suffix = setSuffix(i);
-      if (!checkField((TextField) customerDetailFields.get("addressTypeField" + suffix))) {
-        addressTypeFieldFlag = false;
-      }
-    }
-    boolean address1FieldFlag = true;
-    for (int i = 1; i < addressCounter; i++) {
-      suffix = setSuffix(i);
-      if (!checkField((TextField) customerDetailFields.get("address1Field" + suffix))) {
-        address1FieldFlag = false;
-      }
-    }
-    boolean suburbFieldFlag = true;
-    for (int i = 1; i < addressCounter; i++) {
-      suffix = setSuffix(i);
-      if (!checkField((TextField) customerDetailFields.get("suburbField" + suffix))) {
-        suburbFieldFlag = false;
-      }
-    }
-    boolean cityFieldFlag = true;
-    for (int i = 1; i < addressCounter; i++) {
-      suffix = setSuffix(i);
-      if (!checkField((TextField) customerDetailFields.get("cityField" + suffix))) {
-        cityFieldFlag = false;
-      }
-    }
-    boolean postcodeFieldFlag = true;
-    for (int i = 1; i < addressCounter; i++) {
-      suffix = setSuffix(i);
-      if (!checkField((TextField) customerDetailFields.get("postcodeField" + suffix))) {
-        postcodeFieldFlag = false;
-      }
-    }
-    boolean countryFieldFlag = true;
-    for (int i = 1; i < addressCounter; i++) {
-      suffix = setSuffix(i);
-      if (!checkField((TextField) customerDetailFields.get("countryField" + suffix))) {
-        countryFieldFlag = false;
-      }
-    }
-    boolean emailFieldFlag = true;
-    for (int i = 1; i < emailCounter; i++) {
-      suffix = setSuffix(i);
-      if (!checkField((TextField) customerDetailFields.get("emailField" + suffix))) {
-        emailFieldFlag = false;
-      }
-    }
-    boolean phoneTypeBoxFlag = true;
-    for (int i = 1; i < phoneCounter; i++) {
-      suffix = setSuffix(i);
-      if (!checkField((ComboBox) customerDetailFields.get("phoneTypeBox" + suffix))) {
-        phoneTypeBoxFlag = false;
-      }
-    }
-    boolean prefixFieldFlag = true;
-    for (int i = 1; i < phoneCounter; i++) {
-      suffix = setSuffix(i);
-      if (!checkField((TextField) customerDetailFields.get("prefixField" + suffix))) {
-        prefixFieldFlag = false;
-      }
-    }
-    boolean numberFieldFlag = true;
-    for (int i = 1; i < phoneCounter; i++) {
-      suffix = setSuffix(i);
-      if (!checkField((TextField) customerDetailFields.get("numberField" + suffix))) {
-        numberFieldFlag = false;
-      }
-    }
-    boolean jobFieldFlag = true;
-    for (int i = 1; i < employmentCounter; i++) {
-      suffix = setSuffix(i);
-      if (!checkField((TextField) customerDetailFields.get("jobField" + suffix))) {
-        jobFieldFlag = false;
-      }
-    }
-    boolean companyNameFieldFlag = true;
-    for (int i = 1; i < employmentCounter; i++) {
-      suffix = setSuffix(i);
-      if (!checkField((TextField) customerDetailFields.get("companyNameField" + suffix))) {
-        companyNameFieldFlag = false;
-      }
-    }
-    boolean companyAddress1FieldFlag = true;
-    for (int i = 1; i < employmentCounter; i++) {
-      suffix = setSuffix(i);
-      if (!checkField((TextField) customerDetailFields.get("companyAddress1Field" + suffix))) {
-        companyAddress1FieldFlag = false;
-      }
-    }
-    boolean companySuburbFieldFlag = true;
-    for (int i = 1; i < employmentCounter; i++) {
-      suffix = setSuffix(i);
-      if (!checkField((TextField) customerDetailFields.get("companySuburbField" + suffix))) {
-        companySuburbFieldFlag = false;
-      }
-    }
-    boolean companyCityFieldFlag = true;
-    for (int i = 1; i < employmentCounter; i++) {
-      suffix = setSuffix(i);
-      if (!checkField((TextField) customerDetailFields.get("companyCityField" + suffix))) {
-        companyCityFieldFlag = false;
-      }
-    }
-    boolean companyPostcodeFieldFlag = true;
-    for (int i = 1; i < employmentCounter; i++) {
-      suffix = setSuffix(i);
-      if (!checkField((TextField) customerDetailFields.get("companyPostcodeField" + suffix))) {
-        companyPostcodeFieldFlag = false;
-      }
-    }
-    boolean companyCountryFieldFlag = true;
-    for (int i = 1; i < employmentCounter; i++) {
-      suffix = setSuffix(i);
-      if (!checkField((TextField) customerDetailFields.get("companyCountryField" + suffix))) {
-        companyCountryFieldFlag = false;
-      }
-    }
-    boolean employerPhoneFieldFlag = true;
-    for (int i = 1; i < employmentCounter; i++) {
-      suffix = setSuffix(i);
-      if (!checkField((TextField) customerDetailFields.get("employerPhoneField" + suffix))) {
-        employerPhoneFieldFlag = false;
-      }
-    }
-    boolean employerEmailFieldFlag = true;
-    for (int i = 1; i < employmentCounter; i++) {
-      suffix = setSuffix(i);
-      if (!checkField((TextField) customerDetailFields.get("employerEmailField" + suffix))) {
-        employerEmailFieldFlag = false;
-      }
-    }
-    boolean companyWebsiteFieldFlag = true;
-    for (int i = 1; i < employmentCounter; i++) {
-      suffix = setSuffix(i);
-      if (!checkField((TextField) customerDetailFields.get("companyWebsiteField" + suffix))) {
-        companyWebsiteFieldFlag = false;
+
+    boolean repeatFlag = true;
+    for (Node node : customerDetailFields.values()) {
+      if (!checkField((Control) node)) {
+        repeatFlag = false;
       }
     }
 
@@ -802,26 +604,7 @@ public class AddCustomerController {
         && givenNameFieldFlag
         && dobPickerFlag
         && citizenshipFieldFlag
-        && addressTypeFieldFlag
-        && address1FieldFlag
-        && suburbFieldFlag
-        && cityFieldFlag
-        && postcodeFieldFlag
-        && countryFieldFlag
-        && emailFieldFlag
-        && phoneTypeBoxFlag
-        && prefixFieldFlag
-        && numberFieldFlag
-        && jobFieldFlag
-        && companyNameFieldFlag
-        && companyAddress1FieldFlag
-        && companySuburbFieldFlag
-        && companyCityFieldFlag
-        && companyPostcodeFieldFlag
-        && companyCountryFieldFlag
-        && employerPhoneFieldFlag
-        && employerEmailFieldFlag
-        && companyWebsiteFieldFlag) {
+        && repeatFlag) {
       return true;
     }
     errorString.append("\tPlease fill in the required fields\n");
@@ -902,11 +685,7 @@ public class AddCustomerController {
         addressNum++;
       }
     }
-    if (addressNum > 1) {
-      if (errorString.indexOf("\tOnly one address can be primary") == -1) {
-        errorString.append("\tOnly one address can be primary\n");
-      }
-    } else if (addressNum == 0) {
+    if (addressNum == 0) {
       if (errorString.indexOf("\tPlease select a primary address") == -1) {
         errorString.append("\tPlease select a primary address\n");
       }
@@ -919,11 +698,7 @@ public class AddCustomerController {
         emailNum++;
       }
     }
-    if (emailNum > 1) {
-      if (errorString.indexOf("\tOnly one email can be primary") == -1) {
-        errorString.append("\tOnly one email can be primary\n");
-      }
-    } else if (emailNum == 0) {
+    if (emailNum == 0) {
       if (errorString.indexOf("\tPlease select a primary email") == -1) {
         errorString.append("\tPlease select a primary email\n");
       }
@@ -936,11 +711,7 @@ public class AddCustomerController {
         phoneNum++;
       }
     }
-    if (phoneNum > 1) {
-      if (errorString.indexOf("\tOnly one phone can be primary") == -1) {
-        errorString.append("\tOnly one phone can be primary\n");
-      }
-    } else if (phoneNum == 0) {
+    if (phoneNum == 0) {
       if (errorString.indexOf("\tPlease select a primary phone") == -1) {
         errorString.append("\tPlease select a primary phone\n");
       }
