@@ -679,6 +679,14 @@ public class AddCustomerController {
         employerEmailFlag = false;
       }
     }
+    boolean employerPhoneFlag = true;
+    for (int i = 1; i < employmentCounter; i++) {
+      suffix = setSuffix(i);
+      if (!validate(
+          (TextField) customerDetailFields.get("employerPhoneField" + suffix), Type.PHONE)) {
+        employerPhoneFlag = false;
+      }
+    }
     boolean phonePrefixFlag = true;
     for (int i = 1; i < phoneCounter; i++) {
       suffix = setSuffix(i);
@@ -769,6 +777,7 @@ public class AddCustomerController {
     return dobFlag
         && emailFlag
         && employerEmailFlag
+        && employerPhoneFlag
         && phonePrefixFlag
         && phoneFlag
         && websiteFlag
