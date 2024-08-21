@@ -274,3 +274,4 @@ public class AddLoanController {
 }
 
 // TODO: fix interest only space in between
+// TODO: add checks for fields

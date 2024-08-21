@@ -787,64 +787,60 @@ public class AddCustomerController {
         && textingPhoneNum >= 1;
   }
 
-  private boolean validate(TextField ui, Type type) {
-    // Check fields have higher priority in error messages
-    if (ui.getText().isEmpty()) {
-      return true;
-    }
-    boolean flag;
-
-    if (type == Type.EMAIL) {
-      // Emails should be in the format of a@b.c
-      flag = ui.getText().matches("^.+@.+\\..+$");
-      if (!flag) {
-        ui.setStyle(redBorder);
-        if (errorString.indexOf("\tInvalid email format") == -1) {
-          errorString.append("\tInvalid email format\n");
-        }
+  private boolean validate(Control element, Type type) {
+    boolean flag = true;
+    if (element instanceof TextField) {
+      // Check fields have higher priority in error messages
+      TextField ui = (TextField) element;
+      if (ui.getText().isEmpty()) {
+        return flag;
       }
-    } else if (type == Type.NUMBER) {
-      // Phone should be numbers
-      try {
-        Long.parseLong(ui.getText());
-        flag = true;
-      } catch (Exception e) {
+
+      if (type == Type.EMAIL) {
+        // Emails should be in the format of a@b.c
+        flag = ui.getText().matches("^.+@.+\\..+$");
+        if (!flag) {
+          ui.setStyle(redBorder);
+          if (errorString.indexOf("\tInvalid email format") == -1) {
+            errorString.append("\tInvalid email format\n");
+          }
+        }
+      } else if (type == Type.NUMBER) {
+        // Phone should be numbers
+        try {
+          Long.parseLong(ui.getText());
+        } catch (Exception e) {
+          flag = false;
+          ui.setStyle(redBorder);
+          if (errorString.indexOf("\t" + ui.getId() + " should only contain numbers") == -1) {
+            errorString.append("\t" + ui.getId() + " should only contain numbers\n");
+          }
+        }
+      } else if (type == Type.WEBSITE) {
+        // Website should be "text.text"
+        flag = ui.getText().matches("^.+\\..+$");
+        if (!flag) {
+          ui.setStyle(redBorder);
+          if (errorString.indexOf("\tInvalid website format") == -1) {
+            errorString.append("\tInvalid website format\n");
+          }
+        }
+      } else {
+        flag = false;
+      }
+    } else if (element instanceof DatePicker) {
+      DatePicker ui = (DatePicker) element;
+      LocalDate today = LocalDate.now();
+      if (today.isBefore((LocalDate) (Object) ui.getValue())) {
         flag = false;
         ui.setStyle(redBorder);
-        if (errorString.indexOf("\t" + ui.getId() + " should only contain numbers") == -1) {
-          errorString.append("\t" + ui.getId() + " should only contain numbers\n");
-        }
+        errorString.append("\tDate cannot be before today\n");
       }
-    } else if (type == Type.WEBSITE) {
-      // Website should be "text.text"
-      flag = ui.getText().matches("^.+\\..+$");
-      if (!flag) {
-        ui.setStyle(redBorder);
-        if (errorString.indexOf("\tInvalid website format") == -1) {
-          errorString.append("\tInvalid website format\n");
-        }
-      }
-    } else {
-      flag = false;
     }
 
     return flag;
   }
-
-  private boolean validate(DatePicker ui, Type type) {
-    boolean flag;
-    LocalDate today = LocalDate.now();
-    if (today.isBefore((LocalDate) (Object) ui.getValue())) {
-      flag = false;
-      ui.setStyle(redBorder);
-      errorString.append("\tDate cannot be before today\n");
-    } else {
-      flag = true;
-    }
-
-    return flag;
-  }
-
+  
   private boolean checkLengths() {
     boolean titleFieldFlag = checkLength(titleField, 10);
     boolean nameFieldFlag = checkLength(nameField, 60);
