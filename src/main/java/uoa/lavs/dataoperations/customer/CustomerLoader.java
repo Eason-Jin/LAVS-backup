@@ -56,7 +56,7 @@ public class CustomerLoader {
     return customer;
   }
 
-  private static Customer loadFromMainframe(String customerId) throws Exception {
+  public static Customer loadFromMainframe(String customerId) throws Exception {
     LoadCustomer loadCustomer = new LoadCustomer();
     LoadCustomerNote loadCustomerNote = new LoadCustomerNote();
     loadCustomer.setCustomerId(customerId);

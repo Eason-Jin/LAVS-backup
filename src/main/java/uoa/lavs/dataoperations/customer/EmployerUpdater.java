@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.Status;
@@ -12,6 +13,8 @@ import uoa.lavs.mainframe.messages.customer.UpdateCustomerEmployer;
 import uoa.lavs.models.Employer;
 
 public class EmployerUpdater {
+
+  private static boolean failed = false;
 
   public static void updateData(String customerID, Employer employer) {
     try {
@@ -23,6 +26,12 @@ public class EmployerUpdater {
         updateDatabase(customerID, employer);
       } catch (Exception e) {
         System.out.println("Database update failed: " + e.getMessage());
+      } finally {
+        if (failed) {
+          addFailedUpdate(customerID, employer.getNumber());
+        } else {
+          addInMainframe(customerID, employer.getNumber());
+        }
       }
     }
   }
@@ -31,17 +40,21 @@ public class EmployerUpdater {
     UpdateCustomerEmployer updateCustomerEmployer = new UpdateCustomerEmployer();
     updateCustomerEmployer.setCustomerId(customerID);
     updateCustomerEmployer.setNumber(employer.getNumber());
+    Employer existingEmployer = null;
 
     if (employer.getNumber() != null) {
-      List<Employer> existingEmployeres = EmployerFinder.findData(customerID);
-      Employer existingEmployer = new Employer();
+      List<Employer> existingEmployeres = EmployerFinder.findFromMainframe(customerID);
+
       for (Employer employerOnAccount : existingEmployeres) {
         if (employerOnAccount.getNumber().equals(employer.getNumber())
             && employerOnAccount.getCustomerId().equals(employer.getCustomerId())) {
           existingEmployer = employerOnAccount;
+          break;
         }
       }
+    }
 
+    if (existingEmployer != null) {
       updateCustomerEmployer.setName(
           employer.getName() != null ? employer.getName() : existingEmployer.getName());
       updateCustomerEmployer.setLine1(
@@ -84,6 +97,7 @@ public class EmployerUpdater {
 
     Status status = updateCustomerEmployer.send(Instance.getConnection());
     if (!status.getWasSuccessful()) {
+      failed = true;
       System.out.println(
           "Something went wrong - the Mainframe send failed! The code is " + status.getErrorCode());
       throw new Exception("Mainframe send failed");
@@ -165,6 +179,68 @@ public class EmployerUpdater {
       statement.setInt(13, employer.getNumber());
 
       statement.executeUpdate();
+    }
+  }
+
+  private static void addFailedUpdate(String customerID, Integer number) {
+    String sql = "UPDATE Employer SET InMainframe = false WHERE CustomerID = ? AND Number = ?";
+    try (Connection connection = Instance.getDatabaseConnection();
+        PreparedStatement statement = connection.prepareStatement(sql)) {
+      statement.setString(1, customerID);
+      statement.setInt(2, number);
+      statement.executeUpdate();
+    } catch (SQLException e) {
+      System.out.println("Failed to update database: " + e.getMessage());
+    }
+  }
+
+  private static void addInMainframe(String customerID, Integer number) {
+    String sql = "UPDATE Employer SET InMainframe = true WHERE CustomerID = ? AND Number = ?";
+    try (Connection connection = Instance.getDatabaseConnection();
+        PreparedStatement statement = connection.prepareStatement(sql)) {
+      statement.setString(1, customerID);
+      statement.setInt(2, number);
+      statement.executeUpdate();
+    } catch (SQLException e) {
+      System.out.println("Failed to update database: " + e.getMessage());
+    }
+  }
+
+  public static List<Employer> getFailedUpdates() {
+    List<Employer> failedUpdates = new ArrayList<>();
+    String sql = "SELECT CustomerID, Number FROM Employer WHERE InMainframe = false";
+    try (Connection connection = Instance.getDatabaseConnection();
+        PreparedStatement statement = connection.prepareStatement(sql);
+        ResultSet resultSet = statement.executeQuery()) {
+      while (resultSet.next()) {
+        String customerID = resultSet.getString(1);
+        Integer number = resultSet.getInt(2);
+        List<Employer> employers = EmployerFinder.findData(customerID);
+        for (Employer employerOnAccount : employers) {
+          if (employerOnAccount.getNumber().equals(number)
+              && employerOnAccount.getCustomerId().equals(customerID)) {
+            failedUpdates.add(employerOnAccount);
+            break;
+          }
+        }
+      }
+    } catch (SQLException e) {
+      System.out.println("Failed to get failed updates: " + e.getMessage());
+    }
+    return failedUpdates;
+  }
+
+  public static void retryFailedUpdates() {
+    List<Employer> failedUpdates = getFailedUpdates();
+    for (Employer employer : failedUpdates) {
+      String customerID = employer.getCustomerId();
+      Integer number = employer.getNumber();
+      try {
+        updateMainframe(customerID, employer);
+        addInMainframe(customerID, number);
+      } catch (Exception e) {
+        System.out.println("Mainframe update failed: " + e.getMessage());
+      }
     }
   }
 }

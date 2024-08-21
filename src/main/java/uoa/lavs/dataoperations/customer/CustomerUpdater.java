@@ -14,7 +14,8 @@ import uoa.lavs.mainframe.messages.customer.UpdateCustomerNote;
 import uoa.lavs.models.Customer;
 
 public class CustomerUpdater {
-  private static List<FailedCall> failedCalls = new ArrayList<>();
+
+  private static boolean failed = false;
 
   public static void updateData(String customerID, Customer customer) {
     String id = customerID;
@@ -25,11 +26,18 @@ public class CustomerUpdater {
       }
     } catch (Exception e) {
       System.out.println("Mainframe update failed: " + e.getMessage());
+      failed = true;
     } finally {
       try {
         updateDatabase(id, customer);
       } catch (SQLException e) {
         System.out.println("Database update failed: " + e.getMessage());
+      } finally {
+        if (failed) {
+          addFailedUpdate(customer.getId());
+        } else {
+          addInMainframe(customer.getId());
+        }
       }
     }
   }
@@ -63,7 +71,7 @@ public class CustomerUpdater {
               + "Occupation = COALESCE(?, Occupation), "
               + "Citizenship = COALESCE(?, Citizenship), "
               + "VisaType = COALESCE(?, VisaType), "
-              + "Status = COALESCE(?, Status) "
+              + "Status = COALESCE(?, Status), "
               + "Note = COALESCE(?, Note) "
               + "WHERE CustomerID = ?";
     } else {
@@ -75,7 +83,6 @@ public class CustomerUpdater {
     try (Connection connection = Instance.getDatabaseConnection();
         PreparedStatement statement =
             connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-
       statement.setString(1, customer.getTitle());
       statement.setString(2, customer.getName());
       statement.setObject(3, customer.getDob());
@@ -103,10 +110,17 @@ public class CustomerUpdater {
     UpdateCustomer updateCustomer = new UpdateCustomer();
     UpdateCustomerNote updateCustomerNote = new UpdateCustomerNote();
     updateCustomer.setCustomerId(customerID);
+    Customer existingCustomer = null;
 
-    if (customerID != null) {
-      Customer existingCustomer = CustomerLoader.loadData(customerID);
+    try {
+      if (customerID != null) {
+        existingCustomer = CustomerLoader.loadFromMainframe(customerID);
+      }
+    } catch (Exception e) {
+      System.out.println(String.format("Customer %s not in mainframe", customerID));
+    }
 
+    if (existingCustomer != null) {
       updateCustomer.setTitle(
           customer.getTitle() != null ? customer.getTitle() : existingCustomer.getTitle());
       updateCustomer.setName(
@@ -123,8 +137,12 @@ public class CustomerUpdater {
               : existingCustomer.getCitizenship());
       updateCustomer.setVisa(
           customer.getVisaType() != null ? customer.getVisaType() : existingCustomer.getVisaType());
-      updateCustomerNote.setLine(0, customer.getNotes());
+      ArrayList<String> notes = customer.splitNotes();
+      for (int i = 0; i < notes.size(); i++) {
+        updateCustomerNote.setLine(i + 1, notes.get(i));
+      }
     } else {
+      updateCustomer.setCustomerId(null);
       updateCustomer.setTitle(customer.getTitle());
       updateCustomer.setName(customer.getName());
       updateCustomer.setDateofBirth(customer.getDob());
@@ -133,14 +151,14 @@ public class CustomerUpdater {
       updateCustomer.setVisa(customer.getVisaType());
       ArrayList<String> notes = customer.splitNotes();
       for (int i = 0; i < notes.size(); i++) {
-        updateCustomerNote.setLine(i+1, notes.get(i));
+        updateCustomerNote.setLine(i + 1, notes.get(i));
       }
     }
 
     Status status = updateCustomer.send(Instance.getConnection());
     updateCustomerNote.setCustomerId(updateCustomer.getCustomerIdFromServer());
     if (!status.getWasSuccessful()) {
-      recordFailedCall(customerID, customer);
+      failed = true;
       System.out.println(
           "Something went wrong - the Mainframe send failed! The code is " + status.getErrorCode());
       throw new Exception("Mainframe send failed");
@@ -151,33 +169,56 @@ public class CustomerUpdater {
     return updateCustomer.getCustomerIdFromServer();
   }
 
-  private static void recordFailedCall(String customerID, Customer customer) {
-    failedCalls.add(new FailedCall(customerID, customer));
-  }
-
-  public static void retryFailedCalls() {
-    List<FailedCall> retryList = new ArrayList<>(failedCalls);
-    failedCalls.clear();
-    for (FailedCall failedCall : retryList) {
-      updateData(failedCall.getCustomerID(), failedCall.getCustomer());
+  private static void addFailedUpdate(String customerID) {
+    String sql = "UPDATE Customer SET InMainframe = false WHERE CustomerID = ?";
+    try (Connection connection = Instance.getDatabaseConnection();
+        PreparedStatement statement = connection.prepareStatement(sql)) {
+      statement.setString(1, customerID);
+      statement.executeUpdate();
+    } catch (SQLException e) {
+      System.out.println("Failed to record failed call: " + e.getMessage());
     }
   }
 
-  private static class FailedCall {
-    private String customerID;
-    private Customer customer;
-
-    public FailedCall(String customerID, Customer customer) {
-      this.customerID = customerID;
-      this.customer = customer;
+  public static List<Customer> getFailedUpdates() {
+    List<Customer> failedUpdates = new ArrayList<>();
+    String sql = "SELECT * FROM Customer WHERE InMainframe = false";
+    try (Connection connection = Instance.getDatabaseConnection();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql)) {
+      while (resultSet.next()) {
+        String customerID = resultSet.getString("CustomerID");
+        Customer customer = CustomerLoader.loadData(customerID);
+        failedUpdates.add(customer);
+      }
+    } catch (SQLException e) {
+      System.out.println("Failed to get failed updates: " + e.getMessage());
     }
+    return failedUpdates;
+  }
 
-    public String getCustomerID() {
-      return customerID;
+  public static void retryFailedUpdates() {
+    List<Customer> failedUpdates = getFailedUpdates();
+    for (Customer customer : failedUpdates) {
+      String customerID = customer.getId();
+      try {
+        updateMainframe(customerID, customer);
+        addInMainframe(customerID);
+      } catch (Exception e) {
+        System.out.println("Failed to retry failed call: " + e.getMessage());
+      }
     }
+  }
 
-    public Customer getCustomer() {
-      return customer;
+  private static void addInMainframe(String customerID) {
+    String sql = "UPDATE Customer SET InMainframe = ? WHERE CustomerID = ?";
+    try (Connection connection = Instance.getDatabaseConnection();
+        PreparedStatement statement = connection.prepareStatement(sql)) {
+      statement.setBoolean(1, true);
+      statement.setString(2, customerID);
+      statement.executeUpdate();
+    } catch (SQLException e) {
+      System.out.println("Failed to remove failed call: " + e.getMessage());
     }
   }
 }

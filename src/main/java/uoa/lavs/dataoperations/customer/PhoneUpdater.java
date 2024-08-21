@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.Status;
@@ -12,6 +13,8 @@ import uoa.lavs.mainframe.messages.customer.UpdateCustomerPhoneNumber;
 import uoa.lavs.models.Phone;
 
 public class PhoneUpdater {
+
+  private static boolean failed = false;
 
   public static void updateData(String customerID, Phone phone) {
     try {
@@ -23,6 +26,12 @@ public class PhoneUpdater {
         updateDatabase(customerID, phone);
       } catch (Exception e) {
         System.out.println("Database update failed: " + e.getMessage());
+      } finally {
+        if (failed) {
+          addFailedUpdate(customerID, phone.getNumber());
+        } else {
+          addInMainframe(customerID, phone.getNumber());
+        }
       }
     }
   }
@@ -31,16 +40,20 @@ public class PhoneUpdater {
     UpdateCustomerPhoneNumber updateCustomerPhone = new UpdateCustomerPhoneNumber();
     updateCustomerPhone.setCustomerId(customerID);
     updateCustomerPhone.setNumber(phone.getNumber());
+    Phone existingPhone = null;
 
     if (phone.getNumber() != null) {
-      List<Phone> existingPhones = PhoneFinder.findData(customerID);
-      Phone existingPhone = new Phone();
+      List<Phone> existingPhones = PhoneFinder.findFromMainframe(customerID);
       for (Phone phoneOnAccount : existingPhones) {
         if (phoneOnAccount.getNumber().equals(phone.getNumber())
             && phoneOnAccount.getCustomerId().equals(phone.getCustomerId())) {
           existingPhone = phoneOnAccount;
+          break;
         }
       }
+    }
+
+    if (existingPhone != null) {
       updateCustomerPhone.setType(
           phone.getType() != null ? phone.getType() : existingPhone.getType());
       updateCustomerPhone.setPrefix(
@@ -61,6 +74,7 @@ public class PhoneUpdater {
 
     Status status = updateCustomerPhone.send(Instance.getConnection());
     if (!status.getWasSuccessful()) {
+      failed = true;
       System.out.println(
           "Something went wrong - the Mainframe send failed! The code is " + status.getErrorCode());
       throw new Exception("Mainframe send failed");
@@ -129,6 +143,68 @@ public class PhoneUpdater {
       statement.setInt(7, phone.getNumber());
 
       statement.executeUpdate();
+    }
+  }
+
+  private static void addFailedUpdate(String customerID, Integer number) {
+    String sql = "UPDATE Phone SET InMainframe = false WHERE CustomerID = ? AND Number = ?";
+    try (Connection connection = Instance.getDatabaseConnection();
+        PreparedStatement statement = connection.prepareStatement(sql)) {
+      statement.setString(1, customerID);
+      statement.setInt(2, number);
+      statement.executeUpdate();
+    } catch (SQLException e) {
+      System.out.println("Failed to update InMainframe status: " + e.getMessage());
+    }
+  }
+
+  private static void addInMainframe(String customerID, Integer number) {
+    String sql = "UPDATE Phone SET InMainframe = true WHERE CustomerID = ? AND Number = ?";
+    try (Connection connection = Instance.getDatabaseConnection();
+        PreparedStatement statement = connection.prepareStatement(sql)) {
+      statement.setString(1, customerID);
+      statement.setInt(2, number);
+      statement.executeUpdate();
+    } catch (SQLException e) {
+      System.out.println("Failed to update InMainframe status: " + e.getMessage());
+    }
+  }
+
+  public static List<Phone> getFailedUpdates() {
+    List<Phone> failedUpdates = new ArrayList<>();
+    String sql = "SELECT CustomerID, Number FROM Phone WHERE InMainframe = false";
+    try (Connection connection = Instance.getDatabaseConnection();
+        PreparedStatement statement = connection.prepareStatement(sql);
+        ResultSet resultSet = statement.executeQuery()) {
+      while (resultSet.next()) {
+        String customerID = resultSet.getString(1);
+        Integer number = resultSet.getInt(2);
+        List<Phone> phones = PhoneFinder.findData(customerID);
+        for (Phone phoneOnAccount : phones) {
+          if (phoneOnAccount.getNumber().equals(number)
+              && phoneOnAccount.getCustomerId().equals(customerID)) {
+            failedUpdates.add(phoneOnAccount);
+            break;
+          }
+        }
+      }
+    } catch (SQLException e) {
+      System.out.println("Failed to get failed updates: " + e.getMessage());
+    }
+    return failedUpdates;
+  }
+
+  public static void retryFailedUpdates() {
+    List<Phone> failedUpdates = getFailedUpdates();
+    for (Phone phone : failedUpdates) {
+      String customerID = phone.getCustomerId();
+      Integer number = phone.getNumber();
+      try {
+        updateMainframe(customerID, phone);
+        addInMainframe(customerID, number);
+      } catch (Exception e) {
+        System.out.println("Failed to retry failed call: " + e.getMessage());
+      }
     }
   }
 }
