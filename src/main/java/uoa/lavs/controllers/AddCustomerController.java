@@ -38,8 +38,7 @@ public class AddCustomerController {
   @FXML private Button infoButton;
 
   @FXML private TextField titleField;
-  @FXML private TextField familyNameField;
-  @FXML private TextField givenNameField;
+  @FXML private TextField nameField;
   @FXML private DatePicker dobPicker;
 
   @FXML private TextField citizenshipField;
@@ -413,7 +412,7 @@ public class AddCustomerController {
             new Customer(
                 null,
                 titleField.getText(),
-                givenNameField.getText() + " " + familyNameField.getText(),
+                nameField.getText(),
                 dobPicker.getValue(),
                 jobField.getText(),
                 citizenshipField.getText(),
@@ -554,8 +553,7 @@ public class AddCustomerController {
 
   private void clearAllFields() {
     titleField.clear();
-    familyNameField.clear();
-    givenNameField.clear();
+    nameField.clear();
     dobPicker.setValue(null);
     jobField.clear();
     citizenshipField.clear();
@@ -594,8 +592,7 @@ public class AddCustomerController {
 
   private void resetFieldStyle() {
     titleField.setStyle("-fx-border-color: none");
-    familyNameField.setStyle("-fx-border-color: none");
-    givenNameField.setStyle("-fx-border-color: none");
+    nameField.setStyle("-fx-border-color: none");
     dobPicker.setStyle("-fx-border-color: none");
     citizenshipField.setStyle("-fx-border-color: none");
     visaField.setStyle("-fx-border-color: none");
@@ -623,8 +620,7 @@ public class AddCustomerController {
 
   private boolean checkFields() {
     boolean titleFieldFlag = checkField(titleField);
-    boolean familyNameFieldFlag = checkField(familyNameField);
-    boolean givenNameFieldFlag = checkField(givenNameField);
+    boolean nameFieldFlag = checkField(nameField);
     boolean dobPickerFlag = checkField(dobPicker);
     boolean citizenshipFieldFlag = checkField(citizenshipField);
     boolean addressTypeFieldFlag = checkField(addressTypeField);
@@ -650,8 +646,7 @@ public class AddCustomerController {
 
     // Only address line 2 can be empty
     if (titleFieldFlag
-        && familyNameFieldFlag
-        && givenNameFieldFlag
+        && nameFieldFlag
         && dobPickerFlag
         && citizenshipFieldFlag
         && addressTypeFieldFlag

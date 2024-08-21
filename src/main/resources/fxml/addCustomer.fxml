@@ -54,9 +54,8 @@
                      <children>
                         <Pane layoutX="25.0" layoutY="55.0" prefHeight="139.0" prefWidth="950.0">
                            <children>
-                              <TextField fx:id="titleField" prefHeight="35.0" prefWidth="120.0" promptText="Title" stylesheets="@../css/primer-light.css" />
-                              <TextField fx:id="familyNameField" layoutX="130.0" prefHeight="35.0" prefWidth="405.0" promptText="Family name" stylesheets="@../css/primer-light.css" />
-                              <TextField fx:id="givenNameField" layoutX="545.0" prefHeight="35.0" prefWidth="405.0" promptText="Given name(s)" stylesheets="@../css/primer-light.css" />
+                              <TextField fx:id="titleField" prefHeight="35.0" prefWidth="150.0" promptText="Title" stylesheets="@../css/primer-light.css" />
+                              <TextField fx:id="nameField" layoutX="160.0" prefHeight="36.0" prefWidth="790.0" promptText="Full name" stylesheets="@../css/primer-light.css" />
                               <DatePicker fx:id="dobPicker" layoutY="50.0" prefHeight="35.0" prefWidth="950.0" promptText="Date of birth" stylesheets="@../css/primer-light.css" />
                               <TextField fx:id="jobField" layoutY="100.0" prefHeight="35.0" prefWidth="950.0" promptText="Occupation" stylesheets="@../css/primer-light.css" />
                            </children>
