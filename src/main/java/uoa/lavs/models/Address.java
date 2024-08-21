@@ -1,5 +1,8 @@
 package uoa.lavs.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Address {
   private String customerId;
   private Integer number;
@@ -127,5 +130,19 @@ public class Address {
 
   public void setIsMailing(boolean isMailing) {
     this.isMailing = isMailing;
+  }
+
+  public List<String> getListRepresentation() {
+    List<String> list = new ArrayList<>();
+    list.add(type);
+    list.add(line1);
+    list.add(line2);
+    list.add(suburb);
+    list.add(city);
+    list.add(postCode);
+    list.add(country);
+    list.add(isPrimary.toString());
+    list.add(isMailing.toString());
+    return list;
   }
 }

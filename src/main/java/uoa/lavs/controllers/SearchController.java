@@ -24,8 +24,10 @@ import uoa.lavs.models.Customer;
 
 @Controller
 public class SearchController {
+    @Autowired
+    private CustomerDetailsController customerDetailsController;
 
-    @FXML private Button startButton;
+    @FXML private Button backButton;
     @FXML private Button searchButton;
     @FXML private TextField searchField;
     @FXML private TableView<Customer> searchTable;
@@ -46,26 +48,35 @@ public class SearchController {
 
         searchTable.setRowFactory(tableView -> {
             final TableRow<Customer> row = new TableRow<Customer>();
-            row.hoverProperty().addListener((observable) -> {
-                if (row.isHover() && !row.isEmpty()) {
-                    row.styleProperty().set("-fx-background-color: #f0f0f0");
+
+            row.setOnMouseClicked(event -> {
+                if (row.isEmpty()) {
+                    return;
+                }
+
+                if (isCoBorrowerSearch) {
+                    addLoanController.addCoBorrower(row);
+                    Main.setScene(AppScene.ADD_LOAN);
                 } else {
+                    String customerId = row.getItem().getId();
+                    customerDetailsController.setCustomerDetails(customerId);
+                    Main.setScene(AppScene.CUSTOMER_DETAILS);
+                }
+            });
+
+            row.setOnMouseEntered(event -> {
+                if (!row.isEmpty()) {
+                    row.styleProperty().set("-fx-background-color: #f0f0f0");
+                }
+            });
+
+            row.setOnMouseExited(event -> {
+                if (!row.isEmpty()) {
                     row.styleProperty().set("-fx-background-color: none");
                     row.styleProperty().set("-fx-border-width: 5");
                 }
             });
 
-            row.selectedProperty().addListener((observable) -> {
-                if (row.isSelected() && !row.isEmpty()) {
-                    if (isCoBorrowerSearch) {
-                        addLoanController.addCoBorrower(row);
-                        Main.setScene(AppScene.ADD_LOAN);
-                    }
-                    else {
-                        Main.setScene(AppScene.CUSTOMER_DETAILS);
-                    }
-                }
-            });
             return row;
         });
     }
@@ -107,8 +118,8 @@ public class SearchController {
                 searchTable.setPlaceholder(new Label("No customers found"));
             });
         } else {
-            ObservableList<Customer> observablecustomers = FXCollections.observableArrayList(customers);
-            Platform.runLater(() -> searchTable.setItems(observablecustomers));
+            ObservableList<Customer> observableCustomers = FXCollections.observableArrayList(customers);
+            Platform.runLater(() -> searchTable.setItems(observableCustomers));
         }
     }
 
@@ -126,7 +137,7 @@ public class SearchController {
     }
 
     @FXML
-    private void onClickStart(ActionEvent event) throws IOException {
+    private void onClickBack(ActionEvent event) throws IOException {
         if (isCoBorrowerSearch) {
             Main.setScene(AppScene.ADD_LOAN);
         }

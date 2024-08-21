@@ -1,5 +1,8 @@
 package uoa.lavs.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Employer {
   private String customerId;
   private Integer number;
@@ -149,5 +152,21 @@ public class Employer {
 
   public void setIsOwner(Boolean isOwner) {
     this.isOwner = isOwner;
+  }
+
+  public List<String> getListRepresentation() {
+    List<String> list = new ArrayList<>();
+    list.add(name);
+    list.add(line1);
+    list.add(line2);
+    list.add(suburb);
+    list.add(city);
+    list.add(postCode);
+    list.add(country);
+    list.add(phoneNumber);
+    list.add(emailAddress);
+    list.add(website);
+    list.add(isOwner.toString());
+    return list;
   }
 }
