@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -165,6 +166,13 @@ public class CustomerDetailsController {
                 newTextField.setId(newFxId);
                 newPane.getChildren().add(newTextField);
                 customerDetailFields.put(newFxId, newTextField);
+            } else if (node instanceof Separator) {
+                Separator newSeparator = new Separator();
+                newSeparator.setPrefWidth(((Separator) node).getPrefWidth());
+                newSeparator.setPrefHeight(((Separator) node).getPrefHeight());
+                newSeparator.setLayoutX(node.getLayoutX());
+                newSeparator.setLayoutY(node.getLayoutY());
+                newPane.getChildren().add(newSeparator);
             } else if (node instanceof CheckBox) {
                 CheckBox newCheckBox = new CheckBox(((CheckBox) node).getText());
                 newCheckBox.setLayoutX(node.getLayoutX());
@@ -224,6 +232,6 @@ public class CustomerDetailsController {
 
     @FXML
     private void onClickAddLoan(ActionEvent event) {
-        // Main.setScene(AppScene.ADD_LOAN);
+        System.out.println("Add loan button clicked");
     }
 }
