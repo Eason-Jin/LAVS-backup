@@ -93,7 +93,7 @@
                </children>
             </StackPane>
             <Separator opacity="0.0" prefWidth="320.0" />
-            <Button focusTraversable="false" mnemonicParsing="false" prefHeight="65.0" prefWidth="65.0" style="-fx-background-radius: 100;">
+            <Button focusTraversable="false" mnemonicParsing="false" onAction="#createPopup" prefHeight="65.0" prefWidth="65.0" style="-fx-background-radius: 100;">
                <graphic>
                   <ImageView fitHeight="32.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
                      <image>

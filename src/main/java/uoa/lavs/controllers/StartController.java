@@ -9,10 +9,12 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,11 +27,11 @@ public class StartController {
     @Autowired
     private SearchController searchController;
 
-    @FXML private Button addCustomerButton;
-    @FXML private Button searchButton;
     @FXML private StackPane stackPane;
     @FXML private Label timeLabel;
     @FXML private HBox statusBar;
+
+    private Pane popupPane;
 
     public void initialize() {
         pulseStackPane();
@@ -59,6 +61,60 @@ public class StartController {
         clock.setCycleCount(Timeline.INDEFINITE);
         clock.play();
     }
+
+    @FXML
+    private void createPopup(ActionEvent event) {
+        Button sourceButton = (Button) event.getSource();
+        Pane currentRoot = (Pane) sourceButton.getScene().getRoot();
+
+        StackPane dimOverlay = new StackPane();
+        dimOverlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.2);");
+        dimOverlay.setPrefSize(currentRoot.getWidth(), currentRoot.getHeight());
+
+        popupPane = new StackPane();
+        popupPane.setPrefSize(500, 450);
+        Rectangle background = new Rectangle(500, 450);
+        background.setFill(Color.WHITE);
+        background.setStroke(Color.web("#ddddde"));
+        background.setStrokeWidth(1);
+        background.setArcHeight(40);
+        background.setArcWidth(40);
+
+        Label popupLabel = new Label("About");
+        popupLabel.setStyle("-fx-font-weight: bold;");
+
+        Label paragraph = new Label("This is a paragraph that provides additional information about the topic. "
+                + "You can add more text here to explain details or provide context.");
+        paragraph.setWrapText(true); // Enable text wrapping
+        paragraph.setMaxWidth(450); // Set the maximum width for the paragraph
+
+        Button closeButton = new Button("X");
+        closeButton.setFocusTraversable(false);
+        closeButton.setOnAction(e -> {
+            popupPane.setVisible(false);
+            currentRoot.getChildren().remove(popupPane);
+            currentRoot.getChildren().remove(dimOverlay);
+        });
+
+        StackPane.setAlignment(closeButton, javafx.geometry.Pos.TOP_LEFT);
+        StackPane.setMargin(closeButton, new javafx.geometry.Insets(20, 20, 20, 20));
+
+        VBox content = new VBox(10, popupLabel, paragraph);
+        content.setAlignment(javafx.geometry.Pos.CENTER);
+
+        popupPane.getChildren().addAll(background, content, closeButton);
+
+        currentRoot.getChildren().addAll(dimOverlay, popupPane);
+
+        double centerX = (currentRoot.getWidth() - popupPane.getPrefWidth()) / 2;
+        double centerY = (currentRoot.getHeight() - popupPane.getPrefHeight()) / 2;
+
+        popupPane.setLayoutX(centerX);
+        popupPane.setLayoutY(centerY);
+
+        popupPane.setVisible(true);
+    }
+
 
     @FXML
     private void onClickAddCustomer(ActionEvent event) throws IOException {
