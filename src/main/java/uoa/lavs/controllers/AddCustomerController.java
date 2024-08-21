@@ -813,8 +813,8 @@ public class AddCustomerController {
       } catch (Exception e) {
         flag = false;
         ui.setStyle(redBorder);
-        if (errorString.indexOf("\t" + ui.getId() + "should only contain numbers") == -1) {
-          errorString.append("\t" + ui.getId() + "should only contain numbers\n");
+        if (errorString.indexOf("\t" + ui.getId() + " should only contain numbers") == -1) {
+          errorString.append("\t" + ui.getId() + " should only contain numbers\n");
         }
       }
     } else if (type == Type.WEBSITE) {
