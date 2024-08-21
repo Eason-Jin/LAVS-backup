@@ -8,16 +8,22 @@ import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
@@ -28,8 +34,8 @@ import uoa.lavs.dataoperations.customer.CustomerLoader;
 import uoa.lavs.dataoperations.customer.EmailFinder;
 import uoa.lavs.dataoperations.customer.EmployerFinder;
 import uoa.lavs.dataoperations.customer.PhoneFinder;
+import uoa.lavs.dataoperations.loan.LoanFinder;
 import uoa.lavs.mainframe.Frequency;
-import uoa.lavs.mainframe.LoanStatus;
 import uoa.lavs.models.Address;
 import uoa.lavs.models.Customer;
 import uoa.lavs.models.Email;
@@ -70,7 +76,7 @@ public class CustomerDetailsController {
 
     @FXML private TableView<Loan> loanTable;
     @FXML private TableColumn<Loan, String> loanIdColumn;
-    @FXML private TableColumn<Loan, LoanStatus> statusColumn;
+    @FXML private TableColumn<Loan, String> statusColumn;
     @FXML private TableColumn<Loan, String> principalColumn;
     @FXML private TableColumn<Loan, String> startDateColumn;
     @FXML private TableColumn<Loan, Frequency> paymentFrequencyColumn;
@@ -81,6 +87,40 @@ public class CustomerDetailsController {
     @FXML
     private void initialize() {
         addAllElementsToMap();
+        loanIdColumn.setCellValueFactory(new PropertyValueFactory<Loan, String>("loanId"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<Loan, String>("status"));
+        principalColumn.setCellValueFactory(new PropertyValueFactory<Loan, String>("principal"));
+        startDateColumn.setCellValueFactory(new PropertyValueFactory<Loan, String>("startDate"));
+        paymentFrequencyColumn.setCellValueFactory(new PropertyValueFactory<Loan, Frequency>("paymentFrequency"));
+
+        loanTable.setRowFactory(tableView -> {
+            final TableRow<Loan> row = new TableRow<Loan>();
+
+            row.setOnMouseClicked(event -> {
+                if (row.isEmpty()) {
+                    return;
+                }
+                String loanId = row.getItem().getLoanId();
+                System.out.println("Loan clicked with ID: " + loanId);
+                // loanDetailsController.setLoanDetails(loanId);
+                // Main.setScene(AppScene.LOAN_DETAILS);
+            });
+
+            row.setOnMouseEntered(event -> {
+                if (!row.isEmpty()) {
+                    row.styleProperty().set("-fx-background-color: #f0f0f0");
+                }
+            });
+
+            row.setOnMouseExited(event -> {
+                if (!row.isEmpty()) {
+                    row.styleProperty().set("-fx-background-color: none");
+                    row.styleProperty().set("-fx-border-width: 5");
+                }
+            });
+
+            return row;
+        });
     }
 
     public void setCustomerDetails(String customerId) {
@@ -89,6 +129,7 @@ public class CustomerDetailsController {
         List<Email> emails = EmailFinder.findData(customerId);
         List<Phone> phones = PhoneFinder.findData(customerId);
         List<Employer> employers = EmployerFinder.findData(customerId);
+        List<Loan> loans = LoanFinder.findData(customerId);
 
         titleField.setText(customer.getTitle());
         nameField.setText(customer.getName());
@@ -115,6 +156,16 @@ public class CustomerDetailsController {
         }
 
         notesArea.setText(customer.getNotes());
+
+        if (loans.isEmpty()) {
+            Platform.runLater(() -> {
+                loanTable.getItems().clear();
+                loanTable.setPlaceholder(new Label("No loans for this customer"));
+            });
+        } else {
+            ObservableList<Loan> observableLoans = FXCollections.observableArrayList(loans);
+            Platform.runLater(() -> loanTable.setItems(observableLoans));
+        }
     }
 
     // DUPLICATE CODE
