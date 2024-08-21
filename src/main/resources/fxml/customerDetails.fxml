@@ -19,24 +19,17 @@
 
 <AnchorPane prefHeight="648.0" prefWidth="1152.0" stylesheets="@../css/primer-light.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.CustomerDetailsController">
    <children>
-      <Button fx:id="backButton" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#onClickBack" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/primer-light.css">
-         <styleClass>
-            <String fx:value="button-circle" />
-            <String fx:value="danger" />
-            <String fx:value="cross" />
-         </styleClass>
-      </Button>
-      <Button fx:id="homeButton" layoutX="90.0" layoutY="20.0" mnemonicParsing="false" onAction="#onClickHome" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/primer-light.css">
+      <Button fx:id="homeButton" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#onClickHome" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/primer-light.css">
          <styleClass>
             <String fx:value="button-circle" />
             <String fx:value="home" />
          </styleClass>
       </Button>
-      <Button fx:id="infoButton" layoutX="1082.0" layoutY="20.0" mnemonicParsing="false" onAction="#onClickInfo" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/primer-light.css">
+      <Button fx:id="backButton" layoutX="1082.0" layoutY="20.0" mnemonicParsing="false" onAction="#onClickBack" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/primer-light.css">
          <styleClass>
             <String fx:value="button-circle" />
-            <String fx:value="accent" />
-            <String fx:value="info" />
+            <String fx:value="danger" />
+            <String fx:value="cross" />
          </styleClass>
       </Button>
       <Label layoutX="82.0" layoutY="60.0" text="Customer Details">

@@ -50,7 +50,7 @@ public class Loan {
     this.paymentFrequency = paymentFrequency;
     this.compounding = compounding;
   }
-
+  
   public Loan() {}
 
   public String getLoanId() {

@@ -45,9 +45,8 @@ import uoa.lavs.models.Phone;
 
 @Controller
 public class CustomerDetailsController {
-    @FXML private Button backButton;
     @FXML private Button homeButton;
-    @FXML private Button infoButton;
+    @FXML private Button backButton;
     @FXML private Button editButton;
 
     @FXML private TextField titleField;
@@ -272,17 +271,12 @@ public class CustomerDetailsController {
     }
 
     @FXML
-    private void onClickInfo(ActionEvent event) {
-        System.out.println("Info button clicked");
-    }
-
-    @FXML
     private void onClickEdit(ActionEvent event) {
         System.out.println("Edit button clicked");
     }
 
     @FXML
     private void onClickAddLoan(ActionEvent event) {
-        System.out.println("Add loan button clicked");
+        Main.setScene(AppScene.ADD_LOAN);
     }
 }

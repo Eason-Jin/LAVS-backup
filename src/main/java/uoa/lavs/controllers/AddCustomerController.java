@@ -6,15 +6,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.*;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager;
@@ -38,43 +37,12 @@ public class AddCustomerController {
   @FXML private Button infoButton;
 
   @FXML private TextField titleField;
-  @FXML private TextField familyNameField;
-  @FXML private TextField givenNameField;
+  @FXML private TextField nameField;
   @FXML private DatePicker dobPicker;
+  @FXML private TextField jobField;
 
   @FXML private TextField citizenshipField;
   @FXML private TextField visaField;
-
-  @FXML private TextField addressTypeField;
-  @FXML private TextField address1Field;
-  @FXML private TextField address2Field;
-  @FXML private TextField suburbField;
-  @FXML private TextField cityField;
-  @FXML private TextField postcodeField;
-  @FXML private TextField countryField;
-  @FXML private CheckBox isPrimaryAddress;
-  @FXML private CheckBox isMailingAddress;
-
-  @FXML private TextField emailField;
-  @FXML private CheckBox isPrimaryEmail;
-  @FXML private ComboBox<FXCollections> phoneTypeBox;
-  @FXML private TextField prefixField;
-  @FXML private TextField numberField;
-  @FXML private CheckBox isPrimaryNumber;
-  @FXML private CheckBox isTextingNumber;
-
-  @FXML private TextField jobField;
-  @FXML private TextField companyNameField;
-  @FXML private TextField companyAddress1Field;
-  @FXML private TextField companyAddress2Field;
-  @FXML private TextField companySuburbField;
-  @FXML private TextField companyCityField;
-  @FXML private TextField companyPostcodeField;
-  @FXML private TextField companyCountryField;
-  @FXML private TextField employerPhoneField;
-  @FXML private TextField employerEmailField;
-  @FXML private TextField companyWebsiteField;
-  @FXML private CheckBox isOwner;
 
   @FXML private TextArea notesArea;
 
@@ -105,6 +73,10 @@ public class AddCustomerController {
   private int numEmployments = 1;
   private Map<String, Node> customerDetailFields = new HashMap<>();
 
+  private String noBorder = "-fx-border-color: none";
+  private String redBorder = "-fx-border-color: red";
+  private String suffix;
+
   private Alert alert;
   private StringBuilder errorString;
 
@@ -114,7 +86,6 @@ public class AddCustomerController {
     alert.setTitle("Error");
     alert.setHeaderText("Please fix the following issues:");
     errorString = new StringBuilder();
-
     addAllElementsToMap();
     disableAllDeleteButtons();
   }
@@ -125,7 +96,6 @@ public class AddCustomerController {
     addElementsToMap(emailPane);
     addElementsToMap(phonePane);
     addElementsToMap(employmentPane);
-//    System.out.println(customerDetailFields.keySet());
   }
 
   private void addElementsToMap(Pane pane) {
@@ -148,8 +118,7 @@ public class AddCustomerController {
     String counterString;
     if (counter != 0) {
       counterString = "_" + counter;
-    }
-    else {
+    } else {
       counterString = "";
     }
     Pane newPane = new Pane();
@@ -169,8 +138,7 @@ public class AddCustomerController {
         newTextField.setId(newFxId);
         newPane.getChildren().add(newTextField);
         customerDetailFields.put(newFxId, newTextField);
-      }
-      else if (node instanceof CheckBox) {
+      } else if (node instanceof CheckBox) {
         CheckBox newCheckBox = new CheckBox(((CheckBox) node).getText());
         newCheckBox.setLayoutX(node.getLayoutX());
         newCheckBox.setLayoutY(node.getLayoutY());
@@ -182,11 +150,11 @@ public class AddCustomerController {
         if (findSelected((CheckBox) node) != null && ((CheckBox) node).getOnAction() != null) {
           disableCheckboxes((CheckBox) customerDetailFields.get(findSelected((CheckBox) node)));
         }
-      }
-      else if (node instanceof ComboBox) {
+      } else if (node instanceof ComboBox) {
         ComboBox<FXCollections> newComboBox = new ComboBox<>();
         newComboBox.setPromptText(((ComboBox<FXCollections>) node).getPromptText());
-        newComboBox.setItems(FXCollections.observableArrayList(((ComboBox<FXCollections>) node).getItems()));
+        newComboBox.setItems(
+            FXCollections.observableArrayList(((ComboBox<FXCollections>) node).getItems()));
         newComboBox.setLayoutX(node.getLayoutX());
         newComboBox.setLayoutY(node.getLayoutY());
         newComboBox.setPrefWidth(((ComboBox<FXCollections>) node).getPrefWidth());
@@ -194,16 +162,14 @@ public class AddCustomerController {
         newComboBox.setId(newFxId);
         newPane.getChildren().add(newComboBox);
         customerDetailFields.put(newFxId, newComboBox);
-      }
-      else if (node instanceof Separator) {
+      } else if (node instanceof Separator) {
         Separator newSeparator = new Separator();
         newSeparator.setPrefWidth(((Separator) node).getPrefWidth());
         newSeparator.setPrefHeight(((Separator) node).getPrefHeight());
         newSeparator.setLayoutX(node.getLayoutX());
         newSeparator.setLayoutY(node.getLayoutY());
         newPane.getChildren().add(newSeparator);
-      }
-      else if (node instanceof Button) {
+      } else if (node instanceof Button) {
         Button newButton = new Button("");
         newButton.setPrefWidth(((Button) node).getPrefWidth());
         newButton.setPrefHeight(((Button) node).getPrefHeight());
@@ -215,8 +181,7 @@ public class AddCustomerController {
         newButton.setId(newFxId);
         newPane.getChildren().add(newButton);
         customerDetailFields.put(newFxId, newButton);
-      }
-      else {
+      } else {
         continue;
       }
     }
@@ -226,7 +191,8 @@ public class AddCustomerController {
 
   private String findSelected(CheckBox checkBox) {
     for (String nodeId : customerDetailFields.keySet()) {
-      if (nodeId.contains(checkBox.getId()) && ((CheckBox) customerDetailFields.get(nodeId)).isSelected()) {
+      if (nodeId.contains(checkBox.getId())
+          && ((CheckBox) customerDetailFields.get(nodeId)).isSelected()) {
         return nodeId;
       }
     }
@@ -237,15 +203,18 @@ public class AddCustomerController {
     String selectedFxId = (checkBox).getId();
     String checkingFxId = ((selectedFxId).split("_"))[0];
     for (String nodeId : customerDetailFields.keySet()) {
-      if (customerDetailFields.get(nodeId).getClass().getName().equals(customerDetailFields.get(selectedFxId).getClass().getName())){
+      if (customerDetailFields
+          .get(nodeId)
+          .getClass()
+          .getName()
+          .equals(customerDetailFields.get(selectedFxId).getClass().getName())) {
         if (!(nodeId.equals(selectedFxId)) && nodeId.contains(checkingFxId)) {
           if (checkBox.isSelected()) {
             CheckBox toDisableCheckBox = (CheckBox) customerDetailFields.get(nodeId);
             toDisableCheckBox.setSelected(false);
             toDisableCheckBox.setDisable(true);
             customerDetailFields.replace(nodeId, toDisableCheckBox);
-          }
-          else {
+          } else {
             CheckBox disabledCheckBox = (CheckBox) customerDetailFields.get(nodeId);
             disabledCheckBox.setSelected(false);
             disabledCheckBox.setDisable(false);
@@ -266,7 +235,9 @@ public class AddCustomerController {
   private void onClickDeleteEmail(ActionEvent event) {
     String buttonClickedFxId = ((Button) event.getSource()).getId();
     Pane paneToDelete = deleteField(buttonClickedFxId, emailPane);
-    contactScrollAnchorPane.setPrefHeight(contactScrollAnchorPane.getPrefHeight()-(emailPane.getPrefHeight()+emailFlowPane.getVgap()));
+    contactScrollAnchorPane.setPrefHeight(
+        contactScrollAnchorPane.getPrefHeight()
+            - (emailPane.getPrefHeight() + emailFlowPane.getVgap()));
     emailFlowPane.getChildren().remove(paneToDelete);
     numEmails--;
     if (numEmails == 1) {
@@ -278,7 +249,9 @@ public class AddCustomerController {
   private void onClickDeletePhone(ActionEvent event) {
     String buttonClickedFxId = ((Button) event.getSource()).getId();
     Pane paneToDelete = deleteField(buttonClickedFxId, phonePane);
-    contactScrollAnchorPane.setPrefHeight(contactScrollAnchorPane.getPrefHeight()-(phonePane.getPrefHeight()+phoneFlowPane.getVgap()));
+    contactScrollAnchorPane.setPrefHeight(
+        contactScrollAnchorPane.getPrefHeight()
+            - (phonePane.getPrefHeight() + phoneFlowPane.getVgap()));
     phoneFlowPane.getChildren().remove(paneToDelete);
     numPhones--;
     if (numPhones == 1) {
@@ -290,7 +263,9 @@ public class AddCustomerController {
   private void onClickDeleteAddress(ActionEvent event) {
     String buttonClickedFxId = ((Button) event.getSource()).getId();
     Pane paneToDelete = deleteField(buttonClickedFxId, addressPane);
-    addressScrollAnchorPane.setPrefHeight(addressScrollAnchorPane.getPrefHeight()-(addressPane.getPrefHeight()+addressFlowPane.getVgap()));
+    addressScrollAnchorPane.setPrefHeight(
+        addressScrollAnchorPane.getPrefHeight()
+            - (addressPane.getPrefHeight() + addressFlowPane.getVgap()));
     addressFlowPane.getChildren().remove(paneToDelete);
     numAddresses--;
     if (numAddresses == 1) {
@@ -302,7 +277,9 @@ public class AddCustomerController {
   private void onClickDeleteEmployment(ActionEvent event) {
     String buttonClickedFxId = ((Button) event.getSource()).getId();
     Pane paneToDelete = deleteField(buttonClickedFxId, employmentPane);
-    employmentScrollAnchorPane.setPrefHeight(employmentScrollAnchorPane.getPrefHeight()-(employmentPane.getPrefHeight()+employmentFlowPane.getVgap()));
+    employmentScrollAnchorPane.setPrefHeight(
+        employmentScrollAnchorPane.getPrefHeight()
+            - (employmentPane.getPrefHeight() + employmentFlowPane.getVgap()));
     employmentFlowPane.getChildren().remove(paneToDelete);
     numEmployments--;
     if (numEmployments == 1) {
@@ -314,13 +291,19 @@ public class AddCustomerController {
     String paneToDeleteFxId;
     if ((buttonClickedFxId.split("_")).length >= 2) {
       paneToDeleteFxId = pane.getId() + "_" + buttonClickedFxId.split("_")[1];
-    }
-    else {
+    } else {
       paneToDeleteFxId = pane.getId();
     }
     Pane paneToDelete = (Pane) customerDetailFields.get(paneToDeleteFxId);
     List<Node> nodesCopy = paneToDelete.getChildrenUnmodifiable();
     for (var node : nodesCopy) {
+      if (node instanceof CheckBox && ((CheckBox) node).isSelected()) {
+        for (String id : customerDetailFields.keySet()) {
+          if (id.contains(((node.getId()).split("_"))[0])) {
+            customerDetailFields.get(id).setDisable(false);
+          }
+        }
+      }
       customerDetailFields.remove(node.getId());
     }
     customerDetailFields.remove(paneToDeleteFxId);
@@ -340,12 +323,9 @@ public class AddCustomerController {
   private void enableDeleteButton(String field) {
     for (String nodeId : customerDetailFields.keySet()) {
       if (nodeId.contains("delete" + field + "Button")) {
-        System.out.println(nodeId);
         Button newButton = (Button) customerDetailFields.get(nodeId);
         newButton.setDisable(false);
-//        customerDetailFields.replace(nodeId, newButton);
-        System.out.println(((Button) customerDetailFields.get(nodeId)).getOnAction());
-        System.out.println(customerDetailFields.get(nodeId));
+        //        customerDetailFields.replace(nodeId, newButton);
       }
     }
   }
@@ -358,7 +338,10 @@ public class AddCustomerController {
     if (numAddresses >= 2) {
       enableDeleteButton("Address");
     }
-    addressScrollAnchorPane.setPrefHeight(addressScrollAnchorPane.getPrefHeight()+newAddressPane.getPrefHeight()+addressFlowPane.getVgap());
+    addressScrollAnchorPane.setPrefHeight(
+        addressScrollAnchorPane.getPrefHeight()
+            + newAddressPane.getPrefHeight()
+            + addressFlowPane.getVgap());
     addressFlowPane.getChildren().add(newAddressPane);
   }
 
@@ -370,7 +353,10 @@ public class AddCustomerController {
     if (numPhones >= 2) {
       enableDeleteButton("Phone");
     }
-    contactScrollAnchorPane.setPrefHeight(contactScrollAnchorPane.getPrefHeight()+newPhonePane.getPrefHeight()+phoneFlowPane.getVgap());
+    contactScrollAnchorPane.setPrefHeight(
+        contactScrollAnchorPane.getPrefHeight()
+            + newPhonePane.getPrefHeight()
+            + phoneFlowPane.getVgap());
     phoneFlowPane.getChildren().add(newPhonePane);
   }
 
@@ -382,7 +368,10 @@ public class AddCustomerController {
     if (numEmails >= 2) {
       enableDeleteButton("Email");
     }
-    contactScrollAnchorPane.setPrefHeight(contactScrollAnchorPane.getPrefHeight()+newEmailPane.getPrefHeight()+emailFlowPane.getVgap());
+    contactScrollAnchorPane.setPrefHeight(
+        contactScrollAnchorPane.getPrefHeight()
+            + newEmailPane.getPrefHeight()
+            + emailFlowPane.getVgap());
     emailFlowPane.getChildren().add(newEmailPane);
   }
 
@@ -394,19 +383,22 @@ public class AddCustomerController {
     if (numEmployments >= 2) {
       enableDeleteButton("Employment");
     }
-    employmentScrollAnchorPane.setPrefHeight(employmentScrollAnchorPane.getPrefHeight()+newEmploymentPane.getPrefHeight()+employmentFlowPane.getVgap());
+    employmentScrollAnchorPane.setPrefHeight(
+        employmentScrollAnchorPane.getPrefHeight()
+            + newEmploymentPane.getPrefHeight()
+            + employmentFlowPane.getVgap());
     employmentFlowPane.getChildren().add(newEmploymentPane);
   }
 
   @FXML
   private void onClickSave(ActionEvent event) {
-    if (checkFields() && validateFields()) {
+    if (checkFields() && validateFields() && checkLengths()) {
       try {
         Customer customer =
             new Customer(
                 null,
                 titleField.getText(),
-                givenNameField.getText() + " " + familyNameField.getText(),
+                nameField.getText(),
                 dobPicker.getValue(),
                 jobField.getText(),
                 citizenshipField.getText(),
@@ -417,52 +409,70 @@ public class AddCustomerController {
 
         String customerID = customer.getId();
 
-        Address address =
-            new Address(
-                customerID,
-                addressTypeField.getText(),
-                address1Field.getText(),
-                address2Field.getText(),
-                suburbField.getText(),
-                cityField.getText(),
-                postcodeField.getText(),
-                countryField.getText(),
-                isPrimaryAddress.isSelected(),
-                isMailingAddress.isSelected(),
-                null);
-        AddressUpdater.updateData(customerID, address);
+        for (int i = 1; i < addressCounter; i++) {
+          suffix = setSuffix(i);
+          Address address =
+              new Address(
+                  customerID,
+                  ((TextField) customerDetailFields.get("addressTypeField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("address1Field" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("address2Field" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("suburbField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("cityField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("postcodeField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("countryField" + suffix)).getText(),
+                  ((CheckBox) customerDetailFields.get("isPrimaryAddress" + suffix)).isSelected(),
+                  ((CheckBox) customerDetailFields.get("isMailingAddress" + suffix)).isSelected(),
+                  null);
+          AddressUpdater.updateData(customerID, address);
+        }
 
-        Email email =
-            new Email(customerID, emailField.getText(), isPrimaryEmail.isSelected(), null);
-        EmailUpdater.updateData(customerID, email);
+        for (int i = 1; i < emailCounter; i++) {
+          suffix = setSuffix(i);
+          Email email =
+              new Email(
+                  customerID,
+                  ((TextField) customerDetailFields.get("emailField" + suffix)).getText(),
+                  ((CheckBox) customerDetailFields.get("isPrimaryEmail" + suffix)).isSelected(),
+                  null);
+          EmailUpdater.updateData(customerID, email);
+        }
 
-        Phone phone =
-            new Phone(
-                customerID,
-                (String) (Object) phoneTypeBox.getValue(), // Some wild casting here but it works :)
-                prefixField.getText(),
-                numberField.getText(),
-                isPrimaryNumber.isSelected(),
-                isTextingNumber.isSelected(),
-                null);
-        PhoneUpdater.updateData(customerID, phone);
+        for (int i = 1; i < phoneCounter; i++) {
+          suffix = setSuffix(i);
+          Phone phone =
+              new Phone(
+                  customerID,
+                  (String)
+                      (Object)
+                          ((ComboBox) customerDetailFields.get("phoneTypeBox" + suffix)).getValue(),
+                  ((TextField) customerDetailFields.get("prefixField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("numberField" + suffix)).getText(),
+                  ((CheckBox) customerDetailFields.get("isPrimaryNumber" + suffix)).isSelected(),
+                  ((CheckBox) customerDetailFields.get("isTextingNumber" + suffix)).isSelected(),
+                  null);
+          PhoneUpdater.updateData(customerID, phone);
+        }
 
-        Employer employer =
-            new Employer(
-                customerID,
-                companyNameField.getText(),
-                companyAddress1Field.getText(),
-                companyAddress2Field.getText(),
-                companySuburbField.getText(),
-                companyCityField.getText(),
-                companyPostcodeField.getText(),
-                companyCountryField.getText(),
-                employerPhoneField.getText(),
-                employerEmailField.getText(),
-                companyWebsiteField.getText(),
-                isOwner.isSelected(),
-                null);
-        EmployerUpdater.updateData(customerID, employer);
+        for (int i = 1; i < employmentCounter; i++) {
+          suffix = setSuffix(i);
+          Employer employer =
+              new Employer(
+                  customerID,
+                  ((TextField) customerDetailFields.get("companyNameField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("companyAddress1Field" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("companyAddress2Field" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("companySuburbField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("companyCityField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("companyPostcodeField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("companyCountryField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("employerPhoneField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("employerEmailField" + suffix)).getText(),
+                  ((TextField) customerDetailFields.get("companyWebsiteField" + suffix)).getText(),
+                  ((CheckBox) customerDetailFields.get("isOwner" + suffix)).isSelected(),
+                  null);
+          EmployerUpdater.updateData(customerID, employer);
+        }
 
         Alert successAlert = new Alert(AlertType.INFORMATION);
         successAlert.setTitle("Success");
@@ -472,6 +482,7 @@ public class AddCustomerController {
           Main.setScene(SceneManager.AppScene.START);
         }
       } catch (Exception e) {
+        System.out.println(e.getLocalizedMessage());
         Alert exceptionAlert = new Alert(AlertType.ERROR);
         exceptionAlert.setTitle("Error");
         exceptionAlert.setHeaderText("An error occurred while saving the customer");
@@ -520,12 +531,15 @@ public class AddCustomerController {
     }
   }
 
-  private void resetDetailFields(Pane pane, FlowPane flowPane, AnchorPane scrollAnchorPane, int counter) {
+  private void resetDetailFields(
+      Pane pane, FlowPane flowPane, AnchorPane scrollAnchorPane, int counter) {
     Pane temp = addNewField(pane, 0);
     flowPane.getChildren().clear();
     flowPane.getChildren().add(temp);
     if (counter > initialCounter) {
-      scrollAnchorPane.setPrefHeight(scrollAnchorPane.getPrefHeight()-(counter- initialCounter)*(pane.getPrefHeight()+flowPane.getVgap()));
+      scrollAnchorPane.setPrefHeight(
+          scrollAnchorPane.getPrefHeight()
+              - (counter - initialCounter) * (pane.getPrefHeight() + flowPane.getVgap()));
     }
   }
 
@@ -539,7 +553,8 @@ public class AddCustomerController {
     resetDetailFields(emailPane, emailFlowPane, contactScrollAnchorPane, emailCounter);
     emailCounter = initialCounter;
     numEmails = 1;
-    resetDetailFields(employmentPane, employmentFlowPane, employmentScrollAnchorPane, employmentCounter);
+    resetDetailFields(
+        employmentPane, employmentFlowPane, employmentScrollAnchorPane, employmentCounter);
     employmentCounter = initialCounter;
     numEmployments = 1;
     detailsTabPane.getSelectionModel().select(0);
@@ -547,126 +562,68 @@ public class AddCustomerController {
 
   private void clearAllFields() {
     titleField.clear();
-    familyNameField.clear();
-    givenNameField.clear();
+    nameField.clear();
     dobPicker.setValue(null);
     jobField.clear();
     citizenshipField.clear();
     visaField.clear();
-    addressTypeField.clear();
-    address1Field.clear();
-    address2Field.clear();
-    suburbField.clear();
-    cityField.clear();
-    postcodeField.clear();
-    countryField.clear();
-    isPrimaryAddress.setSelected(false);
-    isMailingAddress.setSelected(false);
-    emailField.clear();
-    isPrimaryEmail.setSelected(false);
-    phoneTypeBox.setValue(null);
-    phoneTypeBox.setPromptText("Phone type");
-    prefixField.clear();
-    numberField.clear();
-    isPrimaryNumber.setSelected(false);
-    isTextingNumber.setSelected(false);
-    jobField.clear();
-    companyNameField.clear();
-    companyAddress1Field.clear();
-    companyAddress2Field.clear();
-    companySuburbField.clear();
-    companyCityField.clear();
-    companyPostcodeField.clear();
-    companyCountryField.clear();
-    employerPhoneField.clear();
-    employerEmailField.clear();
-    companyWebsiteField.clear();
-    isOwner.setSelected(false);
+
+    for (Node node : customerDetailFields.values()) {
+      if (node instanceof TextField) {
+        ((TextField) node).clear();
+      } else if (node instanceof CheckBox) {
+        ((CheckBox) node).setSelected(false);
+      } else if (node instanceof ComboBox) {
+        // Right now only phoneTypeBox is a ComboBox
+        ((ComboBox) node).setValue(null);
+        ((ComboBox) node).setPromptText("Phone type");
+      }
+    }
+
     notesArea.clear();
   }
 
   private void resetFieldStyle() {
-    titleField.setStyle("-fx-border-color: none");
-    familyNameField.setStyle("-fx-border-color: none");
-    givenNameField.setStyle("-fx-border-color: none");
-    dobPicker.setStyle("-fx-border-color: none");
-    citizenshipField.setStyle("-fx-border-color: none");
-    visaField.setStyle("-fx-border-color: none");
-    addressTypeField.setStyle("-fx-border-color: none");
-    address1Field.setStyle("-fx-border-color: none");
-    suburbField.setStyle("-fx-border-color: none");
-    cityField.setStyle("-fx-border-color: none");
-    postcodeField.setStyle("-fx-border-color: none");
-    countryField.setStyle("-fx-border-color: none");
-    emailField.setStyle("-fx-border-color: none");
-    phoneTypeBox.setStyle("-fx-border-color: none");
-    prefixField.setStyle("-fx-border-color: none");
-    numberField.setStyle("-fx-border-color: none");
-    jobField.setStyle("-fx-border-color: none");
-    companyNameField.setStyle("-fx-border-color: none");
-    companyAddress1Field.setStyle("-fx-border-color: none");
-    companySuburbField.setStyle("-fx-border-color: none");
-    companyCityField.setStyle("-fx-border-color: none");
-    companyPostcodeField.setStyle("-fx-border-color: none");
-    companyCountryField.setStyle("-fx-border-color: none");
-    employerPhoneField.setStyle("-fx-border-color: none");
-    employerEmailField.setStyle("-fx-border-color: none");
-    companyWebsiteField.setStyle("-fx-border-color: none");
+    titleField.setStyle(noBorder);
+    nameField.setStyle(noBorder);
+    dobPicker.setStyle(noBorder);
+    jobField.setStyle(noBorder);
+    citizenshipField.setStyle(noBorder);
+    visaField.setStyle(noBorder);
+    for (Node node : customerDetailFields.values()) {
+      node.setStyle(noBorder);
+    }
   }
 
   private boolean checkFields() {
     boolean titleFieldFlag = checkField(titleField);
-    boolean familyNameFieldFlag = checkField(familyNameField);
-    boolean givenNameFieldFlag = checkField(givenNameField);
+    boolean nameFieldFlag = checkField(nameField);
     boolean dobPickerFlag = checkField(dobPicker);
+    boolean occupationFlag = checkField(jobField);
     boolean citizenshipFieldFlag = checkField(citizenshipField);
-    boolean addressTypeFieldFlag = checkField(addressTypeField);
-    boolean address1FieldFlag = checkField(address1Field);
-    boolean suburbFieldFlag = checkField(suburbField);
-    boolean cityFieldFlag = checkField(cityField);
-    boolean postcodeFieldFlag = checkField(postcodeField);
-    boolean countryFieldFlag = checkField(countryField);
-    boolean emailFieldFlag = checkField(emailField);
-    boolean phoneTypeBoxFlag = checkField(phoneTypeBox);
-    boolean prefixFieldFlag = checkField(prefixField);
-    boolean numberFieldFlag = checkField(numberField);
-    boolean jobFieldFlag = checkField(jobField);
-    boolean companyNameFieldFlag = checkField(companyNameField);
-    boolean companyAddress1FieldFlag = checkField(companyAddress1Field);
-    boolean companySuburbFieldFlag = checkField(companySuburbField);
-    boolean companyCityFieldFlag = checkField(companyCityField);
-    boolean companyPostcodeFieldFlag = checkField(companyPostcodeField);
-    boolean companyCountryFieldFlag = checkField(companyCountryField);
-    boolean employerPhoneFieldFlag = checkField(employerPhoneField);
-    boolean employerEmailFieldFlag = checkField(employerEmailField);
-    boolean companyWebsiteFieldFlag = checkField(companyWebsiteField);
+
+    boolean repeatFlag = true;
+    for (Node node : customerDetailFields.values()) {
+      // Skip address2Field
+      if (node.getId().toLowerCase().contains("address2field")) {
+        continue;
+      }
+      try {
+        if (!checkField((Control) node)) {
+          repeatFlag = false;
+        }
+      } catch (Exception e) {
+        continue;
+      }
+    }
 
     // Only address line 2 can be empty
     if (titleFieldFlag
-        && familyNameFieldFlag
-        && givenNameFieldFlag
+        && nameFieldFlag
         && dobPickerFlag
+        && occupationFlag
         && citizenshipFieldFlag
-        && addressTypeFieldFlag
-        && address1FieldFlag
-        && suburbFieldFlag
-        && cityFieldFlag
-        && postcodeFieldFlag
-        && countryFieldFlag
-        && emailFieldFlag
-        && phoneTypeBoxFlag
-        && prefixFieldFlag
-        && numberFieldFlag
-        && jobFieldFlag
-        && companyNameFieldFlag
-        && companyAddress1FieldFlag
-        && companySuburbFieldFlag
-        && companyCityFieldFlag
-        && companyPostcodeFieldFlag
-        && companyCountryFieldFlag
-        && employerPhoneFieldFlag
-        && employerEmailFieldFlag
-        && companyWebsiteFieldFlag) {
+        && repeatFlag) {
       return true;
     }
     errorString.append("\tPlease fill in the required fields\n");
@@ -675,25 +632,25 @@ public class AddCustomerController {
   }
 
   private boolean checkField(Control ui) {
-    ui.setStyle("-fx-border-color: none");
+    ui.setStyle(noBorder);
     if (ui instanceof TextField) {
       TextField tf = (TextField) ui;
       if (tf.getText().isEmpty()) {
-        tf.setStyle("-fx-border-color: red");
+        tf.setStyle(redBorder);
         return false;
       }
     }
     if (ui instanceof ComboBox) {
       ComboBox<FXCollections> cb = (ComboBox<FXCollections>) ui;
       if (cb.getValue() == null) {
-        cb.setStyle("-fx-border-color: red");
+        cb.setStyle(redBorder);
         return false;
       }
     }
     if (ui instanceof DatePicker) {
       DatePicker dp = (DatePicker) ui;
       if (dp.getValue() == null) {
-        dp.setStyle("-fx-border-color: red");
+        dp.setStyle(redBorder);
         return false;
       }
     }
@@ -702,40 +659,170 @@ public class AddCustomerController {
 
   private boolean validateFields() {
     boolean dobFlag = validate(dobPicker, Type.DATE);
-    boolean emailFlag = validate(emailField, Type.EMAIL);
-    boolean employerEmailFlag = validate(employerEmailField, Type.EMAIL);
-    boolean phonePrefixFlag = validate(prefixField, Type.PHONE);
-    boolean phoneFlag = validate(numberField, Type.PHONE);
-    boolean websiteFlag = validate(companyWebsiteField, Type.WEBSITE);
-    return dobFlag && emailFlag && employerEmailFlag && phonePrefixFlag && phoneFlag && websiteFlag;
+
+    boolean addressFlag = false;
+    for (int i = 1; i < addressCounter; i++) {
+      suffix = setSuffix(i);
+      if (validate((TextField) customerDetailFields.get("postcodeField" + suffix), Type.NUMBER)) {
+        addressFlag = true;
+      }
+    }
+
+    boolean emailFlag = false;
+    for (int i = 1; i < emailCounter; i++) {
+      suffix = setSuffix(i);
+      if (validate((TextField) customerDetailFields.get("emailField" + suffix), Type.EMAIL)) {
+        emailFlag = true;
+      }
+    }
+
+    boolean employerFlag = false;
+    for (int i = 1; i < employmentCounter; i++) {
+      suffix = setSuffix(i);
+      boolean employerEmailFlag =
+          validate((TextField) customerDetailFields.get("employerEmailField" + suffix), Type.EMAIL);
+      boolean postCodeFlag =
+          validate(
+              (TextField) customerDetailFields.get("companyPostcodeField" + suffix), Type.NUMBER);
+      boolean phoneFlag =
+          validate(
+              (TextField) customerDetailFields.get("employerPhoneField" + suffix), Type.NUMBER);
+      employerFlag = employerEmailFlag && postCodeFlag && phoneFlag;
+    }
+
+    boolean phoneFlag = false;
+    for (int i = 1; i < phoneCounter; i++) {
+      suffix = setSuffix(i);
+      boolean prefixFlag =
+          validate((TextField) customerDetailFields.get("prefixField" + suffix), Type.NUMBER);
+      boolean numberFlag =
+          validate((TextField) customerDetailFields.get("numberField" + suffix), Type.NUMBER);
+      phoneFlag = prefixFlag && numberFlag;
+    }
+
+    boolean websiteFlag = false;
+    for (int i = 1; i < employmentCounter; i++) {
+      suffix = setSuffix(i);
+      if (validate(
+          (TextField) customerDetailFields.get("companyWebsiteField" + suffix), Type.WEBSITE)) {
+        websiteFlag = true;
+      }
+    }
+
+    // Only one address can be primary
+    int addressNum = 0;
+    for (int i = 1; i < addressCounter; i++) {
+      suffix = setSuffix(i);
+      if (((CheckBox) customerDetailFields.get("isPrimaryAddress" + suffix)).isSelected()) {
+        addressNum++;
+      }
+    }
+    if (addressNum == 0) {
+      if (errorString.indexOf("\tPlease select a primary address") == -1) {
+        errorString.append("\tPlease select a primary address\n");
+      }
+    }
+    // Only one email can be primary
+    int emailNum = 0;
+    for (int i = 1; i < emailCounter; i++) {
+      suffix = setSuffix(i);
+      if (((CheckBox) customerDetailFields.get("isPrimaryEmail" + suffix)).isSelected()) {
+        emailNum++;
+      }
+    }
+    if (emailNum == 0) {
+      if (errorString.indexOf("\tPlease select a primary email") == -1) {
+        errorString.append("\tPlease select a primary email\n");
+      }
+    }
+    // Only one phone can be primary
+    int phoneNum = 0;
+    for (int i = 1; i < phoneCounter; i++) {
+      suffix = setSuffix(i);
+      if (((CheckBox) customerDetailFields.get("isPrimaryNumber" + suffix)).isSelected()) {
+        phoneNum++;
+      }
+    }
+    if (phoneNum == 0) {
+      if (errorString.indexOf("\tPlease select a primary phone") == -1) {
+        errorString.append("\tPlease select a primary phone\n");
+      }
+    }
+    // Need at least one mailing address
+    int mailingAddressNum = 0;
+    for (int i = 1; i < addressCounter; i++) {
+      suffix = setSuffix(i);
+      if (((CheckBox) customerDetailFields.get("isMailingAddress" + suffix)).isSelected()) {
+        mailingAddressNum++;
+      }
+    }
+    if (mailingAddressNum == 0) {
+      if (errorString.indexOf("\tPlease select a mailing address") == -1) {
+        errorString.append("\tPlease select a mailing address\n");
+      }
+    }
+    // Need at least one texting phone
+    int textingPhoneNum = 0;
+    for (int i = 1; i < phoneCounter; i++) {
+      suffix = setSuffix(i);
+      if (((CheckBox) customerDetailFields.get("isTextingNumber" + suffix)).isSelected()) {
+        textingPhoneNum++;
+      }
+    }
+    if (textingPhoneNum == 0) {
+      if (errorString.indexOf("\tPlease select a texting phone") == -1) {
+        errorString.append("\tPlease select a texting phone\n");
+      }
+    }
+    return dobFlag
+        && addressFlag
+        && emailFlag
+        && employerFlag
+        && phoneFlag
+        && websiteFlag
+        && addressNum == 1
+        && emailNum == 1
+        && phoneNum == 1
+        && mailingAddressNum >= 1
+        && textingPhoneNum >= 1;
   }
 
   private boolean validate(TextField ui, Type type) {
+    // Check fields have higher priority in error messages
+    if (ui.getText().isEmpty()) {
+      return true;
+    }
     boolean flag;
 
     if (type == Type.EMAIL) {
       // Emails should be in the format of a@b.c
       flag = ui.getText().matches("^.+@.+\\..+$");
       if (!flag) {
-        ui.setStyle("-fx-border-color: red");
-        errorString.append("\tInvalid email format\n");
+        ui.setStyle(redBorder);
+        if (errorString.indexOf("\tInvalid email format") == -1) {
+          errorString.append("\tInvalid email format\n");
+        }
       }
-    } else if (type == Type.PHONE) {
+    } else if (type == Type.NUMBER) {
       // Phone should be numbers
       try {
         Long.parseLong(ui.getText());
         flag = true;
       } catch (Exception e) {
         flag = false;
-        ui.setStyle("-fx-border-color: red");
-        errorString.append("\tPhone should only contain numbers\n");
+        ui.setStyle(redBorder);
+        if (errorString.indexOf("\t" + ui.getId() + " should only contain numbers") == -1) {
+          errorString.append("\t" + ui.getId() + " should only contain numbers\n");
+        }
       }
     } else if (type == Type.WEBSITE) {
-      // Website should start with www. or https://
-      flag = ui.getText().matches("^(www\\..+|https://.+)$");
+      // Website should be "text.text"
+      flag = ui.getText().matches("^.+\\..+$");
       if (!flag) {
-        ui.setStyle("-fx-border-color: red");
-        errorString.append("\tInvalid website format\n");
+        ui.setStyle(redBorder);
+        if (errorString.indexOf("\tInvalid website format") == -1) {
+          errorString.append("\tInvalid website format\n");
+        }
       }
     } else {
       flag = false;
@@ -749,7 +836,7 @@ public class AddCustomerController {
     LocalDate today = LocalDate.now();
     if (today.isBefore((LocalDate) (Object) ui.getValue())) {
       flag = false;
-      ui.setStyle("-fx-border-color: red");
+      ui.setStyle(redBorder);
       errorString.append("\tDate cannot be before today\n");
     } else {
       flag = true;
@@ -758,10 +845,115 @@ public class AddCustomerController {
     return flag;
   }
 
+  private boolean checkLengths() {
+    boolean titleFieldFlag = checkLength(titleField, 10);
+    boolean nameFieldFlag = checkLength(nameField, 60);
+    boolean occupationFlag = checkLength(jobField, 40);
+    boolean citizenshipFieldFlag = checkLength(citizenshipField, 40);
+    boolean visaFieldFlag = checkLength(visaField, 40);
+    boolean notesAreaFlag = checkLength(notesArea, 1400);
+
+    boolean addressFlag = false;
+    for (int i = 1; i < addressCounter; i++) {
+      suffix = setSuffix(i);
+      boolean addressTypeFlag =
+          checkLength((TextField) customerDetailFields.get("addressTypeField" + suffix), 20);
+      boolean address1Flag =
+          checkLength((TextField) customerDetailFields.get("address1Field" + suffix), 60);
+      boolean address2Flag =
+          checkLength((TextField) customerDetailFields.get("address2Field" + suffix), 60);
+      boolean suburbFlag =
+          checkLength((TextField) customerDetailFields.get("suburbField" + suffix), 30);
+      boolean cityFlag =
+          checkLength((TextField) customerDetailFields.get("cityField" + suffix), 30);
+      boolean postCodeFlag =
+          checkLength((TextField) customerDetailFields.get("postcodeField" + suffix), 10);
+      boolean countryFlag =
+          checkLength((TextField) customerDetailFields.get("countryField" + suffix), 30);
+      addressFlag =
+          addressTypeFlag
+              && address1Flag
+              && address2Flag
+              && suburbFlag
+              && cityFlag
+              && postCodeFlag
+              && countryFlag;
+    }
+
+    boolean employerFlag = false;
+    for (int i = 1; i < employmentCounter; i++) {
+      suffix = setSuffix(i);
+      boolean nameFlag =
+          checkLength((TextField) customerDetailFields.get("companyNameField" + suffix), 60);
+      boolean address1Flag =
+          checkLength((TextField) customerDetailFields.get("companyAddress1Field" + suffix), 60);
+      boolean address2Flag =
+          checkLength((TextField) customerDetailFields.get("companyAddress2Field" + suffix), 60);
+      boolean suburbFlag =
+          checkLength((TextField) customerDetailFields.get("companySuburbField" + suffix), 30);
+      boolean cityFlag =
+          checkLength((TextField) customerDetailFields.get("companyCityField" + suffix), 30);
+      boolean postCodeFlag =
+          checkLength((TextField) customerDetailFields.get("companyPostcodeField" + suffix), 10);
+      boolean countryFlag =
+          checkLength((TextField) customerDetailFields.get("companyCountryField" + suffix), 30);
+      boolean phoneFlag =
+          checkLength((TextField) customerDetailFields.get("employerPhoneField" + suffix), 30);
+      boolean emailFlag =
+          checkLength((TextField) customerDetailFields.get("employerEmailField" + suffix), 60);
+      boolean websiteFlag =
+          checkLength((TextField) customerDetailFields.get("companyWebsiteField" + suffix), 60);
+      employerFlag =
+          nameFlag
+              && address1Flag
+              && address2Flag
+              && suburbFlag
+              && cityFlag
+              && postCodeFlag
+              && countryFlag
+              && phoneFlag
+              && emailFlag
+              && websiteFlag;
+    }
+
+    return titleFieldFlag
+        && nameFieldFlag
+        && occupationFlag
+        && citizenshipFieldFlag
+        && visaFieldFlag
+        && notesAreaFlag
+        && addressFlag
+        && employerFlag;
+  }
+
+  private boolean checkLength(Control ui, int length) {
+    int len;
+    if (ui instanceof TextField) {
+      len = ((TextField) ui).getText().length();
+    } else if (ui instanceof TextArea) {
+      len = ((TextArea) ui).getText().length();
+    } else {
+      return false;
+    }
+    if (len > length) {
+      ui.setStyle(redBorder);
+      if (errorString.indexOf(ui.getId() + " is too long") == -1) {
+        errorString.append("\t" + ui.getId() + " is too long, the max length is: " + length + "\n");
+      }
+      return false;
+    }
+    return true;
+  }
+
+  private String setSuffix(int counter) {
+    return counter == 1 ? "" : ("_" + counter);
+  }
+
   private enum Type {
     DATE,
     EMAIL,
-    PHONE,
-    WEBSITE
+    NUMBER,
+    WEBSITE,
+    PRIMARY
   }
 }

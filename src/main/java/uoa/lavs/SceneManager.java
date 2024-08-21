@@ -11,6 +11,7 @@ public class SceneManager {
         START,
         ADD_CUSTOMER,
         SEARCH,
+        ADD_LOAN,
         CUSTOMER_DETAILS
     }
 
