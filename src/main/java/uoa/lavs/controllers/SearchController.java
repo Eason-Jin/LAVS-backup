@@ -15,6 +15,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager.AppScene;
@@ -31,6 +32,11 @@ public class SearchController {
     @FXML private TableColumn<Customer, String> idColumn;
     @FXML private TableColumn<Customer, String> nameColumn;
     @FXML private TableColumn<Customer, String> dobColumn;
+    @FXML private Label searchSceneTitleLabel;
+
+    @Autowired AddLoanController addLoanController;
+
+    private boolean isCoBorrowerSearch;
 
     public void initialize() {
         idColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("id"));
@@ -51,11 +57,35 @@ public class SearchController {
 
             row.selectedProperty().addListener((observable) -> {
                 if (row.isSelected() && !row.isEmpty()) {
-                    Main.setScene(AppScene.CUSTOMER_DETAILS);
+                    if (isCoBorrowerSearch) {
+                        addLoanController.addCoBorrower(row);
+                        Main.setScene(AppScene.ADD_LOAN);
+                    }
+                    else {
+                        Main.setScene(AppScene.CUSTOMER_DETAILS);
+                    }
                 }
             });
             return row;
         });
+    }
+
+    public void setIsCoBorrowerSearch(boolean isCoBorrowerSearch) {
+        this.isCoBorrowerSearch = isCoBorrowerSearch;
+    }
+
+    public void setCoBorrowerSearch(boolean isCoBorrowerSearch) {
+        setIsCoBorrowerSearch(isCoBorrowerSearch);
+        if (isCoBorrowerSearch) {
+            setTitleText("Co-Borrower Search");
+        }
+        else {
+            setTitleText("Customer Search");
+        }
+    }
+
+    public void setTitleText(String title) {
+        searchSceneTitleLabel.setText(title);
     }
 
     private void searchCustomers() {
@@ -97,7 +127,12 @@ public class SearchController {
 
     @FXML
     private void onClickStart(ActionEvent event) throws IOException {
-        Main.setScene(AppScene.START);
+        if (isCoBorrowerSearch) {
+            Main.setScene(AppScene.ADD_LOAN);
+        }
+        else {
+            Main.setScene(AppScene.START);
+        }
     }
 
     @FXML

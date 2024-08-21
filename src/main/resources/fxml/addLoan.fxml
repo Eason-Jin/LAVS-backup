@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="648.0" prefWidth="1152.0" stylesheets="@../css/primer-light.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.AddLoanController">
+   <children>
+      <Pane layoutX="80.0" layoutY="65.0" prefHeight="64.0" prefWidth="702.0">
+         <children>
+            <Label fx:id="customerNameLabel" layoutX="324.0" text="Customer Name">
+               <font>
+                  <Font name="Calibri Bold" size="56.0" />
+               </font>
+            </Label>
+            <Label text="New Loan for">
+               <font>
+                  <Font name="Calibri Bold" size="56.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Button fx:id="cancelButton" layoutX="1025.0" layoutY="77.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="40.0" prefWidth="40.0" stylesheets="@../css/primer-light.css">
+         <styleClass>
+            <String fx:value="danger" />
+            <String fx:value="button-circle" />
+            <String fx:value="cross" />
+         </styleClass>
+      </Button>
+      <Button fx:id="saveButton" layoutX="973.0" layoutY="77.0" mnemonicParsing="false" onAction="#onClickSave" prefHeight="40.0" prefWidth="40.0" stylesheets="@../css/primer-light.css">
+         <styleClass>
+            <String fx:value="button-circle" />
+            <String fx:value="success" />
+            <String fx:value="tick" />
+         </styleClass>
+      </Button>
+      <Button fx:id="homeButton" layoutX="20.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClickHome" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/primer-light.css">
+         <styleClass>
+            <String fx:value="button-circle" />
+            <String fx:value="home" />
+         </styleClass>
+      </Button>
+      <Button fx:id="infoButton" layoutX="1104.0" layoutY="12.0" mnemonicParsing="false" onAction="#onClickInfo" prefHeight="40.0" prefWidth="40.0" stylesheets="@../css/primer-light.css">
+         <styleClass>
+            <String fx:value="button-circle" />
+            <String fx:value="accent" />
+            <String fx:value="info" />
+         </styleClass>
+      </Button>
+      <TabPane fx:id="detailsTabPane" layoutX="76.0" layoutY="130.0" prefHeight="518.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE">
+         <tabs>
+            <Tab fx:id="generalDetailsTab" text="Loan Details">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="1000.0">
+                     <children>
+                        <Pane fx:id="loanDetailsPane" layoutX="25.0" layoutY="55.0" prefHeight="142.0" prefWidth="950.0">
+                           <children>
+                              <TextField fx:id="principalField" prefHeight="36.0" prefWidth="450.0" promptText="Principal" stylesheets="@../css/primer-light.css" />
+                              <TextField fx:id="rateValueField" layoutX="670.0" prefHeight="36.0" prefWidth="280.0" promptText="Rate" stylesheets="@../css/primer-light.css" />
+                              <TextField fx:id="periodField" layoutX="320.0" layoutY="50.0" prefHeight="36.0" prefWidth="310.0" promptText="Period" stylesheets="@../css/primer-light.css" />
+                              <DatePicker fx:id="startDatePicker" layoutY="50.0" prefHeight="36.0" prefWidth="310.0" promptText="Start Date" stylesheets="@../css/primer-light.css" />
+                              <ComboBox fx:id="rateTypeBox" layoutX="460.0" prefHeight="35.0" prefWidth="200.0" promptText="Rate type">
+                                 <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                       <String fx:value="Floating" />
+                                       <String fx:value="Fixed" />
+                                       <String fx:value="Interest only" />
+                                    </FXCollections>
+                                 </items>
+                              </ComboBox>
+                              <TextField fx:id="loanTermField" layoutX="640.0" layoutY="50.0" prefHeight="35.0" prefWidth="310.0" promptText="Loan term" stylesheets="@../css/primer-light.css" />
+                              <TextField fx:id="paymentAmountField" layoutX="520.0" layoutY="100.0" prefHeight="35.0" prefWidth="430.0" promptText="Payment amount" stylesheets="@../css/primer-light.css" />
+                              <ComboBox fx:id="compoundingBox" layoutY="100.0" prefHeight="35.0" prefWidth="250.0" promptText="Compounding">
+                                 <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                       <String fx:value="Daily" />
+                                       <String fx:value="Weekly" />
+                                       <String fx:value="Fortnightly" />
+                                       <String fx:value="Monthly" />
+                                       <String fx:value="Quarterly" />
+                                       <String fx:value="Biannually" />
+                                       <String fx:value="Annually" />
+                                    </FXCollections>
+                                 </items>
+                              </ComboBox>
+                              <ComboBox fx:id="paymentFrequencyBox" layoutX="260.0" layoutY="100.0" prefHeight="36.0" prefWidth="250.0" promptText="Payment frequency">
+                                 <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                       <String fx:value="Weekly" />
+                                       <String fx:value="Fortnightly" />
+                                       <String fx:value="Monthly" />
+                                    </FXCollections>
+                                 </items>
+                              </ComboBox>
+                           </children>
+                        </Pane>
+                        <Label alignment="TOP_LEFT" contentDisplay="TOP" layoutX="15.0" layoutY="15.0" text="Loan Details">
+                           <font>
+                              <Font name="Calibri" size="30.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="addressTab" text="Co-borrowers">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="176.0" prefWidth="1000.0">
+                     <children>
+                        <ScrollPane fx:id="coBorrowerScrollPane" hbarPolicy="NEVER" prefHeight="478.0" prefWidth="1000.0">
+                           <content>
+                              <AnchorPane fx:id="coBorrowerScrollAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="55.0" prefWidth="1000.0">
+                                 <children>
+                                    <FlowPane fx:id="coBorrowerFlowPane" layoutX="25.0" layoutY="55.0" prefHeight="67.0" prefWidth="950.0" vgap="15.0">
+                                       <children>
+                                          <Pane fx:id="coBorrowerPane" prefHeight="45.0" prefWidth="950.0" stylesheets="@../css/primer-light.css">
+                                             <children>
+                                                <TextField fx:id="coBorrowerNameField" editable="false" prefHeight="35.0" prefWidth="400.0" stylesheets="@../css/primer-light.css" />
+                                                <TextField fx:id="coBorrowerIdField" editable="false" layoutX="410.0" prefHeight="35.0" prefWidth="250.0" stylesheets="@../css/primer-light.css" />
+                                                <Separator layoutY="35.0" prefWidth="950.0" />
+                                                <Button fx:id="deleteCoBorrowersButton" alignment="CENTER" layoutX="920.0" layoutY="7.0" mnemonicParsing="false" onAction="#onClickDeleteCoBorrowers" prefHeight="30.0" prefWidth="30.0" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
+                                                   <font>
+                                                      <Font size="1.0" />
+                                                   </font>
+                                                   <styleClass>
+                                                      <String fx:value="delete" />
+                                                      <String fx:value="button-circle" />
+                                                   </styleClass>
+                                                </Button>
+                                             </children>
+                                          </Pane>
+                                       </children>
+                                    </FlowPane>
+                                    <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="945.0" layoutY="15.0" mnemonicParsing="false" onAction="#onClickAddCoBorrower" prefHeight="30.0" prefWidth="30.0" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                       <styleClass>
+                                          <String fx:value="button-circle" />
+                                          <String fx:value="add" />
+                                       </styleClass>
+                                    </Button>
+                                    <Label layoutX="15.0" layoutY="15.0" text="Co-borrowers">
+                                       <font>
+                                          <Font name="Calibri" size="30.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
