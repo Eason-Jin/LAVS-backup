@@ -812,6 +812,3 @@ public class AddCustomerController {
     PRIMARY
   }
 }
-
-// TODO: Refactor duplicate codes
-// TODO: DOUBLE CHECK DB WHEN COMMITTING
