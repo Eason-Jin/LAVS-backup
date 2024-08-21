@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
+
 import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomerAddress;
@@ -32,7 +34,14 @@ public class AddressUpdater {
     updateCustomerAddress.setNumber(address.getNumber());
 
     if (address.getNumber() != null) {
-      Address existingAddress = AddressLoader.loadData(customerID, address.getNumber());
+      List<Address> existingAddresses = AddressFinder.findData(customerID);
+      Address existingAddress = new Address();
+      for (Address addressOnAccount : existingAddresses) {
+        if (addressOnAccount.getNumber().equals(address.getNumber())
+            && addressOnAccount.getCustomerId().equals(address.getCustomerId())) {
+          existingAddress = addressOnAccount;
+        }
+      }
 
       updateCustomerAddress.setType(
           address.getType() != null ? address.getType() : existingAddress.getType());
@@ -106,6 +115,20 @@ public class AddressUpdater {
               + "IsMailing = COALESCE(?, IsMailing) "
               + "WHERE CustomerID = ? AND Number = ?";
     } else {
+      if (address.getNumber() == null) {
+        String GET_MAX_NUMBER_SQL =
+            "SELECT COALESCE(MAX(Number), 0) + 1 FROM Address WHERE CustomerID = ?";
+        try (Connection connection = Instance.getDatabaseConnection();
+            PreparedStatement getMaxNumberStatement =
+                connection.prepareStatement(GET_MAX_NUMBER_SQL)) {
+          getMaxNumberStatement.setString(1, customerID);
+          try (ResultSet resultSet = getMaxNumberStatement.executeQuery()) {
+            if (resultSet.next()) {
+              address.setNumber(resultSet.getInt(1));
+            }
+          }
+        }
+      }
       sql =
           "INSERT INTO Address (Type, Line1, Line2, Suburb, City, PostCode, Country, IsPrimary,"
               + " IsMailing, CustomerID, Number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
