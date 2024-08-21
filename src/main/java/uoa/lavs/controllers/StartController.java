@@ -74,8 +74,8 @@ public class StartController {
         dimOverlay.setPrefSize(currentRoot.getWidth(), currentRoot.getHeight());
 
         popupPane = new StackPane();
-        popupPane.setPrefSize(500, 450);
-        Rectangle background = new Rectangle(500, 450);
+        popupPane.setPrefSize(500, 400);
+        Rectangle background = new Rectangle(500, 400);
         background.setFill(Color.WHITE);
         background.setStroke(Color.web("#ddddde"));
         background.setStrokeWidth(1);
@@ -85,8 +85,18 @@ public class StartController {
         Label popupLabel = new Label("About");
         popupLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #6d7175; -fx-font-size: 25px");
 
-        Label paragraph = new Label("This is a paragraph that provides additional information about the topic. "
-                + "You can add more text here to explain details or provide context.");
+        Label paragraph = new Label("The following resources were used in the creation of this application:\n\n" +
+                "\u2022 JavaFX \n" +
+                "\u2022 JavaFX Maven Plugin \n" +
+                "\u2022 AtlantaFX \n" +
+                "\u2022 SQLite JDBC \n" +
+                "\u2022 Spring Framework \n" +
+                "\u2022 FontAwesome Icons");
+
+        paragraph.setStyle("-fx-text-fill: #6d7175; -fx-font-size: 20px;");
+        paragraph.setWrapText(true);
+        paragraph.setMaxWidth(450);
+
         paragraph.setStyle("-fx-text-fill: #6d7175; -fx-font-size: 20px;");
         paragraph.setWrapText(true);
         paragraph.setMaxWidth(450);
