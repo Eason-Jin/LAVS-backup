@@ -601,6 +601,7 @@ public class AddCustomerController {
     boolean familyNameFieldFlag = checkField(familyNameField);
     boolean givenNameFieldFlag = checkField(givenNameField);
     boolean dobPickerFlag = checkField(dobPicker);
+    boolean occupationFlag = checkField(jobField);
     boolean citizenshipFieldFlag = checkField(citizenshipField);
 
     boolean repeatFlag = true;
@@ -623,6 +624,7 @@ public class AddCustomerController {
         && familyNameFieldFlag
         && givenNameFieldFlag
         && dobPickerFlag
+        && occupationFlag
         && citizenshipFieldFlag
         && repeatFlag) {
       return true;
