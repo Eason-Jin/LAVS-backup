@@ -28,7 +28,7 @@ public class EmailFinder {
     return emails;
   }
 
-  private static List<Email> findFromMainframe(String customerId) throws Exception {
+  public static List<Email> findFromMainframe(String customerId) throws Exception {
     LoadCustomerEmails loadCustomerEmails = new LoadCustomerEmails();
     loadCustomerEmails.setCustomerId(customerId);
     Status status = loadCustomerEmails.send(Instance.getConnection());

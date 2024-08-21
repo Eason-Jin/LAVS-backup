@@ -29,7 +29,7 @@ public class EmployerFinder {
     return employers;
   }
 
-  private static List<Employer> findFromMainframe(String customerId) throws Exception {
+  public static List<Employer> findFromMainframe(String customerId) throws Exception {
     LoadCustomerEmployers loadEmployers = new LoadCustomerEmployers();
     LoadCustomerEmployer loadEmployer = new LoadCustomerEmployer();
     loadEmployers.setCustomerId(customerId);
