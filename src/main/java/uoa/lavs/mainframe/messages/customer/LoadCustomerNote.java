@@ -10,7 +10,7 @@ public class LoadCustomerNote implements Message, MessageDescription {
 
     public class Fields {
         public static final String[] INPUT = {"id", "number"};
-        public static final String[] OUTPUT = {"[01].line", "[02].line", "[03].line", "[04].line", "[05].line", "lines", "pages"};
+        public static final String[] OUTPUT = {"[01].line", "[02].line", "[03].line", "[04].line", "[05].line", "[06].line", "[07].line", "[08].line", "[09].line", "[10].line", "[11].line", "[12].line", "[13].line", "[14].line", "[15].line", "[16].line", "[17].line", "[18].line", "[19].line", "lines", "pages"};
 
         public static final String CUSTOMER_ID = "id";
         public static final String NUMBER = "number";

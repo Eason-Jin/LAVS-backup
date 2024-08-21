@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomerEmployer;
@@ -32,7 +33,14 @@ public class EmployerUpdater {
     updateCustomerEmployer.setNumber(employer.getNumber());
 
     if (employer.getNumber() != null) {
-      Employer existingEmployer = EmployerLoader.loadData(customerID, employer.getNumber());
+      List<Employer> existingEmployeres = EmployerFinder.findData(customerID);
+      Employer existingEmployer = new Employer();
+      for (Employer employerOnAccount : existingEmployeres) {
+        if (employerOnAccount.getNumber().equals(employer.getNumber())
+            && employerOnAccount.getCustomerId().equals(employer.getCustomerId())) {
+          existingEmployer = employerOnAccount;
+        }
+      }
 
       updateCustomerEmployer.setName(
           employer.getName() != null ? employer.getName() : existingEmployer.getName());
@@ -118,6 +126,20 @@ public class EmployerUpdater {
               + "IsOwner = COALESCE(?, IsOwner) "
               + "WHERE CustomerID = ? AND Number = ?";
     } else {
+      if (employer.getNumber() == null) {
+        String GET_MAX_NUMBER_SQL =
+            "SELECT COALESCE(MAX(Number), 0) + 1 FROM Employer WHERE CustomerID = ?";
+        try (Connection connection = Instance.getDatabaseConnection();
+            PreparedStatement getMaxNumberStatement =
+                connection.prepareStatement(GET_MAX_NUMBER_SQL)) {
+          getMaxNumberStatement.setString(1, customerID);
+          try (ResultSet resultSet = getMaxNumberStatement.executeQuery()) {
+            if (resultSet.next()) {
+              employer.setNumber(resultSet.getInt(1));
+            }
+          }
+        }
+      }
       sql =
           "INSERT INTO Employer (Name, Line1, Line2, Suburb, City, PostCode, Country, PhoneNumber,"
               + " EmailAddress, Website, IsOwner, CustomerID, Number) VALUES (?, ?, ?, ?, ?, ?, ?,"

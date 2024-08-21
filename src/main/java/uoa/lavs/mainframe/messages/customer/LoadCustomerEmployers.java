@@ -9,7 +9,7 @@ public class LoadCustomerEmployers implements Message, MessageDescription {
 
     public class Fields {
         public static final String[] INPUT = {"id"};
-        public static final String[] OUTPUT = {"[01].name", "[01].number", "[02].name", "[02].number", "[03].name", "[03].number", "[04].name", "[04].number", "[05].name", "[05].number", "count"};
+        public static final String[] OUTPUT = {"[01].name", "[01].number", "[02].name", "[02].number", "[03].name", "[03].number", "[04].name", "[04].number", "[05].name", "[05].number", "[06].name", "[06].number", "[07].name", "[07].number", "[08].name", "[08].number", "[09].name", "[09].number", "[10].name", "[10].number", "[11].name", "[11].number", "[12].name", "[12].number", "[13].name", "[13].number", "[14].name", "[14].number", "[15].name", "[15].number", "count"};
 
         public static final String CUSTOMER_ID = "id";
         public static final String COUNT = "count";

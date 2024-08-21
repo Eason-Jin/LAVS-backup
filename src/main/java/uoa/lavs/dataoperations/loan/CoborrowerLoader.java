@@ -11,28 +11,25 @@ import uoa.lavs.mainframe.messages.loan.LoadLoanCoborrowers;
 
 public class CoborrowerLoader {
 
-  public static List<String> loadData(String loanId, int number) {
+  public static List<String> loadData(String loanId) {
     List<String> coborrowerIds = new ArrayList<>();
     try {
-      coborrowerIds = loadFromMainframe(loanId, number);
-      if (coborrowerIds.isEmpty()) {
-        throw new Exception("Coborrower not in mainframe");
-      }
+      coborrowerIds = loadFromDatabase(loanId);
     } catch (Exception e) {
-      System.out.println("Mainframe load failed: " + e.getMessage());
-      System.out.println("Trying to load from database");
+      System.out.println("Database load failed: " + e.getMessage());
+      System.out.println("Trying to load from mainframe");
       try {
-        coborrowerIds = loadFromDatabase(loanId, number);
+        coborrowerIds = loadFromMainframe(loanId);
       } catch (Exception e1) {
-        System.out.println("Database load failed: " + e1.getMessage());
+        System.out.println("Mainframe load failed: " + e1.getMessage());
       }
     }
     return coborrowerIds;
   }
 
-  private static List<String> loadFromDatabase(String loanId, int number) throws Exception {
+  private static List<String> loadFromDatabase(String loanId) throws Exception {
     List<String> coborrowerIds = new ArrayList<>();
-    String query = "SELECT TOP(" + number + ") CoborrowerID FROM Coborrower WHERE LoanID = ?";
+    String query = "SELECT CoborrowerID FROM Coborrower WHERE LoanID = ?";
     try (Connection connection = Instance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(query)) {
       statement.setString(1, loanId);
@@ -42,31 +39,23 @@ public class CoborrowerLoader {
         }
       }
     }
-    if (coborrowerIds.isEmpty()) {
-      throw new Exception("Coborrower not in database");
-    }
     return coborrowerIds;
   }
 
-  private static List<String> loadFromMainframe(String loanId, int number) throws Exception {
+  private static List<String> loadFromMainframe(String loanId) throws Exception {
     LoadLoanCoborrowers loadLoanCoborrower = new LoadLoanCoborrowers();
     loadLoanCoborrower.setLoanId(loanId);
-    loadLoanCoborrower.setNumber(number);
     Status status = loadLoanCoborrower.send(Instance.getConnection());
     if (!status.getWasSuccessful()) {
       System.out.println(
           "Something went wrong - the Mainframe send failed! The code is " + status.getErrorCode());
       throw new Exception("Mainframe send failed");
     }
-
+    Integer coborrowerCount = loadLoanCoborrower.getCountFromServer();
     List<String> coborrowerIds = new ArrayList<>();
-    for (int i = 0; i < number; i++) {
+    for (int i = 1; i <= coborrowerCount; i++) {
       String coborrowerId = loadLoanCoborrower.getCoborrowerIdFromServer(i);
       coborrowerIds.add(coborrowerId);
-    }
-
-    if (coborrowerIds.isEmpty()) {
-      throw new Exception("Coborrower not in mainframe");
     }
     return coborrowerIds;
   }

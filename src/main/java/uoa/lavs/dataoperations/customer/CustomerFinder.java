@@ -1,6 +1,7 @@
 package uoa.lavs.dataoperations.customer;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
@@ -18,14 +19,14 @@ public class CustomerFinder {
   public static List<Customer> findData(String customerId) {
     List<Customer> customers = new ArrayList<>();
     try {
-      customers = findFromDatabase(customerId);
+      customers = findFromMainframe(customerId);
     } catch (Exception e) {
-      System.out.println("Database find failed: " + e.getMessage());
-      System.out.println("Trying to find from mainframe");
+      System.out.println("Mainframe find failed: " + e.getMessage());
+      System.out.println("Trying to find from database");
       try {
-        customers = findFromMainframe(customerId);
+        customers = findFromDatabase(customerId);
       } catch (Exception e1) {
-        System.out.println("Mainframe find failed: " + e1.getMessage());
+        System.out.println("Database find failed: " + e1.getMessage());
       }
     }
     return customers;
@@ -122,9 +123,10 @@ public class CustomerFinder {
   private static List<Customer> findFromDatabaseByName(String customerName) throws Exception {
     List<Customer> customers = new ArrayList<>();
     Connection connection = Instance.getDatabaseConnection();
-    Statement statement = connection.createStatement();
-    String query = "SELECT * FROM customer WHERE Name LIKE '%" + customerName + "%'";
-    ResultSet resultSet = statement.executeQuery(query);
+    String query = "SELECT * FROM customer WHERE Name = ?";
+    PreparedStatement preparedStatement = connection.prepareStatement(query);
+    preparedStatement.setString(1, customerName);
+    ResultSet resultSet = preparedStatement.executeQuery();
     while (resultSet.next()) {
       Customer customer = new Customer();
       customer.setId(resultSet.getString("CustomerID"));
@@ -134,6 +136,8 @@ public class CustomerFinder {
       customer.setDob(dob);
       customers.add(customer);
     }
+    resultSet.close();
+    preparedStatement.close();
     connection.close();
     if (customers.isEmpty()) {
       throw new Exception("Customer not found in database");
