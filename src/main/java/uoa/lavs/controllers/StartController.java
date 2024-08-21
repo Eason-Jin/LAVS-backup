@@ -4,9 +4,14 @@ import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.concurrent.ScheduledService;
+
 import atlantafx.base.util.Animations;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.StringProperty;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -34,10 +39,13 @@ public class StartController {
     @FXML private HBox statusBar;
 
     private Pane popupPane;
+    private final StringProperty timeStringProperty = new SimpleStringProperty();
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
 
     public void initialize() {
+        timeLabel.textProperty().bind(timeStringProperty);
         pulseStackPane();
-        startClock();
+        startClockService();
         slideInStatusBar();
     }
 
@@ -51,17 +59,22 @@ public class StartController {
         slideIn.playFromStart();
     }
 
-    private void startClock() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+    private void startClockService() {
+        ScheduledService<String> clockService = new ScheduledService<>() {
+            @Override
+            protected Task<String> createTask() {
+                return new Task<>() {
+                    @Override
+                    protected String call() {
+                        return LocalTime.now().format(formatter).toUpperCase();
+                    }
+                };
+            }
+        };
 
-        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
-            LocalTime currentTime = LocalTime.now();
-            timeLabel.setText(currentTime.format(formatter).toUpperCase());
-        }),
-                new KeyFrame(Duration.seconds(1)));
-
-        clock.setCycleCount(Timeline.INDEFINITE);
-        clock.play();
+        clockService.setOnSucceeded(event -> timeStringProperty.set(clockService.getValue()));
+        clockService.setPeriod(Duration.seconds(1));
+        clockService.start();
     }
 
     @FXML
@@ -136,7 +149,6 @@ public class StartController {
 
         popupPane.setVisible(true);
     }
-
 
     @FXML
     private void onClickAddCustomer(ActionEvent event) throws IOException {
