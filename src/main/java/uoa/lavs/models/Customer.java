@@ -1,6 +1,7 @@
 package uoa.lavs.models;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Customer {
   private String id;
@@ -107,5 +108,21 @@ public class Customer {
 
   public void setNotes(String notes) {
     this.notes = notes;
+  }
+
+  public ArrayList<String> splitNotes() {
+    ArrayList<String> lines = new ArrayList<>();
+    int l = 0;
+    int r = 70;
+    while (r < notes.length()) {
+      while (notes.charAt(r-1) != ' ') {
+        r--;
+      }
+      lines.add(notes.substring(l, r));
+      l = r;
+      r += 70;
+    }
+    lines.add(notes.substring(l));
+    return lines;
   }
 }

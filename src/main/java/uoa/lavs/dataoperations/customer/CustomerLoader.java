@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.LoadCustomer;
+import uoa.lavs.mainframe.messages.customer.LoadCustomerNote;
 import uoa.lavs.models.Customer;
 
 public class CustomerLoader {
@@ -50,19 +51,24 @@ public class CustomerLoader {
     customer.setTitle(resultSet.getString("Title"));
     customer.setVisaType(resultSet.getString("VisaType"));
     customer.setStatus(resultSet.getString("Status"));
+    customer.setNotes(resultSet.getString("Note"));
     connection.close();
     return customer;
   }
 
   private static Customer loadFromMainframe(String customerId) throws Exception {
     LoadCustomer loadCustomer = new LoadCustomer();
+    LoadCustomerNote loadCustomerNote = new LoadCustomerNote();
     loadCustomer.setCustomerId(customerId);
+    loadCustomerNote.setCustomerId(customerId);
+    loadCustomerNote.setNumber(1);
     Status status = loadCustomer.send(Instance.getConnection());
     if (!status.getWasSuccessful()) {
       System.out.println(
           "Something went wrong - the Mainframe send failed! The code is " + status.getErrorCode());
       throw new Exception("Mainframe send failed");
     }
+    loadCustomerNote.send(Instance.getConnection());
 
     Customer customer = new Customer();
     customer.setId(customerId);
@@ -73,6 +79,15 @@ public class CustomerLoader {
     customer.setTitle(loadCustomer.getTitleFromServer());
     customer.setVisaType(loadCustomer.getVisaFromServer());
     customer.setStatus(loadCustomer.getStatusFromServer());
+    StringBuilder noteBuilder = new StringBuilder();
+    int lineCount = loadCustomerNote.getLineCountFromServer();
+    for (int i = 0; i < lineCount; i++) {
+      String line = loadCustomerNote.getLineFromServer(i);
+      if (line != null) {
+        noteBuilder.append(line);
+      }
+    }
+    customer.setNotes(noteBuilder.toString());
     return customer;
   }
 }
