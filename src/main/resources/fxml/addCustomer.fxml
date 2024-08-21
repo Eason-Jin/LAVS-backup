@@ -52,12 +52,13 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="1000.0">
                      <children>
-                        <Pane layoutX="25.0" layoutY="55.0" prefHeight="85.0" prefWidth="950.0">
+                        <Pane layoutX="25.0" layoutY="55.0" prefHeight="139.0" prefWidth="950.0">
                            <children>
                               <TextField fx:id="titleField" prefHeight="35.0" prefWidth="120.0" promptText="Title" stylesheets="@../css/primer-light.css" />
                               <TextField fx:id="familyNameField" layoutX="130.0" prefHeight="35.0" prefWidth="405.0" promptText="Family name" stylesheets="@../css/primer-light.css" />
                               <TextField fx:id="givenNameField" layoutX="545.0" prefHeight="35.0" prefWidth="405.0" promptText="Given name(s)" stylesheets="@../css/primer-light.css" />
                               <DatePicker fx:id="dobPicker" layoutY="50.0" prefHeight="35.0" prefWidth="950.0" promptText="Date of birth" stylesheets="@../css/primer-light.css" />
+                              <TextField fx:id="jobField" layoutY="100.0" prefHeight="35.0" prefWidth="950.0" promptText="Occupation" stylesheets="@../css/primer-light.css" />
                            </children>
                         </Pane>
                         <Label alignment="TOP_LEFT" contentDisplay="TOP" layoutX="15.0" layoutY="15.0" text="General Details">
@@ -259,7 +260,7 @@
                                        <children>
                                           <Pane fx:id="employmentPane" prefHeight="305.0" prefWidth="950.0">
                                              <children>
-                                                <TextField fx:id="companyNameField" layoutX="480.0" prefHeight="35.0" prefWidth="470.0" promptText="Company name" stylesheets="@../css/primer-light.css" />
+                                                <TextField fx:id="companyNameField" prefHeight="35.0" prefWidth="950.0" promptText="Company name" stylesheets="@../css/primer-light.css" />
                                                 <TextField fx:id="companyAddress1Field" layoutY="50.0" prefHeight="35.0" prefWidth="470.0" promptText="Address line 1" stylesheets="@../css/primer-light.css" />
                                                 <TextField fx:id="companyAddress2Field" layoutX="480.0" layoutY="50.0" prefHeight="35.0" prefWidth="470.0" promptText="Address line 2" stylesheets="@../css/primer-light.css" />
                                                 <TextField fx:id="companySuburbField" layoutY="100.0" prefHeight="35.0" prefWidth="470.0" promptText="Suburb" stylesheets="@../css/primer-light.css" />
@@ -269,7 +270,6 @@
                                                 <TextField fx:id="employerPhoneField" layoutY="200.0" prefHeight="35.0" prefWidth="470.0" promptText="Employer phone" stylesheets="@../css/primer-light.css" />
                                                 <TextField fx:id="employerEmailField" layoutX="480.0" layoutY="200.0" prefHeight="35.0" prefWidth="470.0" promptText="Employer email" stylesheets="@../css/primer-light.css" />
                                                 <TextField fx:id="companyWebsiteField" layoutY="250.0" prefHeight="36.0" prefWidth="775.0" promptText="Company website" stylesheets="@../css/primer-light.css" />
-                                                <TextField fx:id="jobField" prefHeight="35.0" prefWidth="470.0" promptText="Job" stylesheets="@../css/primer-light.css" />
                                                 <CheckBox fx:id="isOwner" layoutX="796.0" layoutY="256.0" mnemonicParsing="false" text="Is the owner" />
                                                 <Separator layoutY="295.0" prefWidth="950.0" />
                                                 <Button fx:id="deleteEmploymentButton" alignment="CENTER" disable="true" layoutX="920.0" layoutY="251.0" mnemonicParsing="false" onAction="#onClickDeleteEmployment" prefHeight="30.0" prefWidth="30.0" stylesheets="@../css/primer-light.css" textAlignment="CENTER">
