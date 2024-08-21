@@ -23,8 +23,7 @@ import uoa.lavs.models.Customer;
 
 @Controller
 public class SearchController {
-
-    @FXML private Button startButton;
+    @FXML private Button backButton;
     @FXML private Button searchButton;
     @FXML private TextField searchField;
     @FXML private TableView<Customer> searchTable;
@@ -103,7 +102,7 @@ public class SearchController {
     }
 
     @FXML
-    private void onClickStart(ActionEvent event) throws IOException {
+    private void onClickBack(ActionEvent event) throws IOException {
         Main.setScene(AppScene.START);
     }
 

@@ -15,7 +15,7 @@
             <Font size="48.0" />
          </font>
       </Label>
-      <Button fx:id="startButton" layoutX="74.0" layoutY="85.0" maxHeight="60.0" maxWidth="150.0" minHeight="60.0" minWidth="150.0" mnemonicParsing="false" onAction="#onClickStart" stylesheets="@../css/application.css" text="Back">
+      <Button fx:id="backButton" layoutX="74.0" layoutY="85.0" maxHeight="60.0" maxWidth="150.0" minHeight="60.0" minWidth="150.0" mnemonicParsing="false" onAction="#onClickBack" stylesheets="@../css/application.css" text="Back">
          <font>
             <Font size="18.0" />
          </font></Button>
