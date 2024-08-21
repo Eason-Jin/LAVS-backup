@@ -12,6 +12,8 @@ public class LoanSummary {
     private Double totalCost = 0.0;
     private LocalDate payOffDate;
 
+    public LoanSummary() {}
+
     public LoanSummary(Double totalInterest, Double totalCost, LocalDate payOffDate) {
         this.totalInterest = totalInterest;
         this.totalCost = totalCost;
