@@ -75,7 +75,7 @@ public class LoanDetailsController {
 
     titleLabel.setText("Loan Details for Loan ID: " + loanId);
 
-    principalField.setText(String.valueOf(loan.getPrincipal()));
+    principalField.setText("$" + String.valueOf(loan.getPrincipal()));
     rateTypeField.setText(loan.getRateType().toString());
     rateValueField.setText(String.valueOf(loan.getRateValue()));
     startDateField.setText(loan.getStartDate().toString());
@@ -83,9 +83,9 @@ public class LoanDetailsController {
     loanTermField.setText(String.valueOf(loan.getTerm()));
     compoundingField.setText(loan.getCompounding().toString());
     paymentFrequencyField.setText(loan.getPaymentFrequency().toString());
-    paymentAmountField.setText(String.valueOf(loan.getPaymentAmount()));
-    totalInterestField.setText(String.valueOf(loanSummary.getTotalInterest()));
-    totalCostField.setText(String.valueOf(loanSummary.getTotalCost()));
+    paymentAmountField.setText("$" + String.valueOf(loan.getPaymentAmount()));
+    totalInterestField.setText("$" + String.valueOf(loanSummary.getTotalInterest()));
+    totalCostField.setText("$" + String.valueOf(loanSummary.getTotalCost()));
     payoffDateField.setText(loanSummary.getPayOffDate().toString());
 
     setCoBorrowersTable(loanId);

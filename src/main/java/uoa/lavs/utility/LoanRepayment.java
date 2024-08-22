@@ -40,14 +40,14 @@ public class LoanRepayment {
     }
 
     public String getPrincipal() {
-        return String.format("%.2f", principal);
+        return "$" + String.format("%.2f", principal);
     }
 
     public String getInterest() {
-        return String.format("%.2f", interest);
+        return "$" + String.format("%.2f", interest);
     }
 
     public String getRemaining() {
-        return String.format("%.2f", remaining);
+        return "$" + String.format("%.2f", remaining);
     }
 }
