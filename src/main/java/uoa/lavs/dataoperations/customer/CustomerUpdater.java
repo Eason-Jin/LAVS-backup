@@ -141,6 +141,7 @@ public class CustomerUpdater {
       for (int i = 0; i < notes.size(); i++) {
         updateCustomerNote.setLine(i + 1, notes.get(i));
       }
+      updateCustomerNote.setNumber(1);
     } else {
       updateCustomer.setCustomerId(null);
       updateCustomer.setTitle(customer.getTitle());
@@ -201,8 +202,8 @@ public class CustomerUpdater {
     List<Customer> failedUpdates = getFailedUpdates();
     for (Customer customer : failedUpdates) {
       String customerID = customer.getId();
-        updateMainframe(customerID, customer);
-        addInMainframe(customerID);
+      updateMainframe(customerID, customer);
+      addInMainframe(customerID);
     }
   }
 

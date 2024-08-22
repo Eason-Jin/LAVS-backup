@@ -81,7 +81,7 @@ public class CustomerLoader {
     customer.setStatus(loadCustomer.getStatusFromServer());
     StringBuilder noteBuilder = new StringBuilder();
     int lineCount = loadCustomerNote.getLineCountFromServer();
-    for (int i = 0; i < lineCount; i++) {
+    for (int i = 1; i <= lineCount; i++) {
       String line = loadCustomerNote.getLineFromServer(i);
       if (line != null) {
         noteBuilder.append(line);
