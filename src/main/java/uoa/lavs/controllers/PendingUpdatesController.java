@@ -107,8 +107,8 @@ public class PendingUpdatesController {
     AddressUpdater.retryFailedUpdates();
     PhoneUpdater.retryFailedUpdates();
     EmployerUpdater.retryFailedUpdates();
-    CoborrowerUpdater.retryFailedUpdates();
     LoanUpdater.retryFailedUpdates();
+    CoborrowerUpdater.retryFailedUpdates();
     populatePendingTable();
     setTitle();
   }
