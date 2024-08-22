@@ -163,6 +163,7 @@ public class StartController {
 
   @FXML
   private void onClickPending(ActionEvent event) throws IOException {
+    pendingUpdatesController.populatePendingTable();
     pendingUpdatesController.setTitle();
     Main.setScene(AppScene.PENDING_UPDATES);
   }
