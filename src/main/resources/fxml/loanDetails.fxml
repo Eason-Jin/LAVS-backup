@@ -46,57 +46,57 @@
                               <VBox layoutX="640.0" prefHeight="200.0" prefWidth="310.0">
                                  <children>
                                     <Label text="Rate" />
-                                    <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
+                                    <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
                                     <TextField fx:id="rateValueField" prefHeight="36.0" prefWidth="310.0" promptText="Rate" stylesheets="@../css/primer-light.css" />
                                     <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
                                     <Label text="Loan term" />
-                                    <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
+                                    <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
                                     <TextField fx:id="loanTermField" prefHeight="35.0" prefWidth="310.0" promptText="Loan term" stylesheets="@../css/primer-light.css" />
                                     <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
                                     <Label text="Payment amount" />
-                                    <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
+                                    <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
                                     <TextField fx:id="paymentAmountField" prefHeight="35.0" prefWidth="310.0" promptText="Payment amount" stylesheets="@../css/primer-light.css" />
                                     <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
                                     <Label text="Payoff date" />
-                                    <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
+                                    <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
                                     <TextField fx:id="payoffDateField" prefHeight="36.0" prefWidth="310.0" promptText="Payoff date" />
                                  </children>
                               </VBox>
                               <VBox layoutX="320.0" prefHeight="200.0" prefWidth="310.0">
                                  <children>
                                     <Label text="Rate type" />
-                                    <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
+                                    <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
                                     <TextField fx:id="rateTypeField" prefHeight="35.0" prefWidth="310.0" promptText="Rate type" />
                                     <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
                                     <Label text="Period" />
-                                    <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
+                                    <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
                                     <TextField fx:id="periodField" prefHeight="36.0" prefWidth="310.0" promptText="Period" stylesheets="@../css/primer-light.css" />
                                     <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
                                     <Label text="Payment frequency" />
-                                    <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
+                                    <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
                                     <TextField fx:id="paymentFrequencyField" prefHeight="36.0" prefWidth="310.0" promptText="Payment frequency" />
                                     <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
                                     <Label text="Total cost" />
-                                    <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
+                                    <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
                                     <TextField fx:id="totalCostField" prefHeight="36.0" prefWidth="310.0" promptText="Total cost" />
                                  </children>
                               </VBox>
                               <VBox prefHeight="200.0" prefWidth="310.0">
                                  <children>
                                     <Label text="Principal" />
-                                    <Separator opacity="0.0" orientation="VERTICAL" prefHeight="100.0" />
+                                    <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" prefWidth="28.0" />
                                     <TextField fx:id="principalField" prefHeight="36.0" prefWidth="185.0" promptText="Principal" stylesheets="@../css/primer-light.css" />
                                     <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
                                     <Label text="Start date" />
-                                    <Separator opacity="0.0" orientation="VERTICAL" prefHeight="100.0" />
+                                    <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
                                     <TextField fx:id="startDateField" prefHeight="36.0" prefWidth="310.0" promptText="Start date" />
                                     <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
                                     <Label text="Compounding" />
-                                    <Separator opacity="0.0" orientation="VERTICAL" prefHeight="100.0" />
+                                    <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
                                     <TextField fx:id="compoundingField" prefHeight="35.0" prefWidth="310.0" promptText="Compounding" />
                                     <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
                                     <Label text="Total interest" />
-                                    <Separator opacity="0.0" orientation="VERTICAL" prefHeight="100.0" />
+                                    <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
                                     <TextField fx:id="totalInterestField" prefHeight="36.0" prefWidth="310.0" promptText="Total Interest" />
                                  </children>
                               </VBox>
