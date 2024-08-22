@@ -1,28 +1,27 @@
 package uoa.lavs.controllers;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager.AppScene;
-import uoa.lavs.dataoperations.customer.AddressUpdater;
-import uoa.lavs.dataoperations.customer.CustomerUpdater;
-import uoa.lavs.dataoperations.customer.EmailUpdater;
-import uoa.lavs.dataoperations.customer.EmployerUpdater;
-import uoa.lavs.dataoperations.customer.PhoneUpdater;
+import uoa.lavs.dataoperations.customer.*;
 import uoa.lavs.dataoperations.loan.CoborrowerUpdater;
 import uoa.lavs.dataoperations.loan.LoanUpdater;
-import uoa.lavs.models.Address;
-import uoa.lavs.models.Customer;
-import uoa.lavs.models.Email;
-import uoa.lavs.models.Employer;
-import uoa.lavs.models.Loan;
-import uoa.lavs.models.Phone;
+import uoa.lavs.models.*;
 
 @Controller
 public class PendingUpdatesController {
@@ -30,10 +29,38 @@ public class PendingUpdatesController {
   @FXML private Button backButton;
   @FXML private Button sendButton;
   @FXML private Label titleLabel;
+  @FXML private TableView<PendingUpdateRow> pendingTable;
+  @FXML private TableColumn<PendingUpdateRow, String> idColumn;
+  @FXML private TableColumn<PendingUpdateRow, Boolean> generalDetailsColumn;
+  @FXML private TableColumn<PendingUpdateRow, Boolean> addressColumn;
+  @FXML private TableColumn<PendingUpdateRow, Boolean> emailColumn;
+  @FXML private TableColumn<PendingUpdateRow, Boolean> phoneColumn;
+  @FXML private TableColumn<PendingUpdateRow, Boolean> employerColumn;
+  @FXML private TableColumn<PendingUpdateRow, Boolean> loanColumn;
+  @FXML private TableColumn<PendingUpdateRow, Boolean> coborrowerColumn;
 
   @Autowired AddLoanController addLoanController;
 
-  public void initialize() {}
+
+  private List<Address> failedAddressUpdates;
+  private List<Customer> failedCustomerUpdates;
+  private List<String> failedCoborrowerUpdates;
+  private List<Loan> failedLoanUpdates;
+  private List<Email> failedEmailUpdates;
+  private List<Phone> failedPhoneUpdates;
+  private List<Employer> failedEmployerUpdates;
+  private Set<String> customerIds;
+
+  public void initialize() {
+    idColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+    generalDetailsColumn.setCellValueFactory(new PropertyValueFactory<>("generalDetails"));
+    addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+    emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+    phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+    employerColumn.setCellValueFactory(new PropertyValueFactory<>("employer"));
+    loanColumn.setCellValueFactory(new PropertyValueFactory<>("loan"));
+    coborrowerColumn.setCellValueFactory(new PropertyValueFactory<>("coborrower"));
+  }
 
   @FXML
   private void onClickBack(ActionEvent event) throws IOException {
@@ -49,31 +76,92 @@ public class PendingUpdatesController {
     EmployerUpdater.retryFailedUpdates();
     CoborrowerUpdater.retryFailedUpdates();
     LoanUpdater.retryFailedUpdates();
+    populatePendingTable();
+    setTitle();
   }
 
-  private int getFailedUpdates() {
-    List<Address> failedAddressUpdates = AddressUpdater.getFailedUpdates();
-    List<Customer> failedCustomerUpdates = CustomerUpdater.getFailedUpdates();
-    List<String> failedCoborrowerUpdates = CoborrowerUpdater.getFailedUpdates();
-    List<Loan> failedLoanUpdates = LoanUpdater.getFailedUpdates();
-    List<Email> failedEmailUpdates = EmailUpdater.getFailedUpdates();
-    List<Phone> failedPhoneUpdates = PhoneUpdater.getFailedUpdates();
-    List<Employer> failedEmployerUpdates = EmployerUpdater.getFailedUpdates();
+  public void retrieveAllFailedUpdates() {
+    failedAddressUpdates = AddressUpdater.getFailedUpdates();
+    failedCustomerUpdates = CustomerUpdater.getFailedUpdates();
+    failedCoborrowerUpdates = CoborrowerUpdater.getFailedUpdates();
+    failedLoanUpdates = LoanUpdater.getFailedUpdates();
+    failedEmailUpdates = EmailUpdater.getFailedUpdates();
+    failedPhoneUpdates = PhoneUpdater.getFailedUpdates();
+    failedEmployerUpdates = EmployerUpdater.getFailedUpdates();
+  }
 
-    int totalSize =
-        failedAddressUpdates.size()
-            + failedCustomerUpdates.size()
-            + failedCoborrowerUpdates.size()
-            + failedLoanUpdates.size()
-            + failedEmailUpdates.size()
-            + failedPhoneUpdates.size()
-            + failedEmployerUpdates.size();
+  public void populatePendingTable() {
+    retrieveAllFailedUpdates();
+    ObservableList<PendingUpdateRow> rows = FXCollections.observableArrayList();
+    customerIds = retrieveAllFailedIds();
+    for (String customerId : customerIds) {
 
+      // Check for failed updates related to this customer
+      boolean customerFailed = failedCustomerUpdates.stream().anyMatch(customer -> customer.getId().equals(customerId));
+      boolean addressFailed = failedAddressUpdates.stream().anyMatch(address -> address.getCustomerId().equals(customerId));
+      boolean emailFailed = failedEmailUpdates.stream().anyMatch(email -> email.getCustomerId().equals(customerId));
+      boolean phoneFailed = failedPhoneUpdates.stream().anyMatch(phone -> phone.getCustomerId().equals(customerId));
+      boolean employerFailed = failedEmployerUpdates.stream().anyMatch(employer -> employer.getCustomerId().equals(customerId));
+      boolean loanFailed = failedLoanUpdates.stream().anyMatch(loan -> loan.getCustomerId().equals(customerId));
+      boolean coborrowerFailed = failedCoborrowerUpdates.contains(customerId);
+
+      // Create a new row with all the relevant information
+      PendingUpdateRow row = new PendingUpdateRow(
+              customerId,
+              customerFailed,
+              addressFailed,
+              emailFailed,
+              phoneFailed,
+              employerFailed,
+              loanFailed,
+              coborrowerFailed
+      );
+      rows.add(row);
+    }
+
+    pendingTable.setItems(rows);
+
+  }
+
+  public Set<String> retrieveAllFailedIds() {
+    customerIds = new HashSet<>();
+    retrieveAllFailedUpdates();
+    for (Customer customer : failedCustomerUpdates) {
+      customerIds.add(customer.getId());
+    }
+
+    for (Address address : failedAddressUpdates) {
+      customerIds.add(address.getCustomerId());
+    }
+
+    for (Email email : failedEmailUpdates) {
+      customerIds.add(email.getCustomerId());
+    }
+
+    for (Phone phone : failedPhoneUpdates) {
+      customerIds.add(phone.getCustomerId());
+    }
+
+    for (Employer employer : failedEmployerUpdates) {
+      customerIds.add(employer.getCustomerId());
+    }
+
+    for (Loan loan : failedLoanUpdates) {
+      customerIds.add(loan.getCustomerId());
+    }
+
+    customerIds.addAll(failedCoborrowerUpdates);
+
+    return customerIds;
+  }
+
+  private int getNumberOfFailedUpdates() {
+    int totalSize = customerIds.size();
     return totalSize;
   }
 
   public void setTitle() {
-    int pendingUpdatesCount = getFailedUpdates();
+    int pendingUpdatesCount = getNumberOfFailedUpdates();
     if (pendingUpdatesCount > 0) {
       titleLabel.setText(pendingUpdatesCount + " Pending Mainframe Updates");
     } else {
