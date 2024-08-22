@@ -14,9 +14,12 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager;
+import uoa.lavs.SceneManager.AppScene;
 import uoa.lavs.controllers.interfaces.CheckEmpty;
 import uoa.lavs.controllers.interfaces.CheckLength;
 import uoa.lavs.controllers.interfaces.ValidateType;
@@ -82,6 +85,8 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
 
   private Alert alert;
   private StringBuilder errorString;
+
+  @Autowired CustomerDetailsController customerDetailsController;
 
   @FXML
   private void initialize() {
@@ -482,7 +487,8 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
         successAlert.setHeaderText("Customer has been added");
         if (successAlert.showAndWait().get() == ButtonType.OK) {
           resetScene();
-          Main.setScene(SceneManager.AppScene.START);
+          customerDetailsController.setCustomerDetails(customerID);
+          Main.setScene(AppScene.CUSTOMER_DETAILS);
         }
       } catch (Exception e) {
         System.out.println(e.getLocalizedMessage());

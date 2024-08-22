@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="648.0" prefWidth="1152.0" stylesheets="@../css/primer-light.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.AddLoanController">
+<AnchorPane prefHeight="648.0" prefWidth="1152.0" stylesheets="@../css/primer-light.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.AddLoanController">
    <children>
       <Pane layoutX="80.0" layoutY="65.0" prefHeight="64.0" prefWidth="702.0">
          <children>
@@ -62,11 +62,11 @@
                      <children>
                         <Pane fx:id="loanDetailsPane" layoutX="25.0" layoutY="55.0" prefHeight="142.0" prefWidth="950.0">
                            <children>
-                              <TextField fx:id="principalField" prefHeight="36.0" prefWidth="450.0" promptText="Principal" stylesheets="@../css/primer-light.css" />
-                              <TextField fx:id="rateValueField" layoutX="670.0" prefHeight="36.0" prefWidth="280.0" promptText="Rate" stylesheets="@../css/primer-light.css" />
+                              <TextField fx:id="principalField" prefHeight="36.0" prefWidth="310.0" promptText="Principal" stylesheets="@../css/primer-light.css" />
+                              <TextField fx:id="rateValueField" layoutX="640.0" prefHeight="36.0" prefWidth="310.0" promptText="Rate" stylesheets="@../css/primer-light.css" />
                               <TextField fx:id="periodField" layoutX="320.0" layoutY="50.0" prefHeight="36.0" prefWidth="310.0" promptText="Period" stylesheets="@../css/primer-light.css" />
                               <DatePicker fx:id="startDatePicker" layoutY="50.0" prefHeight="36.0" prefWidth="310.0" promptText="Start Date" stylesheets="@../css/primer-light.css" />
-                              <ComboBox fx:id="rateTypeBox" layoutX="460.0" prefHeight="35.0" prefWidth="200.0" promptText="Rate type">
+                              <ComboBox fx:id="rateTypeBox" layoutX="320.0" prefHeight="35.0" prefWidth="310.0" promptText="Rate type">
                                  <items>
                                     <FXCollections fx:factory="observableArrayList">
                                        <String fx:value="Floating" />
@@ -76,8 +76,8 @@
                                  </items>
                               </ComboBox>
                               <TextField fx:id="loanTermField" layoutX="640.0" layoutY="50.0" prefHeight="35.0" prefWidth="310.0" promptText="Loan term" stylesheets="@../css/primer-light.css" />
-                              <TextField fx:id="paymentAmountField" layoutX="520.0" layoutY="100.0" prefHeight="35.0" prefWidth="430.0" promptText="Payment amount" stylesheets="@../css/primer-light.css" />
-                              <ComboBox fx:id="compoundingBox" layoutY="100.0" prefHeight="35.0" prefWidth="250.0" promptText="Compounding">
+                              <TextField fx:id="paymentAmountField" layoutX="640.0" layoutY="100.0" prefHeight="35.0" prefWidth="310.0" promptText="Payment amount" stylesheets="@../css/primer-light.css" />
+                              <ComboBox fx:id="compoundingBox" layoutY="100.0" prefHeight="35.0" prefWidth="310.0" promptText="Compounding">
                                  <items>
                                     <FXCollections fx:factory="observableArrayList">
                                        <String fx:value="Daily" />
@@ -90,7 +90,7 @@
                                     </FXCollections>
                                  </items>
                               </ComboBox>
-                              <ComboBox fx:id="paymentFrequencyBox" layoutX="260.0" layoutY="100.0" prefHeight="36.0" prefWidth="250.0" promptText="Payment frequency">
+                              <ComboBox fx:id="paymentFrequencyBox" layoutX="320.0" layoutY="100.0" prefHeight="36.0" prefWidth="310.0" promptText="Payment frequency">
                                  <items>
                                     <FXCollections fx:factory="observableArrayList">
                                        <String fx:value="Weekly" />

@@ -9,6 +9,8 @@ public class LoanRepayment {
     private Double interest;
     private Double remaining;
 
+    public LoanRepayment() {}
+
     public LoanRepayment(Integer number, LocalDate repaymentDate, Double principal, Double interest, Double remaining) {
         this.number = number;
         this.repaymentDate = repaymentDate;
@@ -35,5 +37,17 @@ public class LoanRepayment {
 
     public Double getRemainingAmount() {
         return remaining;
+    }
+
+    public String getPrincipal() {
+        return "$" + String.format("%.2f", principal);
+    }
+
+    public String getInterest() {
+        return "$" + String.format("%.2f", interest);
+    }
+
+    public String getRemaining() {
+        return "$" + String.format("%.2f", remaining);
     }
 }

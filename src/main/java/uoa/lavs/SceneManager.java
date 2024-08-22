@@ -13,6 +13,7 @@ public class SceneManager {
         SEARCH,
         ADD_LOAN,
         CUSTOMER_DETAILS,
+        LOAN_DETAILS
         PENDING_UPDATES
     }
 
