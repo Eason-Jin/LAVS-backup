@@ -37,7 +37,6 @@ public class LoanFinder {
     FindLoan findLoan = new FindLoan();
     LoadLoan loadLoan = new LoadLoan();
     findLoan.setId(customerId);
-    loadLoan.setLoanId(customerId);
     Status status = findLoan.send(Instance.getConnection());
     if (!status.getWasSuccessful()) {
       System.out.println(

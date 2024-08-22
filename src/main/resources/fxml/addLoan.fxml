@@ -80,13 +80,9 @@
                               <ComboBox fx:id="compoundingBox" layoutY="100.0" prefHeight="35.0" prefWidth="310.0" promptText="Compounding">
                                  <items>
                                     <FXCollections fx:factory="observableArrayList">
-                                       <String fx:value="Daily" />
                                        <String fx:value="Weekly" />
-                                       <String fx:value="Fortnightly" />
                                        <String fx:value="Monthly" />
-                                       <String fx:value="Quarterly" />
-                                       <String fx:value="Biannually" />
-                                       <String fx:value="Annually" />
+                                       <String fx:value="Yearly" />
                                     </FXCollections>
                                  </items>
                               </ComboBox>
