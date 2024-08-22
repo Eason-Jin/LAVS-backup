@@ -17,6 +17,9 @@ import javafx.scene.layout.*;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager;
+import uoa.lavs.controllers.interfaces.CheckEmpty;
+import uoa.lavs.controllers.interfaces.CheckLength;
+import uoa.lavs.controllers.interfaces.ValidateType;
 import uoa.lavs.dataoperations.customer.AddressUpdater;
 import uoa.lavs.dataoperations.customer.CustomerUpdater;
 import uoa.lavs.dataoperations.customer.EmailUpdater;
@@ -29,7 +32,7 @@ import uoa.lavs.models.Employer;
 import uoa.lavs.models.Phone;
 
 @Controller
-public class AddCustomerController {
+public class AddCustomerController implements ValidateType, CheckLength, CheckEmpty {
 
   @FXML private Button homeButton;
   @FXML private Button saveButton;
@@ -595,7 +598,8 @@ public class AddCustomerController {
     }
   }
 
-  private boolean checkFields() {
+  @Override
+  public boolean checkFields() {
     boolean titleFieldFlag = checkField(titleField);
     boolean nameFieldFlag = checkField(nameField);
     boolean dobPickerFlag = checkField(dobPicker);
@@ -631,7 +635,8 @@ public class AddCustomerController {
     return false;
   }
 
-  private boolean checkField(Control ui) {
+  @Override
+  public boolean checkField(Control ui) {
     ui.setStyle(noBorder);
     if (ui instanceof TextField) {
       TextField tf = (TextField) ui;
@@ -657,7 +662,8 @@ public class AddCustomerController {
     return true;
   }
 
-  private boolean validateFields() {
+  @Override
+  public boolean validateFields() {
     boolean dobFlag = validate(dobPicker, Type.DATE);
 
     boolean addressFlag = false;
@@ -787,71 +793,72 @@ public class AddCustomerController {
         && textingPhoneNum >= 1;
   }
 
-  private boolean validate(TextField ui, Type type) {
-    // Check fields have higher priority in error messages
-    if (ui.getText().isEmpty()) {
-      return true;
-    }
-    boolean flag;
-
-    if (type == Type.EMAIL) {
-      // Emails should be in the format of a@b.c
-      flag = ui.getText().matches("^.+@.+\\..+$");
-      if (!flag) {
-        ui.setStyle(redBorder);
-        if (errorString.indexOf("\tInvalid email format") == -1) {
-          errorString.append("\tInvalid email format\n");
-        }
+  @Override
+  public boolean validate(Control element, Type type) {
+    boolean flag = true;
+    if (element instanceof TextField) {
+      // Check fields have higher priority in error messages
+      TextField ui = (TextField) element;
+      if (ui.getText().isEmpty()) {
+        return flag;
       }
-    } else if (type == Type.NUMBER) {
-      // Phone should be numbers
-      try {
-        Long.parseLong(ui.getText());
-        flag = true;
-      } catch (Exception e) {
+
+      if (type == Type.EMAIL) {
+        // Emails should be in the format of a@b.c
+        flag = ui.getText().matches("^.+@.+\\..+$");
+        if (!flag) {
+          ui.setStyle(redBorder);
+          if (errorString.indexOf("\tInvalid email format") == -1) {
+            errorString.append("\tInvalid email format\n");
+          }
+        }
+      } else if (type == Type.NUMBER) {
+        // Phone should be numbers
+        try {
+          Long.parseLong(ui.getText());
+        } catch (Exception e) {
+          flag = false;
+          ui.setStyle(redBorder);
+          if (errorString.indexOf("\t" + ui.getId() + " should only contain numbers") == -1) {
+            errorString.append("\t" + ui.getId() + " should only contain numbers\n");
+          }
+        }
+      } else if (type == Type.WEBSITE) {
+        // Website should be "text.text"
+        flag = ui.getText().matches("^.+\\..+$");
+        if (!flag) {
+          ui.setStyle(redBorder);
+          if (errorString.indexOf("\tInvalid website format") == -1) {
+            errorString.append("\tInvalid website format\n");
+          }
+        }
+      } else {
+        flag = false;
+      }
+    } else if (element instanceof DatePicker) {
+      DatePicker ui = (DatePicker) element;
+      if (ui.getValue() == null) {
+        return flag;
+      }
+      LocalDate today = LocalDate.now();
+      if (today.isBefore((LocalDate) (Object) ui.getValue())) {
         flag = false;
         ui.setStyle(redBorder);
-        if (errorString.indexOf("\t" + ui.getId() + " should only contain numbers") == -1) {
-          errorString.append("\t" + ui.getId() + " should only contain numbers\n");
-        }
+        errorString.append("\tDate must be before today\n");
       }
-    } else if (type == Type.WEBSITE) {
-      // Website should be "text.text"
-      flag = ui.getText().matches("^.+\\..+$");
-      if (!flag) {
-        ui.setStyle(redBorder);
-        if (errorString.indexOf("\tInvalid website format") == -1) {
-          errorString.append("\tInvalid website format\n");
-        }
-      }
-    } else {
-      flag = false;
     }
 
     return flag;
   }
 
-  private boolean validate(DatePicker ui, Type type) {
-    boolean flag;
-    LocalDate today = LocalDate.now();
-    if (today.isBefore((LocalDate) (Object) ui.getValue())) {
-      flag = false;
-      ui.setStyle(redBorder);
-      errorString.append("\tDate cannot be before today\n");
-    } else {
-      flag = true;
-    }
-
-    return flag;
-  }
-
-  private boolean checkLengths() {
+  @Override
+  public boolean checkLengths() {
     boolean titleFieldFlag = checkLength(titleField, 10);
     boolean nameFieldFlag = checkLength(nameField, 60);
     boolean occupationFlag = checkLength(jobField, 40);
     boolean citizenshipFieldFlag = checkLength(citizenshipField, 40);
     boolean visaFieldFlag = checkLength(visaField, 40);
-    boolean notesAreaFlag = checkLength(notesArea, 1400);
+    boolean notesAreaFlag = checkLength(notesArea, 1330);
 
     boolean addressFlag = false;
     for (int i = 1; i < addressCounter; i++) {
@@ -926,7 +933,8 @@ public class AddCustomerController {
         && employerFlag;
   }
 
-  private boolean checkLength(Control ui, int length) {
+  @Override
+  public boolean checkLength(Control ui, int length) {
     int len;
     if (ui instanceof TextField) {
       len = ((TextField) ui).getText().length();
@@ -949,11 +957,4 @@ public class AddCustomerController {
     return counter == 1 ? "" : ("_" + counter);
   }
 
-  private enum Type {
-    DATE,
-    EMAIL,
-    NUMBER,
-    WEBSITE,
-    PRIMARY
-  }
 }
