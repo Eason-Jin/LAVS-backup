@@ -13,7 +13,7 @@
 
 <AnchorPane prefHeight="648.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.SearchController">
    <children>
-      <TextField fx:id="searchField" layoutX="475.0" layoutY="85.0" onKeyPressed="#keyPressed" prefHeight="60.0" prefWidth="436.0" promptText="Search Customers by Name" style="-fx-background-radius: 30;">
+      <TextField fx:id="searchField" focusTraversable="false" layoutX="475.0" layoutY="85.0" onKeyPressed="#keyPressed" prefHeight="60.0" prefWidth="436.0" promptText="Search Customers by Name" style="-fx-background-radius: 30;">
          <font>
             <Font size="18.0" />
          </font>
