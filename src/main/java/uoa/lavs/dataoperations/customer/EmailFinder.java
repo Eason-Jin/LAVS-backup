@@ -28,7 +28,7 @@ public class EmailFinder {
     return emails;
   }
 
-  private static List<Email> findFromMainframe(String customerId) throws Exception {
+  public static List<Email> findFromMainframe(String customerId) throws Exception {
     LoadCustomerEmails loadCustomerEmails = new LoadCustomerEmails();
     loadCustomerEmails.setCustomerId(customerId);
     Status status = loadCustomerEmails.send(Instance.getConnection());
@@ -54,7 +54,7 @@ public class EmailFinder {
     return emails;
   }
 
-  private static List<Email> findFromDatabase(String customerId) throws Exception {
+  public static List<Email> findFromDatabase(String customerId) throws Exception {
     List<Email> emails = new ArrayList<>();
     Connection connection = null;
     PreparedStatement preparedStatement = null;

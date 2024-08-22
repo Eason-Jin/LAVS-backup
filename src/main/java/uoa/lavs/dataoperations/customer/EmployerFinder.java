@@ -29,7 +29,7 @@ public class EmployerFinder {
     return employers;
   }
 
-  private static List<Employer> findFromMainframe(String customerId) throws Exception {
+  public static List<Employer> findFromMainframe(String customerId) throws Exception {
     LoadCustomerEmployers loadEmployers = new LoadCustomerEmployers();
     LoadCustomerEmployer loadEmployer = new LoadCustomerEmployer();
     loadEmployers.setCustomerId(customerId);
@@ -68,7 +68,7 @@ public class EmployerFinder {
     return employers;
   }
 
-  private static List<Employer> findFromDatabase(String customerId) throws Exception {
+  public static List<Employer> findFromDatabase(String customerId) throws Exception {
     List<Employer> employers = new ArrayList<>();
     String query = "SELECT * FROM Employer WHERE CustomerID = ?";
     try (Connection connection = Instance.getDatabaseConnection();

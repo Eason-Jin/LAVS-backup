@@ -5,14 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
-
 import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomerAddress;
 import uoa.lavs.models.Address;
 
 public class AddressUpdater {
+
+  private static boolean failed = false;
 
   public static void updateData(String customerID, Address address) {
     try {
@@ -24,6 +26,12 @@ public class AddressUpdater {
         updateDatabase(customerID, address);
       } catch (Exception e) {
         System.out.println("Database update failed: " + e.getMessage());
+      } finally {
+        if (failed) {
+          addFailedUpdate(customerID, address.getNumber());
+        } else {
+          addInMainframe(customerID, address.getNumber());
+        }
       }
     }
   }
@@ -32,17 +40,25 @@ public class AddressUpdater {
     UpdateCustomerAddress updateCustomerAddress = new UpdateCustomerAddress();
     updateCustomerAddress.setCustomerId(customerID);
     updateCustomerAddress.setNumber(address.getNumber());
+    Address existingAddress = null;
 
     if (address.getNumber() != null) {
-      List<Address> existingAddresses = AddressFinder.findData(customerID);
-      Address existingAddress = new Address();
-      for (Address addressOnAccount : existingAddresses) {
-        if (addressOnAccount.getNumber().equals(address.getNumber())
-            && addressOnAccount.getCustomerId().equals(address.getCustomerId())) {
-          existingAddress = addressOnAccount;
+      List<Address> existingAddresses = null;
+      try {
+        existingAddresses = AddressFinder.findData(customerID);
+        for (Address addressOnAccount : existingAddresses) {
+          if (addressOnAccount.getNumber().equals(address.getNumber())
+              && addressOnAccount.getCustomerId().equals(address.getCustomerId())) {
+            existingAddress = addressOnAccount;
+            break;
+          }
         }
+      } catch (Exception e) {
+        System.out.println("Address %s not in mainframe: " + e.getMessage());
       }
+    }
 
+    if (existingAddress != null) {
       updateCustomerAddress.setType(
           address.getType() != null ? address.getType() : existingAddress.getType());
       updateCustomerAddress.setLine1(
@@ -75,6 +91,7 @@ public class AddressUpdater {
 
     Status status = updateCustomerAddress.send(Instance.getConnection());
     if (!status.getWasSuccessful()) {
+      failed = true;
       System.out.println(
           "Something went wrong - the Mainframe send failed! The code is " + status.getErrorCode());
       throw new Exception("Mainframe send failed");
@@ -151,6 +168,64 @@ public class AddressUpdater {
       statement.setInt(11, address.getNumber());
 
       statement.executeUpdate();
+    }
+  }
+
+  private static void addFailedUpdate(String customerID, Integer number) {
+    String sql = "UPDATE Address SET InMainframe = false WHERE CustomerID = ? AND Number = ?";
+    try (Connection connection = Instance.getDatabaseConnection();
+        PreparedStatement statement = connection.prepareStatement(sql)) {
+      statement.setString(1, customerID);
+      statement.setInt(2, number);
+      statement.executeUpdate();
+    } catch (SQLException e) {
+      System.out.println("Failed to update InMainframe: " + e.getMessage());
+    }
+  }
+
+  private static void addInMainframe(String customerID, Integer number) {
+    String sql = "UPDATE Address SET InMainframe = true WHERE CustomerID = ? AND Number = ?";
+    try (Connection connection = Instance.getDatabaseConnection();
+        PreparedStatement statement = connection.prepareStatement(sql)) {
+      statement.setString(1, customerID);
+      statement.setInt(2, number);
+      statement.executeUpdate();
+    } catch (SQLException e) {
+      System.out.println("Failed to update InMainframe: " + e.getMessage());
+    }
+  }
+
+  public static List<Address> getFailedUpdates() {
+    List<Address> failedUpdates = new ArrayList<>();
+    String sql = "SELECT CustomerID, Number FROM Address WHERE InMainframe = false";
+    try (Connection connection = Instance.getDatabaseConnection();
+        PreparedStatement statement = connection.prepareStatement(sql);
+        ResultSet resultSet = statement.executeQuery()) {
+      while (resultSet.next()) {
+        String customerID = resultSet.getString("CustomerID");
+        Integer number = resultSet.getInt("Number");
+        List<Address> addresses = AddressFinder.findData(customerID);
+        for (Address addressOnAccount : addresses) {
+          if (addressOnAccount.getNumber().equals(number)
+              && addressOnAccount.getCustomerId().equals(customerID)) {
+            failedUpdates.add(addressOnAccount);
+            break;
+          }
+        }
+      }
+    } catch (SQLException e) {
+      System.out.println("Failed to get failed updates: " + e.getMessage());
+    }
+    return failedUpdates;
+  }
+
+  public static void retryFailedUpdates() throws Exception {
+    List<Address> failedUpdates = getFailedUpdates();
+    for (Address address : failedUpdates) {
+      String customerID = address.getCustomerId();
+      Integer number = address.getNumber();
+        updateMainframe(customerID, address);
+        addInMainframe(customerID, number);
     }
   }
 }

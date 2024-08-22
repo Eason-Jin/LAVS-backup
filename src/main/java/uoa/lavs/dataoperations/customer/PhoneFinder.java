@@ -28,7 +28,7 @@ public class PhoneFinder {
     return phones;
   }
 
-  private static List<Phone> findFromMainframe(String customerId) throws Exception {
+  public static List<Phone> findFromMainframe(String customerId) throws Exception {
     LoadCustomerPhoneNumbers loadCustomerPhoneNumbers = new LoadCustomerPhoneNumbers();
     loadCustomerPhoneNumbers.setCustomerId(customerId);
     Status status = loadCustomerPhoneNumbers.send(Instance.getConnection());
@@ -56,7 +56,7 @@ public class PhoneFinder {
     return phones;
   }
 
-  private static List<Phone> findFromDatabase(String customerId) throws Exception {
+  public static List<Phone> findFromDatabase(String customerId) throws Exception {
     List<Phone> phones = new ArrayList<>();
     Connection connection = null;
     PreparedStatement preparedStatement = null;
