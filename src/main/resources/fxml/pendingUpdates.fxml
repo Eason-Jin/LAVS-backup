@@ -24,17 +24,20 @@
             <Font size="36.0" />
          </font>
       </Label>
-      <TableView fx:id="pendingTable" layoutX="74.0" layoutY="175.0" prefHeight="425.0" prefWidth="1004.0">
+      <TableView fx:id="pendingTable" fixedCellSize="50.0" layoutX="74.0" layoutY="175.0" prefHeight="425.0" prefWidth="1004.0" stylesheets="@../css/application.css">
         <columns>
-          <TableColumn prefWidth="125.5" style="-fx-font-size: 18;" text="Customer ID" />
-          <TableColumn prefWidth="125.5" style="-fx-font-size: 18;" text="Name" />
-            <TableColumn prefWidth="125.5" style="-fx-font-size: 18;" text="Address" />
-            <TableColumn prefWidth="125.5" style="-fx-font-size: 18;" text="Email" />
-            <TableColumn prefWidth="125.5" style="-fx-font-size: 18;" text="Phone" />
-            <TableColumn prefWidth="125.5" style="-fx-font-size: 18;" text="Employer" />
-            <TableColumn prefWidth="125.5" style="-fx-font-size: 18;" text="Loan" />
-            <TableColumn prefWidth="125.5" style="-fx-font-size: 18;" text="Coborrower" />
+          <TableColumn fx:id="idColumn" prefWidth="-1.0" text="Customer ID" />
+            <TableColumn fx:id="generalDetailsColumn" prefWidth="-1.0" text="General Details" />
+            <TableColumn fx:id="addressColumn" prefWidth="-1.0" text="Address" />
+            <TableColumn fx:id="emailColumn" prefWidth="-1.0" text="Email" />
+            <TableColumn fx:id="phoneColumn" prefWidth="-1.0" text="Phone" />
+            <TableColumn fx:id="employerColumn" prefWidth="-1.0" text="Employer" />
+            <TableColumn fx:id="loanColumn" prefWidth="-1.0" text="Loan" />
+            <TableColumn fx:id="coborrowerColumn" prefWidth="-1.0" text="Coborrower" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
    </children>
 </AnchorPane>
