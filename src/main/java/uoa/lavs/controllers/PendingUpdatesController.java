@@ -199,7 +199,8 @@ public class PendingUpdatesController {
   public void setTitle() {
     int pendingUpdatesCount = getNumberOfFailedUpdates();
     if (pendingUpdatesCount > 0) {
-      titleLabel.setText(pendingUpdatesCount + " Pending Mainframe Updates");
+      String updateText = pendingUpdatesCount == 1 ? " Pending Mainframe Update" : " Pending Mainframe Updates";
+      titleLabel.setText(pendingUpdatesCount + updateText);
     } else {
       titleLabel.setText("No Pending Mainframe Updates");
     }
