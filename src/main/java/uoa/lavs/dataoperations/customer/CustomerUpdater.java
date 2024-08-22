@@ -63,7 +63,7 @@ public class CustomerUpdater {
               + "Occupation = COALESCE(?, Occupation), "
               + "Citizenship = COALESCE(?, Citizenship), "
               + "VisaType = COALESCE(?, VisaType), "
-              + "Status = COALESCE(?, Status) "
+              + "Status = COALESCE(?, Status), "
               + "Note = COALESCE(?, Note) "
               + "WHERE CustomerID = ?";
     } else {
@@ -123,7 +123,9 @@ public class CustomerUpdater {
               : existingCustomer.getCitizenship());
       updateCustomer.setVisa(
           customer.getVisaType() != null ? customer.getVisaType() : existingCustomer.getVisaType());
-      updateCustomerNote.setLine(0, customer.getNotes());
+      if (customer.getNotes() != null) {
+        updateCustomerNote.setLine(0, customer.getNotes());
+      }
     } else {
       updateCustomer.setTitle(customer.getTitle());
       updateCustomer.setName(customer.getName());
@@ -133,7 +135,7 @@ public class CustomerUpdater {
       updateCustomer.setVisa(customer.getVisaType());
       ArrayList<String> notes = customer.splitNotes();
       for (int i = 0; i < notes.size(); i++) {
-        updateCustomerNote.setLine(i+1, notes.get(i));
+        updateCustomerNote.setLine(i + 1, notes.get(i));
       }
     }
 
