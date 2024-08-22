@@ -844,7 +844,7 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
       if (today.isBefore((LocalDate) (Object) ui.getValue())) {
         flag = false;
         ui.setStyle(redBorder);
-        errorString.append("\tDate cannot be before today\n");
+        errorString.append("\tDate must be before today\n");
       }
     }
 

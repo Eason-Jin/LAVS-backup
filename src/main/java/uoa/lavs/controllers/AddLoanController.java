@@ -376,10 +376,10 @@ public class AddLoanController implements ValidateType, CheckEmpty {
         return flag;
       }
       LocalDate today = LocalDate.now();
-      if (today.isBefore((LocalDate) (Object) ui.getValue())) {
+      if (((LocalDate) (Object) ui.getValue()).isBefore(today)) {
         flag = false;
         ui.setStyle(redBorder);
-        errorString.append("\tDate cannot be before today\n");
+        errorString.append("\tDate must be after today\n");
       }
     }
     return flag;
