@@ -96,6 +96,7 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
     errorString = new StringBuilder();
     addAllElementsToMap();
     disableAllDeleteButtons();
+    System.out.println("###########################################################################");
   }
 
   private void addAllElementsToMap() {
@@ -419,6 +420,9 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
 
         for (int i = 1; i < addressCounter; i++) {
           suffix = setSuffix(i);
+          if (customerDetailFields.get("addressTypeField" + suffix) == null) {
+            continue;
+          }
           Address address =
               new Address(
                   customerID,
@@ -437,6 +441,9 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
 
         for (int i = 1; i < emailCounter; i++) {
           suffix = setSuffix(i);
+          if (customerDetailFields.get("emailField" + suffix) == null) {
+            continue;
+          }
           Email email =
               new Email(
                   customerID,
@@ -448,6 +455,9 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
 
         for (int i = 1; i < phoneCounter; i++) {
           suffix = setSuffix(i);
+          if (customerDetailFields.get("phoneTypeBox" + suffix) == null) {
+            continue;
+          }
           Phone phone =
               new Phone(
                   customerID,
@@ -464,6 +474,9 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
 
         for (int i = 1; i < employmentCounter; i++) {
           suffix = setSuffix(i);
+          if (customerDetailFields.get("companyNameField" + suffix) == null) {
+            continue;
+          }
           Employer employer =
               new Employer(
                   customerID,
@@ -620,6 +633,7 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
       }
       try {
         if (!checkField((Control) node)) {
+          System.out.println("something missing???");
           repeatFlag = false;
         }
       } catch (Exception e) {
@@ -700,6 +714,12 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
       if (customerDetailFields.get("employerEmailField" + suffix) == null) {
         continue;
       }
+      else if (customerDetailFields.get("companyPostcodeField" + suffix) == null) {
+        continue;
+      }
+      else if (customerDetailFields.get("employerPhoneField" + suffix) == null) {
+        continue;
+      }
       boolean employerEmailFlag =
           validate((TextField) customerDetailFields.get("employerEmailField" + suffix), Type.EMAIL);
       boolean postCodeFlag =
@@ -715,6 +735,9 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
     for (int i = 1; i < phoneCounter; i++) {
       suffix = setSuffix(i);
       if (customerDetailFields.get("prefixField" + suffix) == null) {
+        continue;
+      }
+      if (customerDetailFields.get("numberField" + suffix) == null) {
         continue;
       }
       boolean prefixFlag =
@@ -836,6 +859,7 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
       // Check fields have higher priority in error messages
       TextField ui = (TextField) element;
       if (ui.getText().isEmpty()) {
+        System.out.println("somethings empty???");
         return flag;
       }
 

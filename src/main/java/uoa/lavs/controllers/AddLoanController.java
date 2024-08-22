@@ -104,6 +104,7 @@ public class AddLoanController implements ValidateType, CheckEmpty {
 
   @FXML
   private void onClickAddCoBorrower(ActionEvent event) throws IOException {
+    searchController.clearSearch();
     searchController.setCoBorrowerSearch(true);
     Main.setScene(SceneManager.AppScene.SEARCH);
   }
@@ -186,6 +187,7 @@ public class AddLoanController implements ValidateType, CheckEmpty {
 
   private void resetScene() {
     resetCoBorrowerFields();
+    coBorrowerIds.clear();
     clearAllFields();
     detailsTabPane.getSelectionModel().select(0);
     searchController.setCoBorrowerSearch(false);
