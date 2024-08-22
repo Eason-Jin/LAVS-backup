@@ -121,6 +121,10 @@ public class AddLoanController implements ValidateType, CheckEmpty {
     titleLabel.setText("New loan for " + customerName);
   }
 
+  public void addPrimeBorrower(String id) {
+    coBorrowerIds.add(id);
+  }
+
   public void addCoBorrower(TableRow<Customer> row) {
     String coBorrowerName = row.getItem().getName();
     String coBorrowerId = row.getItem().getId();
