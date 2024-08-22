@@ -675,6 +675,9 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
     boolean addressFlag = false;
     for (int i = 1; i < addressCounter; i++) {
       suffix = setSuffix(i);
+      if (customerDetailFields.get("postcodeField" + suffix) == null) {
+        continue;
+      }
       if (validate((TextField) customerDetailFields.get("postcodeField" + suffix), Type.NUMBER)) {
         addressFlag = true;
       }
@@ -683,6 +686,9 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
     boolean emailFlag = false;
     for (int i = 1; i < emailCounter; i++) {
       suffix = setSuffix(i);
+      if (customerDetailFields.get("emailField" + suffix) == null) {
+        continue;
+      }
       if (validate((TextField) customerDetailFields.get("emailField" + suffix), Type.EMAIL)) {
         emailFlag = true;
       }
@@ -691,6 +697,9 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
     boolean employerFlag = false;
     for (int i = 1; i < employmentCounter; i++) {
       suffix = setSuffix(i);
+      if (customerDetailFields.get("employerEmailField" + suffix) == null) {
+        continue;
+      }
       boolean employerEmailFlag =
           validate((TextField) customerDetailFields.get("employerEmailField" + suffix), Type.EMAIL);
       boolean postCodeFlag =
@@ -705,6 +714,9 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
     boolean phoneFlag = false;
     for (int i = 1; i < phoneCounter; i++) {
       suffix = setSuffix(i);
+      if (customerDetailFields.get("prefixField" + suffix) == null) {
+        continue;
+      }
       boolean prefixFlag =
           validate((TextField) customerDetailFields.get("prefixField" + suffix), Type.NUMBER);
       boolean numberFlag =
@@ -715,6 +727,9 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
     boolean websiteFlag = false;
     for (int i = 1; i < employmentCounter; i++) {
       suffix = setSuffix(i);
+      if (customerDetailFields.get("companyWebsiteField" + suffix) == null) {
+        continue;
+      }
       if (validate(
           (TextField) customerDetailFields.get("companyWebsiteField" + suffix), Type.WEBSITE)) {
         websiteFlag = true;
@@ -725,6 +740,9 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
     int addressNum = 0;
     for (int i = 1; i < addressCounter; i++) {
       suffix = setSuffix(i);
+      if (customerDetailFields.get("isPrimaryAddress" + suffix) == null) {
+        continue;
+      }
       if (((CheckBox) customerDetailFields.get("isPrimaryAddress" + suffix)).isSelected()) {
         addressNum++;
       }
@@ -738,6 +756,9 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
     int emailNum = 0;
     for (int i = 1; i < emailCounter; i++) {
       suffix = setSuffix(i);
+      if (customerDetailFields.get("isPrimaryEmail" + suffix) == null) {
+        continue;
+      }
       if (((CheckBox) customerDetailFields.get("isPrimaryEmail" + suffix)).isSelected()) {
         emailNum++;
       }
@@ -751,6 +772,9 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
     int phoneNum = 0;
     for (int i = 1; i < phoneCounter; i++) {
       suffix = setSuffix(i);
+      if (customerDetailFields.get("isPrimaryNumber" + suffix) == null) {
+        continue;
+      }
       if (((CheckBox) customerDetailFields.get("isPrimaryNumber" + suffix)).isSelected()) {
         phoneNum++;
       }
@@ -764,6 +788,9 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
     int mailingAddressNum = 0;
     for (int i = 1; i < addressCounter; i++) {
       suffix = setSuffix(i);
+      if (customerDetailFields.get("isMailingAddress" + suffix) == null) {
+        continue;
+      }
       if (((CheckBox) customerDetailFields.get("isMailingAddress" + suffix)).isSelected()) {
         mailingAddressNum++;
       }
@@ -777,6 +804,9 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
     int textingPhoneNum = 0;
     for (int i = 1; i < phoneCounter; i++) {
       suffix = setSuffix(i);
+      if (customerDetailFields.get("isTextingNumber" + suffix) == null) {
+        continue;
+      }
       if (((CheckBox) customerDetailFields.get("isTextingNumber" + suffix)).isSelected()) {
         textingPhoneNum++;
       }
