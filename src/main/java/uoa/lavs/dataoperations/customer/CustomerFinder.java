@@ -35,14 +35,14 @@ public class CustomerFinder {
   public static List<Customer> findCustomerByName(String customerName) {
     List<Customer> customers = new ArrayList<>();
     try {
-      customers = findFromDatabaseByName(customerName);
+      customers = findFromMainframeByName(customerName);
     } catch (Exception e) {
-      System.out.println("Database find failed: " + e.getMessage());
-      System.out.println("Trying to find from mainframe");
+      System.out.println("Mainframe find failed: " + e.getMessage());
+      System.out.println("Trying to find from database");
       try {
-        customers = findFromMainframeByName(customerName);
+        customers = findFromDatabaseByName(customerName);
       } catch (Exception e1) {
-        System.out.println("Mainframe find failed: " + e1.getMessage());
+        System.out.println("Database find failed: " + e1.getMessage());
       }
     }
     return customers;
@@ -123,7 +123,7 @@ public class CustomerFinder {
   private static List<Customer> findFromDatabaseByName(String customerName) throws Exception {
     List<Customer> customers = new ArrayList<>();
     Connection connection = Instance.getDatabaseConnection();
-    String query = "SELECT * FROM customer WHERE Name = ?";
+    String query = "SELECT * FROM customer WHERE Name LIKE ?";
     PreparedStatement preparedStatement = connection.prepareStatement(query);
     preparedStatement.setString(1, customerName);
     ResultSet resultSet = preparedStatement.executeQuery();
