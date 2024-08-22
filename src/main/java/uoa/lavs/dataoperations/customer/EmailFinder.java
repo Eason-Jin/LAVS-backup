@@ -54,7 +54,7 @@ public class EmailFinder {
     return emails;
   }
 
-  private static List<Email> findFromDatabase(String customerId) throws Exception {
+  public static List<Email> findFromDatabase(String customerId) throws Exception {
     List<Email> emails = new ArrayList<>();
     Connection connection = null;
     PreparedStatement preparedStatement = null;

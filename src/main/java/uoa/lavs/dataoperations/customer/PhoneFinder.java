@@ -56,7 +56,7 @@ public class PhoneFinder {
     return phones;
   }
 
-  private static List<Phone> findFromDatabase(String customerId) throws Exception {
+  public static List<Phone> findFromDatabase(String customerId) throws Exception {
     List<Phone> phones = new ArrayList<>();
     Connection connection = null;
     PreparedStatement preparedStatement = null;
