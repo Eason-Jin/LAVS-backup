@@ -12,6 +12,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +21,6 @@ import uoa.lavs.SceneManager;
 import uoa.lavs.controllers.interfaces.CheckEmpty;
 import uoa.lavs.controllers.interfaces.ValidateType;
 import uoa.lavs.dataoperations.customer.CustomerLoader;
-import uoa.lavs.dataoperations.customer.CustomerUpdater;
 import uoa.lavs.dataoperations.loan.CoborrowerUpdater;
 import uoa.lavs.dataoperations.loan.LoanUpdater;
 import uoa.lavs.mainframe.Frequency;
@@ -49,29 +49,20 @@ public class AddLoanController implements ValidateType, CheckEmpty {
   private String noBorder = "-fx-border-color: none";
   private String redBorder = "-fx-border-color: red";
 
+  private Alert alert;
+  private StringBuilder errorString;
+
   @Autowired SearchController searchController;
   @Autowired CustomerDetailsController customerDetailsController;
 
   @FXML
   private void initialize() {
-    // addDummy();
+    alert = new Alert(AlertType.ERROR);
+    alert.setTitle("Error");
+    alert.setHeaderText("Please fix the following issues:");
+    errorString = new StringBuilder();
     coBorrowerFlowPane.getChildren().remove(coBorrowerPane);
     addToMap(loanDetailsFields, loanDetailsPane);
-  }
-
-  private void addDummy() {
-    Customer customer =
-        new Customer(
-            null,
-            "Mr",
-            "Eason Jin",
-            LocalDate.of(1999, 1, 1),
-            "intern",
-            "asdfdsa",
-            "asdfdsa",
-            "Pending",
-            "no notes");
-    CustomerUpdater.updateData(null, customer);
   }
 
   private void addToMap(HashMap<String, Node> map, Pane pane) {
@@ -275,6 +266,10 @@ public class AddLoanController implements ValidateType, CheckEmpty {
       for (String id : coBorrowerIds) {
         CoborrowerUpdater.updateData(loanId, id, null);
       }
+    } else {
+      alert.setContentText(errorString.toString());
+      alert.showAndWait();
+      errorString = new StringBuilder();
     }
   }
 
@@ -299,6 +294,10 @@ public class AddLoanController implements ValidateType, CheckEmpty {
         continue;
       }
     }
+    if (!repeatFlag) {
+      errorString.append("\tPlease fill in the required fields\n");
+    }
+
     return repeatFlag;
   }
 
@@ -359,9 +358,9 @@ public class AddLoanController implements ValidateType, CheckEmpty {
         } catch (Exception e) {
           flag = false;
           tf.setStyle(redBorder);
-          // if (errorString.indexOf("\t" + tf.getId() + " should only contain numbers") == -1) {
-          //   errorString.append("\t" + tf.getId() + " should only contain numbers\n");
-          // }
+          if (errorString.indexOf("\t" + tf.getId() + " should only contain numbers") == -1) {
+            errorString.append("\t" + tf.getId() + " should only contain numbers\n");
+          }
         }
       }
     } else if (element instanceof DatePicker) {
@@ -373,7 +372,7 @@ public class AddLoanController implements ValidateType, CheckEmpty {
       if (today.isBefore((LocalDate) (Object) ui.getValue())) {
         flag = false;
         ui.setStyle(redBorder);
-        // errorString.append("\tDate cannot be before today\n");
+        errorString.append("\tDate cannot be before today\n");
       }
     }
     return flag;
