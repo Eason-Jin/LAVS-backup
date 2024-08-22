@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager;
+import uoa.lavs.SceneManager.AppScene;
 import uoa.lavs.controllers.interfaces.CheckEmpty;
 import uoa.lavs.controllers.interfaces.ValidateType;
 import uoa.lavs.dataoperations.customer.CustomerLoader;
@@ -30,7 +31,6 @@ import uoa.lavs.models.Loan;
 
 @Controller
 public class AddLoanController implements ValidateType, CheckEmpty {
-
   @FXML private AnchorPane coBorrowerScrollAnchorPane;
   @FXML private FlowPane coBorrowerFlowPane;
   @FXML private Pane coBorrowerPane;
@@ -54,7 +54,7 @@ public class AddLoanController implements ValidateType, CheckEmpty {
 
   @Autowired SearchController searchController;
   @Autowired CustomerDetailsController customerDetailsController;
-
+  @Autowired LoanDetailsController loanDetailsController;
   @FXML
   private void initialize() {
     alert = new Alert(AlertType.ERROR);
@@ -109,7 +109,7 @@ public class AddLoanController implements ValidateType, CheckEmpty {
   }
 
   public void setCustomerName(String customerName) {
-    titleLabel.setText("New loan for " + customerName);
+    titleLabel.setText("New Loan for " + customerName);
   }
 
   public void addPrimeBorrower(String id) {
@@ -268,10 +268,11 @@ public class AddLoanController implements ValidateType, CheckEmpty {
       }
       Alert successAlert = new Alert(AlertType.INFORMATION);
       successAlert.setTitle("Success");
-      successAlert.setHeaderText("Customer has been added");
+      successAlert.setHeaderText("Loan has been added");
       if (successAlert.showAndWait().get() == ButtonType.OK) {
         resetScene();
-        Main.setScene(SceneManager.AppScene.START);
+        loanDetailsController.setLoanDetails(loanId);
+        Main.setScene(AppScene.LOAN_DETAILS);
       }
     } else {
       alert.setContentText(errorString.toString());

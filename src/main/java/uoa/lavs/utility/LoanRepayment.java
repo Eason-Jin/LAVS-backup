@@ -9,6 +9,8 @@ public class LoanRepayment {
     private Double interest;
     private Double remaining;
 
+    public LoanRepayment() {}
+
     public LoanRepayment(Integer number, LocalDate repaymentDate, Double principal, Double interest, Double remaining) {
         this.number = number;
         this.repaymentDate = repaymentDate;

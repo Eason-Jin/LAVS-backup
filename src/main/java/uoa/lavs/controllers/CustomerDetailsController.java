@@ -45,6 +45,9 @@ import uoa.lavs.models.Phone;
 
 @Controller
 public class CustomerDetailsController {
+  @Autowired private AddLoanController addLoanController;
+  @Autowired private LoanDetailsController loanDetailsController;
+
   @FXML private Button homeButton;
   @FXML private Button backButton;
   @FXML private Button editButton;
@@ -85,8 +88,6 @@ public class CustomerDetailsController {
   @FXML private TableColumn<Loan, Frequency> paymentFrequencyColumn;
   @FXML private Button addLoanButton;
 
-  @Autowired private AddLoanController addLoanController;
-
   private Map<String, Node> customerDetailFields = new HashMap<>();
 
   @FXML
@@ -110,8 +111,8 @@ public class CustomerDetailsController {
                 }
                 String loanId = row.getItem().getLoanId();
                 System.out.println("Loan clicked with ID: " + loanId);
-                // loanDetailsController.setLoanDetails(loanId);
-                // Main.setScene(AppScene.LOAN_DETAILS);
+                loanDetailsController.setLoanDetails(loanId);
+                Main.setScene(AppScene.LOAN_DETAILS);
               });
 
           row.setOnMouseEntered(
