@@ -1,40 +1,29 @@
 package uoa.lavs.controllers;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
-import uoa.lavs.SceneManager;
 import uoa.lavs.SceneManager.AppScene;
-import uoa.lavs.controllers.interfaces.CheckEmpty;
-import uoa.lavs.controllers.interfaces.ValidateType;
 import uoa.lavs.dataoperations.customer.CustomerLoader;
-import uoa.lavs.dataoperations.loan.CoborrowerUpdater;
+import uoa.lavs.dataoperations.loan.CoborrowerLoader;
 import uoa.lavs.dataoperations.loan.LoanLoader;
 import uoa.lavs.dataoperations.loan.LoanPaymentsLoader;
-import uoa.lavs.dataoperations.loan.LoanUpdater;
-import uoa.lavs.mainframe.Frequency;
-import uoa.lavs.mainframe.RateType;
+import uoa.lavs.dataoperations.loan.LoanSummaryLoader;
 import uoa.lavs.models.Customer;
 import uoa.lavs.models.Loan;
 import uoa.lavs.utility.LoanRepayment;
+import uoa.lavs.utility.LoanSummary;
 
 @Controller
 public class LoanDetailsController {
@@ -52,6 +41,9 @@ public class LoanDetailsController {
   @FXML private TextField compoundingField;
   @FXML private TextField paymentFrequencyField;
   @FXML private TextField paymentAmountField;
+  @FXML private TextField totalInterestField;
+  @FXML private TextField totalCostField;
+  @FXML private TextField payoffDateField;
 
   @FXML private TableView<Customer> coBorrowersTable;
   @FXML private TableColumn<Customer, String> coBorrowerNameColumn;
@@ -68,8 +60,8 @@ public class LoanDetailsController {
 
   @FXML
   private void initialize() {
-    coBorrowerNameColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("coBorrowerName"));
-    coBorrowerIdColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("coBorrowerId"));
+    coBorrowerNameColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));
+    coBorrowerIdColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("id"));
 
     repaymentDateColumn.setCellValueFactory(new PropertyValueFactory<LoanRepayment, String>("repaymentDate"));
     principalColumn.setCellValueFactory(new PropertyValueFactory<LoanRepayment, String>("principal"));
@@ -79,6 +71,7 @@ public class LoanDetailsController {
 
   public void setLoanDetails(String loanId) {
     Loan loan = LoanLoader.loadData(loanId);
+    LoanSummary loanSummary = LoanSummaryLoader.calculateLoanSummary(loanId);
 
     titleLabel.setText("Loan Details for Loan ID: " + loanId);
 
@@ -91,8 +84,23 @@ public class LoanDetailsController {
     compoundingField.setText(loan.getCompounding().toString());
     paymentFrequencyField.setText(loan.getPaymentFrequency().toString());
     paymentAmountField.setText(String.valueOf(loan.getPaymentAmount()));
+    totalInterestField.setText(String.valueOf(loanSummary.getTotalInterest()));
+    totalCostField.setText(String.valueOf(loanSummary.getTotalCost()));
+    payoffDateField.setText(loanSummary.getPayOffDate().toString());
 
+    setCoBorrowersTable(loanId);
     setRepaymentsTable(loanId);
+  }
+
+  private void setCoBorrowersTable(String loanId) {
+    List<Customer> coBorrowers = new ArrayList<>();
+    List<String> coBorrowerIds = CoborrowerLoader.loadData(loanId);
+    for (String id : coBorrowerIds) {
+      Customer coBorrower = CustomerLoader.loadData(id);
+      coBorrowers.add(coBorrower);
+    }
+    ObservableList<Customer> rows = FXCollections.observableArrayList(coBorrowers);
+    coBorrowersTable.setItems(rows);
   }
 
   private void setRepaymentsTable(String loanId) {

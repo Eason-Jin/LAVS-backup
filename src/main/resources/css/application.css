@@ -12,3 +12,21 @@
 /*#btnSearch {*/
 /*    -fx-background-color: linear-gradient(#DBF1FE 75%, white 25%) no-repeat;*/
 /*}*/
+
+.combo-box:disabled,
+.text-field:disabled,
+.text-area:disabled {
+  -fx-background-color: #f6f8fa;
+  -fx-border-color: #d0d7de;
+  -fx-border-radius: 4;
+  -fx-opacity: 1;
+}
+
+.date-picker:disabled,
+.date-picker > .date-picker-text-field:disabled,
+.date-picker > .date-picker-display-node:disabled,
+.label:disabled,
+.check-box:disabled,
+.check-box > .box:disabled {
+  -fx-opacity: 1;
+}
