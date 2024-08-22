@@ -20,6 +20,7 @@ public class CoborrowerUpdater {
       updateMainframe(loanId, coborrowerId, number);
     } catch (Exception e) {
       System.out.println("Mainframe update failed: " + e.getMessage());
+      failed = true;
     } finally {
       try {
         updateDatabase(loanId, coborrowerId);
