@@ -32,7 +32,7 @@ public class LoanPaymentsLoader {
         return loanRepayments;
     }
 
-    private static List<LoanRepayment> calculateLocally(String loanId) throws Exception {
+    public static List<LoanRepayment> calculateLocally(String loanId) throws Exception {
         // Find the loan in the database
         Connection connection = Instance.getDatabaseConnection();
         String query = "SELECT * FROM loan WHERE LoanID = ?;";
