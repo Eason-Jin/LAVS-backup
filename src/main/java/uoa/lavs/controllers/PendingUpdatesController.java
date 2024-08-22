@@ -14,7 +14,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
@@ -41,7 +40,6 @@ public class PendingUpdatesController {
   @FXML private TableColumn<PendingUpdateRow, Boolean> coborrowerColumn;
 
   @Autowired AddLoanController addLoanController;
-
 
   private List<Address> failedAddressUpdates;
   private List<Customer> failedCustomerUpdates;
@@ -89,7 +87,6 @@ public class PendingUpdatesController {
             setStyle("-fx-background-color: #d43943;");
           }
           setGraphic(imageView);
-          // Center the image in the cell
           setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
           setAlignment(Pos.CENTER);
         }
