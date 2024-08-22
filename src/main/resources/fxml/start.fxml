@@ -92,7 +92,17 @@
                   </HBox>
                </children>
             </StackPane>
-            <Separator opacity="0.0" prefWidth="320.0" />
+            <Separator opacity="0.0" prefWidth="275.0" />
+            <Button focusTraversable="false" mnemonicParsing="false" onAction="#onClickPending" prefHeight="65.0" prefWidth="65.0" style="-fx-background-radius: 100;">
+               <graphic>
+                  <ImageView fitHeight="31.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/start/hour-glass.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Separator opacity="0.0" prefWidth="10.0" />
             <Button focusTraversable="false" mnemonicParsing="false" onAction="#createPopup" prefHeight="65.0" prefWidth="65.0" style="-fx-background-radius: 100;">
                <graphic>
                   <ImageView fitHeight="32.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
@@ -104,15 +114,6 @@
             </Button>
          </children>
       </HBox>
-      <Button focusTraversable="false" layoutX="1016.0" layoutY="457.0" mnemonicParsing="false" onAction="#onClickPending" prefHeight="65.0" prefWidth="65.0" style="-fx-background-radius: 100;">
-         <graphic>
-            <ImageView fitHeight="32.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/start/about.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
    </children>
    <opaqueInsets>
       <Insets />
