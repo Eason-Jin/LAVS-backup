@@ -3,7 +3,6 @@ package uoa.lavs.models;
 public class PendingUpdateRow {
 
     private final String customerId;
-    private final String customerName;
     private final Boolean generalDetails;
     private final Boolean address;
     private final Boolean email;
@@ -12,9 +11,8 @@ public class PendingUpdateRow {
     private final Boolean loan;
     private final Boolean coborrower;
 
-    public PendingUpdateRow(String customerId, String customerName, Boolean generalDetails, Boolean address, Boolean email, Boolean phoneNumber, Boolean employer, Boolean loan, Boolean coborrower) {
+    public PendingUpdateRow(String customerId, Boolean generalDetails, Boolean address, Boolean email, Boolean phoneNumber, Boolean employer, Boolean loan, Boolean coborrower) {
         this.customerId = customerId;
-        this.customerName = customerName;
         this.generalDetails = generalDetails;
         this.address = address;
         this.email = email;
@@ -26,10 +24,6 @@ public class PendingUpdateRow {
 
     public String getCustomerId() {
         return customerId;
-    }
-
-    public String getCustomerName() {
-        return customerName;
     }
 
     public Boolean getGeneralDetails() {
