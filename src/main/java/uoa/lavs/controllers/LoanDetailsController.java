@@ -95,6 +95,12 @@ public class LoanDetailsController {
   private void setCoBorrowersTable(String loanId) {
     List<Customer> coBorrowers = new ArrayList<>();
     List<String> coBorrowerIds = CoborrowerLoader.loadData(loanId);
+
+    // Extract the first part of the Loan-ID (before the dash "-")
+    String loanIdPrefix = loanId.split("-")[0];
+    // Remove the coBorrower ID that matches the first part of the Loan-ID
+    coBorrowerIds.removeIf(id -> id.equals(loanIdPrefix));
+
     for (String id : coBorrowerIds) {
       Customer coBorrower = CustomerLoader.loadData(id);
       coBorrowers.add(coBorrower);
