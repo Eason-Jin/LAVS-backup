@@ -9,11 +9,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
@@ -53,14 +54,49 @@ public class PendingUpdatesController {
 
   public void initialize() {
     idColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-    generalDetailsColumn.setCellValueFactory(new PropertyValueFactory<>("generalDetails"));
-    addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
-    emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
-    phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-    employerColumn.setCellValueFactory(new PropertyValueFactory<>("employer"));
-    loanColumn.setCellValueFactory(new PropertyValueFactory<>("loan"));
-    coborrowerColumn.setCellValueFactory(new PropertyValueFactory<>("coborrower"));
+    setupBooleanColumn(generalDetailsColumn, "generalDetails");
+    setupBooleanColumn(addressColumn, "address");
+    setupBooleanColumn(emailColumn, "email");
+    setupBooleanColumn(phoneColumn, "phoneNumber");
+    setupBooleanColumn(employerColumn, "employer");
+    setupBooleanColumn(loanColumn, "loan");
+    setupBooleanColumn(coborrowerColumn, "coborrower");
   }
+
+  private void setupBooleanColumn(TableColumn<PendingUpdateRow, Boolean> column, String propertyName) {
+    column.setCellValueFactory(new PropertyValueFactory<>(propertyName));
+    column.setCellFactory(col -> new TableCell<PendingUpdateRow, Boolean>() {
+      private final ImageView imageView = new ImageView();
+      {
+        imageView.setFitHeight(21);
+        imageView.setFitWidth(30);
+      }
+
+      @Override
+      protected void updateItem(Boolean item, boolean empty) {
+        super.updateItem(item, empty);
+        if (empty) {
+          setText(null);
+          setGraphic(null);
+          setStyle("");
+        } else {
+          setText(null);
+          if (Boolean.TRUE.equals(item)) {
+            imageView.setImage(new Image(getClass().getResourceAsStream("/images/pending/push.png")));
+            setStyle("-fx-background-color: #2da44e;");
+          } else {
+            imageView.setImage(new Image(getClass().getResourceAsStream("/images/pending/no-change.png")));
+            setStyle("-fx-background-color: #d43943;");
+          }
+          setGraphic(imageView);
+          // Center the image in the cell
+          setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+          setAlignment(Pos.CENTER);
+        }
+      }
+    });
+  }
+
 
   @FXML
   private void onClickBack(ActionEvent event) throws IOException {
