@@ -48,6 +48,7 @@ public class Main extends Application {
     SceneManager.addScene(AppScene.ADD_LOAN, loadLoader("addLoan").load());
     SceneManager.addScene(AppScene.CUSTOMER_DETAILS, loadLoader("customerDetails").load());
     SceneManager.addScene(AppScene.LOAN_DETAILS, loadLoader("loanDetails").load());
+    SceneManager.addScene(AppScene.PENDING_UPDATES, loadLoader("pendingUpdates").load());
 
     currentStage = stage;
     currentScene = new Scene(loadLoader("start").load(), 1152, 648);

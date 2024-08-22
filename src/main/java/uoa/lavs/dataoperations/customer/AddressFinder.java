@@ -29,7 +29,7 @@ public class AddressFinder {
     return addresses;
   }
 
-  private static List<Address> findFromMainframe(String customerId) throws Exception {
+  public static List<Address> findFromMainframe(String customerId) throws Exception {
     FindCustomerAddress findCustomerAddress = new FindCustomerAddress();
     LoadCustomerAddress loadCustomerAddress = new LoadCustomerAddress();
     findCustomerAddress.setCustomerId(customerId);

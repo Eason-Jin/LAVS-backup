@@ -14,6 +14,7 @@ public class SceneManager {
         ADD_LOAN,
         CUSTOMER_DETAILS,
         LOAN_DETAILS
+        PENDING_UPDATES
     }
 
     public static HashMap<AppScene, Parent> sceneMap = new HashMap<AppScene, Parent>();

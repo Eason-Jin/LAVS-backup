@@ -1,6 +1,8 @@
 package uoa.lavs.dataoperations.loan;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.LoanStatus;
 import uoa.lavs.mainframe.Status;
@@ -10,18 +12,27 @@ import uoa.lavs.models.Loan;
 
 public class LoanUpdater {
 
+  private static boolean failed = false;
+
   public static void updateData(String loanId, Loan loan) {
     try {
       // Attempt to update the mainframe first
       loanId = updateMainframe(loanId, loan);
     } catch (Exception e) {
       System.out.println("Mainframe update failed: " + e.getMessage());
+      failed = true;
     } finally {
       try {
         // Always attempt to update the database
         updateDatabase(loanId, loan);
       } catch (SQLException e) {
         System.out.println("Database update failed: " + e.getMessage());
+      } finally {
+        if (failed) {
+          addFailedUpdate(loan.getLoanId());
+        } else {
+          addInMainframe(loan.getLoanId());
+        }
       }
     }
   }
@@ -72,7 +83,7 @@ public class LoanUpdater {
   private static String updateMainframe(String loanId, Loan loan) throws Exception {
     UpdateLoan updateLoan = new UpdateLoan();
     UpdateLoanStatus updateLoanStatus = new UpdateLoanStatus();
-    updateLoan.setLoanId(loanId);
+    updateLoan.setLoanId(null);
     updateLoan.setCustomerId(loan.getCustomerId());
     updateLoan.setPrincipal(loan.getPrincipal());
     updateLoan.setRateValue(loan.getRateValue());
@@ -102,5 +113,60 @@ public class LoanUpdater {
     loan.setLoanId(updateLoan.getLoanIdFromServer());
     loan.setStatus(updateLoan.getStatusFromServer());
     return updateLoan.getLoanIdFromServer();
+  }
+
+  private static void addFailedUpdate(String loanId) {
+    String sql = "UPDATE Loan SET InMainframe = false WHERE LoanID = ?";
+    try (Connection connection = Instance.getDatabaseConnection();
+        PreparedStatement statement = connection.prepareStatement(sql)) {
+      statement.setString(1, loanId);
+      statement.executeUpdate();
+    } catch (SQLException e) {
+      System.out.println("Failed to update database: " + e.getMessage());
+    }
+  }
+
+  private static void addInMainframe(String loanId) {
+    String sql = "UPDATE Loan SET InMainframe = true WHERE LoanID = ?";
+    try (Connection connection = Instance.getDatabaseConnection();
+        PreparedStatement statement = connection.prepareStatement(sql)) {
+      statement.setString(1, loanId);
+      statement.executeUpdate();
+    } catch (SQLException e) {
+      System.out.println("Failed to update database: " + e.getMessage());
+    }
+  }
+
+  public static List<Loan> getFailedUpdates() {
+    List<Loan> failedUpdates = new ArrayList<>();
+    String sql = "SELECT * FROM Loan WHERE InMainframe = false";
+    try (Connection connection = Instance.getDatabaseConnection();
+        PreparedStatement statement = connection.prepareStatement(sql);
+        ResultSet resultSet = statement.executeQuery()) {
+      while (resultSet.next()) {
+        String customerId = resultSet.getString("CustomerID");
+        String loanId = resultSet.getString("LoanID");
+        List<Loan> loans = LoanFinder.findData(customerId);
+        for (Loan loanOnAccount : loans) {
+          if (loanOnAccount.getLoanId().equals(loanId)) {
+            failedUpdates.add(loanOnAccount);
+            break;
+          }
+        }
+      }
+    } catch (SQLException e) {
+      System.out.println("Failed to get failed updates: " + e.getMessage());
+    }
+    return failedUpdates;
+  }
+
+  public static void retryFailedUpdates() throws Exception {
+    List<Loan> failedUpdates = getFailedUpdates();
+    for (Loan loan : failedUpdates) {
+      String loanId = loan.getLoanId();
+      loan.setLoanId(null); // Reset loan ID before retrying
+        updateMainframe(loanId, loan);
+        addInMainframe(loanId);
+    }
   }
 }
