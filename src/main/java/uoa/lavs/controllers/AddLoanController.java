@@ -266,6 +266,13 @@ public class AddLoanController implements ValidateType, CheckEmpty {
       for (String id : coBorrowerIds) {
         CoborrowerUpdater.updateData(loanId, id, null);
       }
+      Alert successAlert = new Alert(AlertType.INFORMATION);
+      successAlert.setTitle("Success");
+      successAlert.setHeaderText("Customer has been added");
+      if (successAlert.showAndWait().get() == ButtonType.OK) {
+        resetScene();
+        Main.setScene(SceneManager.AppScene.START);
+      }
     } else {
       alert.setContentText(errorString.toString());
       alert.showAndWait();
