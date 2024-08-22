@@ -160,17 +160,13 @@ public class LoanUpdater {
     return failedUpdates;
   }
 
-  public static void retryFailedUpdates() {
+  public static void retryFailedUpdates() throws Exception {
     List<Loan> failedUpdates = getFailedUpdates();
     for (Loan loan : failedUpdates) {
       String loanId = loan.getLoanId();
       loan.setLoanId(null); // Reset loan ID before retrying
-      try {
         updateMainframe(loanId, loan);
         addInMainframe(loanId);
-      } catch (Exception e) {
-        System.out.println("Failed to retry failed update: " + e.getMessage());
-      }
     }
   }
 }

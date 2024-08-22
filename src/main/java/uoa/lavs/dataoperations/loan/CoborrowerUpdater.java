@@ -117,19 +117,15 @@ public class CoborrowerUpdater {
     return failedUpdates;
   }
 
-  public static void retryFailedUpdates() {
+  public static void retryFailedUpdates() throws Exception {
     List<String> failedUpdates = getFailedUpdates();
     for (String coborrowerInfo : failedUpdates) {
       String[] parts = coborrowerInfo.split(",");
       if (parts.length == 2) {
         String loanId = parts[0];
         String coborrowerId = parts[1];
-        try {
           updateMainframe(loanId, coborrowerId, null);
           addInMainframe(loanId, coborrowerId);
-        } catch (Exception e) {
-          System.out.println("Failed to retry failed call: " + e.getMessage());
-        }
       } else {
         System.out.println("Invalid coborrower info: " + coborrowerInfo);
       }

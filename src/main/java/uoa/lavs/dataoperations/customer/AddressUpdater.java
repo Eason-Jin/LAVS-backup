@@ -219,17 +219,13 @@ public class AddressUpdater {
     return failedUpdates;
   }
 
-  public static void retryFailedUpdates() {
+  public static void retryFailedUpdates() throws Exception {
     List<Address> failedUpdates = getFailedUpdates();
     for (Address address : failedUpdates) {
       String customerID = address.getCustomerId();
       Integer number = address.getNumber();
-      try {
         updateMainframe(customerID, address);
         addInMainframe(customerID, number);
-      } catch (Exception e) {
-        System.out.println("Failed to retry failed update: " + e.getMessage());
-      }
     }
   }
 }

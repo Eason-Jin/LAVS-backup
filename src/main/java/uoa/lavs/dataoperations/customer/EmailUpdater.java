@@ -188,17 +188,13 @@ public class EmailUpdater {
     return failedUpdates;
   }
 
-  public static void retryFailedUpdates() {
+  public static void retryFailedUpdates() throws Exception  {
     List<Email> failedUpdates = getFailedUpdates();
     for (Email email : failedUpdates) {
       String customerID = email.getCustomerId();
       Integer number = email.getNumber();
-      try {
         updateMainframe(customerID, email);
         addInMainframe(customerID, number);
-      } catch (Exception e) {
-        System.out.println("Mainframe update failed: " + e.getMessage());
-      }
     }
   }
 }

@@ -197,16 +197,12 @@ public class CustomerUpdater {
     return failedUpdates;
   }
 
-  public static void retryFailedUpdates() {
+  public static void retryFailedUpdates() throws Exception {
     List<Customer> failedUpdates = getFailedUpdates();
     for (Customer customer : failedUpdates) {
       String customerID = customer.getId();
-      try {
         updateMainframe(customerID, customer);
         addInMainframe(customerID);
-      } catch (Exception e) {
-        System.out.println("Failed to retry failed call: " + e.getMessage());
-      }
     }
   }
 

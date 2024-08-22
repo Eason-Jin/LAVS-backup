@@ -205,17 +205,13 @@ public class PhoneUpdater {
     return failedUpdates;
   }
 
-  public static void retryFailedUpdates() {
+  public static void retryFailedUpdates() throws Exception {
     List<Phone> failedUpdates = getFailedUpdates();
     for (Phone phone : failedUpdates) {
       String customerID = phone.getCustomerId();
       Integer number = phone.getNumber();
-      try {
         updateMainframe(customerID, phone);
         addInMainframe(customerID, number);
-      } catch (Exception e) {
-        System.out.println("Failed to retry failed call: " + e.getMessage());
-      }
     }
   }
 }

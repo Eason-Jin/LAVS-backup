@@ -240,17 +240,13 @@ public class EmployerUpdater {
     return failedUpdates;
   }
 
-  public static void retryFailedUpdates() {
+  public static void retryFailedUpdates() throws Exception {
     List<Employer> failedUpdates = getFailedUpdates();
     for (Employer employer : failedUpdates) {
       String customerID = employer.getCustomerId();
       Integer number = employer.getNumber();
-      try {
         updateMainframe(customerID, employer);
         addInMainframe(customerID, number);
-      } catch (Exception e) {
-        System.out.println("Mainframe update failed: " + e.getMessage());
-      }
     }
   }
 }

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -61,39 +60,44 @@ public class PendingUpdatesController {
     setupBooleanColumn(coborrowerColumn, "coborrower");
   }
 
-  private void setupBooleanColumn(TableColumn<PendingUpdateRow, Boolean> column, String propertyName) {
+  private void setupBooleanColumn(
+      TableColumn<PendingUpdateRow, Boolean> column, String propertyName) {
     column.setCellValueFactory(new PropertyValueFactory<>(propertyName));
-    column.setCellFactory(col -> new TableCell<PendingUpdateRow, Boolean>() {
-      private final ImageView imageView = new ImageView();
-      {
-        imageView.setFitHeight(21);
-        imageView.setFitWidth(30);
-      }
+    column.setCellFactory(
+        col ->
+            new TableCell<PendingUpdateRow, Boolean>() {
+              private final ImageView imageView = new ImageView();
 
-      @Override
-      protected void updateItem(Boolean item, boolean empty) {
-        super.updateItem(item, empty);
-        if (empty) {
-          setText(null);
-          setGraphic(null);
-          setStyle("");
-        } else {
-          setText(null);
-          if (Boolean.TRUE.equals(item)) {
-            imageView.setImage(new Image(getClass().getResourceAsStream("/images/pending/push.png")));
-            setStyle("-fx-background-color: #2da44e;");
-          } else {
-            imageView.setImage(new Image(getClass().getResourceAsStream("/images/pending/no-change.png")));
-            setStyle("-fx-background-color: #d43943;");
-          }
-          setGraphic(imageView);
-          setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-          setAlignment(Pos.CENTER);
-        }
-      }
-    });
+              {
+                imageView.setFitHeight(21);
+                imageView.setFitWidth(30);
+              }
+
+              @Override
+              protected void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                  setText(null);
+                  setGraphic(null);
+                  setStyle("");
+                } else {
+                  setText(null);
+                  if (Boolean.TRUE.equals(item)) {
+                    imageView.setImage(
+                        new Image(getClass().getResourceAsStream("/images/pending/push.png")));
+                    setStyle("-fx-background-color: #2da44e;");
+                  } else {
+                    imageView.setImage(
+                        new Image(getClass().getResourceAsStream("/images/pending/no-change.png")));
+                    setStyle("-fx-background-color: #d43943;");
+                  }
+                  setGraphic(imageView);
+                  setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                  setAlignment(Pos.CENTER);
+                }
+              }
+            });
   }
-
 
   @FXML
   private void onClickBack(ActionEvent event) throws IOException {
@@ -102,15 +106,26 @@ public class PendingUpdatesController {
 
   @FXML
   private void onClickSend(ActionEvent event) {
-    CustomerUpdater.retryFailedUpdates();
-    EmailUpdater.retryFailedUpdates();
-    AddressUpdater.retryFailedUpdates();
-    PhoneUpdater.retryFailedUpdates();
-    EmployerUpdater.retryFailedUpdates();
-    LoanUpdater.retryFailedUpdates();
-    CoborrowerUpdater.retryFailedUpdates();
-    populatePendingTable();
-    setTitle();
+    try {
+      CustomerUpdater.retryFailedUpdates();
+      EmailUpdater.retryFailedUpdates();
+      AddressUpdater.retryFailedUpdates();
+      PhoneUpdater.retryFailedUpdates();
+      EmployerUpdater.retryFailedUpdates();
+      LoanUpdater.retryFailedUpdates();
+      CoborrowerUpdater.retryFailedUpdates();
+      populatePendingTable();
+      setTitle();
+    } catch (Exception e) {
+      showAlert();
+    }
+  }
+
+  private void showAlert() {
+    Alert alert = new Alert(Alert.AlertType.ERROR);
+    alert.setTitle("Update Failed");
+    alert.setContentText("Updates could not be sent to the Mainframe");
+    alert.showAndWait();
   }
 
   public void retrieveAllFailedUpdates() {
@@ -130,17 +145,31 @@ public class PendingUpdatesController {
     for (String customerId : customerIds) {
 
       // Check for failed updates related to this customer
-      boolean customerFailed = failedCustomerUpdates.stream().anyMatch(customer -> customer.getId().equals(customerId));
-      boolean addressFailed = failedAddressUpdates.stream().anyMatch(address -> address.getCustomerId().equals(customerId));
-      boolean emailFailed = failedEmailUpdates.stream().anyMatch(email -> email.getCustomerId().equals(customerId));
-      boolean phoneFailed = failedPhoneUpdates.stream().anyMatch(phone -> phone.getCustomerId().equals(customerId));
-      boolean employerFailed = failedEmployerUpdates.stream().anyMatch(employer -> employer.getCustomerId().equals(customerId));
-      boolean loanFailed = failedLoanUpdates.stream().anyMatch(loan -> loan.getCustomerId().equals(customerId));
-      boolean coborrowerFailed = failedCoborrowerUpdates.stream()
-              .anyMatch(coborrowerId -> coborrowerId != null && !coborrowerId.isEmpty() && coborrowerId.charAt(0) == customerId.charAt(0));
+      boolean customerFailed =
+          failedCustomerUpdates.stream().anyMatch(customer -> customer.getId().equals(customerId));
+      boolean addressFailed =
+          failedAddressUpdates.stream()
+              .anyMatch(address -> address.getCustomerId().equals(customerId));
+      boolean emailFailed =
+          failedEmailUpdates.stream().anyMatch(email -> email.getCustomerId().equals(customerId));
+      boolean phoneFailed =
+          failedPhoneUpdates.stream().anyMatch(phone -> phone.getCustomerId().equals(customerId));
+      boolean employerFailed =
+          failedEmployerUpdates.stream()
+              .anyMatch(employer -> employer.getCustomerId().equals(customerId));
+      boolean loanFailed =
+          failedLoanUpdates.stream().anyMatch(loan -> loan.getCustomerId().equals(customerId));
+      boolean coborrowerFailed =
+          failedCoborrowerUpdates.stream()
+              .anyMatch(
+                  coborrowerId ->
+                      coborrowerId != null
+                          && !coborrowerId.isEmpty()
+                          && coborrowerId.charAt(0) == customerId.charAt(0));
 
       // Create a new row with all the relevant information
-      PendingUpdateRow row = new PendingUpdateRow(
+      PendingUpdateRow row =
+          new PendingUpdateRow(
               customerId,
               customerFailed,
               addressFailed,
@@ -148,13 +177,11 @@ public class PendingUpdatesController {
               phoneFailed,
               employerFailed,
               loanFailed,
-              coborrowerFailed
-      );
+              coborrowerFailed);
       rows.add(row);
     }
 
     pendingTable.setItems(rows);
-
   }
 
   public Set<String> retrieveAllFailedIds() {
@@ -186,7 +213,8 @@ public class PendingUpdatesController {
 
     for (String coborrower : failedCoborrowerUpdates) {
       if (coborrower != null && !coborrower.isEmpty()) {
-        // Takes the first character of the Loan ID string, which corresponds to the customer who owns this loan
+        // Takes the first character of the Loan ID string, which corresponds to the customer who
+        // owns this loan
         // who has had their co-borrower changed
         customerIds.add(String.valueOf(coborrower.charAt(0)));
       }
@@ -203,7 +231,8 @@ public class PendingUpdatesController {
   public void setTitle() {
     int pendingUpdatesCount = getNumberOfFailedUpdates();
     if (pendingUpdatesCount > 0) {
-      String updateText = pendingUpdatesCount == 1 ? " Pending Mainframe Update" : " Pending Mainframe Updates";
+      String updateText =
+          pendingUpdatesCount == 1 ? " Pending Mainframe Update" : " Pending Mainframe Updates";
       titleLabel.setText(pendingUpdatesCount + updateText);
     } else {
       titleLabel.setText("No Pending Mainframe Updates");
