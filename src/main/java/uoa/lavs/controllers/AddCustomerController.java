@@ -858,7 +858,7 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
     boolean occupationFlag = checkLength(jobField, 40);
     boolean citizenshipFieldFlag = checkLength(citizenshipField, 40);
     boolean visaFieldFlag = checkLength(visaField, 40);
-    boolean notesAreaFlag = checkLength(notesArea, 1400);
+    boolean notesAreaFlag = checkLength(notesArea, 1330);
 
     boolean addressFlag = false;
     for (int i = 1; i < addressCounter; i++) {
