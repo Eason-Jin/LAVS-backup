@@ -20,6 +20,7 @@ public class LoanUpdater {
       loanId = updateMainframe(loanId, loan);
     } catch (Exception e) {
       System.out.println("Mainframe update failed: " + e.getMessage());
+      failed = true;
     } finally {
       try {
         // Always attempt to update the database
@@ -82,7 +83,7 @@ public class LoanUpdater {
   private static String updateMainframe(String loanId, Loan loan) throws Exception {
     UpdateLoan updateLoan = new UpdateLoan();
     UpdateLoanStatus updateLoanStatus = new UpdateLoanStatus();
-    updateLoan.setLoanId(loanId);
+    updateLoan.setLoanId(null);
     updateLoan.setCustomerId(loan.getCustomerId());
     updateLoan.setPrincipal(loan.getPrincipal());
     updateLoan.setRateValue(loan.getRateValue());
@@ -138,13 +139,14 @@ public class LoanUpdater {
 
   public static List<Loan> getFailedUpdates() {
     List<Loan> failedUpdates = new ArrayList<>();
-    String sql = "SELECT LoanID FROM Loan WHERE InMainframe = false";
+    String sql = "SELECT * FROM Loan WHERE InMainframe = false";
     try (Connection connection = Instance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
         ResultSet resultSet = statement.executeQuery()) {
       while (resultSet.next()) {
+        String customerId = resultSet.getString("CustomerID");
         String loanId = resultSet.getString("LoanID");
-        List<Loan> loans = LoanFinder.findData(loanId);
+        List<Loan> loans = LoanFinder.findData(customerId);
         for (Loan loanOnAccount : loans) {
           if (loanOnAccount.getLoanId().equals(loanId)) {
             failedUpdates.add(loanOnAccount);

@@ -43,13 +43,18 @@ public class AddressUpdater {
     Address existingAddress = null;
 
     if (address.getNumber() != null) {
-      List<Address> existingAddresses = AddressFinder.findFromMainframe(customerID);
-      for (Address addressOnAccount : existingAddresses) {
-        if (addressOnAccount.getNumber().equals(address.getNumber())
-            && addressOnAccount.getCustomerId().equals(address.getCustomerId())) {
-          existingAddress = addressOnAccount;
-          break;
+      List<Address> existingAddresses = null;
+      try {
+        existingAddresses = AddressFinder.findData(customerID);
+        for (Address addressOnAccount : existingAddresses) {
+          if (addressOnAccount.getNumber().equals(address.getNumber())
+              && addressOnAccount.getCustomerId().equals(address.getCustomerId())) {
+            existingAddress = addressOnAccount;
+            break;
+          }
         }
+      } catch (Exception e) {
+        System.out.println("Address %s not in mainframe: " + e.getMessage());
       }
     }
 

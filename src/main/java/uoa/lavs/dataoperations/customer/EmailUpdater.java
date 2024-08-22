@@ -21,6 +21,7 @@ public class EmailUpdater {
       updateMainframe(customerID, email);
     } catch (Exception e) {
       System.out.println("Mainframe update failed: " + e.getMessage());
+      failed = true;
     } finally {
       try {
         updateDatabase(customerID, email);
@@ -43,13 +44,18 @@ public class EmailUpdater {
     Email existingEmail = null;
 
     if (email.getNumber() != null) {
-      List<Email> existingEmails = EmailFinder.findFromMainframe(customerID);
-      for (Email emailOnAccount : existingEmails) {
-        if (emailOnAccount.getNumber().equals(email.getNumber())
-            && emailOnAccount.getCustomerId().equals(email.getCustomerId())) {
-          existingEmail = emailOnAccount;
-          break;
+      List<Email> existingEmails = null;
+      try {
+        existingEmails = EmailFinder.findFromMainframe(customerID);
+        for (Email emailOnAccount : existingEmails) {
+          if (emailOnAccount.getNumber().equals(email.getNumber())
+              && emailOnAccount.getCustomerId().equals(email.getCustomerId())) {
+            existingEmail = emailOnAccount;
+            break;
+          }
         }
+      } catch (Exception e) {
+        System.out.println("Email %s not in mainframe: " + e.getMessage());
       }
     }
 
@@ -162,13 +168,18 @@ public class EmailUpdater {
       while (resultSet.next()) {
         String customerID = resultSet.getString("CustomerID");
         Integer number = resultSet.getInt("Number");
-        List<Email> emails = EmailFinder.findData(customerID);
-        for (Email emailOnAccount : emails) {
-          if (emailOnAccount.getNumber().equals(number)
-              && emailOnAccount.getCustomerId().equals(customerID)) {
-            failedUpdates.add(emailOnAccount);
-            break;
+        List<Email> emails;
+        try {
+          emails = EmailFinder.findFromDatabase(customerID);
+          for (Email emailOnAccount : emails) {
+            if (emailOnAccount.getNumber().equals(number)
+                && emailOnAccount.getCustomerId().equals(customerID)) {
+              failedUpdates.add(emailOnAccount);
+              break;
+            }
           }
+        } catch (Exception e) {
+          System.out.println("Database find failed: " + e.getMessage());
         }
       }
     } catch (SQLException e) {

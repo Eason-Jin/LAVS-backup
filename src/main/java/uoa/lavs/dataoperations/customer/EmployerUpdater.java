@@ -21,6 +21,7 @@ public class EmployerUpdater {
       updateMainframe(customerID, employer);
     } catch (Exception e) {
       System.out.println("Mainframe update failed: " + e.getMessage());
+      failed = true;
     } finally {
       try {
         updateDatabase(customerID, employer);
@@ -43,14 +44,18 @@ public class EmployerUpdater {
     Employer existingEmployer = null;
 
     if (employer.getNumber() != null) {
-      List<Employer> existingEmployeres = EmployerFinder.findFromMainframe(customerID);
-
-      for (Employer employerOnAccount : existingEmployeres) {
-        if (employerOnAccount.getNumber().equals(employer.getNumber())
-            && employerOnAccount.getCustomerId().equals(employer.getCustomerId())) {
-          existingEmployer = employerOnAccount;
-          break;
+      List<Employer> existingEmployers = null;
+      try {
+        existingEmployers = EmployerFinder.findData(customerID);
+        for (Employer employerOnAccount : existingEmployers) {
+          if (employerOnAccount.getNumber().equals(employer.getNumber())
+              && employerOnAccount.getCustomerId().equals(employer.getCustomerId())) {
+            existingEmployer = employerOnAccount;
+            break;
+          }
         }
+      } catch (Exception e) {
+        System.out.println("Employer %s not in mainframe: " + e.getMessage());
       }
     }
 
@@ -215,13 +220,18 @@ public class EmployerUpdater {
       while (resultSet.next()) {
         String customerID = resultSet.getString(1);
         Integer number = resultSet.getInt(2);
-        List<Employer> employers = EmployerFinder.findData(customerID);
-        for (Employer employerOnAccount : employers) {
-          if (employerOnAccount.getNumber().equals(number)
-              && employerOnAccount.getCustomerId().equals(customerID)) {
-            failedUpdates.add(employerOnAccount);
-            break;
+        List<Employer> employers;
+        try {
+          employers = EmployerFinder.findFromDatabase(customerID);
+          for (Employer employerOnAccount : employers) {
+            if (employerOnAccount.getNumber().equals(number)
+                && employerOnAccount.getCustomerId().equals(customerID)) {
+              failedUpdates.add(employerOnAccount);
+              break;
+            }
           }
+        } catch (Exception e) {
+          System.out.println("Failed to find employer: " + e.getMessage());
         }
       }
     } catch (SQLException e) {

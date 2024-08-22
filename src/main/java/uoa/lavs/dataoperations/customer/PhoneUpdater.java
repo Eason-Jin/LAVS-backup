@@ -21,6 +21,7 @@ public class PhoneUpdater {
       updateMainframe(customerID, phone);
     } catch (Exception e) {
       System.out.println("Mainframe update failed: " + e.getMessage());
+      failed = true;
     } finally {
       try {
         updateDatabase(customerID, phone);
@@ -43,13 +44,18 @@ public class PhoneUpdater {
     Phone existingPhone = null;
 
     if (phone.getNumber() != null) {
-      List<Phone> existingPhones = PhoneFinder.findFromMainframe(customerID);
-      for (Phone phoneOnAccount : existingPhones) {
-        if (phoneOnAccount.getNumber().equals(phone.getNumber())
-            && phoneOnAccount.getCustomerId().equals(phone.getCustomerId())) {
-          existingPhone = phoneOnAccount;
-          break;
+      List<Phone> existingPhones = null;
+      try {
+        existingPhones = PhoneFinder.findData(customerID);
+        for (Phone phoneOnAccount : existingPhones) {
+          if (phoneOnAccount.getNumber().equals(phone.getNumber())
+              && phoneOnAccount.getCustomerId().equals(phone.getCustomerId())) {
+            existingPhone = phoneOnAccount;
+            break;
+          }
         }
+      } catch (Exception e) {
+        System.out.println("Phone %s not in mainframe: " + e.getMessage());
       }
     }
 
@@ -179,13 +185,18 @@ public class PhoneUpdater {
       while (resultSet.next()) {
         String customerID = resultSet.getString(1);
         Integer number = resultSet.getInt(2);
-        List<Phone> phones = PhoneFinder.findData(customerID);
-        for (Phone phoneOnAccount : phones) {
-          if (phoneOnAccount.getNumber().equals(number)
-              && phoneOnAccount.getCustomerId().equals(customerID)) {
-            failedUpdates.add(phoneOnAccount);
-            break;
+        List<Phone> phones;
+        try {
+          phones = PhoneFinder.findFromDatabase(customerID);
+          for (Phone phoneOnAccount : phones) {
+            if (phoneOnAccount.getNumber().equals(number)
+                && phoneOnAccount.getCustomerId().equals(customerID)) {
+              failedUpdates.add(phoneOnAccount);
+              break;
+            }
           }
+        } catch (Exception e) {
+          System.out.println("Failed to get failed updates: " + e.getMessage());
         }
       }
     } catch (SQLException e) {
