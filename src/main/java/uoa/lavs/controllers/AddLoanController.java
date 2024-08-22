@@ -240,7 +240,7 @@ public class AddLoanController implements ValidateType, CheckEmpty {
   @FXML
   private void onClickSave(ActionEvent event) throws IOException {
     String customerID = customerDetailsController.getCustomerID();
-    if (validateFields()) {
+    if (checkFields() && validateFields()) {
       Loan loan =
           new Loan(
               null,
