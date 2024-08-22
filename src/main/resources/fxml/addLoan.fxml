@@ -71,7 +71,7 @@
                                     <FXCollections fx:factory="observableArrayList">
                                        <String fx:value="Floating" />
                                        <String fx:value="Fixed" />
-                                       <String fx:value="Interest only" />
+                                       <String fx:value="Interest Only" />
                                     </FXCollections>
                                  </items>
                               </ComboBox>

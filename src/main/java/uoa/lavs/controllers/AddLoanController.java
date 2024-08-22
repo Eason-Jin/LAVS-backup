@@ -199,7 +199,6 @@ public class AddLoanController implements ValidateType, CheckEmpty {
       } else if (node instanceof DatePicker) {
         ((DatePicker) node).setValue(null);
       } else if (node instanceof ComboBox) {
-        System.out.println(nodeId);
         remakeComboBox(node);
       } else if (node instanceof CheckBox) {
         ((CheckBox) node).setSelected(false);
@@ -245,7 +244,8 @@ public class AddLoanController implements ValidateType, CheckEmpty {
               Double.parseDouble(((TextField) loanDetailsFields.get("principalField")).getText()),
               Double.parseDouble(((TextField) loanDetailsFields.get("rateValueField")).getText()),
               RateType.valueOf(
-                  (String) (Object) ((ComboBox) loanDetailsFields.get("rateTypeBox")).getValue()),
+                  ((String) (Object) ((ComboBox) loanDetailsFields.get("rateTypeBox")).getValue())
+                      .replaceAll("\\s", "")),
               ((DatePicker) loanDetailsFields.get("startDatePicker")).getValue(),
               Integer.parseInt(((TextField) loanDetailsFields.get("periodField")).getText()),
               Integer.parseInt(((TextField) loanDetailsFields.get("loanTermField")).getText()),
@@ -385,5 +385,3 @@ public class AddLoanController implements ValidateType, CheckEmpty {
     return flag;
   }
 }
-
-// TODO: fix interest only space in between
