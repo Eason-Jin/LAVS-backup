@@ -13,7 +13,7 @@
 
 <AnchorPane prefHeight="648.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.SearchController">
    <children>
-      <TextField fx:id="searchField" focusTraversable="false" layoutX="475.0" layoutY="85.0" onKeyPressed="#keyPressed" prefHeight="60.0" prefWidth="436.0" promptText="Search Customers by Name" style="-fx-background-radius: 30;">
+      <TextField fx:id="searchField" focusTraversable="false" layoutX="72.0" layoutY="101.0" onKeyPressed="#keyPressed" prefHeight="60.0" prefWidth="839.0" promptText="Search Customers by Name" style="-fx-background-radius: 30;">
          <font>
             <Font size="18.0" />
          </font>
@@ -28,7 +28,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label fx:id="searchSceneTitleLabel" alignment="CENTER" layoutX="87.0" layoutY="80.0" text="Customer Search">
+      <Label fx:id="searchSceneTitleLabel" alignment="CENTER" layoutX="379.0" layoutY="33.0" text="Customer Search" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="50.0" />
          </font>
@@ -39,7 +39,7 @@
             <String fx:value="home" />
          </styleClass>
       </Button>
-      <Button fx:id="searchButton" focusTraversable="false" graphicTextGap="10.0" layoutX="928.0" layoutY="85.0" mnemonicParsing="false" onAction="#onClickSearch" prefHeight="60.0" prefWidth="150.0" style="-fx-background-radius: 30;" text="Search">
+      <Button fx:id="searchButton" focusTraversable="false" graphicTextGap="10.0" layoutX="928.0" layoutY="101.0" mnemonicParsing="false" onAction="#onClickSearch" prefHeight="60.0" prefWidth="150.0" style="-fx-background-radius: 30;" text="Search">
          <font>
             <Font size="20.0" />
          </font>
