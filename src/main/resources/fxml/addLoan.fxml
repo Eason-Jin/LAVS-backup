@@ -20,12 +20,7 @@
    <children>
       <Pane layoutX="80.0" layoutY="65.0" prefHeight="64.0" prefWidth="702.0">
          <children>
-            <Label fx:id="customerNameLabel" layoutX="324.0" text="Customer Name">
-               <font>
-                  <Font name="Calibri Bold" size="56.0" />
-               </font>
-            </Label>
-            <Label text="New Loan for">
+            <Label fx:id="titleLabel" text="New Loan for">
                <font>
                   <Font name="Calibri Bold" size="56.0" />
                </font>
@@ -76,7 +71,7 @@
                                     <FXCollections fx:factory="observableArrayList">
                                        <String fx:value="Floating" />
                                        <String fx:value="Fixed" />
-                                       <String fx:value="Interest only" />
+                                       <String fx:value="Interest Only" />
                                     </FXCollections>
                                  </items>
                               </ComboBox>

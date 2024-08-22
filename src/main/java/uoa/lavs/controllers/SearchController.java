@@ -24,119 +24,133 @@ import uoa.lavs.models.Customer;
 
 @Controller
 public class SearchController {
+  @Autowired private CustomerDetailsController customerDetailsController;
 
-    @FXML private Button startButton;
-    @FXML private Button searchButton;
-    @FXML private TextField searchField;
-    @FXML private TableView<Customer> searchTable;
-    @FXML private TableColumn<Customer, String> idColumn;
-    @FXML private TableColumn<Customer, String> nameColumn;
-    @FXML private TableColumn<Customer, String> dobColumn;
-    @FXML private Label searchSceneTitleLabel;
+  @FXML private Button backButton;
+  @FXML private Button searchButton;
+  @FXML private TextField searchField;
+  @FXML private TableView<Customer> searchTable;
+  @FXML private TableColumn<Customer, String> idColumn;
+  @FXML private TableColumn<Customer, String> nameColumn;
+  @FXML private TableColumn<Customer, String> dobColumn;
+  @FXML private Label searchSceneTitleLabel;
 
-    @Autowired AddLoanController addLoanController;
+  @Autowired AddLoanController addLoanController;
 
-    private boolean isCoBorrowerSearch;
+  private boolean isCoBorrowerSearch;
 
-    public void initialize() {
-        idColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("id"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));
-        dobColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("dob"));
-        searchTable.setPlaceholder(new Label(""));
+  public void initialize() {
+    idColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("id"));
+    nameColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));
+    dobColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("dob"));
+    searchTable.setPlaceholder(new Label(""));
 
-        searchTable.setRowFactory(tableView -> {
-            final TableRow<Customer> row = new TableRow<Customer>();
-            row.hoverProperty().addListener((observable) -> {
-                if (row.isHover() && !row.isEmpty()) {
-                    row.styleProperty().set("-fx-background-color: #f0f0f0");
+    searchTable.setRowFactory(
+        tableView -> {
+          final TableRow<Customer> row = new TableRow<Customer>();
+
+          row.setOnMouseClicked(
+              event -> {
+                if (row.isEmpty()) {
+                  return;
+                }
+
+                if (isCoBorrowerSearch) {
+                  addLoanController.addCoBorrower(row);
+                  Main.setScene(AppScene.ADD_LOAN);
                 } else {
-                    row.styleProperty().set("-fx-background-color: none");
-                    row.styleProperty().set("-fx-border-width: 5");
+                  String customerId = row.getItem().getId();
+                  customerDetailsController.setCustomerDetails(customerId);
+                  Main.setScene(AppScene.CUSTOMER_DETAILS);
                 }
-            });
+              });
 
-            row.selectedProperty().addListener((observable) -> {
-                if (row.isSelected() && !row.isEmpty()) {
-                    if (isCoBorrowerSearch) {
-                        addLoanController.addCoBorrower(row);
-                        Main.setScene(AppScene.ADD_LOAN);
-                    }
-                    else {
-                        Main.setScene(AppScene.CUSTOMER_DETAILS);
-                    }
+          row.setOnMouseEntered(
+              event -> {
+                if (!row.isEmpty()) {
+                  row.styleProperty().set("-fx-background-color: #f0f0f0");
                 }
-            });
-            return row;
+              });
+
+          row.setOnMouseExited(
+              event -> {
+                if (!row.isEmpty()) {
+                  row.styleProperty().set("-fx-background-color: none");
+                  row.styleProperty().set("-fx-border-width: 5");
+                }
+              });
+
+          return row;
         });
+  }
+
+  public void setIsCoBorrowerSearch(boolean isCoBorrowerSearch) {
+    this.isCoBorrowerSearch = isCoBorrowerSearch;
+  }
+
+  public void setCoBorrowerSearch(boolean isCoBorrowerSearch) {
+    setIsCoBorrowerSearch(isCoBorrowerSearch);
+    if (isCoBorrowerSearch) {
+      setTitleText("Co-Borrower Search");
+    } else {
+      setTitleText("Customer Search");
+    }
+  }
+
+  public void setTitleText(String title) {
+    searchSceneTitleLabel.setText(title);
+  }
+
+  private void searchCustomers() {
+    String customerName = searchField.getText();
+
+    if (customerName == "") {
+      Platform.runLater(
+          () -> {
+            searchTable.getItems().clear();
+            searchTable.setPlaceholder(new Label("Please enter a name"));
+          });
+      return;
     }
 
-    public void setIsCoBorrowerSearch(boolean isCoBorrowerSearch) {
-        this.isCoBorrowerSearch = isCoBorrowerSearch;
+    List<Customer> customers = CustomerFinder.findCustomerByName(customerName);
+
+    if (customers.isEmpty()) {
+      Platform.runLater(
+          () -> {
+            searchTable.getItems().clear();
+            searchTable.setPlaceholder(new Label("No customers found"));
+          });
+    } else {
+      ObservableList<Customer> observableCustomers = FXCollections.observableArrayList(customers);
+      Platform.runLater(() -> searchTable.setItems(observableCustomers));
     }
+  }
 
-    public void setCoBorrowerSearch(boolean isCoBorrowerSearch) {
-        setIsCoBorrowerSearch(isCoBorrowerSearch);
-        if (isCoBorrowerSearch) {
-            setTitleText("Co-Borrower Search");
-        }
-        else {
-            setTitleText("Customer Search");
-        }
+  public void clearSearch() {
+    searchField.clear();
+    searchTable.getItems().clear();
+    searchTable.setPlaceholder(new Label(""));
+  }
+
+  @FXML
+  private void keyPressed(KeyEvent event) {
+    if (event.getCode().toString().equals("ENTER")) {
+      searchCustomers();
     }
+  }
 
-    public void setTitleText(String title) {
-        searchSceneTitleLabel.setText(title);
+  @FXML
+  private void onClickBack(ActionEvent event) throws IOException {
+    if (isCoBorrowerSearch) {
+      Main.setScene(AppScene.ADD_LOAN);
+    } else {
+      Main.setScene(AppScene.START);
     }
+  }
 
-    private void searchCustomers() {
-        String customerName = searchField.getText();
-
-        if (customerName == "") {
-            Platform.runLater(() -> {
-                searchTable.getItems().clear();
-                searchTable.setPlaceholder(new Label("Please enter a name"));
-            });
-            return;
-        }
-
-        List<Customer> customers = CustomerFinder.findCustomerByName(customerName);
-
-        if (customers.isEmpty()) {
-            Platform.runLater(() -> {
-                searchTable.getItems().clear();
-                searchTable.setPlaceholder(new Label("No customers found"));
-            });
-        } else {
-            ObservableList<Customer> observablecustomers = FXCollections.observableArrayList(customers);
-            Platform.runLater(() -> searchTable.setItems(observablecustomers));
-        }
-    }
-
-    public void clearSearch() {
-        searchField.clear();
-        searchTable.getItems().clear();
-        searchTable.setPlaceholder(new Label(""));
-    }
-
-    @FXML
-    private void keyPressed(KeyEvent event) {
-        if (event.getCode().toString().equals("ENTER")) {
-            searchCustomers();
-        }
-    }
-
-    @FXML
-    private void onClickStart(ActionEvent event) throws IOException {
-        if (isCoBorrowerSearch) {
-            Main.setScene(AppScene.ADD_LOAN);
-        }
-        else {
-            Main.setScene(AppScene.START);
-        }
-    }
-
-    @FXML
-    private void onClickSearch(ActionEvent event) {
-        searchCustomers();
-    }
+  @FXML
+  private void onClickSearch(ActionEvent event) {
+    searchCustomers();
+  }
 }
