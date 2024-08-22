@@ -837,6 +837,9 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
       }
     } else if (element instanceof DatePicker) {
       DatePicker ui = (DatePicker) element;
+      if (ui.getValue() == null) {
+        return flag;
+      }
       LocalDate today = LocalDate.now();
       if (today.isBefore((LocalDate) (Object) ui.getValue())) {
         flag = false;

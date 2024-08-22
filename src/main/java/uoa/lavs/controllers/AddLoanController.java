@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager;
+import uoa.lavs.controllers.interfaces.CheckEmpty;
+import uoa.lavs.controllers.interfaces.ValidateType;
 import uoa.lavs.dataoperations.customer.CustomerLoader;
 import uoa.lavs.dataoperations.customer.CustomerUpdater;
 import uoa.lavs.dataoperations.loan.CoborrowerUpdater;
@@ -27,7 +29,7 @@ import uoa.lavs.models.Customer;
 import uoa.lavs.models.Loan;
 
 @Controller
-public class AddLoanController {
+public class AddLoanController implements ValidateType, CheckEmpty {
 
   @FXML private AnchorPane coBorrowerScrollAnchorPane;
   @FXML private FlowPane coBorrowerFlowPane;
@@ -43,12 +45,16 @@ public class AddLoanController {
   private HashMap<String, Node> coBorrowerFields = new HashMap<>();
   private HashMap<String, Node> loanDetailsFields = new HashMap<>();
   private HashSet<String> coBorrowerIds = new HashSet<>();
+
+  private String noBorder = "-fx-border-color: none";
+  private String redBorder = "-fx-border-color: red";
+
   @Autowired SearchController searchController;
   @Autowired CustomerDetailsController customerDetailsController;
 
   @FXML
   private void initialize() {
-    addDummy();
+    // addDummy();
     coBorrowerFlowPane.getChildren().remove(coBorrowerPane);
     addToMap(loanDetailsFields, loanDetailsPane);
   }
@@ -234,32 +240,37 @@ public class AddLoanController {
   @FXML
   private void onClickSave(ActionEvent event) throws IOException {
     String customerID = customerDetailsController.getCustomerID();
-    Loan loan =
-        new Loan(
-            null,
-            customerID,
-            CustomerLoader.loadData(customerID).getName(),
-            "Active",
-            Double.parseDouble(((TextField) loanDetailsFields.get("principalField")).getText()),
-            Double.parseDouble(((TextField) loanDetailsFields.get("rateValueField")).getText()),
-            RateType.valueOf(
-                (String) (Object) ((ComboBox) loanDetailsFields.get("rateTypeBox")).getValue()),
-            ((DatePicker) loanDetailsFields.get("startDatePicker")).getValue(),
-            Integer.parseInt(((TextField) loanDetailsFields.get("periodField")).getText()),
-            Integer.parseInt(((TextField) loanDetailsFields.get("loanTermField")).getText()),
-            Double.parseDouble(((TextField) loanDetailsFields.get("paymentAmountField")).getText()),
-            Frequency.valueOf(
-                (String)
-                    (Object) ((ComboBox) loanDetailsFields.get("paymentFrequencyBox")).getValue()),
-            Frequency.valueOf(
-                (String) (Object) ((ComboBox) loanDetailsFields.get("compoundingBox")).getValue()));
+    if (validateFields()) {
+      Loan loan =
+          new Loan(
+              null,
+              customerID,
+              CustomerLoader.loadData(customerID).getName(),
+              "Active",
+              Double.parseDouble(((TextField) loanDetailsFields.get("principalField")).getText()),
+              Double.parseDouble(((TextField) loanDetailsFields.get("rateValueField")).getText()),
+              RateType.valueOf(
+                  (String) (Object) ((ComboBox) loanDetailsFields.get("rateTypeBox")).getValue()),
+              ((DatePicker) loanDetailsFields.get("startDatePicker")).getValue(),
+              Integer.parseInt(((TextField) loanDetailsFields.get("periodField")).getText()),
+              Integer.parseInt(((TextField) loanDetailsFields.get("loanTermField")).getText()),
+              Double.parseDouble(
+                  ((TextField) loanDetailsFields.get("paymentAmountField")).getText()),
+              Frequency.valueOf(
+                  (String)
+                      (Object)
+                          ((ComboBox) loanDetailsFields.get("paymentFrequencyBox")).getValue()),
+              Frequency.valueOf(
+                  (String)
+                      (Object) ((ComboBox) loanDetailsFields.get("compoundingBox")).getValue()));
 
-    LoanUpdater.updateData(null, loan);
+      LoanUpdater.updateData(null, loan);
 
-    String loanId = loan.getLoanId();
+      String loanId = loan.getLoanId();
 
-    for (String id : coBorrowerIds) {
-      CoborrowerUpdater.updateData(loanId, id, null);
+      for (String id : coBorrowerIds) {
+        CoborrowerUpdater.updateData(loanId, id, null);
+      }
     }
   }
 
@@ -271,7 +282,98 @@ public class AddLoanController {
 
   @FXML
   private void onClickInfo(ActionEvent event) throws IOException {}
+
+  @Override
+  public boolean checkFields() {
+    boolean repeatFlag = true;
+    for (Node node : loanDetailsFields.values()) {
+      try {
+        if (!checkField((Control) node)) {
+          repeatFlag = false;
+        }
+      } catch (Exception e) {
+        continue;
+      }
+    }
+    return repeatFlag;
+  }
+
+  @Override
+  public boolean checkField(Control ui) {
+    ui.setStyle(noBorder);
+    if (ui instanceof TextField) {
+      TextField tf = (TextField) ui;
+      if (tf.getText().isEmpty()) {
+        tf.setStyle(redBorder);
+        return false;
+      }
+    }
+    if (ui instanceof ComboBox) {
+      ComboBox<FXCollections> cb = (ComboBox<FXCollections>) ui;
+      if (cb.getValue() == null) {
+        cb.setStyle(redBorder);
+        return false;
+      }
+    }
+    if (ui instanceof DatePicker) {
+      DatePicker dp = (DatePicker) ui;
+      if (dp.getValue() == null) {
+        dp.setStyle(redBorder);
+        return false;
+      }
+    }
+    return true;
+  }
+
+  @Override
+  public boolean validateFields() {
+    boolean repeatFlag = true;
+    for (Node node : loanDetailsFields.values()) {
+      try {
+        if (!validate((Control) node, Type.NUMBER)) {
+          repeatFlag = false;
+        }
+      } catch (Exception e) {
+        continue;
+      }
+    }
+    return repeatFlag;
+  }
+
+  @Override
+  public boolean validate(Control element, Type type) {
+    element.setStyle(noBorder);
+    boolean flag = true;
+    if (element instanceof TextField) {
+      TextField tf = (TextField) element;
+      if (tf.getText().isEmpty()) {
+        return flag;
+      }
+      if (type == Type.NUMBER) {
+        try {
+          Double.parseDouble(tf.getText());
+        } catch (Exception e) {
+          flag = false;
+          tf.setStyle(redBorder);
+          // if (errorString.indexOf("\t" + tf.getId() + " should only contain numbers") == -1) {
+          //   errorString.append("\t" + tf.getId() + " should only contain numbers\n");
+          // }
+        }
+      }
+    } else if (element instanceof DatePicker) {
+      DatePicker ui = (DatePicker) element;
+      if (ui.getValue() == null) {
+        return flag;
+      }
+      LocalDate today = LocalDate.now();
+      if (today.isBefore((LocalDate) (Object) ui.getValue())) {
+        flag = false;
+        ui.setStyle(redBorder);
+        // errorString.append("\tDate cannot be before today\n");
+      }
+    }
+    return flag;
+  }
 }
 
 // TODO: fix interest only space in between
-// TODO: add checks for fields
