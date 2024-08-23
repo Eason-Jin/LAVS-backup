@@ -6,7 +6,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -17,9 +20,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
+import uoa.lavs.SceneManager;
 import uoa.lavs.SceneManager.AppScene;
 import uoa.lavs.dataoperations.customer.AddressFinder;
 import uoa.lavs.dataoperations.customer.CustomerLoader;
@@ -36,6 +40,16 @@ import uoa.lavs.models.Phone;
 
 @Controller
 public class CustomerController {
+  private enum Setting {
+    ADD,
+    EDIT,
+    VIEW
+  }
+
+  private Setting setting;
+
+  @Autowired private AddLoanController addLoanController;
+
   @FXML private Button homeButton;
   @FXML private Button saveButton;
   @FXML private Button cancelButton;
@@ -155,6 +169,7 @@ public class CustomerController {
   }
 
   public void setUpAddCustomer() {
+    setting = Setting.ADD;
     titleLabel.setText("Add Customer");
     detailsTabPane.getSelectionModel().select(0);
     setDisableForFields(false);
@@ -162,6 +177,7 @@ public class CustomerController {
   }
 
   public void setUpEditCustomer() {
+    setting = Setting.EDIT;
     titleLabel.setText("Edit Customer");
     detailsTabPane.getSelectionModel().select(0);
     setDisableForFields(false);
@@ -169,6 +185,7 @@ public class CustomerController {
   }
 
   public void setUpViewCustomer(String customerId) {
+    setting = Setting.VIEW;
     titleLabel.setText("Customer Details");
     detailsTabPane.getSelectionModel().select(0);
     setCustomerDetails(customerId);
@@ -184,7 +201,6 @@ public class CustomerController {
 
   private void setVisabilityForButtons(boolean isVisible) {
     saveButton.setVisible(isVisible);
-    cancelButton.setVisible(isVisible);
     addAddressButton.setVisible(isVisible);
     addEmailButton.setVisible(isVisible);
     addPhoneButton.setVisible(isVisible);
@@ -227,6 +243,21 @@ public class CustomerController {
     loanTable.setItems(observableLoans);
   }
 
+  private void resetScene() {
+    titleField.clear();
+    nameField.clear();
+    dobPicker.setValue(null);
+    occupationField.clear();
+    citizenshipField.clear();
+    visaField.clear();
+    notesArea.clear();
+    addressTable.getItems().clear();
+    emailTable.getItems().clear();
+    phoneTable.getItems().clear();
+    employmentTable.getItems().clear();
+    loanTable.getItems().clear();
+  }
+
   @FXML
   private void onClickAddAddress(ActionEvent event) {
     System.out.println("Add Address clicked");
@@ -249,12 +280,39 @@ public class CustomerController {
 
   @FXML
   private void onClickAddLoan(ActionEvent event) {
+    resetScene();
+    addLoanController.setCustomerName(CustomerLoader.loadData(customer.getId()).getName());
+    addLoanController.addPrimeBorrower(customer.getId());
     Main.setScene(AppScene.ADD_LOAN);
   }
 
   @FXML
   private void onClickCancel(ActionEvent event) {
-    System.out.println("Cancel clicked");
+    Alert alertCancel = new Alert(AlertType.CONFIRMATION);
+    alertCancel.setHeaderText("If you cancel, all progress will be lost.");
+    alertCancel.setContentText("Are you sure you want to cancel?");
+
+    switch (setting) {
+      case ADD:
+        alertCancel.setTitle("Cancel adding customer");
+        if (alertCancel.showAndWait().get() == ButtonType.OK) {
+          resetScene();
+          Main.setScene(SceneManager.AppScene.START);
+        }
+        break;
+      case EDIT:
+        alertCancel.setTitle("Cancel editing customer");
+        if (alertCancel.showAndWait().get() == ButtonType.OK) {
+          setUpViewCustomer(customer.getId());
+        }
+        break;
+      case VIEW:
+        resetScene();
+        Main.setScene(AppScene.START);
+        break;
+      default:
+        break;
+    }
   }
 
   @FXML
@@ -269,6 +327,11 @@ public class CustomerController {
 
   @FXML
   private void onClickHome(ActionEvent event) {
+    resetScene();
     Main.setScene(AppScene.START);
+  }
+
+  public String getCustomerID() {
+    return customer.getId();
   }
 }

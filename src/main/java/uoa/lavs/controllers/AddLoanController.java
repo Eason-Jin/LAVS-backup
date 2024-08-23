@@ -55,6 +55,7 @@ public class AddLoanController implements ValidateType, CheckEmpty {
   @Autowired SearchController searchController;
   @Autowired CustomerDetailsController customerDetailsController;
   @Autowired LoanDetailsController loanDetailsController;
+  @Autowired CustomerController customerController;
   @FXML
   private void initialize() {
     alert = new Alert(AlertType.ERROR);
@@ -231,7 +232,11 @@ public class AddLoanController implements ValidateType, CheckEmpty {
   }
 
   @FXML
-  private void onClickCancel(ActionEvent event) throws IOException {}
+  private void onClickCancel(ActionEvent event) throws IOException {
+    resetScene();
+    customerController.setUpViewCustomer(customerController.getCustomerID());
+    Main.setScene(AppScene.CUSTOMER);
+  }
 
   @FXML
   private void onClickSave(ActionEvent event) throws IOException {
