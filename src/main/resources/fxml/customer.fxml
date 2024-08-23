@@ -40,6 +40,11 @@
             <Font name="System Bold" size="50.0" />
          </font>
       </Label>
+      <Label fx:id="customerIdLabel" alignment="CENTER_RIGHT" layoutX="726.0" layoutY="80.0" maxHeight="50.0" maxWidth="350.0" minHeight="50.0" minWidth="350.0" text="ID: ID" textAlignment="RIGHT">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
       <TabPane fx:id="detailsTabPane" layoutX="76.0" layoutY="130.0" prefHeight="518.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="30.0" tabMaxWidth="140.0" tabMinHeight="30.0" tabMinWidth="140.0">
         <tabs>
           <Tab fx:id="generalDetailsTab" text="General Details">
@@ -51,7 +56,7 @@
                               <TextField fx:id="titleField" prefHeight="35.0" prefWidth="150.0" promptText="Title" stylesheets="@../css/primer-light.css" />
                               <TextField fx:id="nameField" layoutX="160.0" prefHeight="36.0" prefWidth="790.0" promptText="Full name" stylesheets="@../css/primer-light.css" />
                               <DatePicker fx:id="dobPicker" layoutY="50.0" prefHeight="35.0" prefWidth="470.0" promptText="Date of birth" stylesheets="@../css/primer-light.css" />
-                              <TextField fx:id="jobField" layoutX="480.0" layoutY="50.0" prefHeight="35.0" prefWidth="470.0" promptText="Occupation" stylesheets="@../css/primer-light.css" />
+                              <TextField fx:id="occupationField" layoutX="480.0" layoutY="50.0" prefHeight="35.0" prefWidth="470.0" promptText="Occupation" stylesheets="@../css/primer-light.css" />
                               <TextField fx:id="citizenshipField" layoutY="100.0" prefHeight="35.0" prefWidth="470.0" promptText="Citizenship status" stylesheets="@../css/primer-light.css" />
                               <TextField fx:id="visaField" layoutX="480.0" layoutY="100.0" prefHeight="35.0" prefWidth="470.0" promptText="Visa type" stylesheets="@../css/primer-light.css" />
                            </children>
@@ -83,14 +88,14 @@
                         </Label>
                         <TableView fx:id="addressTable" layoutY="60.0" prefHeight="400.0" prefWidth="1000.0">
                           <columns>
-                            <TableColumn fx:id="typeField" editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="-1.0" resizable="false" sortable="false" text="Type" />
+                            <TableColumn fx:id="addressTypeColumn" editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="-1.0" resizable="false" sortable="false" text="Type" />
                             <TableColumn fx:id="streetAddressColumn" editable="false" maxWidth="250.0" minWidth="250.0" prefWidth="-1.0" resizable="false" sortable="false" text="Street Address" />
                               <TableColumn fx:id="suburbColumn" editable="false" maxWidth="150.0" minWidth="150.0" prefWidth="-1.0" resizable="false" sortable="false" text="Suburb" />
                               <TableColumn fx:id="cityColumn" editable="false" maxWidth="150.0" minWidth="150.0" prefWidth="-1.0" resizable="false" sortable="false" text="City" />
                               <TableColumn fx:id="postcodeColumn" editable="false" maxWidth="80.0" minWidth="80.0" prefWidth="-1.0" resizable="false" sortable="false" text="Postcode" />
                               <TableColumn fx:id="countryColumn" editable="false" maxWidth="120.0" minWidth="120.0" prefWidth="-1.0" resizable="false" sortable="false" text="Country" />
-                              <TableColumn fx:id="primaryColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="-1.0" resizable="false" sortable="false" text="Primary" />
-                              <TableColumn fx:id="mailingColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="-1.0" resizable="false" sortable="false" text="Mailing" />
+                              <TableColumn fx:id="primaryAddressColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="-1.0" resizable="false" sortable="false" text="Primary" />
+                              <TableColumn fx:id="mailingAddressColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="-1.0" resizable="false" sortable="false" text="Mailing" />
                           </columns>
                         </TableView>
                      </children>
@@ -128,16 +133,16 @@
                         <TableView fx:id="emailTable" layoutY="60.0" prefHeight="400.0" prefWidth="475.0">
                            <columns>
                               <TableColumn fx:id="emailAddressColumn" editable="false" maxWidth="350.0" minWidth="350.0" prefWidth="-1.0" resizable="false" sortable="false" text="Email Address" />
-                              <TableColumn fx:id="primaryColumn" editable="false" maxWidth="500.0" minWidth="500.0" prefWidth="-1.0" resizable="false" sortable="false" text="Primary" />
+                              <TableColumn fx:id="primaryEmailColumn" editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="-1.0" resizable="false" sortable="false" text="Primary" />
                            </columns>
                         </TableView>
                         <TableView fx:id="phoneTable" layoutX="525.0" layoutY="60.0" prefHeight="400.0" prefWidth="475.0">
                            <columns>
-                              <TableColumn fx:id="typeField11" editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="-1.0" resizable="false" sortable="false" text="Type" />
-                              <TableColumn fx:id="streetAddressColumn11" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="-1.0" resizable="false" sortable="false" text="Prefix" />
-                              <TableColumn fx:id="suburbColumn11" editable="false" maxWidth="150.0" minWidth="150.0" prefWidth="-1.0" resizable="false" sortable="false" text="Phone Number" />
-                              <TableColumn fx:id="primaryColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="-1.0" resizable="false" sortable="false" text="Primary" />
-                              <TableColumn fx:id="textingColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="-1.0" resizable="false" sortable="false" text="Texting" />
+                              <TableColumn fx:id="phoneTypeColumn" editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="-1.0" resizable="false" sortable="false" text="Type" />
+                              <TableColumn fx:id="prefixColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="-1.0" resizable="false" sortable="false" text="Prefix" />
+                              <TableColumn fx:id="phoneNumberColumn" editable="false" maxWidth="150.0" minWidth="150.0" prefWidth="-1.0" resizable="false" sortable="false" text="Phone Number" />
+                              <TableColumn fx:id="primaryPhoneColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="-1.0" resizable="false" sortable="false" text="Primary" />
+                              <TableColumn fx:id="textingPhoneColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="-1.0" resizable="false" sortable="false" text="Texting" />
                            </columns>
                         </TableView>
                      </children>
@@ -163,9 +168,9 @@
                         <TableView fx:id="employmentTable" layoutY="60.0" prefHeight="400.0" prefWidth="1000.0">
                            <columns>
                               <TableColumn fx:id="nameColumn" editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="-1.0" resizable="false" sortable="false" text="Name" />
-                              <TableColumn fx:id="streetAddressColumn" editable="false" maxWidth="250.0" minWidth="250.0" prefWidth="-1.0" resizable="false" sortable="false" text="Street Address" />
-                              <TableColumn fx:id="phoneNumberColumn" editable="false" maxWidth="200.0" minWidth="200.0" prefWidth="-1.0" resizable="false" sortable="false" text="Phone Number" />
-                              <TableColumn fx:id="emailAddressColumn" editable="false" maxWidth="200.0" minWidth="200.0" prefWidth="-1.0" resizable="false" sortable="false" text="Email Address" />
+                              <TableColumn fx:id="employmentStreetAddressColumn" editable="false" maxWidth="250.0" minWidth="250.0" prefWidth="-1.0" resizable="false" sortable="false" text="Street Address" />
+                              <TableColumn fx:id="employmentPhoneNumberColumn" editable="false" maxWidth="200.0" minWidth="200.0" prefWidth="-1.0" resizable="false" sortable="false" text="Phone Number" />
+                              <TableColumn fx:id="employmentEmailAddressColumn" editable="false" maxWidth="200.0" minWidth="200.0" prefWidth="-1.0" resizable="false" sortable="false" text="Email Address" />
                               <TableColumn fx:id="websiteColumn" editable="false" maxWidth="175.0" minWidth="175.0" prefWidth="-1.0" resizable="false" sortable="false" text="Website" />
                               <TableColumn fx:id="ownerColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="-1.0" resizable="false" sortable="false" text="Owner" />
                            </columns>
@@ -225,10 +230,15 @@
             </Tab>
         </tabs>
       </TabPane>
-      <Label fx:id="customerIdLabel" alignment="CENTER_RIGHT" layoutX="726.0" layoutY="80.0" maxHeight="50.0" maxWidth="350.0" minHeight="50.0" minWidth="350.0" text="ID: ID" textAlignment="RIGHT">
+      <Button fx:id="editButton" layoutX="1057.0" layoutY="553.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#onClickEdit" stylesheets="@../css/primer-light.css" text="Edit">
          <font>
-            <Font size="30.0" />
+            <Font size="18.0" />
          </font>
-      </Label>
+         <styleClass>
+            <String fx:value="accent" />
+            <String fx:value="button-circle" />
+            <String fx:value="edit" />
+         </styleClass>
+      </Button>
    </children>
 </AnchorPane>
