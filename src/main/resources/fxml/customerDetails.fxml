@@ -252,7 +252,7 @@
                            </font>
                            <styleClass>
                               <String fx:value="button-circle" />
-                              <String fx:value="add-loan" />
+                              <String fx:value="add-white" />
                               <String fx:value="success" />
                            </styleClass>
                         </Button>

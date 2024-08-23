@@ -35,13 +35,13 @@
             <String fx:value="cross" />
          </styleClass>
       </Button>
-      <TabPane fx:id="detailsTabPane" layoutX="76.0" layoutY="130.0" prefHeight="518.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="detailsTabPane" layoutX="76.0" layoutY="130.0" prefHeight="518.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="30.0" tabMaxWidth="140.0" tabMinHeight="30.0" tabMinWidth="140.0">
          <tabs>
             <Tab fx:id="generalDetailsTab" text="Loan Details">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="1000.0">
                      <children>
-                        <Pane fx:id="loanDetailsPane" disable="true" layoutX="25.0" layoutY="55.0" prefHeight="203.0" prefWidth="950.0">
+                        <Pane fx:id="loanDetailsPane" disable="true" layoutX="25.0" layoutY="60.0" prefHeight="203.0" prefWidth="950.0">
                            <children>
                               <VBox layoutX="640.0" prefHeight="200.0" prefWidth="310.0">
                                  <children>
@@ -124,7 +124,7 @@
                               <Font name="Calibri" size="30.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="coBorrowersTable" fixedCellSize="50.0" layoutX="18.0" layoutY="55.0" maxHeight="400.0" maxWidth="965.0" minHeight="400.0" minWidth="950.0" prefHeight="400.0" prefWidth="965.0">
+                        <TableView fx:id="coBorrowersTable" fixedCellSize="50.0" layoutX="18.0" layoutY="60.0" maxHeight="400.0" maxWidth="965.0" minHeight="400.0" minWidth="950.0" prefHeight="400.0" prefWidth="965.0">
                            <columns>
                               <TableColumn fx:id="coBorrowerNameColumn" editable="false" maxWidth="500.0" minWidth="500.0" prefWidth="500.0" resizable="false" sortable="false" text="Co-borrower Name" />
                               <TableColumn fx:id="coBorrowerIdColumn" maxWidth="500.0" minWidth="500.0" prefWidth="500.0" resizable="false" sortable="false" text="Co-borrower ID" />
@@ -146,7 +146,7 @@
                               <Font name="Calibri" size="30.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="repaymentsTable" fixedCellSize="50.0" layoutX="18.0" layoutY="55.0" maxHeight="400.0" maxWidth="965.0" minHeight="400.0" minWidth="965.0">
+                        <TableView fx:id="repaymentsTable" fixedCellSize="50.0" layoutX="18.0" layoutY="60.0" maxHeight="400.0" maxWidth="965.0" minHeight="400.0" minWidth="965.0">
                            <columns>
                               <TableColumn fx:id="repaymentDateColumn" editable="false" maxWidth="241.25" minWidth="241.25" prefWidth="-1.0" resizable="false" sortable="false" text="Repayment Date" />
                               <TableColumn fx:id="principalColumn" maxWidth="241.25" minWidth="241.25" prefWidth="-1.0" resizable="false" sortable="false" text="Principal" />
