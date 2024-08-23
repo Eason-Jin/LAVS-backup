@@ -417,6 +417,7 @@ public class AddCustomerController implements ValidateType, CheckLength, CheckEm
         CustomerUpdater.updateData(null, customer);
 
         String customerID = customer.getId();
+        System.out.println(customerID);
 
         for (int i = 1; i < addressCounter; i++) {
           suffix = setSuffix(i);

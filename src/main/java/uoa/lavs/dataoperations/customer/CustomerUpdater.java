@@ -102,7 +102,7 @@ public class CustomerUpdater {
           }
         }
       }
-      customer.setId(customerID);
+      // customer.setId(customerID);
     }
   }
 

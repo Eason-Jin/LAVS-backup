@@ -51,6 +51,7 @@ public class LoanFinder {
 
     for (int i = 1; i <= loanCount; i++) {
       Loan loan = new Loan();
+      System.out.println("Loan ID: " + findLoan.getLoanIdFromServer(i));
       loadLoan.setLoanId(findLoan.getLoanIdFromServer(i));
       loadLoan.send(Instance.getConnection());
       loan.setLoanId(findLoan.getLoanIdFromServer(i));
