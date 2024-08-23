@@ -152,7 +152,7 @@ public class StartController {
 
   @FXML
   private void onClickAddCustomer(ActionEvent event) throws IOException {
-    Main.setScene(AppScene.ADD_CUSTOMER);
+    Main.setScene(AppScene.CUSTOMER);
   }
 
   @FXML
