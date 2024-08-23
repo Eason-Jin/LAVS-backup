@@ -86,7 +86,7 @@
                               <Font name="Calibri Bold" size="36.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="addressTable" layoutY="60.0" prefHeight="400.0" prefWidth="1000.0">
+                        <TableView fx:id="addressTable" fixedCellSize="50.0" layoutY="60.0" prefHeight="400.0" prefWidth="1000.0">
                           <columns>
                             <TableColumn fx:id="addressTypeColumn" editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="-1.0" resizable="false" sortable="false" text="Type" />
                             <TableColumn fx:id="streetAddressColumn" editable="false" maxWidth="250.0" minWidth="250.0" prefWidth="-1.0" resizable="false" sortable="false" text="Street Address" />
@@ -97,6 +97,9 @@
                               <TableColumn fx:id="primaryAddressColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="-1.0" resizable="false" sortable="false" text="Primary" />
                               <TableColumn fx:id="mailingAddressColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="-1.0" resizable="false" sortable="false" text="Mailing" />
                           </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
                         </TableView>
                      </children>
                   </AnchorPane>
@@ -130,13 +133,16 @@
                               <Font name="Calibri Bold" size="36.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="emailTable" layoutY="60.0" prefHeight="400.0" prefWidth="475.0">
+                        <TableView fx:id="emailTable" fixedCellSize="50.0" layoutY="60.0" prefHeight="400.0" prefWidth="475.0">
                            <columns>
                               <TableColumn fx:id="emailAddressColumn" editable="false" maxWidth="350.0" minWidth="350.0" prefWidth="-1.0" resizable="false" sortable="false" text="Email Address" />
                               <TableColumn fx:id="primaryEmailColumn" editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="-1.0" resizable="false" sortable="false" text="Primary" />
                            </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
                         </TableView>
-                        <TableView fx:id="phoneTable" layoutX="525.0" layoutY="60.0" prefHeight="400.0" prefWidth="475.0">
+                        <TableView fx:id="phoneTable" fixedCellSize="50.0" layoutX="525.0" layoutY="60.0" prefHeight="400.0" prefWidth="475.0">
                            <columns>
                               <TableColumn fx:id="phoneTypeColumn" editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="-1.0" resizable="false" sortable="false" text="Type" />
                               <TableColumn fx:id="prefixColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="-1.0" resizable="false" sortable="false" text="Prefix" />
@@ -144,6 +150,9 @@
                               <TableColumn fx:id="primaryPhoneColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="-1.0" resizable="false" sortable="false" text="Primary" />
                               <TableColumn fx:id="textingPhoneColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="-1.0" resizable="false" sortable="false" text="Texting" />
                            </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
                         </TableView>
                      </children>
                   </AnchorPane>
@@ -165,7 +174,7 @@
                               <Font name="Calibri Bold" size="36.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="employmentTable" layoutY="60.0" prefHeight="400.0" prefWidth="1000.0">
+                        <TableView fx:id="employmentTable" fixedCellSize="50.0" layoutY="60.0" prefHeight="400.0" prefWidth="1000.0">
                            <columns>
                               <TableColumn fx:id="nameColumn" editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="-1.0" resizable="false" sortable="false" text="Name" />
                               <TableColumn fx:id="employmentStreetAddressColumn" editable="false" maxWidth="250.0" minWidth="250.0" prefWidth="-1.0" resizable="false" sortable="false" text="Street Address" />
@@ -174,6 +183,9 @@
                               <TableColumn fx:id="websiteColumn" editable="false" maxWidth="175.0" minWidth="175.0" prefWidth="-1.0" resizable="false" sortable="false" text="Website" />
                               <TableColumn fx:id="ownerColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="-1.0" resizable="false" sortable="false" text="Owner" />
                            </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
                         </TableView>
                      </children>
                   </AnchorPane>
