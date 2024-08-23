@@ -154,6 +154,10 @@ public class Employer {
     this.isOwner = isOwner;
   }
 
+  public String getStreetAddress() {
+    return line1 + " " + line2;
+  }
+
   public List<String> getListRepresentation() {
     List<String> list = new ArrayList<>();
     list.add(name);

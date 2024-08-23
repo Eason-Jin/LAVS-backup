@@ -83,7 +83,7 @@ public class Phone {
     return canSendText;
   }
 
-  public void setCanSendTxt(Boolean canSendText) {
+  public void setCanSendText(Boolean canSendText) {
     this.canSendText = canSendText;
   }
 

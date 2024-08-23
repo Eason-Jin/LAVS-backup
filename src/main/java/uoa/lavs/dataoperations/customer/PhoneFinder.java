@@ -47,7 +47,7 @@ public class PhoneFinder {
       phone.setNumber(loadCustomerPhoneNumbers.getNumberFromServer(i));
       phone.setType(loadCustomerPhoneNumbers.getTypeFromServer(i));
       phone.setIsPrimary(loadCustomerPhoneNumbers.getIsPrimaryFromServer(i));
-      phone.setCanSendTxt(loadCustomerPhoneNumbers.getCanSendTxtFromServer(i));
+      phone.setCanSendText(loadCustomerPhoneNumbers.getCanSendTxtFromServer(i));
       phone.setPhoneNumber(loadCustomerPhoneNumbers.getPhoneNumberFromServer(i));
       phone.setPrefix(loadCustomerPhoneNumbers.getPrefixFromServer(i));
       phone.setType(loadCustomerPhoneNumbers.getTypeFromServer(i));
@@ -77,7 +77,7 @@ public class PhoneFinder {
         phone.setPrefix(resultSet.getString("Prefix"));
         phone.setPhoneNumber(resultSet.getString("PhoneNumber"));
         phone.setIsPrimary(resultSet.getBoolean("IsPrimary"));
-        phone.setCanSendTxt(resultSet.getBoolean("CanSendText"));
+        phone.setCanSendText(resultSet.getBoolean("CanSendText"));
         phones.add(phone);
       }
     } finally {

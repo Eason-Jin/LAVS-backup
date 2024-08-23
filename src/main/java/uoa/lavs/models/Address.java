@@ -26,7 +26,7 @@ public class Address {
       String postCode,
       String country,
       Boolean isPrimary,
-      Boolean isMailing, 
+      Boolean isMailing,
       Integer number) {
     this.customerId = customerId;
     this.type = type;
@@ -116,7 +116,7 @@ public class Address {
     this.country = country;
   }
 
-  public Boolean isPrimary() {
+  public Boolean getIsPrimary() {
     return isPrimary;
   }
 
@@ -124,12 +124,16 @@ public class Address {
     this.isPrimary = isPrimary;
   }
 
-  public Boolean isMailing() {
+  public Boolean getIsMailing() {
     return isMailing;
   }
 
   public void setIsMailing(boolean isMailing) {
     this.isMailing = isMailing;
+  }
+
+  public String getStreetAddress() {
+    return line1 + " " + line2;
   }
 
   public List<String> getListRepresentation() {
