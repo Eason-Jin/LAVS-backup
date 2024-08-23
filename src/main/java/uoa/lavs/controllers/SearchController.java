@@ -24,7 +24,7 @@ import uoa.lavs.models.Customer;
 
 @Controller
 public class SearchController {
-  @Autowired private CustomerDetailsController customerDetailsController;
+  @Autowired private CustomerController customerController;
 
   @FXML private Button backButton;
   @FXML private Button searchButton;
@@ -60,8 +60,8 @@ public class SearchController {
                   Main.setScene(AppScene.ADD_LOAN);
                 } else {
                   String customerId = row.getItem().getId();
-                  customerDetailsController.setCustomerDetails(customerId);
-                  Main.setScene(AppScene.CUSTOMER_DETAILS);
+                  customerController.setCustomerDetails(customerId);
+                  Main.setScene(AppScene.CUSTOMER);
                 }
               });
 

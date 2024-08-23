@@ -1,5 +1,9 @@
 package uoa.lavs.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -14,7 +18,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager.AppScene;
+import uoa.lavs.dataoperations.customer.AddressFinder;
+import uoa.lavs.dataoperations.customer.CustomerLoader;
+import uoa.lavs.dataoperations.customer.EmailFinder;
+import uoa.lavs.dataoperations.customer.EmployerFinder;
+import uoa.lavs.dataoperations.customer.PhoneFinder;
+import uoa.lavs.dataoperations.loan.LoanFinder;
 import uoa.lavs.models.Address;
+import uoa.lavs.models.Customer;
 import uoa.lavs.models.Email;
 import uoa.lavs.models.Employer;
 import uoa.lavs.models.Loan;
@@ -82,6 +93,13 @@ public class CustomerController {
   @FXML private TableColumn<Loan, String> startDateColumn;
   @FXML private TableColumn<Loan, String> paymentFrequencyColumn;
 
+  private Customer customer;
+  private List<Address> addresses;
+  private List<Email> emails;
+  private List<Phone> phones;
+  private List<Employer> employers;
+  private List<Loan> loans;
+
   @FXML
   public void initialize() {
     addressTypeColumn.setCellValueFactory(new PropertyValueFactory<Address, String>("type"));
@@ -121,6 +139,63 @@ public class CustomerController {
     startDateColumn.setCellValueFactory(new PropertyValueFactory<Loan, String>("startDate"));
     paymentFrequencyColumn.setCellValueFactory(
         new PropertyValueFactory<Loan, String>("paymentFrequency"));
+
+    customer = new Customer();
+    addresses = new ArrayList<Address>();
+    emails = new ArrayList<Email>();
+    phones = new ArrayList<Phone>();
+    employers = new ArrayList<Employer>();
+    loans = new ArrayList<Loan>();
+  }
+
+  public void setUpAddCustomer() {
+    titleLabel.setText("Add Customer");
+    detailsTabPane.getSelectionModel().select(0);
+  }
+
+  public void setUpEditCustomer() {
+    titleLabel.setText("Edit Customer");
+    detailsTabPane.getSelectionModel().select(0);
+  }
+
+  public void setUpCustomerDetails(String customerId) {
+    titleLabel.setText("Customer Details");
+    setCustomerDetails(customerId);
+  }
+
+  public void setCustomerDetails(String customerId) {
+    detailsTabPane.getSelectionModel().select(0);
+    customerIdLabel.setText("ID: " + customerId);
+
+    customer = CustomerLoader.loadData(customerId);
+    addresses = AddressFinder.findData(customerId);
+    emails = EmailFinder.findData(customerId);
+    phones = PhoneFinder.findData(customerId);
+    employers = EmployerFinder.findData(customerId);
+    loans = LoanFinder.findData(customerId);
+
+    titleField.setText(customer.getTitle());
+    nameField.setText(customer.getName());
+    dobPicker.setValue(customer.getDob());
+    occupationField.setText(customer.getOccupation());
+    citizenshipField.setText(customer.getCitizenship());
+    visaField.setText(customer.getVisaType());
+    notesArea.setText(customer.getNotes());
+
+    ObservableList<Address> observableAddresses = FXCollections.observableArrayList(addresses);
+    addressTable.setItems(observableAddresses);
+
+    ObservableList<Email> observableEmails = FXCollections.observableArrayList(emails);
+    emailTable.setItems(observableEmails);
+
+    ObservableList<Phone> observablePhones = FXCollections.observableArrayList(phones);
+    phoneTable.setItems(observablePhones);
+
+    ObservableList<Employer> observableEmployers = FXCollections.observableArrayList(employers);
+    employmentTable.setItems(observableEmployers);
+
+    ObservableList<Loan> observableLoans = FXCollections.observableArrayList(loans);
+    loanTable.setItems(observableLoans);
   }
 
   @FXML
@@ -160,7 +235,7 @@ public class CustomerController {
 
   @FXML
   private void onClickEdit(ActionEvent event) {
-    System.out.println("Edit clicked");
+    setUpEditCustomer();
   }
 
   @FXML
