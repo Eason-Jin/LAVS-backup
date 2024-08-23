@@ -15,6 +15,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
+
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager.AppScene;
@@ -42,6 +44,8 @@ public class CustomerController {
   @FXML private Label customerIdLabel;
 
   @FXML private TabPane detailsTabPane;
+
+  @FXML private Pane generalDetailsPane;
 
   @FXML private TextField titleField;
   @FXML private TextField nameField;
@@ -151,16 +155,38 @@ public class CustomerController {
   public void setUpAddCustomer() {
     titleLabel.setText("Add Customer");
     detailsTabPane.getSelectionModel().select(0);
+    setDisableForFields(false);
+    setVisabilityForButtons(true);
   }
 
   public void setUpEditCustomer() {
     titleLabel.setText("Edit Customer");
     detailsTabPane.getSelectionModel().select(0);
+    setDisableForFields(false);
+    setVisabilityForButtons(true);
   }
 
-  public void setUpCustomerDetails(String customerId) {
+  public void setUpViewCustomer(String customerId) {
     titleLabel.setText("Customer Details");
     setCustomerDetails(customerId);
+    setDisableForFields(true);
+    setVisabilityForButtons(false);
+  }
+
+  private void setDisableForFields(boolean isDisabled) {
+    generalDetailsPane.setDisable(isDisabled);
+    notesArea.setDisable(isDisabled);
+  }
+
+  private void setVisabilityForButtons(boolean isVisible) {
+    saveButton.setVisible(isVisible);
+    cancelButton.setVisible(isVisible);
+    addAddressButton.setVisible(isVisible);
+    addEmailButton.setVisible(isVisible);
+    addPhoneButton.setVisible(isVisible);
+    addEmploymentButton.setVisible(isVisible);
+    addLoanButton.setVisible(!isVisible);
+    editButton.setVisible(!isVisible);
   }
 
   public void setCustomerDetails(String customerId) {

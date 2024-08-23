@@ -60,7 +60,7 @@ public class SearchController {
                   Main.setScene(AppScene.ADD_LOAN);
                 } else {
                   String customerId = row.getItem().getId();
-                  customerController.setCustomerDetails(customerId);
+                  customerController.setUpViewCustomer(customerId);
                   Main.setScene(AppScene.CUSTOMER);
                 }
               });
