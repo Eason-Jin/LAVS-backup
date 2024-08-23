@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -89,6 +90,7 @@ public class CustomerController {
   @FXML private TableColumn<Employer, String> websiteColumn;
   @FXML private TableColumn<Employer, String> ownerColumn;
 
+  @FXML private Tab loansTab;
   @FXML private Button addLoanButton;
   @FXML private TableView<Loan> loanTable;
   @FXML private TableColumn<Loan, String> loanIdColumn;
@@ -168,6 +170,7 @@ public class CustomerController {
 
   public void setUpViewCustomer(String customerId) {
     titleLabel.setText("Customer Details");
+    detailsTabPane.getSelectionModel().select(0);
     setCustomerDetails(customerId);
     setDisableForFields(true);
     setVisabilityForButtons(false);
@@ -176,6 +179,7 @@ public class CustomerController {
   private void setDisableForFields(boolean isDisabled) {
     generalDetailsPane.setDisable(isDisabled);
     notesArea.setDisable(isDisabled);
+    loansTab.setDisable(!isDisabled);
   }
 
   private void setVisabilityForButtons(boolean isVisible) {
@@ -190,7 +194,6 @@ public class CustomerController {
   }
 
   public void setCustomerDetails(String customerId) {
-    detailsTabPane.getSelectionModel().select(0);
     customerIdLabel.setText("ID: " + customerId);
 
     customer = CustomerLoader.loadData(customerId);
