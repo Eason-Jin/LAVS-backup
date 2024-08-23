@@ -80,11 +80,13 @@ public class CustomerLoader {
     customer.setVisaType(loadCustomer.getVisaFromServer());
     customer.setStatus(loadCustomer.getStatusFromServer());
     StringBuilder noteBuilder = new StringBuilder();
-    int lineCount = loadCustomerNote.getLineCountFromServer();
-    for (int i = 1; i <= lineCount; i++) {
-      String line = loadCustomerNote.getLineFromServer(i);
-      if (line != null) {
-        noteBuilder.append(line);
+    Integer lineCount = loadCustomerNote.getLineCountFromServer();
+    if (lineCount != null) {
+      for (int i = 1; i <= lineCount; i++) {
+        String line = loadCustomerNote.getLineFromServer(i);
+        if (line != null) {
+          noteBuilder.append(line);
+        }
       }
     }
     customer.setNotes(noteBuilder.toString());

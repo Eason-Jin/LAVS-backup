@@ -14,14 +14,14 @@ public class CoborrowerLoader {
   public static List<String> loadData(String loanId) {
     List<String> coborrowerIds = new ArrayList<>();
     try {
-      coborrowerIds = loadFromDatabase(loanId);
+      coborrowerIds = loadFromMainframe(loanId);
     } catch (Exception e) {
-      System.out.println("Database load failed: " + e.getMessage());
-      System.out.println("Trying to load from mainframe");
+      System.out.println("Mainframe load failed: " + e.getMessage());
+      System.out.println("Trying to load from database");
       try {
-        coborrowerIds = loadFromMainframe(loanId);
+        coborrowerIds = loadFromDatabase(loanId);
       } catch (Exception e1) {
-        System.out.println("Mainframe load failed: " + e1.getMessage());
+        System.out.println("Database load failed: " + e1.getMessage());
       }
     }
     return coborrowerIds;
@@ -45,6 +45,7 @@ public class CoborrowerLoader {
   private static List<String> loadFromMainframe(String loanId) throws Exception {
     LoadLoanCoborrowers loadLoanCoborrower = new LoadLoanCoborrowers();
     loadLoanCoborrower.setLoanId(loanId);
+    loadLoanCoborrower.setNumber(1);
     Status status = loadLoanCoborrower.send(Instance.getConnection());
     if (!status.getWasSuccessful()) {
       System.out.println(
@@ -55,6 +56,7 @@ public class CoborrowerLoader {
     List<String> coborrowerIds = new ArrayList<>();
     for (int i = 1; i <= coborrowerCount; i++) {
       String coborrowerId = loadLoanCoborrower.getCoborrowerIdFromServer(i);
+      System.out.println("Coborrower ID: " + coborrowerId);
       coborrowerIds.add(coborrowerId);
     }
     return coborrowerIds;

@@ -7,6 +7,7 @@ import uoa.lavs.mainframe.simulator.HttpConnection;
 // implements the singleton pattern for a mainframe connection
 public class Instance {
   // the URL to the remote server
+  // private static final String BASE_URL = "https://cmppp4wk-7110.aue.devtunnels.ms/";
   private static final String BASE_URL = "http://localhost:5000/";
   private static boolean _useTestConnections;
 
