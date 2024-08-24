@@ -47,16 +47,42 @@ public class EmploymentPopupController extends PopupController {
       if (!validateNumberFormat(companyPostcodeTextField.getText())) {
         appendErrorMessage("Postcode must be numbers!\n");
       }
-
       if (!validateEmailFormat(companyEmailTextField.getText())) {
         appendErrorMessage("Email must be in the format of a@b.c!\n");
       }
       if (!validateNumberFormat(companyPhoneTextField.getText())) {
         appendErrorMessage("Phone number must be numbers!\n");
       }
-
       if (!validateWebsiteFormat(companyWebsiteTextField.getText())) {
         appendErrorMessage("Website must be in the format of a.b!\n");
+      }
+
+      if (isTooLong(companyNameTextField.getText(), 60)) {
+        appendErrorMessage("Company name must be less than 60 characters!\n");
+      }
+      if (isTooLong(companyAddressLine1TextField.getText(), 60)) {
+        appendErrorMessage("Address line 1 must be less than 60 characters!\n");
+      }
+      if (isTooLong(companyAddressLine2TextField.getText(), 60)) {
+        appendErrorMessage("Address line 2 must be less than 60 characters!\n");
+      }
+      if (isTooLong(companySuburbTextField.getText(), 30)) {
+        appendErrorMessage("Suburb must be less than 30 characters!\n");
+      }
+      if (isTooLong(companyCityTextField.getText(), 30)) {
+        appendErrorMessage("City must be less than 30 characters!\n");
+      }
+      if (isTooLong(companyPostcodeTextField.getText(), 10)) {
+        appendErrorMessage("Postcode must be less than 10 characters!\n");
+      }
+      if (isTooLong(companyCountryTextField.getText(), 30)) {
+        appendErrorMessage("Country must be less than 30 characters!\n");
+      }
+      if (isTooLong(companyEmailTextField.getText(), 60)) {
+        appendErrorMessage("Email must be less than 60 characters!\n");
+      }
+      if (isTooLong(companyWebsiteTextField.getText(), 60)) {
+        appendErrorMessage("Website must be less than 60 characters!\n");
       }
     }
 

@@ -34,9 +34,15 @@ public class PhonePopupController extends PopupController {
       if (!validateNumberFormat(prefixTextField.getText())) {
         appendErrorMessage("Prefix must be numbers!\n");
       }
-
       if (!validateNumberFormat(phoneTextField.getText())) {
         appendErrorMessage("Phone number must be numbers!\n");
+      }
+
+      if (isTooLong(prefixTextField.getText(), 10)) {
+        appendErrorMessage("Prefix must be less than 10 characters!\n");
+      }
+      if (isTooLong(phoneTextField.getText(), 20)) {
+        appendErrorMessage("Phone number must be less than 20 characters!\n");
       }
     }
 

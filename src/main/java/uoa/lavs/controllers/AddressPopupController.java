@@ -40,8 +40,32 @@ public class AddressPopupController extends PopupController {
         || isEmpty(countryTextField)
         || isEmpty(addressTypeComboBox)) {
       appendErrorMessage("Please fill in all required fields!\n");
-    } else if (!validatePostcodeFormat(postcodeTextField.getText())) {
-      appendErrorMessage("Postcode must be numbers!\n");
+    } else {
+      if (!validatePostcodeFormat(postcodeTextField.getText())) {
+        appendErrorMessage("Postcode must be numbers!\n");
+      }
+
+      if (!isTooLong(addressTypeComboBox.getValue(), 20)) {
+        appendErrorMessage("Address type must be less than 20 characters!\n");
+      }
+      if (!isTooLong(addressLine1TextField.getText(), 60)) {
+        appendErrorMessage("Address line 1 must be less than 60 characters!\n");
+      }
+      if (!isTooLong(addressLine2TextField.getText(), 60)) {
+        appendErrorMessage("Address line 2 must be less than 60 characters!\n");
+      }
+      if (!isTooLong(suburbTextField.getText(), 30)) {
+        appendErrorMessage("Suburb must be less than 30 characters!\n");
+      }
+      if (!isTooLong(cityTextField.getText(), 30)) {
+        appendErrorMessage("City must be less than 30 characters!\n");
+      }
+      if (!isTooLong(postcodeTextField.getText(), 10)) {
+        appendErrorMessage("Postcode must be less than 10 characters!\n");
+      }
+      if (!isTooLong(countryTextField.getText(), 30)) {
+        appendErrorMessage("Country must be less than 30 characters!\n");
+      }
     }
 
     if (errorMessage.length() > 0) {

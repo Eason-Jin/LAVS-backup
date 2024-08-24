@@ -79,6 +79,10 @@ public abstract class PopupController {
     return false;
   }
 
+  protected boolean isTooLong(String str, int length) {
+    return str.length() > length;
+  }
+
   protected void showAlert() {
     alert.setContentText(errorMessage.toString());
     alert.showAndWait();
