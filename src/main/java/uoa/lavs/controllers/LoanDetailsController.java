@@ -99,7 +99,7 @@ public class LoanDetailsController {
     // Extract the first part of the Loan-ID (before the dash "-")
     String loanIdPrefix = loanId.split("-")[0];
     // Remove the coBorrower ID that matches the first part of the Loan-ID
-    coBorrowerIds.removeIf(id -> id.equals(loanIdPrefix));
+    coBorrowerIds.removeIf(id -> id.equals(loanIdPrefix) || id.equals(loanIdPrefix + " (Temporary)"));
 
     for (String id : coBorrowerIds) {
       Customer coBorrower = CustomerLoader.loadData(id);
