@@ -1,10 +1,8 @@
 package uoa.lavs.controllers;
 
 import java.util.function.Consumer;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -30,25 +28,27 @@ public class PhonePopupController extends PopupController {
   @Override
   @FXML
   public void onClickSave(ActionEvent event) {
-    String phoneText = phoneTextField.getText();
+    if (isEmpty(phoneTypeComboBox) || isEmpty(prefixTextField) || isEmpty(phoneTextField)) {
+      appendErrorMessage("Please fill in all required fields!\n");
+    } else {
+      if (!validateNumberFormat(prefixTextField.getText())) {
+        appendErrorMessage("Prefix must be numbers!\n");
+      }
 
-    if (phoneText == null) {
-      return;
+      if (!validateNumberFormat(phoneTextField.getText())) {
+        appendErrorMessage("Phone number must be numbers!\n");
+      }
     }
 
-    if (!validateNumberFormat(phoneText)) {
-      Alert alert = new Alert(Alert.AlertType.ERROR);
-      alert.setTitle("Invalid Phone");
-      alert.setHeaderText("The phone must be numbers.");
-      alert.setContentText("Please enter a valid phone number.");
-      alert.showAndWait();
+    if (errorMessage.length() > 0) {
+      showAlert();
       return;
     }
 
     // Update the Phone object
     this.phone.setType(phoneTypeComboBox.getValue());
     this.phone.setPrefix(prefixTextField.getText());
-    this.phone.setPhoneNumber(phoneText);
+    this.phone.setPhoneNumber(phoneTextField.getText());
     this.phone.setIsPrimary(isPrimaryPhoneCheckBox.isSelected());
     this.phone.setCanSendText(sendTextsCheckBox.isSelected());
 

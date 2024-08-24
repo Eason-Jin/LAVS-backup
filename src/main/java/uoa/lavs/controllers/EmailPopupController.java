@@ -3,7 +3,6 @@ package uoa.lavs.controllers;
 import java.util.function.Consumer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -27,16 +26,14 @@ public class EmailPopupController extends PopupController {
   public void onClickSave(ActionEvent event) {
     String emailText = emailTextField.getText();
 
-    if (emailText == null) {
-      return;
+    if (isEmpty(emailTextField)) {
+      appendErrorMessage("Please fill in all required fields!\n");
+    } else if (!validateEmailFormat(emailText)) {
+      appendErrorMessage("Email must be in the format of a@b.c!\n");
     }
 
-    if (!validateEmailFormat(emailText)) {
-      Alert alert = new Alert(Alert.AlertType.ERROR);
-      alert.setTitle("Invalid Email");
-      alert.setHeaderText("The email address format is invalid.");
-      alert.setContentText("Please enter a valid email address.");
-      alert.showAndWait();
+    if (errorMessage.length() > 0) {
+      showAlert();
       return;
     }
 

@@ -33,49 +33,49 @@ public class EmploymentPopupController extends PopupController {
   @Override
   @FXML
   public void onClickSave(ActionEvent event) {
-    String companyName = companyNameTextField.getText();
-    String companyAddressLine1 = companyAddressLine1TextField.getText();
-    String companyAddressLine2 = companyAddressLine2TextField.getText();
-    String companySuburb = companySuburbTextField.getText();
-    String companyCity = companyCityTextField.getText();
-    String companyPostcode = companyPostcodeTextField.getText();
-    String companyCountry = companyCountryTextField.getText();
-    String companyPhone = companyPhoneTextField.getText();
-    String companyEmail = companyEmailTextField.getText();
-    String companyWebsite = companyWebsiteTextField.getText();
+    if (isEmpty(companyNameTextField)
+        || isEmpty(companyAddressLine1TextField)
+        || isEmpty(companySuburbTextField)
+        || isEmpty(companyCityTextField)
+        || isEmpty(companyPostcodeTextField)
+        || isEmpty(companyCountryTextField)
+        || isEmpty(companyPhoneTextField)
+        || isEmpty(companyEmailTextField)
+        || isEmpty(companyWebsiteTextField)) {
+      appendErrorMessage("Please fill in all required fields!\n");
+    } else {
+      if (!validateNumberFormat(companyPostcodeTextField.getText())) {
+        appendErrorMessage("Postcode must be numbers!\n");
+      }
 
-    if (companyName == null
-        || companyAddressLine1 == null
-        || companySuburb == null
-        || companyCity == null
-        || companyPostcode == null
-        || companyCountry == null
-        || companyPhone == null
-        || companyEmail == null
-        || companyWebsite == null) {
+      if (!validateEmailFormat(companyEmailTextField.getText())) {
+        appendErrorMessage("Email must be in the format of a@b.c!\n");
+      }
+      if (!validateNumberFormat(companyPhoneTextField.getText())) {
+        appendErrorMessage("Phone number must be numbers!\n");
+      }
+
+      if (!validateWebsiteFormat(companyWebsiteTextField.getText())) {
+        appendErrorMessage("Website must be in the format of a.b!\n");
+      }
+    }
+
+    if (errorMessage.length() > 0) {
+      showAlert();
       return;
     }
 
-    // if (!validatePostcodeFormat(companyPostcode)) {
-    //   Alert alert = new Alert(Alert.AlertType.ERROR);
-    //   alert.setTitle("Invalid Postcode");
-    //   alert.setHeaderText("The postcode format is invalid.");
-    //   alert.setContentText("Please enter a valid postcode.");
-    //   alert.showAndWait();
-    //   return;
-    // }
-
     // Update the Employer object
-    this.employment.setName(companyName);
-    this.employment.setLine1(companyAddressLine1);
-    this.employment.setLine2(companyAddressLine2);
-    this.employment.setSuburb(companySuburb);
-    this.employment.setCity(companyCity);
-    this.employment.setPostCode(companyPostcode);
-    this.employment.setCountry(companyCountry);
-    this.employment.setPhoneNumber(companyWebsite);
-    this.employment.setEmailAddress(companyWebsite);
-    this.employment.setWebsite(companyWebsite);
+    this.employment.setName(companyNameTextField.getText());
+    this.employment.setLine1(companyAddressLine1TextField.getText());
+    this.employment.setLine2(companyAddressLine2TextField.getText());
+    this.employment.setSuburb(companySuburbTextField.getText());
+    this.employment.setCity(companyCityTextField.getText());
+    this.employment.setPostCode(companyPostcodeTextField.getText());
+    this.employment.setCountry(companyCountryTextField.getText());
+    this.employment.setPhoneNumber(companyWebsiteTextField.getText());
+    this.employment.setEmailAddress(companyWebsiteTextField.getText());
+    this.employment.setWebsite(companyWebsiteTextField.getText());
     this.employment.setIsOwner(isOwnerCheckBox.isSelected());
 
     if (employmentSaveHandler != null) {

@@ -3,7 +3,6 @@ package uoa.lavs.controllers;
 import java.util.function.Consumer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -28,44 +27,36 @@ public class AddressPopupController extends PopupController {
 
   public void initialize() {
     setPane(addressPopupPane);
+    alert.setHeaderText("Please fix the following issues: ");
   }
 
   @Override
   @FXML
   public void onClickSave(ActionEvent event) {
-    String addressLine1 = addressLine1TextField.getText();
-    String addressLine2 = addressLine2TextField.getText();
-    String suburb = suburbTextField.getText();
-    String city = cityTextField.getText();
-    String postcode = postcodeTextField.getText();
-    String country = countryTextField.getText();
-    String addressType = addressTypeComboBox.getValue();
-
-    if (addressLine1 == null
-        || suburb == null
-        || city == null
-        || postcode == null
-        || country == null) {
-      return;
+    if (isEmpty(addressLine1TextField)
+        || isEmpty(suburbTextField)
+        || isEmpty(cityTextField)
+        || isEmpty(postcodeTextField)
+        || isEmpty(countryTextField)
+        || isEmpty(addressTypeComboBox)) {
+      appendErrorMessage("Please fill in all required fields!\n");
+    } else if (!validatePostcodeFormat(postcodeTextField.getText())) {
+      appendErrorMessage("Postcode must be numbers!\n");
     }
 
-    if (!validatePostcodeFormat(postcode)) {
-      Alert alert = new Alert(Alert.AlertType.ERROR);
-      alert.setTitle("Invalid Postcode");
-      alert.setHeaderText("The postcode format is invalid.");
-      alert.setContentText("Please enter a valid postcode.");
-      alert.showAndWait();
+    if (errorMessage.length() > 0) {
+      showAlert();
       return;
     }
 
     // Update the Address object
-    this.address.setLine1(addressLine1);
-    this.address.setLine2(addressLine2);
-    this.address.setSuburb(suburb);
-    this.address.setCity(city);
-    this.address.setPostCode(postcode);
-    this.address.setCountry(country);
-    this.address.setType(addressType);
+    this.address.setLine1(addressLine1TextField.getText());
+    this.address.setLine2(addressLine2TextField.getText());
+    this.address.setSuburb(suburbTextField.getText());
+    this.address.setCity(cityTextField.getText());
+    this.address.setPostCode(postcodeTextField.getText());
+    this.address.setCountry(countryTextField.getText());
+    this.address.setType(addressTypeComboBox.getValue());
     this.address.setIsPrimary(isPrimaryAddressCheckBox.isSelected());
     this.address.setIsMailing(isMailingAddressCheckBox.isSelected());
 
