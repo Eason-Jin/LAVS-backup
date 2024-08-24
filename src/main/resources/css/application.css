@@ -40,8 +40,8 @@
 }
 
 .input {
-  -fx-background-radius: 20px;
-  -fx-border-radius: 20px;
+  -fx-background-radius: 50%;
+  -fx-border-radius: 50%;
   -fx-text-fill: #6d7175;
   -fx-prompt-text-fill: #6d7175;
   -fx-border-color: #d0d7de;
@@ -63,7 +63,7 @@
 .popup-button {
   -fx-background-repeat: no-repeat;
   -fx-background-position: center;
-  -fx-border-radius: 50px;
+  -fx-border-radius: 50%;
   -fx-border-width: 2px;
 }
 
