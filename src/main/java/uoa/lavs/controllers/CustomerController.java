@@ -191,7 +191,7 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
                 if (!row.isEmpty()) {
                   if (!row.isEmpty()) {
                     try {
-                      createAddressPopup((Pane) emailTable.getScene().getRoot(), row.getItem());
+                      createAddressPopup((Pane) addressTable.getScene().getRoot(), row.getItem());
                     } catch (IOException e) {
                       e.printStackTrace();
                     }
@@ -228,7 +228,7 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
               event -> {
                 if (!row.isEmpty()) {
                   try {
-                    createPhonePopup((Pane) emailTable.getScene().getRoot(), row.getItem());
+                    createPhonePopup((Pane) phoneTable.getScene().getRoot(), row.getItem());
                   } catch (IOException e) {
                     e.printStackTrace();
                   }
@@ -246,7 +246,7 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
               event -> {
                 if (!row.isEmpty()) {
                   try {
-                    createEmploymentPopup((Pane) emailTable.getScene().getRoot(), row.getItem());
+                    createEmploymentPopup((Pane) employmentTable.getScene().getRoot(), row.getItem());
                   } catch (IOException e) {
                     e.printStackTrace();
                   }
@@ -465,9 +465,9 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
   }
 
   private void createPhonePopup(Pane currentRoot, Phone phone) throws IOException {
-    // FXMLLoader loader = createPopup("/fxml/phonePopup.fxml", currentRoot);
-    // PhonePopupController phonePopupController = loader.getController();
-    // phonePopupController.setUpPhonePopup(phone, doesPrimaryPhoneExist(), this::handlePhoneSave);
+    FXMLLoader loader = createPopup("/fxml/phonePopup.fxml", currentRoot);
+    PhonePopupController phonePopupController = loader.getController();
+    phonePopupController.setUpPhonePopup(phone, doesPrimaryPhoneExist(), this::handlePhoneSave);
   }
 
   private void createEmploymentPopup(Pane currentRoot, Employer employer) throws IOException {
