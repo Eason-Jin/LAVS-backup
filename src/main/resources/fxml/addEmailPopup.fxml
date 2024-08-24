@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="229.0" prefWidth="680.0" styleClass="popup-pane" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="addEmailPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="229.0" prefWidth="680.0" styleClass="popup-pane" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="68.0" layoutY="78.0" prefHeight="36.0" prefWidth="245.0" text="Add Email">
          <font>
@@ -21,6 +21,6 @@
          </font>
       </Label>
       <CheckBox layoutX="479.0" layoutY="148.0" mnemonicParsing="false" stylesheets="@../css/application.css" text="Primary Email Address" />
-      <Button layoutX="24.0" layoutY="22.0" mnemonicParsing="false" text="Close" />
+      <Button layoutX="24.0" layoutY="22.0" mnemonicParsing="false" onAction="#onClickCloseAddEmail" text="Close" />
    </children>
 </Pane>

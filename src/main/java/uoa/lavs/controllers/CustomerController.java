@@ -271,8 +271,8 @@ public class CustomerController {
   private void onClickAddEmail(ActionEvent event) throws IOException {
     Button sourceButton = (Button) event.getSource();
     Pane currentRoot = (Pane) sourceButton.getScene().getRoot();
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addAddressPopup.fxml"));
-    AddAddressPopupController controller = new AddAddressPopupController();
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addEmailPopup.fxml"));
+    AddEmailPopupController controller = new AddEmailPopupController();
     loader.setController(controller);
     Parent popupContent = loader.load();
     StackPane.setAlignment(popupContent, Pos.CENTER);
