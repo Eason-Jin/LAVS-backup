@@ -57,7 +57,7 @@ public class EmailPopupController {
         this.email = email;
         this.emailSaveHandler = emailSaveHandler;
         emailTextField.setText(email.getAddress());
-        isPrimaryEmailCheckBox.setDisable(isPrimaryExists);
+        isPrimaryEmailCheckBox.setDisable(isPrimaryExists && !email.getIsPrimary());
         isPrimaryEmailCheckBox.setSelected(isPrimaryExists);
     }
 
