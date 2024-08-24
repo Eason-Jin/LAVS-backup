@@ -1,11 +1,14 @@
 package uoa.lavs.controllers;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -360,8 +363,12 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
   }
 
   @FXML
-  private void onClickAddEmail(ActionEvent event) {
-    System.out.println("Add Email clicked");
+  private void onClickAddEmail(ActionEvent event) throws IOException {
+    Button sourceButton = (Button) event.getSource();
+    Pane currentRoot = (Pane) sourceButton.getScene().getRoot();
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addEmailPopup.fxml"));
+    Parent popupContent = loader.load();
+    currentRoot.getChildren().add(popupContent);
   }
 
   @FXML
