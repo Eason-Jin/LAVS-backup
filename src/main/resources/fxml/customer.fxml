@@ -94,8 +94,8 @@
                         <Button fx:id="addAddressButton" layoutX="950.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickAddAddress" prefHeight="40.0" prefWidth="40.0" stylesheets="@../css/primer-light.css">
                            <styleClass>
                               <String fx:value="button-circle" />
-                              <String fx:value="accent" />
-                              <String fx:value="add-white" />
+                              <String fx:value="add-blue" />
+                              <String fx:value="popup-button" />
                            </styleClass>
                         </Button>
                         <Label layoutX="15.0" layoutY="10.0" text="Addresses">
@@ -129,8 +129,8 @@
                         <Button fx:id="addEmailButton" layoutX="425.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickAddEmail" prefHeight="40.0" prefWidth="40.0" stylesheets="@../css/primer-light.css">
                            <styleClass>
                               <String fx:value="button-circle" />
-                              <String fx:value="accent" />
-                              <String fx:value="add-white" />
+                              <String fx:value="add-blue" />
+                              <String fx:value="popup-button" />
                            </styleClass>
                         </Button>
                         <Label layoutX="15.0" layoutY="10.0" text="Emails">
@@ -141,8 +141,8 @@
                         <Button fx:id="addPhoneButton" layoutX="950.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickAddPhone" prefHeight="40.0" prefWidth="40.0" stylesheets="@../css/primer-light.css">
                            <styleClass>
                               <String fx:value="button-circle" />
-                              <String fx:value="accent" />
-                              <String fx:value="add-white" />
+                              <String fx:value="add-blue" />
+                              <String fx:value="popup-button" />
                            </styleClass>
                         </Button>
                         <Label layoutX="540.0" layoutY="10.0" text="Phones">
@@ -182,8 +182,8 @@
                         <Button fx:id="addEmploymentButton" layoutX="950.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickAddEmployment" prefHeight="40.0" prefWidth="40.0" stylesheets="@../css/primer-light.css">
                            <styleClass>
                               <String fx:value="button-circle" />
-                              <String fx:value="accent" />
-                              <String fx:value="add-white" />
+                              <String fx:value="add-blue" />
+                              <String fx:value="popup-button" />
                            </styleClass>
                         </Button>
                         <Label layoutX="15.0" layoutY="10.0" text="Employment Details">

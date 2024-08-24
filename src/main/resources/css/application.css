@@ -47,10 +47,13 @@
   -fx-border-color: #d0d7de;
   -fx-background-color: white;
   -fx-border-width: 1.5px;
+  -fx-padding: 0px 12px 0px 12px;
 }
 
 .combo-box {
   -fx-background-color: white;
+  -fx-padding: -12px 0px -12px 0px;
+  -fx-fit-to-height: true;
 }
 
 .check-box {
@@ -66,7 +69,7 @@
 
 .cancel {
   -fx-background-image: url("../images/popup/cross.png");
-  -fx-background-size: 45%;
+  -fx-background-size: 42%;
 }
 
 .save {
@@ -100,9 +103,4 @@
   -fx-background-size: 50%;
   -fx-background-color: #548DB7;
   -fx-border-color: #264D6A;
-}
-
-.date-picker .cell {
-  -fx-background-radius: 50%;
-  -fx-border-radius: 50%;
 }

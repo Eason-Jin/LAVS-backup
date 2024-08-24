@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
@@ -10,46 +11,51 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.collections.FXCollections?>
-<Pane fx:id="phonePopupPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="648.0" prefWidth="1152.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.EmailPopupController">
+<Pane fx:id="phonePopupPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="648.0" prefWidth="1152.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.PhonePopupController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#727272" height="648.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1152.0" />
-      <Pane layoutX="351.0" layoutY="145.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="450.0" styleClass="popup-pane" stylesheets="@../css/application.css">
+      <Pane layoutX="351.0" layoutY="145.0" maxHeight="300.0" maxWidth="450.0" minHeight="300.0" minWidth="450.0" prefHeight="300.0" prefWidth="450.0" styleClass="popup-pane" stylesheets="@../css/application.css">
          <children>
             <Label layoutX="42.0" layoutY="59.0" prefHeight="45.0" prefWidth="311.0" text="Phone Number">
                <font>
                   <Font name="System Bold" size="30.0" />
                </font>
             </Label>
-            <TextField fx:id="phoneTextField" layoutX="129.0" layoutY="183.0" prefHeight="30.0" prefWidth="245.0" styleClass="input" />
+            <TextField fx:id="phoneTextField" layoutX="129.0" layoutY="183.0" maxHeight="30.0" maxWidth="245.0" minHeight="30.0" minWidth="245.0" prefHeight="30.0" prefWidth="245.0" styleClass="input" />
             <Label layoutX="141.0" layoutY="164.0" text="Phone Number">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Button layoutX="395.0" layoutY="28.0" mnemonicParsing="false" onAction="#onClickSavePhone" prefHeight="35.0" prefWidth="35.0" stylesheets="@../css/application.css">
+            <Button layoutX="395.0" layoutY="28.0" maxHeight="35.0" maxWidth="35.0" minHeight="35.0" minWidth="35.0" mnemonicParsing="false" onAction="#onClickSavePhone" prefHeight="35.0" prefWidth="35.0" stylesheets="@../css/application.css">
                <styleClass>
                   <String fx:value="input" />
                   <String fx:value="popup-button" />
                   <String fx:value="save" />
                </styleClass>
             </Button>
-            <Button layoutX="354.0" layoutY="28.0" mnemonicParsing="false" onAction="#onClickCloseAddPhone" prefHeight="35.0" prefWidth="35.0" stylesheets="@../css/application.css">
+            <Button layoutX="354.0" layoutY="28.0" maxHeight="35.0" maxWidth="35.0" minHeight="35.0" minWidth="35.0" mnemonicParsing="false" onAction="#onClickCloseAddPhone" prefHeight="35.0" prefWidth="35.0" stylesheets="@../css/application.css">
                <styleClass>
                   <String fx:value="input" />
                   <String fx:value="cancel" />
                   <String fx:value="popup-button" />
                </styleClass>
             </Button>
-            <CheckBox fx:id="isPrimaryPhoneCheckBox" layoutX="52.0" layoutY="226.0" mnemonicParsing="false" stylesheets="@../css/application.css" text="Primary Phone Number" />
-            <CheckBox fx:id="sendTextsCheckBox" layoutX="217.0" layoutY="226.0" mnemonicParsing="false" stylesheets="@../css/application.css" text="Send Texts to this Number" />
-            <TextField fx:id="prefixTextField" layoutX="44.0" layoutY="183.0" prefHeight="30.0" prefWidth="75.0" styleClass="input" />
+            <CheckBox fx:id="isPrimaryPhoneCheckBox" layoutX="52.0" layoutY="226.0" mnemonicParsing="false" stylesheets="@../css/application.css" text="Primary Phone Number">
+               <font>
+                  <Font size="11.0" />
+               </font></CheckBox>
+            <CheckBox fx:id="sendTextsCheckBox" layoutX="223.0" layoutY="226.0" mnemonicParsing="false" stylesheets="@../css/application.css" text="Send Texts to this Number">
+               <font>
+                  <Font size="11.0" />
+               </font></CheckBox>
+            <TextField fx:id="prefixTextField" layoutX="44.0" layoutY="183.0" maxHeight="30.0" maxWidth="75.0" minHeight="30.0" minWidth="75.0" prefHeight="30.0" prefWidth="75.0" styleClass="input" />
             <Label layoutX="55.0" layoutY="164.0" text="Prefix">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <ComboBox fx:id="phoneTypeComboBox" layoutX="44.0" layoutY="126.0" prefHeight="30.0" prefWidth="160.0" promptText="Select" styleClass="input">
+            <ComboBox fx:id="phoneTypeComboBox" layoutX="44.0" layoutY="126.0" maxHeight="30.0" maxWidth="160.0" minHeight="30.0" minWidth="160.0" prefHeight="30.0" prefWidth="160.0" promptText="Select" styleClass="input">
             <items>
                <FXCollections fx:factory="observableArrayList">
                   <String fx:value="Mobile" />
