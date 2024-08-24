@@ -272,10 +272,7 @@ public class CustomerController {
     Button sourceButton = (Button) event.getSource();
     Pane currentRoot = (Pane) sourceButton.getScene().getRoot();
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addEmailPopup.fxml"));
-    AddEmailPopupController controller = new AddEmailPopupController();
-    loader.setController(controller);
     Parent popupContent = loader.load();
-    StackPane.setAlignment(popupContent, Pos.CENTER);
     currentRoot.getChildren().add(popupContent);
   }
 
