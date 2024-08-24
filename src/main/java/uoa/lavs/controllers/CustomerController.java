@@ -427,9 +427,11 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
   @FXML
   private void onClickAddLoan(ActionEvent event) {
+    addLoanController.setCustomer(customer);
+    addLoanController.setCustomerName();
+    addLoanController.addPrimeBorrower();
+
     resetScene();
-    addLoanController.setCustomerName(CustomerLoader.loadData(customer.getId()).getName());
-    addLoanController.addPrimeBorrower(customer.getId());
     Main.setScene(AppScene.ADD_LOAN);
   }
 

@@ -42,6 +42,7 @@ public class AddLoanController extends uoa.lavs.controllers.Controller {
   private HashMap<String, Node> coBorrowerFields = new HashMap<>();
   private HashMap<String, Node> loanDetailsFields = new HashMap<>();
   private HashSet<String> coBorrowerIds = new HashSet<>();
+  private Customer customer;
 
   private String noBorder = "-fx-border-color: none";
   private String redBorder = "-fx-border-color: red";
@@ -69,7 +70,7 @@ public class AddLoanController extends uoa.lavs.controllers.Controller {
         map.put(node.getId(), node);
       }
     }
-    map.put(pane.getId(), pane);
+    // map.put(pane.getId(), pane);
   }
 
   @FXML
@@ -107,12 +108,16 @@ public class AddLoanController extends uoa.lavs.controllers.Controller {
     Main.setScene(SceneManager.AppScene.SEARCH);
   }
 
-  public void setCustomerName(String customerName) {
-    titleLabel.setText("New Loan for " + customerName);
+  public void setCustomerName() {
+    titleLabel.setText("New Loan for " + CustomerLoader.loadData(customer.getId()).getName());
   }
 
-  public void addPrimeBorrower(String id) {
-    coBorrowerIds.add(id);
+  public void setCustomer(Customer customer){
+    this.customer = customer;
+  } 
+
+  public void addPrimeBorrower() {
+    coBorrowerIds.add(customer.getId());
   }
 
   public void addCoBorrower(TableRow<Customer> row) {
@@ -237,7 +242,7 @@ public class AddLoanController extends uoa.lavs.controllers.Controller {
 
   @FXML
   private void onClickSave(ActionEvent event) throws IOException {
-    String customerID = customerController.getCustomerID();
+    String customerID = customer.getId();
     if (checkFields() && validateFields()) {
       Loan loan =
           new Loan(
