@@ -277,11 +277,6 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
           return row;
         });
 
-    alert = new Alert(AlertType.ERROR);
-    alert.setTitle("Error");
-    alert.setHeaderText("Please fix the following issues:");
-    errorMessage = new StringBuilder();
-
     customer = new Customer();
     addresses = FXCollections.observableArrayList(new ArrayList<Address>());
     emails = FXCollections.observableArrayList(new ArrayList<Email>());

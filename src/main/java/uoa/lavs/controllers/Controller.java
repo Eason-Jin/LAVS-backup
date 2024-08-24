@@ -74,6 +74,7 @@ public abstract class Controller {
   }
 
   protected void showAlert() {
+    alert.setTitle("Please fix the following errors:");
     alert.setContentText(errorMessage.toString());
     alert.showAndWait();
     errorMessage = new StringBuilder();

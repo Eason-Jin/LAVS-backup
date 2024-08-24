@@ -44,19 +44,12 @@ public class AddLoanController extends uoa.lavs.controllers.Controller {
   private HashSet<String> coBorrowerIds = new HashSet<>();
   private Customer customer;
 
-  private Alert alert;
-  private StringBuilder errorString;
-
   @Autowired SearchController searchController;
   @Autowired CustomerController customerController;
   @Autowired LoanDetailsController loanDetailsController;
 
   @FXML
   private void initialize() {
-    alert = new Alert(AlertType.ERROR);
-    alert.setTitle("Error");
-    alert.setHeaderText("Please fix the following issues:");
-    errorString = new StringBuilder();
     coBorrowerFlowPane.getChildren().remove(coBorrowerPane);
     addToMap(loanDetailsFields, loanDetailsPane);
   }
@@ -281,9 +274,7 @@ public class AddLoanController extends uoa.lavs.controllers.Controller {
         Main.setScene(AppScene.LOAN_DETAILS);
       }
     } else {
-      alert.setContentText(errorString.toString());
-      alert.showAndWait();
-      errorString = new StringBuilder();
+      showAlert();
     }
   }
 
@@ -316,15 +307,21 @@ public class AddLoanController extends uoa.lavs.controllers.Controller {
 
   public boolean validateFields() {
     boolean repeatFlag = true;
+    boolean dateflag = true;
     for (Node node : loanDetailsFields.values()) {
-      try {
-        if (validateNumberFormat(((TextField) node).getText())) {
+      if (node instanceof TextField) {
+        if (!validateNumberFormat(((TextField) node).getText())) {
           repeatFlag = false;
+          appendErrorMessage("Fields must be numbers!\n");
         }
-      } catch (Exception e) {
-        continue;
+      }
+      if (node instanceof DatePicker) {
+        if (!validateDateFormat(((DatePicker) node).getValue(), false)) {
+          dateflag = false;
+          appendErrorMessage("Start Date must be after today!\n");
+        }
       }
     }
-    return repeatFlag;
+    return repeatFlag && dateflag;
   }
 }
