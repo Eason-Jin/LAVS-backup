@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -58,6 +59,7 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
   private Setting setting;
 
   @Autowired private AddLoanController addLoanController;
+  @Autowired private LoanDetailsController loanDetailsController;
 
   @FXML private Button homeButton;
   @FXML private Button saveButton;
@@ -176,6 +178,79 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
     startDateColumn.setCellValueFactory(new PropertyValueFactory<Loan, String>("startDate"));
     paymentFrequencyColumn.setCellValueFactory(
         new PropertyValueFactory<Loan, String>("paymentFrequency"));
+
+    addressTable.setRowFactory(
+        tableView -> {
+          final TableRow<Address> row = new TableRow<Address>();
+
+          row.setOnMouseClicked(
+              event -> {
+                if (!row.isEmpty()) {
+                  onClickEditAddress(row.getItem());
+                }
+              });
+
+          return row;
+        });
+
+    emailTable.setRowFactory(
+        tableView -> {
+          final TableRow<Email> row = new TableRow<Email>();
+
+          row.setOnMouseClicked(
+              event -> {
+                if (!row.isEmpty()) {
+                  onClickEditEmail(row.getItem());
+                }
+              });
+
+          return row;
+        });
+
+    phoneTable.setRowFactory(
+        tableView -> {
+          final TableRow<Phone> row = new TableRow<Phone>();
+
+          row.setOnMouseClicked(
+              event -> {
+                if (!row.isEmpty()) {
+                  onClickEditPhone(row.getItem());
+                }
+              });
+
+          return row;
+        });
+
+    employmentTable.setRowFactory(
+        tableView -> {
+          final TableRow<Employer> row = new TableRow<Employer>();
+
+          row.setOnMouseClicked(
+              event -> {
+                if (!row.isEmpty()) {
+                  onClickEditEmployment(row.getItem());
+                }
+              });
+
+          return row;
+        });
+
+    loanTable.setRowFactory(
+        tableView -> {
+          final TableRow<Loan> row = new TableRow<Loan>();
+
+          row.setOnMouseClicked(
+              event -> {
+                if (!row.isEmpty()) {
+                  String loanId = row.getItem().getLoanId();
+                  System.out.println("Loan clicked with ID: " + loanId);
+                  loanDetailsController.setLoanDetails(loanId);
+                  Main.setScene(AppScene.LOAN_DETAILS);
+                }
+              });
+
+          return row;
+        });
 
     alert = new Alert(AlertType.ERROR);
     alert.setTitle("Error");
@@ -305,6 +380,43 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
     addLoanController.setCustomerName(CustomerLoader.loadData(customer.getId()).getName());
     addLoanController.addPrimeBorrower(customer.getId());
     Main.setScene(AppScene.ADD_LOAN);
+  }
+
+  private void onClickEditAddress(Address address) {
+    boolean isPrimarySet = false;
+    for (Address currentAddress : addresses) {
+      if (currentAddress.getIsPrimary()) {
+        isPrimarySet = true;
+      }
+    }
+
+    // AddressPopUp addressPopUp = new AddressPopUp(address, isPrimarySet);
+  }
+
+  private void onClickEditEmail(Email email) {
+    boolean isPrimarySet = false;
+    for (Email currentEmail : emails) {
+      if (currentEmail.getIsPrimary()) {
+        isPrimarySet = true;
+      }
+    }
+
+    // EmailPopUp addressPopUp = new EmailPopUp(email, isPrimarySet);
+  }
+
+  private void onClickEditPhone(Phone phone) {
+    boolean isPrimarySet = false;
+    for (Phone currentPhone : phones) {
+      if (currentPhone.getIsPrimary()) {
+        isPrimarySet = true;
+      }
+    }
+
+    // PhonePopUp phonePopUp = new PhonePopUp(phone, isPrimarySet);
+  }
+
+  private void onClickEditEmployment(Employer employer) {
+    // EmployerPopUp employerPopUp = new EmployerPopUp(employer);
   }
 
   @Override
