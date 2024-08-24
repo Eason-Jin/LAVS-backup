@@ -1,7 +1,6 @@
 package uoa.lavs.controllers;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,8 +18,6 @@ import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager;
 import uoa.lavs.SceneManager.AppScene;
-import uoa.lavs.controllers.interfaces.CheckEmpty;
-import uoa.lavs.controllers.interfaces.ValidateType;
 import uoa.lavs.dataoperations.customer.CustomerLoader;
 import uoa.lavs.dataoperations.loan.CoborrowerUpdater;
 import uoa.lavs.dataoperations.loan.LoanUpdater;
@@ -30,7 +27,7 @@ import uoa.lavs.models.Customer;
 import uoa.lavs.models.Loan;
 
 @Controller
-public class AddLoanController implements ValidateType, CheckEmpty {
+public class AddLoanController extends uoa.lavs.controllers.Controller {
   @FXML private AnchorPane coBorrowerScrollAnchorPane;
   @FXML private FlowPane coBorrowerFlowPane;
   @FXML private Pane coBorrowerPane;
@@ -297,12 +294,11 @@ public class AddLoanController implements ValidateType, CheckEmpty {
   @FXML
   private void onClickInfo(ActionEvent event) throws IOException {}
 
-  @Override
   public boolean checkFields() {
     boolean repeatFlag = true;
     for (Node node : loanDetailsFields.values()) {
       try {
-        if (!checkField((Control) node)) {
+        if (isEmpty((Control) node)) {
           repeatFlag = false;
         }
       } catch (Exception e) {
@@ -310,45 +306,17 @@ public class AddLoanController implements ValidateType, CheckEmpty {
       }
     }
     if (!repeatFlag) {
-      errorString.append("\tPlease fill in the required fields\n");
+      appendErrorMessage("Please fill in all required fields!\n");
     }
 
     return repeatFlag;
   }
 
-  @Override
-  public boolean checkField(Control ui) {
-    ui.setStyle(noBorder);
-    if (ui instanceof TextField) {
-      TextField tf = (TextField) ui;
-      if (tf.getText().isEmpty()) {
-        tf.setStyle(redBorder);
-        return false;
-      }
-    }
-    if (ui instanceof ComboBox) {
-      ComboBox<FXCollections> cb = (ComboBox<FXCollections>) ui;
-      if (cb.getValue() == null) {
-        cb.setStyle(redBorder);
-        return false;
-      }
-    }
-    if (ui instanceof DatePicker) {
-      DatePicker dp = (DatePicker) ui;
-      if (dp.getValue() == null) {
-        dp.setStyle(redBorder);
-        return false;
-      }
-    }
-    return true;
-  }
-
-  @Override
   public boolean validateFields() {
     boolean repeatFlag = true;
     for (Node node : loanDetailsFields.values()) {
       try {
-        if (!validate((Control) node, Type.NUMBER)) {
+        if (validateNumberFormat(((TextField) node).getText())) {
           repeatFlag = false;
         }
       } catch (Exception e) {
@@ -356,40 +324,5 @@ public class AddLoanController implements ValidateType, CheckEmpty {
       }
     }
     return repeatFlag;
-  }
-
-  @Override
-  public boolean validate(Control element, Type type) {
-    element.setStyle(noBorder);
-    boolean flag = true;
-    if (element instanceof TextField) {
-      TextField tf = (TextField) element;
-      if (tf.getText().isEmpty()) {
-        return flag;
-      }
-      if (type == Type.NUMBER) {
-        try {
-          Double.parseDouble(tf.getText());
-        } catch (Exception e) {
-          flag = false;
-          tf.setStyle(redBorder);
-          if (errorString.indexOf("\t" + tf.getId() + " should only contain numbers") == -1) {
-            errorString.append("\t" + tf.getId() + " should only contain numbers\n");
-          }
-        }
-      }
-    } else if (element instanceof DatePicker) {
-      DatePicker ui = (DatePicker) element;
-      if (ui.getValue() == null) {
-        return flag;
-      }
-      LocalDate today = LocalDate.now();
-      if (((LocalDate) (Object) ui.getValue()).isBefore(today)) {
-        flag = false;
-        ui.setStyle(redBorder);
-        errorString.append("\tDate must be after today\n");
-      }
-    }
-    return flag;
   }
 }

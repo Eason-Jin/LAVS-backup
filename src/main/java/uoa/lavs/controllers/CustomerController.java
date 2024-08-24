@@ -1,7 +1,6 @@
 package uoa.lavs.controllers;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,7 +12,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -30,9 +28,6 @@ import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager;
 import uoa.lavs.SceneManager.AppScene;
-import uoa.lavs.controllers.interfaces.CheckEmpty;
-import uoa.lavs.controllers.interfaces.CheckLength;
-import uoa.lavs.controllers.interfaces.ValidateType;
 import uoa.lavs.dataoperations.customer.AddressFinder;
 import uoa.lavs.dataoperations.customer.AddressUpdater;
 import uoa.lavs.dataoperations.customer.CustomerLoader;
@@ -53,7 +48,7 @@ import uoa.lavs.models.Loan;
 import uoa.lavs.models.Phone;
 
 @Controller
-public class CustomerController implements ValidateType, CheckLength, CheckEmpty {
+public class CustomerController extends uoa.lavs.controllers.Controller {
   private enum Setting {
     ADD,
     EDIT,
@@ -134,9 +129,6 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
   private ObservableList<Phone> phones;
   private ObservableList<Employer> employers;
   private ObservableList<Loan> loans;
-
-  private Alert alert;
-  private StringBuilder errorString;
 
   private String fieldNormalBorder = "-fx-border-color: #d0d7de; -fx-border-radius: 4";
   private String fieldRedBorder = "-fx-border-color: red; -fx-border-radius: 4";
@@ -293,7 +285,7 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
     alert = new Alert(AlertType.ERROR);
     alert.setTitle("Error");
     alert.setHeaderText("Please fix the following issues:");
-    errorString = new StringBuilder();
+    errorMessage = new StringBuilder();
 
     customer = new Customer();
     addresses = FXCollections.observableArrayList(new ArrayList<Address>());
@@ -513,64 +505,37 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
     employmentPopupController.setUpPopup(employer, this::handleSave);
   }
 
-  @Override
   public boolean checkFields() {
-    boolean titleFlag = checkField(titleField);
-    boolean nameFlag = checkField(nameField);
-    boolean dobFlag = checkField(dobPicker);
-    boolean occupationFlag = checkField(occupationField);
-    boolean citizenshipFlag = checkField(citizenshipField);
+    boolean titleFlag = !isEmpty(titleField);
+    boolean nameFlag = !isEmpty(nameField);
+    boolean dobFlag = !isEmpty(dobPicker);
+    boolean occupationFlag = !isEmpty(occupationField);
+    boolean citizenshipFlag = !isEmpty(citizenshipField);
 
     if (titleFlag && nameFlag && dobFlag && occupationFlag && citizenshipFlag) {
       return true;
     }
-    errorString.append("\tPlease fill in the required fields\n");
+    appendErrorMessage("Please fill in all required fields\n");
 
     return false;
   }
 
-  @Override
-  public boolean checkField(Control ui) {
-    ui.setStyle(fieldNormalBorder);
-    if (ui instanceof TextField) {
-      TextField tf = (TextField) ui;
-      if (tf.getText().isEmpty()) {
-        tf.setStyle(fieldRedBorder);
-        return false;
-      }
-    } else if (ui instanceof DatePicker) {
-      DatePicker dp = (DatePicker) ui;
-      if (dp.getValue() == null) {
-        dp.setStyle(fieldRedBorder);
-        return false;
-      }
-    }
-    return true;
-  }
-
-  @Override
   public boolean validateFields() {
-    boolean dobFlag = validate(dobPicker, Type.DATE);
+    boolean dobFlag = validateDateFormat(dobPicker.getValue(), true);
     boolean addressFlag = addresses.size() >= 1;
     if (!addressFlag) {
-      if (errorString.indexOf("\tPlease add at least one address") == -1) {
-        errorString.append("\tPlease add at least one address\n");
-      }
+      appendErrorMessage("Please add at least one address\n");
     }
 
     boolean contactDetailsFlag = emails.size() + phones.size() >= 1;
     if (!contactDetailsFlag) {
-      if (errorString.indexOf("\tPlease add at least one email or phone") == -1) {
-        errorString.append("\tPlease add at least one email or phone\n");
-      }
+      appendErrorMessage("Please add at least one email or phone\n");
     }
 
     boolean employersFlag = employers.size() >= 1;
     if (!employersFlag) {
       employmentTable.setStyle(tableRedBorder);
-      if (errorString.indexOf("\tPlease add at least one employer") == -1) {
-        errorString.append("\tPlease add at least one employer\n");
-      }
+      appendErrorMessage("Please add at least one employer\n");
     }
 
     // Only one address can be primary, need at least one mailing address
@@ -585,13 +550,13 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
       }
     }
     if (primaryAddressNum == 0) {
-      if (errorString.indexOf("\tPlease select a primary address") == -1) {
-        errorString.append("\tPlease select a primary address\n");
+      if (errorMessage.indexOf("\tPlease select a primary address") == -1) {
+        errorMessage.append("\tPlease select a primary address\n");
       }
     }
     if (mailingAddressNum == 0) {
-      if (errorString.indexOf("\tPlease select a mailing address") == -1) {
-        errorString.append("\tPlease select a mailing address\n");
+      if (errorMessage.indexOf("\tPlease select a mailing address") == -1) {
+        errorMessage.append("\tPlease select a mailing address\n");
       }
     }
     if (!addressFlag || primaryAddressNum == 0 || mailingAddressNum == 0) {
@@ -606,9 +571,7 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
       }
     }
     if (primaryEmailNum == 0) {
-      if (errorString.indexOf("\tPlease select a primary email") == -1) {
-        errorString.append("\tPlease select a primary email\n");
-      }
+      appendErrorMessage("\tPlease select a primary email\n");
     }
     if (!contactDetailsFlag || primaryEmailNum == 0) {
       emailTable.setStyle(tableRedBorder);
@@ -626,14 +589,10 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
       }
     }
     if (primaryPhoneNum == 0) {
-      if (errorString.indexOf("\tPlease select a primary phone") == -1) {
-        errorString.append("\tPlease select a primary phone\n");
-      }
+      appendErrorMessage("\tPlease select a primary phone\n");
     }
     if (textingPhoneNum == 0) {
-      if (errorString.indexOf("\tPlease select a texting phone") == -1) {
-        errorString.append("\tPlease select a texting phone\n");
-      }
+      appendErrorMessage("\tPlease select a texting phone\n");
     }
     if (!contactDetailsFlag || primaryPhoneNum == 0 || textingPhoneNum == 0) {
       phoneTable.setStyle(tableRedBorder);
@@ -650,29 +609,37 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
         && textingPhoneNum >= 1;
   }
 
-  @Override
-  public boolean validate(Control element, Type type) {
-    boolean flag = true;
-    DatePicker datePicker = (DatePicker) element;
-    if (datePicker.getValue() != null) {
-      LocalDate today = LocalDate.now();
-      if (today.isBefore(datePicker.getValue())) {
-        flag = false;
-        datePicker.setStyle(fieldRedBorder);
-        errorString.append("\tDate must be before today\n");
-      }
-    }
-    return flag;
-  }
-
-  @Override
   public boolean checkLengths() {
-    boolean titleFieldFlag = checkLength(titleField, 10);
-    boolean nameFieldFlag = checkLength(nameField, 60);
-    boolean occupationFlag = checkLength(occupationField, 40);
-    boolean citizenshipFieldFlag = checkLength(citizenshipField, 40);
-    boolean visaFieldFlag = checkLength(visaField, 40);
-    boolean notesAreaFlag = checkLength(notesArea, 1330);
+    boolean titleFieldFlag = !isTooLong(titleField.getText(), 10);
+    if (!titleFieldFlag) {
+      titleField.setStyle(fieldRedBorder);
+      appendErrorMessage("Title must be less than 10 characters\n");
+    }
+    boolean nameFieldFlag = !isTooLong(nameField.getText(), 60);
+    if (!nameFieldFlag) {
+      nameField.setStyle(fieldRedBorder);
+      appendErrorMessage("Name must be less than 60 characters\n");
+    }
+    boolean occupationFlag = !isTooLong(occupationField.getText(), 40);
+    if (!occupationFlag) {
+      occupationField.setStyle(fieldRedBorder);
+      appendErrorMessage("Occupation must be less than 40 characters\n");
+    }
+    boolean citizenshipFieldFlag = !isTooLong(citizenshipField.getText(), 40);
+    if (!citizenshipFieldFlag) {
+      citizenshipField.setStyle(fieldRedBorder);
+      appendErrorMessage("Citizenship must be less than 40 characters\n");
+    }
+    boolean visaFieldFlag = !isTooLong(visaField.getText(), 40);
+    if (!visaFieldFlag) {
+      visaField.setStyle(fieldRedBorder);
+      appendErrorMessage("Visa type must be less than 40 characters\n");
+    }
+    boolean notesAreaFlag = !isTooLong(notesArea.getText(), 1330);
+    if (!notesAreaFlag) {
+      notesArea.setStyle(fieldRedBorder);
+      appendErrorMessage("Notes must be less than 1330 characters\n");
+    }
 
     return titleFieldFlag
         && nameFieldFlag
@@ -680,26 +647,6 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
         && citizenshipFieldFlag
         && visaFieldFlag
         && notesAreaFlag;
-  }
-
-  @Override
-  public boolean checkLength(Control ui, int length) {
-    int len;
-    if (ui instanceof TextField) {
-      len = ((TextField) ui).getText().length();
-    } else if (ui instanceof TextArea) {
-      len = ((TextArea) ui).getText().length();
-    } else {
-      return false;
-    }
-    if (len > length) {
-      ui.setStyle(fieldRedBorder);
-      if (errorString.indexOf(ui.getId() + " is too long") == -1) {
-        errorString.append("\t" + ui.getId() + " is too long, the max length is: " + length + "\n");
-      }
-      return false;
-    }
-    return true;
   }
 
   private void resetFieldStyle() {
@@ -772,10 +719,10 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
         exceptionAlert.showAndWait();
       }
     } else {
-      alert.setContentText(errorString.toString());
+      alert.setContentText(errorMessage.toString());
       alert.showAndWait();
       // Clears error message
-      errorString = new StringBuilder();
+      errorMessage = new StringBuilder();
     }
   }
 
