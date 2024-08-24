@@ -1,11 +1,15 @@
 package uoa.lavs.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -20,6 +24,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
@@ -259,13 +264,19 @@ public class CustomerController {
   }
 
   @FXML
-  private void onClickAddAddress(ActionEvent event) {
-    System.out.println("Add Address clicked");
+  private void onClickAddAddress(ActionEvent event) { System.out.println("Add Address clicked");
   }
 
   @FXML
-  private void onClickAddEmail(ActionEvent event) {
-    System.out.println("Add Email clicked");
+  private void onClickAddEmail(ActionEvent event) throws IOException {
+    Button sourceButton = (Button) event.getSource();
+    Pane currentRoot = (Pane) sourceButton.getScene().getRoot();
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addAddressPopup.fxml"));
+    AddAddressPopupController controller = new AddAddressPopupController();
+    loader.setController(controller);
+    Parent popupContent = loader.load();
+    StackPane.setAlignment(popupContent, Pos.CENTER);
+    currentRoot.getChildren().add(popupContent);
   }
 
   @FXML
