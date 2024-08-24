@@ -67,15 +67,15 @@
                                     <URL value="@../css/primer-light.css" />
                                     <URL value="@../css/application.css" />
                                  </stylesheets></TextField>
-                              <TextField fx:id="nameField" layoutX="160.0" prefHeight="36.0" prefWidth="790.0" promptText="Full name" stylesheets="@../css/primer-light.css" />
+                              <TextField fx:id="nameField" layoutX="160.0" prefHeight="36.0" prefWidth="790.0" promptText="Full name" styleClass="input" stylesheets="@../css/primer-light.css" />
                               <DatePicker fx:id="dobPicker" layoutY="50.0" prefHeight="35.0" prefWidth="470.0" promptText="Date of birth" styleClass="input">
                                  <stylesheets>
                                     <URL value="@../css/primer-light.css" />
                                     <URL value="@../css/application.css" />
                                  </stylesheets></DatePicker>
-                              <TextField fx:id="occupationField" layoutX="480.0" layoutY="50.0" prefHeight="35.0" prefWidth="470.0" promptText="Occupation" stylesheets="@../css/primer-light.css" />
-                              <TextField fx:id="citizenshipField" layoutY="100.0" prefHeight="35.0" prefWidth="470.0" promptText="Citizenship status" stylesheets="@../css/primer-light.css" />
-                              <TextField fx:id="visaField" layoutX="480.0" layoutY="100.0" prefHeight="35.0" prefWidth="470.0" promptText="Visa type" stylesheets="@../css/primer-light.css" />
+                              <TextField fx:id="occupationField" layoutX="480.0" layoutY="50.0" prefHeight="35.0" prefWidth="470.0" promptText="Occupation" styleClass="input" stylesheets="@../css/primer-light.css" />
+                              <TextField fx:id="citizenshipField" layoutY="100.0" prefHeight="35.0" prefWidth="470.0" promptText="Citizenship status" styleClass="input" stylesheets="@../css/primer-light.css" />
+                              <TextField fx:id="visaField" layoutX="480.0" layoutY="100.0" prefHeight="35.0" prefWidth="470.0" promptText="Visa type" styleClass="input" stylesheets="@../css/primer-light.css" />
                            </children>
                         </Pane>
                         <Label alignment="TOP_LEFT" contentDisplay="TOP" layoutX="15.0" layoutY="10.0" text="General Details">
@@ -259,14 +259,14 @@
             </Tab>
         </tabs>
       </TabPane>
-      <Button fx:id="editButton" layoutX="1057.0" layoutY="553.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#onClickEdit" stylesheets="@../css/primer-light.css" text="Edit">
+      <Button fx:id="editButton" layoutX="1045.0" layoutY="545.0" maxHeight="75.0" maxWidth="75.0" minHeight="75.0" minWidth="75.0" mnemonicParsing="false" onAction="#onClickEdit" prefHeight="75.0" prefWidth="75.0" stylesheets="@../css/primer-light.css" text="Edit">
          <font>
             <Font size="18.0" />
          </font>
          <styleClass>
-            <String fx:value="accent" />
             <String fx:value="button-circle" />
-            <String fx:value="edit" />
+            <String fx:value="popup-button" />
+            <String fx:value="edit-blue" />
          </styleClass>
       </Button>
    </children>

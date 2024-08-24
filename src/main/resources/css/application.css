@@ -40,8 +40,8 @@
 }
 
 .input {
-  -fx-background-radius: 50%;
-  -fx-border-radius: 50%;
+  -fx-background-radius: 20px;
+  -fx-border-radius: 20px;
   -fx-text-fill: #6d7175;
   -fx-prompt-text-fill: #6d7175;
   -fx-border-color: #d0d7de;
@@ -60,7 +60,7 @@
 .popup-button {
   -fx-background-repeat: no-repeat;
   -fx-background-position: center;
-  -fx-border-radius: 50%;
+  -fx-border-radius: 50px;
   -fx-border-width: 2px;
 }
 
@@ -86,6 +86,20 @@
   -fx-background-size: 45%;
   -fx-background-color: #D67373;
   -fx-border-color: #8A3535;
+}
+
+.edit-blue {
+  -fx-background-image: url("../images/generic/edit-blue.png");
+  -fx-background-size: 50%;
+  -fx-background-color: #548DB7;
+  -fx-border-color: #264D6A;
+}
+
+.add-blue {
+  -fx-background-image: url("../images/generic/plus-blue.png");
+  -fx-background-size: 50%;
+  -fx-background-color: #548DB7;
+  -fx-border-color: #264D6A;
 }
 
 .date-picker .cell {
