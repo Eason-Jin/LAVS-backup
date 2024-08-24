@@ -440,8 +440,9 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
       emails.set(emailTableRow, savedEmail);
     } catch (Exception e) {
       emails.add(savedEmail);
+    } finally {
+      emailTableRow = -1;
     }
-    emailTableRow = -1;
     emailTable.setItems(emails);
   }
 
@@ -451,8 +452,9 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
       phones.set(phoneTableRow, savedPhone);
     } catch (Exception e) {
       phones.add(savedPhone);
+    } finally {
+      phoneTableRow = -1;
     }
-    phoneTableRow = -1;
     phoneTable.setItems(phones);
   }
 

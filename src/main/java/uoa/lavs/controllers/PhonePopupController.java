@@ -67,7 +67,7 @@ public class PhonePopupController {
     prefixTextField.setText(phone.getPrefix());
     phoneTextField.setText(phone.getPhoneNumber());
     isPrimaryPhoneCheckBox.setDisable(isPrimaryExists && !phone.getIsPrimary());
-    isPrimaryPhoneCheckBox.setSelected(isPrimaryExists);
+    isPrimaryPhoneCheckBox.setSelected(phone.getIsPrimary());
     sendTextsCheckBox.setSelected(phone.getCanSendText());
   }
 
