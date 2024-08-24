@@ -20,6 +20,7 @@ public class AddressUpdater {
     try {
       updateMainframe(customerID, address);
     } catch (Exception e) {
+      failed = true;
       System.out.println("Mainframe update failed: " + e.getMessage());
     } finally {
       try {
