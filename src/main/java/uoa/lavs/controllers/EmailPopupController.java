@@ -6,7 +6,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
-public class AddEmailPopupController {
+public class EmailPopupController {
     @FXML private Pane addEmailPane;
     @FXML private TextField emailTextField;
     @FXML private CheckBox isPrimaryEmailCheckBox;

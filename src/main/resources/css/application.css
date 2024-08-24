@@ -33,9 +33,10 @@
 
 .popup-pane {
   -fx-background-radius: 20px;
-  -fx-border-color: #d0d7de;
-  -fx-background-color: #f6f8fa;
   -fx-border-radius: 20px;
+  -fx-border-color: #d0d7de;
+  -fx-border-width: 1.5px;
+  -fx-background-color: #f6f8fa;
 }
 
 .input {
@@ -68,4 +69,8 @@
 .save {
   -fx-background-image: url("../images/popup/tick.png");
   -fx-background-size: 55%;
+}
+
+.blur {
+  
 }

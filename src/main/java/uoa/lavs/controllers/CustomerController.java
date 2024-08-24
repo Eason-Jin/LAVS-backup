@@ -3,12 +3,12 @@ package uoa.lavs.controllers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -24,7 +24,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
@@ -271,7 +271,7 @@ public class CustomerController {
   private void onClickAddEmail(ActionEvent event) throws IOException {
     Button sourceButton = (Button) event.getSource();
     Pane currentRoot = (Pane) sourceButton.getScene().getRoot();
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addEmailPopup.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/emailPopup.fxml"));
     Parent popupContent = loader.load();
     currentRoot.getChildren().add(popupContent);
   }
