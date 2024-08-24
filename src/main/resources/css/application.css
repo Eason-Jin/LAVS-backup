@@ -54,3 +54,18 @@
 .check-box {
   -fx-text-fill: #6d7175;
 }
+
+.popup-button {
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: center;
+}
+
+.cancel {
+  -fx-background-image: url("../images/popup/cross.png");
+  -fx-background-size: 45%;
+}
+
+.save {
+  -fx-background-image: url("../images/popup/tick.png");
+  -fx-background-size: 55%;
+}
