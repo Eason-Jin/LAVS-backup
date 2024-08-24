@@ -142,8 +142,8 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
   private String tableNormalBorder = "-fx-border-color: #d0d7de";
   private String tableRedBorder = "-fx-border-color: red";
 
-  private int emailTableRow;
-  private int phoneTableRow;
+  private int emailTableRow = -1;
+  private int phoneTableRow = -1;
 
   @FXML
   public void initialize() {
@@ -436,24 +436,21 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
   }
 
   private void handleEmailSave(Email savedEmail) {
-    try {
+    if (emailTableRow != -1) {
       emails.set(emailTableRow, savedEmail);
-    } catch (Exception e) {
+    } else {
       emails.add(savedEmail);
-    } finally {
-      emailTableRow = -1;
     }
+    emailTableRow = -1;
+
     emailTable.setItems(emails);
   }
 
   private void handlePhoneSave(Phone savedPhone) {
-    try {
-      System.out.println(phoneTableRow);
+    if (phoneTableRow != -1) {
       phones.set(phoneTableRow, savedPhone);
-    } catch (Exception e) {
+    } else {
       phones.add(savedPhone);
-    } finally {
-      phoneTableRow = -1;
     }
     phoneTable.setItems(phones);
   }
