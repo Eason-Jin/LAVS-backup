@@ -150,6 +150,12 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
 
   @FXML
   public void initialize() {
+    addressTable.setPlaceholder(new Label("No addresses for this customer"));
+    emailTable.setPlaceholder(new Label("No emails for this customer"));
+    phoneTable.setPlaceholder(new Label("No phones for this customer"));
+    employmentTable.setPlaceholder(new Label("No employments for this customer"));
+    loanTable.setPlaceholder(new Label("No loans for this customer"));
+
     addressTypeColumn.setCellValueFactory(new PropertyValueFactory<Address, String>("type"));
     streetAddressColumn.setCellValueFactory(
         new PropertyValueFactory<Address, String>("streetAddress"));
