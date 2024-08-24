@@ -6,9 +6,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import uoa.lavs.models.Detail;
 import uoa.lavs.models.Employer;
 
-public class EmploymentPopupController {
+public class EmploymentPopupController extends PopupController {
   @FXML private Pane employmentPopupPane;
   @FXML private TextField companyNameTextField;
   @FXML private TextField companyAddressLine1TextField;
@@ -25,15 +26,13 @@ public class EmploymentPopupController {
   private Employer employment;
   private Consumer<Employer> employmentSaveHandler;
 
-  public void initialize() {}
-
-  @FXML
-  private void onClickCloseEmploymentPopup(ActionEvent event) {
-    closePopup();
+  public void initialize() {
+    setPane(employmentPopupPane);
   }
 
+  @Override
   @FXML
-  private void onClickSaveEmployment(ActionEvent event) {
+  public void onClickSave(ActionEvent event) {
     String companyName = companyNameTextField.getText();
     String companyAddressLine1 = companyAddressLine1TextField.getText();
     String companyAddressLine2 = companyAddressLine2TextField.getText();
@@ -86,9 +85,11 @@ public class EmploymentPopupController {
     closePopup();
   }
 
-  public void setUpEmploymentPopup(Employer employment, Consumer<Employer> employmentSaveHandler) {
-    this.employment = employment;
-    this.employmentSaveHandler = employmentSaveHandler;
+  @Override
+  public void setUpPopup(Detail obj, Consumer<Detail> objectSaveHandler, boolean... args) {
+
+    this.employment = (Employer) obj;
+    this.employmentSaveHandler = (Consumer<Employer>) (Object) objectSaveHandler;
 
     companyNameTextField.setText(employment.getName());
     companyAddressLine1TextField.setText(employment.getLine1());
@@ -102,36 +103,5 @@ public class EmploymentPopupController {
     companyEmailTextField.setText(employment.getEmailAddress());
     companyWebsiteTextField.setText(employment.getWebsite());
     isOwnerCheckBox.setSelected(employment.getIsOwner() == null ? false : employment.getIsOwner());
-  }
-
-  private boolean validatePostcodeFormat(String postcode) {
-    try {
-      Integer.parseInt(postcode);
-    } catch (Exception e) {
-      return false;
-    }
-    return true;
-  }
-
-  private boolean validateWebsiteFormat(String website) {
-    return website.matches("^.+\\..+$");
-  }
-
-  private boolean validateEmailFormat(String email) {
-    return email.matches("^.+@.+\\..+$");
-  }
-
-  private boolean validatePhoneFormat(String phone) {
-    try {
-      Integer.parseInt(phone);
-    } catch (Exception e) {
-      return false;
-    }
-    return true;
-  }
-
-  private void closePopup() {
-    Pane currentRoot = (Pane) employmentPopupPane.getScene().getRoot();
-    currentRoot.getChildren().remove(employmentPopupPane);
   }
 }

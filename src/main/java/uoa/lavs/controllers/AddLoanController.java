@@ -53,9 +53,9 @@ public class AddLoanController implements ValidateType, CheckEmpty {
   private StringBuilder errorString;
 
   @Autowired SearchController searchController;
-  @Autowired CustomerDetailsController customerDetailsController;
-  @Autowired LoanDetailsController loanDetailsController;
   @Autowired CustomerController customerController;
+  @Autowired LoanDetailsController loanDetailsController;
+
   @FXML
   private void initialize() {
     alert = new Alert(AlertType.ERROR);
@@ -240,7 +240,7 @@ public class AddLoanController implements ValidateType, CheckEmpty {
 
   @FXML
   private void onClickSave(ActionEvent event) throws IOException {
-    String customerID = customerDetailsController.getCustomerID();
+    String customerID = customerController.getCustomerID();
     if (checkFields() && validateFields()) {
       Loan loan =
           new Loan(

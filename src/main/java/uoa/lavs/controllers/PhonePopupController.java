@@ -1,15 +1,18 @@
 package uoa.lavs.controllers;
 
 import java.util.function.Consumer;
+
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import uoa.lavs.models.Detail;
 import uoa.lavs.models.Phone;
 
-public class PhonePopupController {
+public class PhonePopupController extends PopupController {
   @FXML private Pane phonePopupPane;
   @FXML private ComboBox<String> phoneTypeComboBox;
   @FXML private TextField prefixTextField;
@@ -20,22 +23,20 @@ public class PhonePopupController {
   private Phone phone;
   private Consumer<Phone> phoneSaveHandler;
 
-  public void initialize() {}
-
-  @FXML
-  private void onClickCloseAddPhone() {
-    closePopup();
+  public void initialize() {
+    setPane(phonePopupPane);
   }
 
+  @Override
   @FXML
-  private void onClickSavePhone() {
+  public void onClickSave(ActionEvent event) {
     String phoneText = phoneTextField.getText();
 
     if (phoneText == null) {
       return;
     }
 
-    if (!validatePhoneFormat(phoneText)) {
+    if (!validateNumberFormat(phoneText)) {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Invalid Phone");
       alert.setHeaderText("The phone must be numbers.");
@@ -58,31 +59,15 @@ public class PhonePopupController {
     closePopup();
   }
 
-  public void setUpPhonePopup(
-      Phone phone, boolean isPrimaryExists, Consumer<Phone> phoneSaveHandler) {
-    this.phone = phone;
-    this.phoneSaveHandler = phoneSaveHandler;
+  @Override
+  public void setUpPopup(Detail obj, Consumer<Detail> objectSaveHandler, boolean... args) {
+    this.phone = (Phone) obj;
+    this.phoneSaveHandler = (Consumer<Phone>) (Object) objectSaveHandler;
     phoneTypeComboBox.setValue(phone.getType());
-    ;
     prefixTextField.setText(phone.getPrefix());
     phoneTextField.setText(phone.getPhoneNumber());
-    isPrimaryPhoneCheckBox.setDisable(isPrimaryExists && !phone.getIsPrimary());
+    isPrimaryPhoneCheckBox.setDisable((args.length > 0 ? args[0] : false) && !phone.getIsPrimary());
     isPrimaryPhoneCheckBox.setSelected(phone.getIsPrimary());
     sendTextsCheckBox.setSelected(phone.getCanSendText());
-  }
-
-  private boolean validatePhoneFormat(String phone) {
-    boolean isValid = true;
-    try {
-      Integer.parseInt(phone);
-    } catch (Exception e) {
-      isValid = false;
-    }
-    return isValid;
-  }
-
-  private void closePopup() {
-    Pane currentRoot = (Pane) phonePopupPane.getScene().getRoot();
-    currentRoot.getChildren().remove(phonePopupPane);
   }
 }

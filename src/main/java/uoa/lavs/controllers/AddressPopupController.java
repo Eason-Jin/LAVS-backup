@@ -9,8 +9,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import uoa.lavs.models.Address;
+import uoa.lavs.models.Detail;
 
-public class AddressPopupController {
+public class AddressPopupController extends PopupController {
   @FXML private Pane addressPopupPane;
   @FXML private TextField addressLine1TextField;
   @FXML private TextField addressLine2TextField;
@@ -25,15 +26,13 @@ public class AddressPopupController {
   private Address address;
   private Consumer<Address> addressSaveHandler;
 
-  public void initialize() {}
-
-  @FXML
-  private void onClickCloseAddressPopup(ActionEvent event) {
-    closePopup();
+  public void initialize() {
+    setPane(addressPopupPane);
   }
 
+  @Override
   @FXML
-  private void onClickSaveAddress(ActionEvent event) {
+  public void onClickSave(ActionEvent event) {
     String addressLine1 = addressLine1TextField.getText();
     String addressLine2 = addressLine2TextField.getText();
     String suburb = suburbTextField.getText();
@@ -77,13 +76,10 @@ public class AddressPopupController {
     closePopup();
   }
 
-  public void setUpAddressPopup(
-      Address address,
-      boolean isPrimaryExists,
-      boolean isMailingExists,
-      Consumer<Address> addressSaveHandler) {
-    this.address = address;
-    this.addressSaveHandler = addressSaveHandler;
+  @Override
+  public void setUpPopup(Detail obj, Consumer<Detail> objectSaveHandler, boolean... args) {
+    this.address = (Address) obj;
+    this.addressSaveHandler = (Consumer<Address>) (Object) objectSaveHandler;
     addressLine1TextField.setText(address.getLine1());
     addressLine2TextField.setText(address.getLine2() == null ? "" : address.getLine2());
     suburbTextField.setText(address.getSuburb());
@@ -91,9 +87,11 @@ public class AddressPopupController {
     postcodeTextField.setText(address.getPostCode());
     countryTextField.setText(address.getCountry());
     addressTypeComboBox.setValue(address.getType());
-    isPrimaryAddressCheckBox.setDisable(isPrimaryExists && !address.getIsPrimary());
+    isPrimaryAddressCheckBox.setDisable(
+        (args.length > 0 ? args[0] : false) && !address.getIsPrimary());
     isPrimaryAddressCheckBox.setSelected(address.getIsPrimary());
-    isMailingAddressCheckBox.setDisable(isMailingExists && !address.getIsMailing());
+    isMailingAddressCheckBox.setDisable(
+        (args.length > 1 ? args[1] : false) && !address.getIsMailing());
     isMailingAddressCheckBox.setSelected(address.getIsMailing());
   }
 
@@ -104,10 +102,5 @@ public class AddressPopupController {
       return false;
     }
     return true;
-  }
-
-  private void closePopup() {
-    Pane currentRoot = (Pane) addressPopupPane.getScene().getRoot();
-    currentRoot.getChildren().remove(addressPopupPane);
   }
 }

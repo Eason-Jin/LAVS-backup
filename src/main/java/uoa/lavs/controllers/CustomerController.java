@@ -46,6 +46,7 @@ import uoa.lavs.dataoperations.customer.PhoneUpdater;
 import uoa.lavs.dataoperations.loan.LoanFinder;
 import uoa.lavs.models.Address;
 import uoa.lavs.models.Customer;
+import uoa.lavs.models.Detail;
 import uoa.lavs.models.Email;
 import uoa.lavs.models.Employer;
 import uoa.lavs.models.Loan;
@@ -308,7 +309,7 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
   public void setUpEditCustomer() {
     setting = Setting.EDIT;
     titleLabel.setText("Edit Customer");
-    detailsTabPane.getSelectionModel().select(0);
+    // detailsTabPane.getSelectionModel().select(0);
     setDisableForFields(false);
     setVisabilityForButtons(true);
   }
@@ -434,44 +435,44 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
     Main.setScene(AppScene.ADD_LOAN);
   }
 
-  private void handleAddressSave(Address savedAddress) {
-    if (addressTableRow != -1) {
-      addresses.set(addressTableRow, savedAddress);
-    } else {
-      addresses.add(savedAddress);
+  private void handleSave(Detail saved) {
+    if (saved instanceof Address) {
+      Address address = (Address) saved;
+      if (addressTableRow != -1) {
+        addresses.set(addressTableRow, address);
+      } else {
+        addresses.add(address);
+      }
+      addressTableRow = -1;
+      addressTable.setItems(addresses);
+    } else if (saved instanceof Email) {
+      Email email = (Email) saved;
+      if (emailTableRow != -1) {
+        emails.set(emailTableRow, email);
+      } else {
+        emails.add(email);
+      }
+      emailTableRow = -1;
+      emailTable.setItems(emails);
+    } else if (saved instanceof Phone) {
+      Phone phone = (Phone) saved;
+      if (phoneTableRow != -1) {
+        phones.set(phoneTableRow, phone);
+      } else {
+        phones.add(phone);
+      }
+      phoneTableRow = -1;
+      phoneTable.setItems(phones);
+    } else if (saved instanceof Employer) {
+      Employer employer = (Employer) saved;
+      if (employmentTableRow != -1) {
+        employers.set(employmentTableRow, employer);
+      } else {
+        employers.add(employer);
+      }
+      employmentTableRow = -1;
+      employmentTable.setItems(employers);
     }
-    addressTableRow = -1;
-    addressTable.setItems(addresses);
-  }
-
-  private void handleEmailSave(Email savedEmail) {
-    if (emailTableRow != -1) {
-      emails.set(emailTableRow, savedEmail);
-    } else {
-      emails.add(savedEmail);
-    }
-    emailTableRow = -1;
-    emailTable.setItems(emails);
-  }
-
-  private void handlePhoneSave(Phone savedPhone) {
-    if (phoneTableRow != -1) {
-      phones.set(phoneTableRow, savedPhone);
-    } else {
-      phones.add(savedPhone);
-    }
-    phoneTableRow = -1;
-    phoneTable.setItems(phones);
-  }
-
-  private void handleEmploymentSave(Employer savedEmployer) {
-    if (employmentTableRow != -1) {
-      employers.set(employmentTableRow, savedEmployer);
-    } else {
-      employers.add(savedEmployer);
-    }
-    employmentTableRow = -1;
-    employmentTable.setItems(employers);
   }
 
   private FXMLLoader createPopup(String fxmlPath, Pane currentRoot) throws IOException {
@@ -484,26 +485,26 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
   private void createAddressPopup(Pane currentRoot, Address address) throws IOException {
     FXMLLoader loader = createPopup("/fxml/addressPopup.fxml", currentRoot);
     AddressPopupController addressPopupController = loader.getController();
-    addressPopupController.setUpAddressPopup(
-        address, doesPrimaryAddressExist(), doesMailingAddressExist(), this::handleAddressSave);
+    addressPopupController.setUpPopup(
+        address, this::handleSave, doesPrimaryAddressExist(), doesMailingAddressExist());
   }
 
   private void createEmailPopup(Pane currentRoot, Email email) throws IOException {
     FXMLLoader loader = createPopup("/fxml/emailPopup.fxml", currentRoot);
     EmailPopupController emailPopupController = loader.getController();
-    emailPopupController.setUpEmailPopup(email, doesPrimaryEmailExist(), this::handleEmailSave);
+    emailPopupController.setUpPopup(email, this::handleSave, doesPrimaryEmailExist());
   }
 
   private void createPhonePopup(Pane currentRoot, Phone phone) throws IOException {
     FXMLLoader loader = createPopup("/fxml/phonePopup.fxml", currentRoot);
     PhonePopupController phonePopupController = loader.getController();
-    phonePopupController.setUpPhonePopup(phone, doesPrimaryPhoneExist(), this::handlePhoneSave);
+    phonePopupController.setUpPopup(phone, this::handleSave, doesPrimaryPhoneExist());
   }
 
   private void createEmploymentPopup(Pane currentRoot, Employer employer) throws IOException {
     FXMLLoader loader = createPopup("/fxml/employmentPopup.fxml", currentRoot);
     EmploymentPopupController employmentPopupController = loader.getController();
-    employmentPopupController.setUpEmploymentPopup(employer, this::handleEmploymentSave);
+    employmentPopupController.setUpPopup(employer, this::handleSave);
   }
 
   @Override

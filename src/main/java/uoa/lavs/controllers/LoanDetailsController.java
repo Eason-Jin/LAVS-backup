@@ -56,7 +56,7 @@ public class LoanDetailsController {
   @FXML private TableColumn<LoanRepayment, String> remainingColumn;
 
   @Autowired SearchController searchController;
-  @Autowired CustomerDetailsController customerDetailsController;
+  @Autowired CustomerController customerController;
 
   @FXML
   private void initialize() {

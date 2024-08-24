@@ -3,7 +3,7 @@ package uoa.lavs.models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Address {
+public class Address extends Detail {
   private String customerId;
   private Integer number;
   private String type;

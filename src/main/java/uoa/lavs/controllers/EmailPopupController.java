@@ -7,9 +7,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import uoa.lavs.models.Detail;
 import uoa.lavs.models.Email;
 
-public class EmailPopupController {
+public class EmailPopupController extends PopupController {
   @FXML private Pane addEmailPane;
   @FXML private TextField emailTextField;
   @FXML private CheckBox isPrimaryEmailCheckBox;
@@ -17,15 +18,13 @@ public class EmailPopupController {
   private Email email;
   private Consumer<Email> emailSaveHandler;
 
-  public void initialize() {}
-
-  @FXML
-  private void onClickCloseAddEmail(ActionEvent event) {
-    closePopup();
+  public void initialize() {
+    setPane(addEmailPane);
   }
 
+  @Override
   @FXML
-  private void onClickSaveEmail(ActionEvent event) {
+  public void onClickSave(ActionEvent event) {
     String emailText = emailTextField.getText();
 
     if (emailText == null) {
@@ -52,23 +51,12 @@ public class EmailPopupController {
     closePopup();
   }
 
-  public void setUpEmailPopup(
-      Email email, boolean isPrimaryExists, Consumer<Email> emailSaveHandler) {
-    this.email = email;
-    this.emailSaveHandler = emailSaveHandler;
+  @Override
+  public void setUpPopup(Detail obj, Consumer<Detail> objectSaveHandler, boolean... args) {
+    this.email = (Email) obj;
+    this.emailSaveHandler = (Consumer<Email>) (Object) objectSaveHandler;
     emailTextField.setText(email.getAddress());
-    isPrimaryEmailCheckBox.setDisable(isPrimaryExists && !email.getIsPrimary());
+    isPrimaryEmailCheckBox.setDisable((args.length > 0 ? args[0] : false) && !email.getIsPrimary());
     isPrimaryEmailCheckBox.setSelected(email.getIsPrimary());
-  }
-
-  private boolean validateEmailFormat(String email) {
-    // Regex pattern to validate email addresses to be a@b.c
-    String emailRegex = "^.+@.+\\..+$";
-    return email.matches(emailRegex);
-  }
-
-  private void closePopup() {
-    Pane currentRoot = (Pane) addEmailPane.getScene().getRoot();
-    currentRoot.getChildren().remove(addEmailPane);
   }
 }

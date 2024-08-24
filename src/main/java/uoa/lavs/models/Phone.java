@@ -3,7 +3,7 @@ package uoa.lavs.models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Phone {
+public class Phone extends Detail {
   private String customerId;
   private Integer number;
   private String type;
