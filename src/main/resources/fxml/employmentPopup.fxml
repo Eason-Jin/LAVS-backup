@@ -87,7 +87,7 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <CheckBox fx:id="isOwnerCheckBox" layoutX="413.0" layoutY="136.0" mnemonicParsing="false" stylesheets="@../css/application.css" text="Company Owner" />
+            <CheckBox fx:id="isOwnerCheckBox" layoutX="413.0" layoutY="137.0" mnemonicParsing="false" stylesheets="@../css/application.css" text="Company Owner" />
          </children>
       </Pane>
    </children>
