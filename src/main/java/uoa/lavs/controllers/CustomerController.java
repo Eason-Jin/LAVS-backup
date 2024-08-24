@@ -142,6 +142,9 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
   private String tableNormalBorder = "-fx-border-color: #d0d7de";
   private String tableRedBorder = "-fx-border-color: red";
 
+  private int emailTableRow;
+  private int phoneTableRow;
+
   @FXML
   public void initialize() {
     addressTypeColumn.setCellValueFactory(new PropertyValueFactory<Address, String>("type"));
@@ -210,6 +213,7 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
               event -> {
                 if (!row.isEmpty()) {
                   try {
+                    emailTableRow = row.getIndex();
                     createEmailPopup((Pane) emailTable.getScene().getRoot(), row.getItem());
                   } catch (IOException e) {
                     e.printStackTrace();
@@ -228,6 +232,7 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
               event -> {
                 if (!row.isEmpty()) {
                   try {
+                    phoneTableRow = row.getIndex();
                     createPhonePopup((Pane) phoneTable.getScene().getRoot(), row.getItem());
                   } catch (IOException e) {
                     e.printStackTrace();
@@ -246,7 +251,8 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
               event -> {
                 if (!row.isEmpty()) {
                   try {
-                    createEmploymentPopup((Pane) employmentTable.getScene().getRoot(), row.getItem());
+                    createEmploymentPopup(
+                        (Pane) employmentTable.getScene().getRoot(), row.getItem());
                   } catch (IOException e) {
                     e.printStackTrace();
                   }
@@ -430,12 +436,23 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
   }
 
   private void handleEmailSave(Email savedEmail) {
-    emails.add(savedEmail);
+    try {
+      emails.set(emailTableRow, savedEmail);
+    } catch (Exception e) {
+      emails.add(savedEmail);
+    }
+    emailTableRow = -1;
     emailTable.setItems(emails);
   }
 
   private void handlePhoneSave(Phone savedPhone) {
-    phones.add(savedPhone);
+    try {
+      System.out.println(phoneTableRow);
+      phones.set(phoneTableRow, savedPhone);
+    } catch (Exception e) {
+      phones.add(savedPhone);
+    }
+    phoneTableRow = -1;
     phoneTable.setItems(phones);
   }
 
