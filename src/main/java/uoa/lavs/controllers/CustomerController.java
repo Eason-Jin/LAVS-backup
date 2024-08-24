@@ -189,7 +189,13 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
           row.setOnMouseClicked(
               event -> {
                 if (!row.isEmpty()) {
-                  onClickEditAddress(row.getItem());
+                  if (!row.isEmpty()) {
+                    try {
+                      createAddressPopup((Pane) emailTable.getScene().getRoot(), row.getItem());
+                    } catch (IOException e) {
+                      e.printStackTrace();
+                    }
+                  }
                 }
               });
 
@@ -203,7 +209,11 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
           row.setOnMouseClicked(
               event -> {
                 if (!row.isEmpty()) {
-                  onClickEditEmail(row.getItem());
+                  try {
+                    createEmailPopup((Pane) emailTable.getScene().getRoot(), row.getItem());
+                  } catch (IOException e) {
+                    e.printStackTrace();
+                  }
                 }
               });
 
@@ -217,7 +227,11 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
           row.setOnMouseClicked(
               event -> {
                 if (!row.isEmpty()) {
-                  onClickEditPhone(row.getItem());
+                  try {
+                    createPhonePopup((Pane) emailTable.getScene().getRoot(), row.getItem());
+                  } catch (IOException e) {
+                    e.printStackTrace();
+                  }
                 }
               });
 
@@ -231,7 +245,11 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
           row.setOnMouseClicked(
               event -> {
                 if (!row.isEmpty()) {
-                  onClickEditEmployment(row.getItem());
+                  try {
+                    createEmploymentPopup((Pane) emailTable.getScene().getRoot(), row.getItem());
+                  } catch (IOException e) {
+                    e.printStackTrace();
+                  }
                 }
               });
 
@@ -296,6 +314,10 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
 
   private void setDisableForFields(boolean isDisabled) {
     generalDetailsPane.setDisable(isDisabled);
+    addressTable.setDisable(isDisabled);
+    emailTable.setDisable(isDisabled);
+    phoneTable.setDisable(isDisabled);
+    employmentTable.setDisable(isDisabled);
     notesArea.setDisable(isDisabled);
     loansTab.setDisable(!isDisabled);
   }
@@ -358,37 +380,40 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
   }
 
   @FXML
-  private void onClickAddAddress(ActionEvent event) {
-    System.out.println("Add Address clicked");
+  private void onClickAddAddress(ActionEvent event) throws IOException {
+    Button sourceButton = (Button) event.getSource();
+    Pane currentRoot = (Pane) sourceButton.getScene().getRoot();
+    Address address = new Address();
+    address.setIsPrimary(false);
+    address.setIsMailing(false);
+    createAddressPopup(currentRoot, address);
   }
 
   @FXML
   private void onClickAddEmail(ActionEvent event) throws IOException {
     Button sourceButton = (Button) event.getSource();
     Pane currentRoot = (Pane) sourceButton.getScene().getRoot();
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/emailPopup.fxml"));
-    Parent popupContent = loader.load();
-    currentRoot.getChildren().add(popupContent);
-    EmailPopupController emailPopupController = loader.getController();
-
-    Email newEmail = new Email();
-    boolean doesPrimaryEmailExist = doesPrimaryEmailExist();
-
-    emailPopupController.setUpEmailPopup(newEmail, doesPrimaryEmailExist, this::handleEmailSave);
-  }
-
-  private void handleEmailSave(Email savedEmail) {
-    emails.add(savedEmail);
+    Email email = new Email();
+    email.setIsPrimary(false);
+    createEmailPopup(currentRoot, email);
   }
 
   @FXML
-  private void onClickAddPhone(ActionEvent event) {
-    System.out.println("Add Phone clicked");
+  private void onClickAddPhone(ActionEvent event) throws IOException {
+    Button sourceButton = (Button) event.getSource();
+    Pane currentRoot = (Pane) sourceButton.getScene().getRoot();
+    Phone phone = new Phone();
+    phone.setIsPrimary(false);
+    phone.setCanSendText(false);
+    createPhonePopup(currentRoot, phone);
   }
 
   @FXML
-  private void onClickAddEmployment(ActionEvent event) {
-    System.out.println("Add Employment clicked");
+  private void onClickAddEmployment(ActionEvent event) throws IOException {
+    Button sourceButton = (Button) event.getSource();
+    Pane currentRoot = (Pane) sourceButton.getScene().getRoot();
+    Employer employment = new Employer();
+    createEmploymentPopup(currentRoot, employment);
   }
 
   @FXML
@@ -399,26 +424,56 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
     Main.setScene(AppScene.ADD_LOAN);
   }
 
-  private void onClickEditAddress(Address address) {
-    boolean doesPrimaryAddressExist = doesPrimaryAddressExist();
-
-    // AddressPopUp addressPopUp = new AddressPopUp(address, isPrimarySet);
+  private void handleAddressSave(Address savedAddress) {
+    addresses.add(savedAddress);
+    addressTable.setItems(addresses);
   }
 
-  private void onClickEditEmail(Email email) {
-    boolean doesPrimaryEmailExist = doesPrimaryEmailExist();
-
-    // EmailPopUp addressPopUp = new EmailPopUp(email, isPrimarySet);
+  private void handleEmailSave(Email savedEmail) {
+    emails.add(savedEmail);
+    emailTable.setItems(emails);
   }
 
-  private void onClickEditPhone(Phone phone) {
-    boolean doesPrimaryPhoneExist = doesPrimaryPhoneExist();
-
-    // PhonePopUp phonePopUp = new PhonePopUp(phone, isPrimarySet);
+  private void handlePhoneSave(Phone savedPhone) {
+    phones.add(savedPhone);
+    phoneTable.setItems(phones);
   }
 
-  private void onClickEditEmployment(Employer employer) {
-    // EmployerPopUp employerPopUp = new EmployerPopUp(employer);
+  private void handleEmploymentSave(Employer savedEmployer) {
+    employers.add(savedEmployer);
+    employmentTable.setItems(employers);
+  }
+
+  private FXMLLoader createPopup(String fxmlPath, Pane currentRoot) throws IOException {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+    Parent popupContent = loader.load();
+    currentRoot.getChildren().add(popupContent);
+    return loader;
+  }
+
+  private void createAddressPopup(Pane currentRoot, Address address) throws IOException {
+    // FXMLLoader loader = createPopup("/fxml/addressPopup.fxml", currentRoot);
+    // AddressPopupController addressPopupController = loader.getController();
+    // addressPopupController.setUpAddressPopup(
+    //     address, doesPrimaryAddressExist(), this::handleAddressSave);
+  }
+
+  private void createEmailPopup(Pane currentRoot, Email email) throws IOException {
+    FXMLLoader loader = createPopup("/fxml/emailPopup.fxml", currentRoot);
+    EmailPopupController emailPopupController = loader.getController();
+    emailPopupController.setUpEmailPopup(email, doesPrimaryEmailExist(), this::handleEmailSave);
+  }
+
+  private void createPhonePopup(Pane currentRoot, Phone phone) throws IOException {
+    // FXMLLoader loader = createPopup("/fxml/phonePopup.fxml", currentRoot);
+    // PhonePopupController phonePopupController = loader.getController();
+    // phonePopupController.setUpPhonePopup(phone, doesPrimaryPhoneExist(), this::handlePhoneSave);
+  }
+
+  private void createEmploymentPopup(Pane currentRoot, Employer employer) throws IOException {
+    // FXMLLoader loader = createPopup("/fxml/employmentPopup.fxml", currentRoot);
+    // EmploymentPopupController employmentPopupController = loader.getController();
+    // employmentPopupController.setUpEmploymentPopup(employer, this::handleEmploymentSave);
   }
 
   @Override
