@@ -9,9 +9,9 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="addEmailPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="648.0" prefWidth="1152.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.EmailPopupController">
+<Pane fx:id="addEmailPane" maxHeight="694.0" maxWidth="1193.0" minHeight="648.0" minWidth="1152.0" prefHeight="694.0" prefWidth="1193.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.EmailPopupController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#727272" height="648.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1152.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#727272" height="693.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1193.0" />
       <Pane layoutX="351.0" layoutY="195.0" maxHeight="250.0" maxWidth="450.0" minHeight="250.0" minWidth="450.0" prefHeight="250.0" prefWidth="450.0" styleClass="popup-pane" stylesheets="@../css/application.css">
          <children>
             <Label layoutX="46.0" layoutY="61.0" prefHeight="36.0" prefWidth="245.0" text="Add Email">

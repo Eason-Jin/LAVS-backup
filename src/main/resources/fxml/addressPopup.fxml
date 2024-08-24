@@ -10,9 +10,9 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="addressPopupPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="648.0" prefWidth="1152.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.EmailPopupController">
+<Pane fx:id="addressPopupPane" maxHeight="671.0" maxWidth="1178.0" minHeight="648.0" minWidth="1152.0" prefHeight="671.0" prefWidth="1178.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.EmailPopupController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#727272" height="648.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1152.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#727272" height="671.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1178.0" />
       <Pane layoutX="176.0" layoutY="120.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" styleClass="popup-pane" stylesheets="@../css/application.css">
          <children>
             <TextField fx:id="addressLine1TextField" layoutX="65.0" layoutY="147.0" maxHeight="30.0" maxWidth="330.0" minHeight="30.0" minWidth="330.0" prefHeight="30.0" prefWidth="330.0" styleClass="input" />

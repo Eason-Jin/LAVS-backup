@@ -63,7 +63,7 @@
                      <children>
                         <Pane fx:id="generalDetailsPane" layoutX="25.0" layoutY="60.0" prefHeight="139.0" prefWidth="950.0">
                            <children>
-                              <TextField fx:id="titleField" prefHeight="35.0" prefWidth="150.0" promptText="Title" styleClass="input">
+                              <TextField fx:id="titleField" maxHeight="35.0" maxWidth="150.0" minHeight="35.0" minWidth="150.0" prefHeight="35.0" prefWidth="150.0" promptText="Title" styleClass="input">
                                  <stylesheets>
                                     <URL value="@../css/primer-light.css" />
                                     <URL value="@../css/application.css" />
