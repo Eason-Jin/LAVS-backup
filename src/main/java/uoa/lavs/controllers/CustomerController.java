@@ -130,11 +130,6 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   private ObservableList<Employer> employers;
   private ObservableList<Loan> loans;
 
-  private String fieldNormalBorder = "-fx-border-color: #d0d7de; -fx-border-radius: 4";
-  private String fieldRedBorder = "-fx-border-color: red; -fx-border-radius: 4";
-  private String tableNormalBorder = "-fx-border-color: #d0d7de";
-  private String tableRedBorder = "-fx-border-color: red";
-
   private int addressTableRow = -1;
   private int emailTableRow = -1;
   private int phoneTableRow = -1;

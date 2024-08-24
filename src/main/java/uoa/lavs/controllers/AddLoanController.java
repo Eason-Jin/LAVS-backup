@@ -44,9 +44,6 @@ public class AddLoanController extends uoa.lavs.controllers.Controller {
   private HashSet<String> coBorrowerIds = new HashSet<>();
   private Customer customer;
 
-  private String noBorder = "-fx-border-color: none";
-  private String redBorder = "-fx-border-color: red";
-
   private Alert alert;
   private StringBuilder errorString;
 
@@ -70,7 +67,7 @@ public class AddLoanController extends uoa.lavs.controllers.Controller {
         map.put(node.getId(), node);
       }
     }
-    // map.put(pane.getId(), pane);
+    map.put(pane.getId(), pane);
   }
 
   @FXML
@@ -112,9 +109,9 @@ public class AddLoanController extends uoa.lavs.controllers.Controller {
     titleLabel.setText("New Loan for " + CustomerLoader.loadData(customer.getId()).getName());
   }
 
-  public void setCustomer(Customer customer){
+  public void setCustomer(Customer customer) {
     this.customer = customer;
-  } 
+  }
 
   public void addPrimeBorrower() {
     coBorrowerIds.add(customer.getId());
