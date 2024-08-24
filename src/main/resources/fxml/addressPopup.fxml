@@ -9,13 +9,14 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.collections.FXCollections?>
 <Pane fx:id="addressPopupPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="648.0" prefWidth="1152.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.EmailPopupController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#727272" height="648.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1152.0" />
       <Pane layoutX="176.0" layoutY="120.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" styleClass="popup-pane" stylesheets="@../css/application.css">
          <children>
-            <TextField layoutX="65.0" layoutY="147.0" prefHeight="30.0" prefWidth="330.0" styleClass="input" />
-            <TextField layoutX="405.0" layoutY="147.0" prefHeight="30.0" prefWidth="330.0" styleClass="input" />
+            <TextField fx:id="addressLine1TextField" layoutX="65.0" layoutY="147.0" prefHeight="30.0" prefWidth="330.0" styleClass="input" />
+            <TextField fx:id="addressLine2TextField" layoutX="405.0" layoutY="147.0" prefHeight="30.0" prefWidth="330.0" styleClass="input" />
             <Label layoutX="69.0" layoutY="76.0" prefHeight="45.0" prefWidth="391.0" text="Address">
                <font>
                   <Font name="System Bold" size="30.0" />
@@ -26,37 +27,44 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Label layoutX="418.0" layoutY="128.0" text="Address Line 1">
+            <Label layoutX="418.0" layoutY="128.0" text="Address Line 2">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <TextField layoutX="65.0" layoutY="206.0" prefHeight="30.0" prefWidth="160.0" styleClass="input" />
-            <Label layoutX="77.0" layoutY="188.0" text="Suburb">
+            <TextField fx:id="suburbTextField" layoutX="65.0" layoutY="206.0" prefHeight="30.0" prefWidth="160.0" styleClass="input" />
+            <Label layoutX="75.0" layoutY="188.0" text="Suburb">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <TextField layoutX="235.0" layoutY="206.0" prefHeight="30.0" prefWidth="160.0" styleClass="input" />
+            <TextField fx:id="cityTextField" layoutX="235.0" layoutY="206.0" prefHeight="30.0" prefWidth="160.0" styleClass="input" />
             <Label layoutX="248.0" layoutY="188.0" text="City">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <TextField layoutX="405.0" layoutY="206.0" prefHeight="30.0" prefWidth="160.0" styleClass="input" />
+            <TextField fx:id="postcodeTextField" layoutX="405.0" layoutY="206.0" prefHeight="30.0" prefWidth="160.0" styleClass="input" />
             <Label layoutX="418.0" layoutY="188.0" text="Postcode">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <TextField layoutX="575.0" layoutY="206.0" prefHeight="30.0" prefWidth="160.0" styleClass="input" />
+            <TextField fx:id="countryTextField" layoutX="575.0" layoutY="206.0" prefHeight="30.0" prefWidth="160.0" styleClass="input" />
             <Label layoutX="586.0" layoutY="188.0" text="Country">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <ComboBox layoutX="65.0" layoutY="265.0" prefHeight="30.0" prefWidth="160.0" promptText="Select" styleClass="input" />
-            <Label layoutX="78.0" layoutY="246.0" text="Type">
+            <ComboBox fx:id="addressTypeComboBox" layoutX="65.0" layoutY="265.0" prefHeight="30.0" prefWidth="160.0" promptText="Select" styleClass="input">
+               <items>
+                  <FXCollections fx:factory="observableArrayList">
+                     <String fx:value="Residential" />
+                     <String fx:value="Commercial" />
+                  </FXCollections>
+               </items>
+            </ComboBox>
+            <Label layoutX="76.0" layoutY="246.0" text="Type">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
