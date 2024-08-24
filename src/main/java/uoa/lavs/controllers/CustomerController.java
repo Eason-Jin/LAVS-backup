@@ -371,20 +371,10 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
     currentRoot.getChildren().add(popupContent);
     EmailPopupController emailPopupController = loader.getController();
 
-    // Create an email
     Email newEmail = new Email();
-    newEmail.setNumber(null);
+    boolean doesPrimaryEmailExist = doesPrimaryEmailExist();
 
-    // Call check if primary email exists in AddEmailPopupController class
-    boolean doesPrimaryExist = false;
-    for (Email email : emails) {
-      if (email.getIsPrimary()) {
-        doesPrimaryExist = true;
-        break;
-      }
-    }
-
-    addEmailPopupController.setUpEmailPopup(newEmail, doesPrimaryExist, this::handleEmailSave);
+    emailPopupController.setUpEmailPopup(newEmail, doesPrimaryEmailExist, this::handleEmailSave);
   }
 
   private void handleEmailSave(Email savedEmail) {
@@ -410,34 +400,19 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
   }
 
   private void onClickEditAddress(Address address) {
-    boolean isPrimarySet = false;
-    for (Address currentAddress : addresses) {
-      if (currentAddress.getIsPrimary()) {
-        isPrimarySet = true;
-      }
-    }
+    boolean doesPrimaryAddressExist = doesPrimaryAddressExist();
 
     // AddressPopUp addressPopUp = new AddressPopUp(address, isPrimarySet);
   }
 
   private void onClickEditEmail(Email email) {
-    boolean isPrimarySet = false;
-    for (Email currentEmail : emails) {
-      if (currentEmail.getIsPrimary()) {
-        isPrimarySet = true;
-      }
-    }
+    boolean doesPrimaryEmailExist = doesPrimaryEmailExist();
 
     // EmailPopUp addressPopUp = new EmailPopUp(email, isPrimarySet);
   }
 
   private void onClickEditPhone(Phone phone) {
-    boolean isPrimarySet = false;
-    for (Phone currentPhone : phones) {
-      if (currentPhone.getIsPrimary()) {
-        isPrimarySet = true;
-      }
-    }
+    boolean doesPrimaryPhoneExist = doesPrimaryPhoneExist();
 
     // PhonePopUp phonePopUp = new PhonePopUp(phone, isPrimarySet);
   }
@@ -756,7 +731,30 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
     return customer.getId();
   }
 
-  public void addEmail(Email email) {
-    this.emails.add(email);
+  private boolean doesPrimaryAddressExist() {
+    for (Address address : addresses) {
+      if (address.getIsPrimary()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean doesPrimaryEmailExist() {
+    for (Email email : emails) {
+      if (email.getIsPrimary()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean doesPrimaryPhoneExist() {
+    for (Phone phone : phones) {
+      if (phone.getIsPrimary()) {
+        return true;
+      }
+    }
+    return false;
   }
 }
