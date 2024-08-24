@@ -21,6 +21,7 @@
          <styleClass>
             <String fx:value="button-circle" />
             <String fx:value="home" />
+            <String fx:value="popup-button" />
          </styleClass>
       </Button>
       <Button fx:id="saveButton" layoutX="1082.0" layoutY="26.0" mnemonicParsing="false" onAction="#onClickSave" prefHeight="50.0" prefWidth="50.0">

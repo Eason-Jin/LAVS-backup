@@ -561,12 +561,7 @@ Text {
   -color-button-bg-hover: -color-accent-emphasis;
   -color-button-fg-hover: -color-fg-emphasis;
 }
-.home {
-  -fx-background-image: url("../images/home_black.png");
-  -fx-background-repeat: no-repeat;
-  -fx-background-position: center;
-  -fx-background-size: 60%;
-}
+
 .edit {
   -fx-background-image: url("../images/edit.png");
   -fx-background-repeat: no-repeat;

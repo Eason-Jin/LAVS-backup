@@ -104,3 +104,8 @@
   -fx-background-color: #548DB7;
   -fx-border-color: #264D6A;
 }
+
+.home {
+  -fx-background-image: url("../images/generic/home.png");
+  -fx-background-size: 50%;
+}
