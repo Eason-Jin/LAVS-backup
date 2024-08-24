@@ -24,6 +24,7 @@ public class EmailPopupController extends PopupController {
   @Override
   @FXML
   public void onClickSave(ActionEvent event) {
+    System.out.println(emailTextField.getText());
     if (isEmpty(emailTextField)) {
       appendErrorMessage("Please fill in all required fields!\n");
     } else {

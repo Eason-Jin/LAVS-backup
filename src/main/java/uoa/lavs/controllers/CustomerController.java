@@ -522,6 +522,10 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
   public boolean validateFields() {
     boolean dobFlag = validateDateFormat(dobPicker.getValue(), true);
+    if (!dobFlag) {
+      dobPicker.setStyle(fieldRedBorder);
+      appendErrorMessage("Date of birth must be before today\n");
+    }
     boolean addressFlag = addresses.size() >= 1;
     if (!addressFlag) {
       appendErrorMessage("Please add at least one address\n");
@@ -550,13 +554,13 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
       }
     }
     if (primaryAddressNum == 0) {
-      if (errorMessage.indexOf("\tPlease select a primary address") == -1) {
-        errorMessage.append("\tPlease select a primary address\n");
+      if (errorMessage.indexOf("Please select a primary address") == -1) {
+        errorMessage.append("Please select a primary address\n");
       }
     }
     if (mailingAddressNum == 0) {
-      if (errorMessage.indexOf("\tPlease select a mailing address") == -1) {
-        errorMessage.append("\tPlease select a mailing address\n");
+      if (errorMessage.indexOf("Please select a mailing address") == -1) {
+        errorMessage.append("Please select a mailing address\n");
       }
     }
     if (!addressFlag || primaryAddressNum == 0 || mailingAddressNum == 0) {
@@ -571,7 +575,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
       }
     }
     if (primaryEmailNum == 0) {
-      appendErrorMessage("\tPlease select a primary email\n");
+      appendErrorMessage("Please select a primary email\n");
     }
     if (!contactDetailsFlag || primaryEmailNum == 0) {
       emailTable.setStyle(tableRedBorder);
@@ -589,10 +593,10 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
       }
     }
     if (primaryPhoneNum == 0) {
-      appendErrorMessage("\tPlease select a primary phone\n");
+      appendErrorMessage("Please select a primary phone\n");
     }
     if (textingPhoneNum == 0) {
-      appendErrorMessage("\tPlease select a texting phone\n");
+      appendErrorMessage("Please select a texting phone\n");
     }
     if (!contactDetailsFlag || primaryPhoneNum == 0 || textingPhoneNum == 0) {
       phoneTable.setStyle(tableRedBorder);
@@ -611,32 +615,32 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
   public boolean checkLengths() {
     boolean titleFieldFlag = !isTooLong(titleField.getText(), 10);
-    if (!titleFieldFlag) {
+    if (titleFieldFlag) {
       titleField.setStyle(fieldRedBorder);
       appendErrorMessage("Title must be less than 10 characters\n");
     }
     boolean nameFieldFlag = !isTooLong(nameField.getText(), 60);
-    if (!nameFieldFlag) {
+    if (nameFieldFlag) {
       nameField.setStyle(fieldRedBorder);
       appendErrorMessage("Name must be less than 60 characters\n");
     }
     boolean occupationFlag = !isTooLong(occupationField.getText(), 40);
-    if (!occupationFlag) {
+    if (occupationFlag) {
       occupationField.setStyle(fieldRedBorder);
       appendErrorMessage("Occupation must be less than 40 characters\n");
     }
     boolean citizenshipFieldFlag = !isTooLong(citizenshipField.getText(), 40);
-    if (!citizenshipFieldFlag) {
+    if (citizenshipFieldFlag) {
       citizenshipField.setStyle(fieldRedBorder);
       appendErrorMessage("Citizenship must be less than 40 characters\n");
     }
     boolean visaFieldFlag = !isTooLong(visaField.getText(), 40);
-    if (!visaFieldFlag) {
+    if (visaFieldFlag) {
       visaField.setStyle(fieldRedBorder);
       appendErrorMessage("Visa type must be less than 40 characters\n");
     }
     boolean notesAreaFlag = !isTooLong(notesArea.getText(), 1330);
-    if (!notesAreaFlag) {
+    if (notesAreaFlag) {
       notesArea.setStyle(fieldRedBorder);
       appendErrorMessage("Notes must be less than 1330 characters\n");
     }

@@ -40,11 +40,11 @@ public abstract class Controller {
   }
 
   protected boolean isEmpty(Control ui) {
-    // true means empty
     if (ui instanceof TextField) {
       TextField tf = (TextField) ui;
       try {
         tf.getText();
+        if (tf.getText() == null) return true;
       } catch (Exception e) {
         return true;
       }
