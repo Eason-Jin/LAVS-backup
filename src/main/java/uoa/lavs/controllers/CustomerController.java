@@ -274,6 +274,26 @@ public class CustomerController {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addEmailPopup.fxml"));
     Parent popupContent = loader.load();
     currentRoot.getChildren().add(popupContent);
+    AddEmailPopupController addEmailPopupController = loader.getController();
+
+    // Create an email
+    Email newEmail = new Email();
+    newEmail.setNumber(null);
+
+    // Call check if primary email exists in AddEmailPopupController class
+    boolean doesPrimaryExist = false;
+    for (Email email : emails) {
+      if (email.getIsPrimary()) {
+        doesPrimaryExist = true;
+        break;
+      }
+    }
+
+    addEmailPopupController.setUpEmailPopup(newEmail, doesPrimaryExist, this::handleEmailSave);
+  }
+
+  private void handleEmailSave(Email savedEmail) {
+    emails.add(savedEmail);
   }
 
   @FXML
@@ -341,5 +361,9 @@ public class CustomerController {
 
   public String getCustomerID() {
     return customer.getId();
+  }
+
+  public void addEmail(Email email) {
+    this.emails.add(email);
   }
 }
