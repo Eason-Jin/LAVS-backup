@@ -2,6 +2,7 @@ package uoa.lavs.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -26,8 +27,23 @@ public class EmailPopupController {
 
     @FXML
     private void onClickSaveEmail(ActionEvent event) {
+        String emailText = emailTextField.getText();
+
+        if (emailText == null) {
+            return;
+        }
+
+        if (!validateEmailFormat(emailText)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Email");
+            alert.setHeaderText("The email address format is invalid.");
+            alert.setContentText("Please enter a valid email address.");
+            alert.showAndWait();
+            return;
+        }
+
         // Update the Email object
-        this.email.setAddress(emailTextField.getText());
+        this.email.setAddress(emailText);
         this.email.setIsPrimary(isPrimaryEmailCheckBox.isSelected());
 
         // Notify the original controller via the Consumer
@@ -43,6 +59,12 @@ public class EmailPopupController {
         emailTextField.setText(email.getAddress());
         isPrimaryEmailCheckBox.setDisable(isPrimaryExists);
         isPrimaryEmailCheckBox.setSelected(isPrimaryExists);
+    }
+
+    private boolean validateEmailFormat(String email) {
+        // Regex pattern to validate email addresses to be a@b.c
+        String emailRegex = "^.+@.+\\..+$";
+        return email.matches(emailRegex);
     }
 
     private void closePopup() {
