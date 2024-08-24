@@ -7,11 +7,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.models.Email;
-
 import java.util.function.Consumer;
 
-@Controller
-public class AddEmailPopupController {
+public class EmailPopupController {
     @FXML private Pane addEmailPane;
     @FXML private TextField emailTextField;
     @FXML private CheckBox isPrimaryEmailCheckBox;
