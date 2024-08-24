@@ -40,12 +40,13 @@
 }
 
 .input {
-  -fx-background-radius: 20px;
-  -fx-border-radius: 20px;
+  -fx-background-radius: 50%;
+  -fx-border-radius: 50%;
   -fx-text-fill: #6d7175;
   -fx-prompt-text-fill: #6d7175;
   -fx-border-color: #d0d7de;
   -fx-background-color: white;
+  -fx-border-width: 1.5px;
 }
 
 .combo-box {
@@ -59,6 +60,8 @@
 .popup-button {
   -fx-background-repeat: no-repeat;
   -fx-background-position: center;
+  -fx-border-radius: 50%;
+  -fx-border-width: 2px;
 }
 
 .cancel {
@@ -71,6 +74,21 @@
   -fx-background-size: 55%;
 }
 
-.blur {
-  
+.save-green {
+  -fx-background-image: url("../images/generic/tick-green.png");
+  -fx-background-size: 55%;
+  -fx-background-color: #79BFA1;
+  -fx-border-color: #2D7367;
+}
+
+.cancel-red {
+  -fx-background-image: url("../images/generic/cross-red.png");
+  -fx-background-size: 45%;
+  -fx-background-color: #D67373;
+  -fx-border-color: #8A3535;
+}
+
+.date-picker .cell {
+  -fx-background-radius: 50%;
+  -fx-border-radius: 50%;
 }

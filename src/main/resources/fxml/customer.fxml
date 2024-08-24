@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="648.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.CustomerController">
+<AnchorPane prefHeight="648.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.CustomerController">
    <children>
       <Button fx:id="homeButton" layoutX="20.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClickHome" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/primer-light.css">
          <styleClass>
@@ -23,18 +23,26 @@
             <String fx:value="home" />
          </styleClass>
       </Button>
-      <Button fx:id="saveButton" layoutX="1012.0" layoutY="20.0" mnemonicParsing="false" onAction="#onClickSave" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/primer-light.css">
+      <Button fx:id="saveButton" layoutX="1082.0" layoutY="26.0" mnemonicParsing="false" onAction="#onClickSave" prefHeight="50.0" prefWidth="50.0">
+         <stylesheets>
+            <URL value="@../css/application.css" />
+            <URL value="@../css/primer-light.css" />
+         </stylesheets>
          <styleClass>
             <String fx:value="button-circle" />
-            <String fx:value="success" />
-            <String fx:value="tick" />
+            <String fx:value="popup-button" />
+            <String fx:value="save-green" />
          </styleClass>
       </Button>
-      <Button fx:id="cancelButton" layoutX="1082.0" layoutY="20.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/primer-light.css">
+      <Button fx:id="cancelButton" layoutX="1019.0" layoutY="26.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="50.0" prefWidth="50.0">
+         <stylesheets>
+            <URL value="@../css/primer-light.css" />
+            <URL value="@../css/application.css" />
+         </stylesheets>
          <styleClass>
-            <String fx:value="danger" />
             <String fx:value="button-circle" />
-            <String fx:value="cross" />
+            <String fx:value="popup-button" />
+            <String fx:value="cancel-red" />
          </styleClass></Button>
       <Label fx:id="titleLabel" layoutX="82.0" layoutY="60.0" text="Title">
          <font>
@@ -54,9 +62,17 @@
                      <children>
                         <Pane fx:id="generalDetailsPane" layoutX="25.0" layoutY="60.0" prefHeight="139.0" prefWidth="950.0">
                            <children>
-                              <TextField fx:id="titleField" prefHeight="35.0" prefWidth="150.0" promptText="Title" stylesheets="@../css/primer-light.css" />
+                              <TextField fx:id="titleField" prefHeight="35.0" prefWidth="150.0" promptText="Title" styleClass="input">
+                                 <stylesheets>
+                                    <URL value="@../css/primer-light.css" />
+                                    <URL value="@../css/application.css" />
+                                 </stylesheets></TextField>
                               <TextField fx:id="nameField" layoutX="160.0" prefHeight="36.0" prefWidth="790.0" promptText="Full name" stylesheets="@../css/primer-light.css" />
-                              <DatePicker fx:id="dobPicker" layoutY="50.0" prefHeight="35.0" prefWidth="470.0" promptText="Date of birth" stylesheets="@../css/primer-light.css" />
+                              <DatePicker fx:id="dobPicker" layoutY="50.0" prefHeight="35.0" prefWidth="470.0" promptText="Date of birth" styleClass="input">
+                                 <stylesheets>
+                                    <URL value="@../css/primer-light.css" />
+                                    <URL value="@../css/application.css" />
+                                 </stylesheets></DatePicker>
                               <TextField fx:id="occupationField" layoutX="480.0" layoutY="50.0" prefHeight="35.0" prefWidth="470.0" promptText="Occupation" stylesheets="@../css/primer-light.css" />
                               <TextField fx:id="citizenshipField" layoutY="100.0" prefHeight="35.0" prefWidth="470.0" promptText="Citizenship status" stylesheets="@../css/primer-light.css" />
                               <TextField fx:id="visaField" layoutX="480.0" layoutY="100.0" prefHeight="35.0" prefWidth="470.0" promptText="Visa type" stylesheets="@../css/primer-light.css" />
