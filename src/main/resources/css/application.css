@@ -30,3 +30,27 @@
 .check-box > .box:disabled {
   -fx-opacity: 1;
 }
+
+.popup-pane {
+  -fx-background-radius: 20px;
+  -fx-border-color: #d0d7de;
+  -fx-background-color: #f6f8fa;
+  -fx-border-radius: 20px;
+}
+
+.input {
+  -fx-background-radius: 20px;
+  -fx-border-radius: 20px;
+  -fx-text-fill: #6d7175;
+  -fx-prompt-text-fill: #6d7175;
+  -fx-border-color: #d0d7de;
+  -fx-background-color: white;
+}
+
+.combo-box {
+  -fx-background-color: white;
+}
+
+.check-box {
+  -fx-text-fill: #6d7175;
+}
