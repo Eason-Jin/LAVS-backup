@@ -8,10 +8,14 @@ import uoa.lavs.LocalInstance;
 
 public class DataOperationsTestsHelper {
 
-    public static Connection createTestingDatabases() throws SQLException {
+    public static Connection createTestingDatabases() {
         LocalInstance.initializeTestConnections(true);
         Connection connection = LocalInstance.getDatabaseConnection();
-        createTables(connection);
+        try {
+            createTables(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return connection;
     }
 
@@ -134,17 +138,24 @@ public class DataOperationsTestsHelper {
 
                                         """;
 
-            String insertCustomer = """
-                    INSERT INTO Customer (CustomerID, Name, Title, Status, Dob, Occupation, Citizenship, VisaType, Note, InMainframe)
-                    VALUES ('1', 'John Doe', 'Mr', 'Active', '1990-01-01', 'Engineer', 'NZ', 'Work', 'Note', 0);
-                    """;
-
             stmt.executeUpdate(customerTable);
             stmt.executeUpdate(addressTable);
             stmt.executeUpdate(emailTable);
             stmt.executeUpdate(employerTable);
             stmt.executeUpdate(phoneTable);
+        }
+    }
+
+    public static void insertCustomer() {
+        try (Connection connection = LocalInstance.getDatabaseConnection();
+                Statement stmt = connection.createStatement()) {
+            String insertCustomer = """
+                    INSERT INTO Customer (CustomerID, Name, Title, Status, Dob, Occupation, Citizenship, VisaType, Note, InMainframe)
+                    VALUES ('1', 'John Doe', 'Mr', 'Active', '1990-01-01', 'Engineer', 'NZ', 'Work', 'Note', 0);
+                    """;
             stmt.executeUpdate(insertCustomer);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

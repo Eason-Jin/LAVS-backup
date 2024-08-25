@@ -1,4 +1,4 @@
-package uoa.lavs.dataoperations;
+package uoa.lavs.dataoperations.Customer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import uoa.lavs.LocalInstance;
+import uoa.lavs.dataoperations.DataOperationsTestsHelper;
 import uoa.lavs.dataoperations.customer.CustomerUpdater;
 import uoa.lavs.models.Customer;
 
@@ -24,6 +25,7 @@ public class CustomerUpdaterTests {
   @Test
   public void testCreateCustomer() throws SQLException {
     // Arrange
+    DataOperationsTestsHelper.createTestingDatabases();
     Customer customer = new Customer(
         null,
         "Ms",
@@ -59,6 +61,8 @@ public class CustomerUpdaterTests {
   @Test
   public void testUpdateCustomer() throws SQLException {
 
+    DataOperationsTestsHelper.createTestingDatabases();
+    DataOperationsTestsHelper.insertCustomer();
     // Arrange
     Customer updatedCustomer = new Customer(
         "1",
@@ -69,7 +73,7 @@ public class CustomerUpdaterTests {
         "NZ",
         "Permanent",
         "Active",
-        null);
+        "This customer has not paid bills for 3 months");
 
     // Act
     CustomerUpdater.updateDatabase("1", updatedCustomer);
@@ -95,6 +99,8 @@ public class CustomerUpdaterTests {
 
   @Test
   public void getFailedUpdates() throws SQLException {
+    DataOperationsTestsHelper.createTestingDatabases();
+    DataOperationsTestsHelper.insertCustomer();
     CustomerUpdater.getFailedUpdates();
 
     assertEquals(1, CustomerUpdater.getFailedUpdates().size());
