@@ -649,7 +649,6 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   }
 
   private boolean validateFields() {
-    System.out.println("adosufhwepgoiun3qe4wpgiuwreb");
     boolean dobFlag = validateDateFormat(dobPicker, true);
     if (!dobFlag) {
       dobPicker.getStyleClass().add("invalid");

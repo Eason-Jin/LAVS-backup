@@ -185,15 +185,15 @@ public class LoanController extends uoa.lavs.controllers.Controller {
   }
 
   private void resetFieldStyle() {
-    principalField.setStyle(normalBorder);
-    rateTypeBox.setStyle(normalBorder);
-    rateValueField.setStyle(normalBorder);
-    startDatePicker.setStyle(normalBorder);
-    periodField.setStyle(normalBorder);
-    loanTermField.setStyle(normalBorder);
-    compoundingBox.setStyle(normalBorder);
-    paymentFrequencyBox.setStyle(normalBorder);
-    paymentAmountField.setStyle(normalBorder);
+    principalField.getStyleClass().remove("invalid");
+    rateTypeBox.getStyleClass().remove("invalid");
+    rateValueField.getStyleClass().remove("invalid");
+    startDatePicker.getStyleClass().remove("invalid");
+    periodField.getStyleClass().remove("invalid");
+    loanTermField.getStyleClass().remove("invalid");
+    compoundingBox.getStyleClass().remove("invalid");
+    paymentFrequencyBox.getStyleClass().remove("invalid");
+    paymentAmountField.getStyleClass().remove("invalid");
   }
 
   public void setLoanDetails(String loanId) {
