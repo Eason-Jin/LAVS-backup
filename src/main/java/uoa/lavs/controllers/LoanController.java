@@ -17,7 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -223,11 +222,10 @@ public class LoanController extends uoa.lavs.controllers.Controller {
   private void setCoBorrowersTable(String loanId) {
     List<String> coBorrowerIds = CoborrowerLoader.loadData(loanId);
 
-    // Extract the first part of the Loan-ID (before the dash "-")
-    String loanIdPrefix = loanId.split("-")[0];
-    // Remove the coBorrower ID that matches the first part of the Loan-ID
-    coBorrowerIds.removeIf(id -> id.equals(loanIdPrefix) || id.equals(loanIdPrefix + " (Temporary)"));
+    coBorrowerIds.removeIf(
+        id -> id.equals(primeBorrowerId) || id.equals(primeBorrowerId + " (Temporary)"));
 
+    coBorrowers.clear();
     for (String id : coBorrowerIds) {
       Customer coBorrower = CustomerLoader.loadData(id);
       coBorrowers.add(coBorrower);
