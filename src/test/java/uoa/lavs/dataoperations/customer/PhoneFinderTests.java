@@ -70,6 +70,7 @@ public class PhoneFinderTests {
 
   @Test
   public void findNonExistingPhone() {
+    DataOperationsTestsHelper.createTestingDatabases();
     String customerId = "invalid-id";
 
     List<Phone> phones = PhoneFinder.findData(customerId);
@@ -78,6 +79,7 @@ public class PhoneFinderTests {
 
   @Test
   public void findPhoneExistingInDatabase() {
+    DataOperationsTestsHelper.createTestingDatabases();
     String customerId = "1";
 
     List<Phone> phones = PhoneFinder.findData(customerId);
