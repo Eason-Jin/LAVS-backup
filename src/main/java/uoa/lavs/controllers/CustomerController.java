@@ -2,6 +2,7 @@ package uoa.lavs.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -212,7 +213,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
           row.setOnMouseClicked(
               event -> {
-                if (!row.isEmpty()) {
+                if (!row.isEmpty() && setting != Setting.VIEW) {
                   try {
                     addressTableRow = row.getIndex();
                     createAddressPopup((Pane) addressTable.getScene().getRoot(), row.getItem());
@@ -221,7 +222,20 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
                   }
                 }
               });
+          row.setOnMouseEntered(
+                  event -> {
+                    if (!row.isEmpty() && setting != Setting.VIEW) {
+                      row.styleProperty().set("-fx-background-color: #f0f0f0");
+                    }
+                  });
 
+          row.setOnMouseExited(
+                  event -> {
+                    if (!row.isEmpty()) {
+                      row.styleProperty().set("-fx-background-color: none");
+                      row.styleProperty().set("-fx-border-width: 5");
+                    }
+                  });
           return row;
         });
 
@@ -231,7 +245,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
           row.setOnMouseClicked(
               event -> {
-                if (!row.isEmpty()) {
+                if (!row.isEmpty() && setting != Setting.VIEW) {
                   try {
                     emailTableRow = row.getIndex();
                     createEmailPopup((Pane) emailTable.getScene().getRoot(), row.getItem());
@@ -240,7 +254,20 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
                   }
                 }
               });
+          row.setOnMouseEntered(
+                  event -> {
+                    if (!row.isEmpty() && setting != Setting.VIEW) {
+                      row.styleProperty().set("-fx-background-color: #f0f0f0");
+                    }
+                  });
 
+          row.setOnMouseExited(
+                  event -> {
+                    if (!row.isEmpty()) {
+                      row.styleProperty().set("-fx-background-color: none");
+                      row.styleProperty().set("-fx-border-width: 5");
+                    }
+                  });
           return row;
         });
 
@@ -250,7 +277,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
           row.setOnMouseClicked(
               event -> {
-                if (!row.isEmpty()) {
+                if (!row.isEmpty() && setting != Setting.VIEW) {
                   try {
                     phoneTableRow = row.getIndex();
                     createPhonePopup((Pane) phoneTable.getScene().getRoot(), row.getItem());
@@ -259,7 +286,20 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
                   }
                 }
               });
+          row.setOnMouseEntered(
+                  event -> {
+                    if (!row.isEmpty() && setting != Setting.VIEW) {
+                      row.styleProperty().set("-fx-background-color: #f0f0f0");
+                    }
+                  });
 
+          row.setOnMouseExited(
+                  event -> {
+                    if (!row.isEmpty()) {
+                      row.styleProperty().set("-fx-background-color: none");
+                      row.styleProperty().set("-fx-border-width: 5");
+                    }
+                  });
           return row;
         });
 
@@ -269,7 +309,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
           row.setOnMouseClicked(
               event -> {
-                if (!row.isEmpty()) {
+                if (!row.isEmpty() && setting != Setting.VIEW) {
                   try {
                     employmentTableRow = row.getIndex();
                     createEmploymentPopup(
@@ -279,7 +319,20 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
                   }
                 }
               });
+          row.setOnMouseEntered(
+                  event -> {
+                    if (!row.isEmpty() && setting != Setting.VIEW) {
+                      row.styleProperty().set("-fx-background-color: #f0f0f0");
+                    }
+                  });
 
+          row.setOnMouseExited(
+                  event -> {
+                    if (!row.isEmpty()) {
+                      row.styleProperty().set("-fx-background-color: none");
+                      row.styleProperty().set("-fx-border-width: 5");
+                    }
+                  });
           return row;
         });
 
@@ -296,7 +349,20 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
                   Main.setScene(AppScene.LOAN);
                 }
               });
+          row.setOnMouseEntered(
+                  event -> {
+                    if (!row.isEmpty()) {
+                      row.styleProperty().set("-fx-background-color: #f0f0f0");
+                    }
+                  });
 
+          row.setOnMouseExited(
+                  event -> {
+                    if (!row.isEmpty()) {
+                      row.styleProperty().set("-fx-background-color: none");
+                      row.styleProperty().set("-fx-border-width: 5");
+                    }
+                  });
           return row;
         });
 
@@ -335,10 +401,6 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
   private void setDisableForFields(boolean isDisabled) {
     generalDetailsPane.setDisable(isDisabled);
-    addressTable.setDisable(isDisabled);
-    emailTable.setDisable(isDisabled);
-    phoneTable.setDisable(isDisabled);
-    employmentTable.setDisable(isDisabled);
     notesArea.setDisable(isDisabled);
     loansTab.setDisable(!isDisabled);
   }
@@ -434,6 +496,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     Button sourceButton = (Button) event.getSource();
     Pane currentRoot = (Pane) sourceButton.getScene().getRoot();
     Employer employment = new Employer();
+    employment.setIsOwner(false);
     createEmploymentPopup(currentRoot, employment);
   }
 
