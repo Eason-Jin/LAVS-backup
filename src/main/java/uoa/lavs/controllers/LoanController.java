@@ -312,22 +312,22 @@ public class LoanController extends uoa.lavs.controllers.Controller {
     boolean startDateFlag = validateDateFormat(startDatePicker, false);
 
     if (!principalFlag) {
-      errorMessage.append("\tPrincipal must be a number\n");
+      errorMessage.append("\tPrincipal must be a number!\n");
     }
     if (!rateValueFlag) {
-      errorMessage.append("\tRate value must be a number\n");
+      errorMessage.append("\tRate value must be a number!\n");
     }
     if (!periodFlag) {
-      errorMessage.append("\tPeriod must be an integer\n");
+      errorMessage.append("\tPeriod must be an integer!\n");
     }
     if (!loanTermFlag) {
-      errorMessage.append("\tLoan term must be an integer\n");
+      errorMessage.append("\tLoan term must be an integer!\n");
     }
     if (!paymentAmountFlag) {
-      errorMessage.append("\tPayment amount must be a number\n");
+      errorMessage.append("\tPayment amount must be a number!\n");
     }
     if (!startDateFlag) {
-      errorMessage.append("\tStart date must be after today\n");
+      errorMessage.append("\tStart date must be after today!\n");
     }
 
     return principalFlag
