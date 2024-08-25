@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import uoa.lavs.mainframe.Frequency;
-import uoa.lavs.mainframe.Instance;
+import uoa.lavs.LocalInstance;
 import uoa.lavs.mainframe.RateType;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.loan.LoadLoan;
@@ -35,7 +35,7 @@ public class LoanLoader {
   private static Loan loadFromDatabase(String loanId) throws Exception {
     Loan loan = new Loan();
     String query = "SELECT * FROM Loan WHERE LoanID = ?";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(query)) {
       statement.setString(1, loanId);
       try (ResultSet resultSet = statement.executeQuery()) {
@@ -63,7 +63,7 @@ public class LoanLoader {
   private static Loan loadFromMainframe(String loanId) throws Exception {
     LoadLoan loadLoan = new LoadLoan();
     loadLoan.setLoanId(loanId);
-    Status status = loadLoan.send(Instance.getConnection());
+    Status status = loadLoan.send(LocalInstance.getConnection());
     if (!status.getWasSuccessful()) {
       System.out.println(
           "Something went wrong - the Mainframe send failed! The code is " + status.getErrorCode());

@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import uoa.lavs.mainframe.Instance;
+import uoa.lavs.LocalInstance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.FindCustomerAddress;
 import uoa.lavs.mainframe.messages.customer.LoadCustomerAddress;
@@ -34,7 +34,7 @@ public class AddressFinder {
     LoadCustomerAddress loadCustomerAddress = new LoadCustomerAddress();
     findCustomerAddress.setCustomerId(customerId);
     loadCustomerAddress.setCustomerId(customerId);
-    Status status = findCustomerAddress.send(Instance.getConnection());
+    Status status = findCustomerAddress.send(LocalInstance.getConnection());
     if (!status.getWasSuccessful()) {
       System.out.println(
           "Something went wrong - the Mainframe send failed! The code is " + status.getErrorCode());
@@ -49,7 +49,7 @@ public class AddressFinder {
     for (int i = 1; i <= addressCount; i++) {
       Address address = new Address();
       loadCustomerAddress.setNumber(findCustomerAddress.getNumberFromServer(i));
-      loadCustomerAddress.send(Instance.getConnection());
+      loadCustomerAddress.send(LocalInstance.getConnection());
       address.setCustomerId(customerId);
       address.setNumber(findCustomerAddress.getNumberFromServer(i));
       address.setType(findCustomerAddress.getTypeFromServer(i));
@@ -69,7 +69,7 @@ public class AddressFinder {
   public static List<Address> findFromDatabase(String customerId) throws Exception {
     List<Address> addresses = new ArrayList<>();
     String query = "SELECT * FROM Address WHERE CustomerID = ?";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(query)) {
       statement.setString(1, customerId);
       try (ResultSet resultSet = statement.executeQuery()) {

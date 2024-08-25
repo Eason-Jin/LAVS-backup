@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import uoa.lavs.mainframe.Instance;
+import uoa.lavs.LocalInstance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.LoadCustomerPhoneNumbers;
 import uoa.lavs.models.Phone;
@@ -31,7 +31,7 @@ public class PhoneFinder {
   public static List<Phone> findFromMainframe(String customerId) throws Exception {
     LoadCustomerPhoneNumbers loadCustomerPhoneNumbers = new LoadCustomerPhoneNumbers();
     loadCustomerPhoneNumbers.setCustomerId(customerId);
-    Status status = loadCustomerPhoneNumbers.send(Instance.getConnection());
+    Status status = loadCustomerPhoneNumbers.send(LocalInstance.getConnection());
     if (!status.getWasSuccessful()) {
       System.out.println(
           "Something went wrong - the Mainframe send failed! The code is " + status.getErrorCode());
@@ -65,7 +65,7 @@ public class PhoneFinder {
     ResultSet resultSet = null;
 
     try {
-      connection = Instance.getDatabaseConnection();
+      connection = LocalInstance.getDatabaseConnection();
       String query = "SELECT * FROM Phone WHERE CustomerID = ?";
       preparedStatement = connection.prepareStatement(query);
       preparedStatement.setString(1, customerId);

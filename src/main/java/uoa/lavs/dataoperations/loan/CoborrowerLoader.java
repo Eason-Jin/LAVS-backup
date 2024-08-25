@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import uoa.lavs.mainframe.Instance;
+import uoa.lavs.LocalInstance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.loan.LoadLoanCoborrowers;
 
@@ -30,7 +30,7 @@ public class CoborrowerLoader {
   private static List<String> loadFromDatabase(String loanId) throws Exception {
     List<String> coborrowerIds = new ArrayList<>();
     String query = "SELECT CoborrowerID FROM Coborrower WHERE LoanID = ?";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(query)) {
       statement.setString(1, loanId);
       try (ResultSet resultSet = statement.executeQuery()) {
@@ -46,7 +46,7 @@ public class CoborrowerLoader {
     LoadLoanCoborrowers loadLoanCoborrower = new LoadLoanCoborrowers();
     loadLoanCoborrower.setLoanId(loanId);
     loadLoanCoborrower.setNumber(1);
-    Status status = loadLoanCoborrower.send(Instance.getConnection());
+    Status status = loadLoanCoborrower.send(LocalInstance.getConnection());
     if (!status.getWasSuccessful()) {
       System.out.println(
           "Something went wrong - the Mainframe send failed! The code is " + status.getErrorCode());

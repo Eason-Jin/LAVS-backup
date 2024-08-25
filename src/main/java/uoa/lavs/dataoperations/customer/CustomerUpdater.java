@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import uoa.lavs.mainframe.Instance;
+import uoa.lavs.LocalInstance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomer;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomerNote;
@@ -55,7 +55,7 @@ public class CustomerUpdater {
 
     // Check if CustomerID exists
     if (customerID != null) {
-      try (Connection connection = Instance.getDatabaseConnection();
+      try (Connection connection = LocalInstance.getDatabaseConnection();
           PreparedStatement checkStatement = connection.prepareStatement(CHECK_SQL)) {
         checkStatement.setString(1, customerID);
         try (ResultSet resultSet = checkStatement.executeQuery()) {
@@ -87,7 +87,7 @@ public class CustomerUpdater {
               + "  CustomerID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     }
 
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement =
             connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
       statement.setString(1, customer.getTitle());
@@ -166,7 +166,7 @@ public class CustomerUpdater {
       }
     }
 
-    Status status = updateCustomer.send(Instance.getConnection());
+    Status status = updateCustomer.send(LocalInstance.getConnection());
     updateCustomerNote.setCustomerId(updateCustomer.getCustomerIdFromServer());
     if (!status.getWasSuccessful()) {
       failed = true;
@@ -174,7 +174,7 @@ public class CustomerUpdater {
           "Something went wrong - the Mainframe send failed! The code is " + status.getErrorCode());
       throw new Exception("Mainframe send failed");
     }
-    updateCustomerNote.send(Instance.getConnection());
+    updateCustomerNote.send(LocalInstance.getConnection());
     customer.setId(updateCustomer.getCustomerIdFromServer());
     customer.setStatus(updateCustomer.getStatusFromServer());
     return updateCustomer.getCustomerIdFromServer();
@@ -182,7 +182,7 @@ public class CustomerUpdater {
 
   private static void addFailedUpdate(String customerID) {
     String sql = "UPDATE Customer SET InMainframe = false WHERE CustomerID = ?";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql)) {
       statement.setString(1, customerID);
       statement.executeUpdate();
@@ -194,7 +194,7 @@ public class CustomerUpdater {
   public static List<Customer> getFailedUpdates() {
     List<Customer> failedUpdates = new ArrayList<>();
     String sql = "SELECT * FROM Customer WHERE InMainframe = false";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql)) {
       while (resultSet.next()) {
@@ -221,7 +221,7 @@ public class CustomerUpdater {
       customer.setId(id);
       addInMainframe(customerID, id);
       String sql = "UPDATE Customer SET Status = 'Active' WHERE CustomerId = ?";
-      try (Connection connection = Instance.getDatabaseConnection();
+      try (Connection connection = LocalInstance.getDatabaseConnection();
           PreparedStatement statement = connection.prepareStatement(sql)) {
         statement.setString(1, id);
         statement.executeUpdate();
@@ -233,7 +233,7 @@ public class CustomerUpdater {
 
   private static void addInMainframe(String customerID, String mainframeId) {
     String sql = "UPDATE Customer SET CustomerID = ?, InMainframe = ? WHERE CustomerID = ?";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         Statement pragmaStatement = connection.createStatement();
         PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -254,7 +254,7 @@ public class CustomerUpdater {
 
     String selectLastId =
         "SELECT CustomerID FROM Customer ORDER BY CAST(CustomerID AS INTEGER) DESC";
-    try (Statement stmt = Instance.getDatabaseConnection().createStatement();
+    try (Statement stmt = LocalInstance.getDatabaseConnection().createStatement();
         ResultSet rs = stmt.executeQuery(selectLastId)) {
       if (rs.next()) {
         String lastIdStr = rs.getString("CustomerID");

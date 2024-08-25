@@ -1,6 +1,6 @@
 package uoa.lavs.dataoperations.loan;
 
-import uoa.lavs.mainframe.Instance;
+import uoa.lavs.LocalInstance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.loan.LoadLoanSummary;
 import uoa.lavs.utility.LoanRepayment;
@@ -39,7 +39,7 @@ public class LoanSummaryLoader {
     private static LoanSummary calculateFromMainframe(String loanId) throws Exception {
         LoadLoanSummary loadLoanSummary = new LoadLoanSummary();
         loadLoanSummary.setLoanId(loanId);
-        Status status = loadLoanSummary.send(Instance.getConnection());
+        Status status = loadLoanSummary.send(LocalInstance.getConnection());
         if (!status.getWasSuccessful()) {
             System.out.println(
                     "Something went wrong - the Mainframe send failed! The code is " + status.getErrorCode());

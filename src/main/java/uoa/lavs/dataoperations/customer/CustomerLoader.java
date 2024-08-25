@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import uoa.lavs.mainframe.Instance;
+import uoa.lavs.LocalInstance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.LoadCustomer;
 import uoa.lavs.mainframe.messages.customer.LoadCustomerNote;
@@ -34,7 +34,7 @@ public class CustomerLoader {
 
   public static Customer loadFromDatabase(String customerId) throws Exception {
     Customer customer = new Customer();
-    Connection connection = Instance.getDatabaseConnection();
+    Connection connection = LocalInstance.getDatabaseConnection();
     String query = "SELECT * FROM customer WHERE CustomerID = ?";
     try (PreparedStatement statement = connection.prepareStatement(query)) {
       statement.setString(1, customerId);
@@ -66,13 +66,13 @@ public class CustomerLoader {
     loadCustomer.setCustomerId(customerId);
     loadCustomerNote.setCustomerId(customerId);
     loadCustomerNote.setNumber(1);
-    Status status = loadCustomer.send(Instance.getConnection());
+    Status status = loadCustomer.send(LocalInstance.getConnection());
     if (!status.getWasSuccessful()) {
       System.out.println(
           "Something went wrong - the Mainframe send failed! The code is " + status.getErrorCode());
       throw new Exception("Mainframe send failed");
     }
-    loadCustomerNote.send(Instance.getConnection());
+    loadCustomerNote.send(LocalInstance.getConnection());
 
     Customer customer = new Customer();
     customer.setId(customerId);
