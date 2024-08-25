@@ -23,7 +23,7 @@ public class CustomerLoaderTests {
         assertAll("customer",
                 () -> assertEquals("1", customer.getId()),
                 () -> assertEquals("Mr", customer.getTitle()),
-                () -> assertEquals("John Doe", customer.getName()),
+                () -> assertEquals("Bob Black", customer.getName()),
                 () -> assertEquals(LocalDate.of(1990, 1, 1), customer.getDob()),
                 () -> assertEquals("Engineer", customer.getOccupation()),
                 () -> assertEquals("NZ", customer.getCitizenship()),
