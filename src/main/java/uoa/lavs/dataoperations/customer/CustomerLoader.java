@@ -1,8 +1,8 @@
 package uoa.lavs.dataoperations.customer;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import uoa.lavs.mainframe.Instance;
@@ -32,27 +32,31 @@ public class CustomerLoader {
     return customer;
   }
 
-  private static Customer loadFromDatabase(String customerId) throws Exception {
+  public static Customer loadFromDatabase(String customerId) throws Exception {
     Customer customer = new Customer();
     Connection connection = Instance.getDatabaseConnection();
-    Statement statement = connection.createStatement();
-    String query = "SELECT * FROM customer WHERE CustomerID = " + customerId + ";";
-    ResultSet resultSet = statement.executeQuery(query);
-    if (!resultSet.next()) {
-      throw new Exception("Customer not in database");
+    String query = "SELECT * FROM customer WHERE CustomerID = ?";
+    try (PreparedStatement statement = connection.prepareStatement(query)) {
+      statement.setString(1, customerId);
+      try (ResultSet resultSet = statement.executeQuery()) {
+        if (!resultSet.next()) {
+          throw new Exception("Customer not in database");
+        }
+        customer.setId(resultSet.getString("CustomerID"));
+        customer.setName(resultSet.getString("Name"));
+        String dobString = resultSet.getString("Dob");
+        LocalDate dob = LocalDate.parse(dobString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        customer.setDob(dob);
+        customer.setCitizenship(resultSet.getString("Citizenship"));
+        customer.setOccupation(resultSet.getString("Occupation"));
+        customer.setTitle(resultSet.getString("Title"));
+        customer.setVisaType(resultSet.getString("VisaType"));
+        customer.setStatus(resultSet.getString("Status"));
+        customer.setNotes(resultSet.getString("Note"));
+      }
+    } finally {
+      connection.close();
     }
-    customer.setId(resultSet.getString("CustomerID"));
-    customer.setName(resultSet.getString("Name"));
-    String dobString = resultSet.getString("Dob");
-    LocalDate dob = LocalDate.parse(dobString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-    customer.setDob(dob);
-    customer.setCitizenship(resultSet.getString("Citizenship"));
-    customer.setOccupation(resultSet.getString("Occupation"));
-    customer.setTitle(resultSet.getString("Title"));
-    customer.setVisaType(resultSet.getString("VisaType"));
-    customer.setStatus(resultSet.getString("Status"));
-    customer.setNotes(resultSet.getString("Note"));
-    connection.close();
     return customer;
   }
 
@@ -80,11 +84,13 @@ public class CustomerLoader {
     customer.setVisaType(loadCustomer.getVisaFromServer());
     customer.setStatus(loadCustomer.getStatusFromServer());
     StringBuilder noteBuilder = new StringBuilder();
-    int lineCount = loadCustomerNote.getLineCountFromServer();
-    for (int i = 1; i <= lineCount; i++) {
-      String line = loadCustomerNote.getLineFromServer(i);
-      if (line != null) {
-        noteBuilder.append(line);
+    Integer lineCount = loadCustomerNote.getLineCountFromServer();
+    if (lineCount != null) {
+      for (int i = 1; i <= lineCount; i++) {
+        String line = loadCustomerNote.getLineFromServer(i);
+        if (line != null) {
+          noteBuilder.append(line);
+        }
       }
     }
     customer.setNotes(noteBuilder.toString());

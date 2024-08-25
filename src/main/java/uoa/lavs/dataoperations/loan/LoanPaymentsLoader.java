@@ -32,24 +32,30 @@ public class LoanPaymentsLoader {
         return loanRepayments;
     }
 
-    public static List<LoanRepayment> calculateLocally(String loanId) throws Exception {
-        // Find the loan in the database
-        Connection connection = Instance.getDatabaseConnection();
+        public static List<LoanRepayment> calculateLocally(String loanId) throws Exception {
         String query = "SELECT * FROM loan WHERE LoanID = ?;";
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, loanId);
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        // Calculate repayments
-        AmortizingLoanCalculator calculator = new AmortizingLoanCalculator();
-        ArrayList<LoanRepayment> loanRepayments = calculator.generateRepaymentSchedule(
-                resultSet.getDouble("Principal"),
-                resultSet.getDouble("RateValue"),
-                resultSet.getDouble("PaymentAmount"),
-                PaymentFrequency.valueOf(resultSet.getString("PaymentFrequency")),
-                resultSet.getObject("StartDate", LocalDate.class)
-        );
-        return loanRepayments;
+        
+        try (Connection connection = Instance.getDatabaseConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            
+            preparedStatement.setString(1, loanId);
+            
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    // Calculate repayments
+                    AmortizingLoanCalculator calculator = new AmortizingLoanCalculator();
+                    return calculator.generateRepaymentSchedule(
+                            resultSet.getDouble("Principal"),
+                            resultSet.getDouble("RateValue"),
+                            resultSet.getDouble("PaymentAmount"),
+                            PaymentFrequency.valueOf(resultSet.getString("PaymentFrequency")),
+                            resultSet.getObject("StartDate", LocalDate.class)
+                    );
+                } else {
+                    throw new Exception("Loan not found for ID: " + loanId);
+                }
+            }
+        }
     }
 
     private static List<LoanRepayment> calculateFromMainframe(String loanId) throws Exception {

@@ -111,7 +111,7 @@
                         <configuration>
                             <mainClass>uoa.lavs.Main</mainClass>
                             <options>
-                                <option>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005
+                                <option>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:9000
                                 </option>
                             </options>
                         </configuration>

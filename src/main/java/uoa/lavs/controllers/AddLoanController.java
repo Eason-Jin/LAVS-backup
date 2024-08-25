@@ -232,8 +232,8 @@ public class AddLoanController extends uoa.lavs.controllers.Controller {
 
   @FXML
   private void onClickCancel(ActionEvent event) throws IOException {
+    customerController.setUpViewCustomer(customer.getId());
     resetScene();
-    customerController.setUpViewCustomer(customerController.getCustomerID());
     Main.setScene(AppScene.CUSTOMER);
   }
 
