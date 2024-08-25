@@ -140,7 +140,7 @@ public class DataOperationsTestsHelper {
 
             String insertCustomer = """
                     INSERT INTO Customer (CustomerID, Name, Title, Status, Dob, Occupation, Citizenship, VisaType, Note, InMainframe)
-                    VALUES ('1', 'John Doe', 'Mr', 'Active', '1990-01-01', 'Engineer', 'NZ', 'Work', 'Note', 0);
+                    VALUES ('1', 'Bob Black', 'Mr', 'Active', '1990-01-01', 'Engineer', 'NZ', 'Work', 'Note', 0);
                     """;
 
             String insertEmail = """
