@@ -9,8 +9,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import uoa.lavs.LocalInstance;
 import uoa.lavs.dataoperations.customer.CustomerUpdater;
-import uoa.lavs.mainframe.Instance;
 import uoa.lavs.models.Customer;
 
 public class CustomerUpdaterTests {
@@ -18,29 +19,27 @@ public class CustomerUpdaterTests {
   @BeforeEach
   public void setup() throws SQLException {
     DataOperationsTestsHelper.createTestingDatabases();
-  } 
+  }
 
   @Test
   public void testCreateCustomer() throws SQLException {
     // Arrange
-    Customer customer =
-        new Customer(
-            null,
-            "Ms",
-            "Jessica",
-            LocalDate.of(2001, 4, 10),
-            "Student",
-            "NZ",
-            "Work",
-            null,
-            "Note");
+    Customer customer = new Customer(
+        null,
+        "Ms",
+        "Jessica",
+        LocalDate.of(2001, 4, 10),
+        "Student",
+        "NZ",
+        "Work",
+        null,
+        "Note");
 
     // Act
     CustomerUpdater.updateDatabase(null, customer);
 
-    try (PreparedStatement selectStmt =
-        Instance.getDatabaseConnection()
-            .prepareStatement("SELECT * FROM customer WHERE CustomerID = ?")) {
+    try (PreparedStatement selectStmt = LocalInstance.getDatabaseConnection()
+        .prepareStatement("SELECT * FROM customer WHERE CustomerID = ?")) {
       selectStmt.setString(1, customer.getId());
       try (ResultSet resultSet = selectStmt.executeQuery()) {
         assertTrue(resultSet.next());
@@ -61,25 +60,23 @@ public class CustomerUpdaterTests {
   public void testUpdateCustomer() throws SQLException {
 
     // Arrange
-    Customer updatedCustomer =
-        new Customer(
-            "1",
-            "Dr",
-            "Jessie",
-            LocalDate.of(1995, 8, 15),
-            "Engineer",
-            "NZ",
-            "Permanent",
-            "Active",
-            null);
+    Customer updatedCustomer = new Customer(
+        "1",
+        "Dr",
+        "Jessie",
+        LocalDate.of(1995, 8, 15),
+        "Engineer",
+        "NZ",
+        "Permanent",
+        "Active",
+        null);
 
     // Act
     CustomerUpdater.updateDatabase("1", updatedCustomer);
 
     // Assert
-    try (PreparedStatement selectStmt =
-        Instance.getDatabaseConnection()
-            .prepareStatement("SELECT * FROM customer WHERE CustomerID = ?")) {
+    try (PreparedStatement selectStmt = LocalInstance.getDatabaseConnection()
+        .prepareStatement("SELECT * FROM customer WHERE CustomerID = ?")) {
       selectStmt.setString(1, "1");
       try (ResultSet resultSet = selectStmt.executeQuery()) {
         assertTrue(resultSet.next());
