@@ -1,7 +1,6 @@
 package uoa.lavs.controllers;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,8 +18,6 @@ import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager;
 import uoa.lavs.SceneManager.AppScene;
-import uoa.lavs.controllers.interfaces.CheckEmpty;
-import uoa.lavs.controllers.interfaces.ValidateType;
 import uoa.lavs.dataoperations.customer.CustomerLoader;
 import uoa.lavs.dataoperations.loan.CoborrowerUpdater;
 import uoa.lavs.dataoperations.loan.LoanUpdater;
@@ -30,7 +27,7 @@ import uoa.lavs.models.Customer;
 import uoa.lavs.models.Loan;
 
 @Controller
-public class AddLoanController implements ValidateType, CheckEmpty {
+public class AddLoanController extends uoa.lavs.controllers.Controller {
   @FXML private AnchorPane coBorrowerScrollAnchorPane;
   @FXML private FlowPane coBorrowerFlowPane;
   @FXML private Pane coBorrowerPane;
@@ -45,22 +42,14 @@ public class AddLoanController implements ValidateType, CheckEmpty {
   private HashMap<String, Node> coBorrowerFields = new HashMap<>();
   private HashMap<String, Node> loanDetailsFields = new HashMap<>();
   private HashSet<String> coBorrowerIds = new HashSet<>();
-
-  private String noBorder = "-fx-border-color: none";
-  private String redBorder = "-fx-border-color: red";
-
-  private Alert alert;
-  private StringBuilder errorString;
+  private Customer customer;
 
   @Autowired SearchController searchController;
-  @Autowired CustomerDetailsController customerDetailsController;
+  @Autowired CustomerController customerController;
   @Autowired LoanDetailsController loanDetailsController;
+
   @FXML
   private void initialize() {
-    alert = new Alert(AlertType.ERROR);
-    alert.setTitle("Error");
-    alert.setHeaderText("Please fix the following issues:");
-    errorString = new StringBuilder();
     coBorrowerFlowPane.getChildren().remove(coBorrowerPane);
     addToMap(loanDetailsFields, loanDetailsPane);
   }
@@ -109,12 +98,16 @@ public class AddLoanController implements ValidateType, CheckEmpty {
     Main.setScene(SceneManager.AppScene.SEARCH);
   }
 
-  public void setCustomerName(String customerName) {
-    titleLabel.setText("New Loan for " + customerName);
+  public void setCustomerName() {
+    titleLabel.setText("New Loan for " + CustomerLoader.loadData(customer.getId()).getName());
   }
 
-  public void addPrimeBorrower(String id) {
-    coBorrowerIds.add(id);
+  public void setCustomer(Customer customer) {
+    this.customer = customer;
+  }
+
+  public void addPrimeBorrower() {
+    coBorrowerIds.add(customer.getId());
   }
 
   public void addCoBorrower(TableRow<Customer> row) {
@@ -231,11 +224,15 @@ public class AddLoanController implements ValidateType, CheckEmpty {
   }
 
   @FXML
-  private void onClickCancel(ActionEvent event) throws IOException {}
+  private void onClickCancel(ActionEvent event) throws IOException {
+    resetScene();
+    customerController.setUpViewCustomer(customerController.getCustomerID());
+    Main.setScene(AppScene.CUSTOMER);
+  }
 
   @FXML
   private void onClickSave(ActionEvent event) throws IOException {
-    String customerID = customerDetailsController.getCustomerID();
+    String customerID = customer.getId();
     if (checkFields() && validateFields()) {
       Loan loan =
           new Loan(
@@ -246,7 +243,8 @@ public class AddLoanController implements ValidateType, CheckEmpty {
               Double.parseDouble(((TextField) loanDetailsFields.get("principalField")).getText()),
               Double.parseDouble(((TextField) loanDetailsFields.get("rateValueField")).getText()),
               RateType.valueOf(
-                  ((String) (Object) ((ComboBox) loanDetailsFields.get("rateTypeBox")).getValue())
+                  (((ComboBox) loanDetailsFields.get("rateTypeBox")).getValue())
+                      .toString()
                       .replaceAll("\\s", "")),
               ((DatePicker) loanDetailsFields.get("startDatePicker")).getValue(),
               Integer.parseInt(((TextField) loanDetailsFields.get("periodField")).getText()),
@@ -254,12 +252,10 @@ public class AddLoanController implements ValidateType, CheckEmpty {
               Double.parseDouble(
                   ((TextField) loanDetailsFields.get("paymentAmountField")).getText()),
               Frequency.valueOf(
-                  (String)
-                      (Object)
-                          ((ComboBox) loanDetailsFields.get("paymentFrequencyBox")).getValue()),
+                  (((ComboBox) loanDetailsFields.get("paymentFrequencyBox")).getValue())
+                      .toString()),
               Frequency.valueOf(
-                  (String)
-                      (Object) ((ComboBox) loanDetailsFields.get("compoundingBox")).getValue()));
+                  (((ComboBox) loanDetailsFields.get("compoundingBox")).getValue()).toString()));
 
       LoanUpdater.updateData(null, loan);
 
@@ -277,9 +273,7 @@ public class AddLoanController implements ValidateType, CheckEmpty {
         Main.setScene(AppScene.LOAN_DETAILS);
       }
     } else {
-      alert.setContentText(errorString.toString());
-      alert.showAndWait();
-      errorString = new StringBuilder();
+      showAlert();
     }
   }
 
@@ -292,12 +286,11 @@ public class AddLoanController implements ValidateType, CheckEmpty {
   @FXML
   private void onClickInfo(ActionEvent event) throws IOException {}
 
-  @Override
   public boolean checkFields() {
     boolean repeatFlag = true;
     for (Node node : loanDetailsFields.values()) {
       try {
-        if (!checkField((Control) node)) {
+        if (isEmpty((Control) node)) {
           repeatFlag = false;
         }
       } catch (Exception e) {
@@ -305,86 +298,29 @@ public class AddLoanController implements ValidateType, CheckEmpty {
       }
     }
     if (!repeatFlag) {
-      errorString.append("\tPlease fill in the required fields\n");
+      appendErrorMessage("Please fill in all required fields!\n");
     }
 
     return repeatFlag;
   }
 
-  @Override
-  public boolean checkField(Control ui) {
-    ui.setStyle(noBorder);
-    if (ui instanceof TextField) {
-      TextField tf = (TextField) ui;
-      if (tf.getText().isEmpty()) {
-        tf.setStyle(redBorder);
-        return false;
-      }
-    }
-    if (ui instanceof ComboBox) {
-      ComboBox<FXCollections> cb = (ComboBox<FXCollections>) ui;
-      if (cb.getValue() == null) {
-        cb.setStyle(redBorder);
-        return false;
-      }
-    }
-    if (ui instanceof DatePicker) {
-      DatePicker dp = (DatePicker) ui;
-      if (dp.getValue() == null) {
-        dp.setStyle(redBorder);
-        return false;
-      }
-    }
-    return true;
-  }
-
-  @Override
   public boolean validateFields() {
     boolean repeatFlag = true;
+    boolean dateflag = true;
     for (Node node : loanDetailsFields.values()) {
-      try {
-        if (!validate((Control) node, Type.NUMBER)) {
+      if (node instanceof TextField) {
+        if (!validateNumberFormat(((TextField) node).getText())) {
           repeatFlag = false;
-        }
-      } catch (Exception e) {
-        continue;
-      }
-    }
-    return repeatFlag;
-  }
-
-  @Override
-  public boolean validate(Control element, Type type) {
-    element.setStyle(noBorder);
-    boolean flag = true;
-    if (element instanceof TextField) {
-      TextField tf = (TextField) element;
-      if (tf.getText().isEmpty()) {
-        return flag;
-      }
-      if (type == Type.NUMBER) {
-        try {
-          Double.parseDouble(tf.getText());
-        } catch (Exception e) {
-          flag = false;
-          tf.setStyle(redBorder);
-          if (errorString.indexOf("\t" + tf.getId() + " should only contain numbers") == -1) {
-            errorString.append("\t" + tf.getId() + " should only contain numbers\n");
-          }
+          appendErrorMessage("Fields must be numbers!\n");
         }
       }
-    } else if (element instanceof DatePicker) {
-      DatePicker ui = (DatePicker) element;
-      if (ui.getValue() == null) {
-        return flag;
-      }
-      LocalDate today = LocalDate.now();
-      if (((LocalDate) (Object) ui.getValue()).isBefore(today)) {
-        flag = false;
-        ui.setStyle(redBorder);
-        errorString.append("\tDate must be after today\n");
+      if (node instanceof DatePicker) {
+        if (!validateDateFormat(((DatePicker) node).getValue(), false)) {
+          dateflag = false;
+          appendErrorMessage("Start Date must be after today!\n");
+        }
       }
     }
-    return flag;
+    return repeatFlag && dateflag;
   }
 }

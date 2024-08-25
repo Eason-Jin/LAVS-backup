@@ -3,7 +3,7 @@ package uoa.lavs.models;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Customer {
+public class Customer extends Detail {
   private String id;
   private String title;
   private String name;

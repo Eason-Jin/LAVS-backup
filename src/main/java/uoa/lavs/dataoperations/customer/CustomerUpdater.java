@@ -16,6 +16,7 @@ import uoa.lavs.models.Customer;
 public class CustomerUpdater {
 
   private static boolean failed = false;
+  public static StringBuilder message = new StringBuilder();
 
   public static void updateData(String customerID, Customer customer) {
     String id = customerID;
@@ -24,12 +25,18 @@ public class CustomerUpdater {
       if (id == null) {
         id = customerID;
       }
+      if (message.indexOf("Mainframe update successful") != -1) {
+        message.append("Mainframe update successful\n");
+      }
     } catch (Exception e) {
       System.out.println("Mainframe update failed: " + e.getMessage());
       failed = true;
     } finally {
       try {
         updateDatabase(id, customer);
+        if (message.indexOf("Mainframe update successful") != -1) {
+          message.append("Database update successful\n");
+        }
       } catch (SQLException e) {
         System.out.println("Database update failed: " + e.getMessage());
       } finally {

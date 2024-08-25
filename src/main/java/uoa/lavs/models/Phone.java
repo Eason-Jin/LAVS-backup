@@ -3,7 +3,7 @@ package uoa.lavs.models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Phone {
+public class Phone extends Detail {
   private String customerId;
   private Integer number;
   private String type;
@@ -83,7 +83,7 @@ public class Phone {
     return canSendText;
   }
 
-  public void setCanSendTxt(Boolean canSendText) {
+  public void setCanSendText(Boolean canSendText) {
     this.canSendText = canSendText;
   }
 

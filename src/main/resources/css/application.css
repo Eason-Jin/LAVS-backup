@@ -30,3 +30,133 @@
 .check-box > .box:disabled {
   -fx-opacity: 1;
 }
+
+.popup-pane {
+  -fx-background-radius: 20px;
+  -fx-border-radius: 20px;
+  -fx-border-color: #d0d7de;
+  -fx-border-width: 1px;
+  -fx-background-color: #f6f8fa;
+}
+
+.input {
+  -fx-background-radius: 50px;
+  -fx-border-radius: 50px;
+  -fx-text-fill: #6d7175;
+  -fx-prompt-text-fill: #6d7175;
+  -fx-border-color: #d0d7de;
+  -fx-background-color: white;
+  -fx-border-width: 2px;
+  -fx-padding: 0px 12px 0px 12px;
+  -fx-effect: none;
+}
+
+.combo-box {
+  -fx-background-color: white;
+  -fx-padding: -12px 0px -12px 0px;
+}
+
+.check-box {
+  -fx-text-fill: #000000;
+}
+
+.popup-button {
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: center;
+  -fx-border-radius: 50%;
+  -fx-background-radius: 50%;
+  -fx-border-width: 2px;
+  -fx-border-color: #d0d7de;
+  -fx-background-color: white;
+  -fx-effect: none;
+}
+
+.cancel {
+  -fx-background-image: url("../images/popup/cross.png");
+  -fx-background-size: 42%;
+}
+
+.save {
+  -fx-background-image: url("../images/popup/tick.png");
+  -fx-background-size: 55%;
+}
+
+.save-green {
+  -fx-background-image: url("../images/generic/tick-green.png");
+  -fx-background-size: 55%;
+  -fx-background-color: #79BFA1;
+  -fx-border-color: #2D7367;
+}
+
+.cancel-red {
+  -fx-background-image: url("../images/generic/cross-red.png");
+  -fx-background-size: 45%;
+  -fx-background-color: #D67373;
+  -fx-border-color: #8A3535;
+}
+
+.edit-blue {
+  -fx-background-image: url("../images/generic/edit-blue.png");
+  -fx-background-size: 50%;
+  -fx-background-color: #548DB7;
+  -fx-border-color: #264D6A;
+}
+
+.add-blue {
+  -fx-background-image: url("../images/generic/plus-blue.png");
+  -fx-background-size: 50%;
+  -fx-background-color: #548DB7;
+  -fx-border-color: #264D6A;
+}
+
+.home {
+  -fx-background-image: url("../images/generic/home.png");
+  -fx-background-size: 50%;
+}
+
+.cancel-red: hover {
+  -fx-background-color: #e29999;
+}
+
+.cancel-red: focused {
+  -fx-background-color: #D67373;
+}
+
+.save-green: hover {
+  -fx-background-color: #a1d6bf;
+}
+
+.save-green: focused {
+  -fx-background-color: #79BFA1;
+}
+
+.edit-blue: hover {
+  -fx-background-color: #70a3c7;
+}
+
+.edit-blue: focused {
+  -fx-background-color: #548DB7;
+}
+
+.add-blue: hover {
+  -fx-background-color: #70a3c7;
+}
+
+.add-blue: focused {
+  -fx-background-color: #548DB7;
+}
+
+.date-picker-display-node {
+  -fx-border-color: transparent;
+  -fx-background-color: transparent;
+  -fx-padding: 0px;
+}
+
+.date-picker-display-node: focused {
+  -fx-border-color: transparent;
+  -fx-background-color: transparent;
+} 
+
+.input: focused {
+  -fx-border-color: black;
+}

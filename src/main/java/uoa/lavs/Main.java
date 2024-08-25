@@ -43,10 +43,9 @@ public class Main extends Application {
     springContext = new AnnotationConfigApplicationContext(SpringConfig.class);
     Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
     SceneManager.addScene(AppScene.START, loadLoader("start").load());
-    SceneManager.addScene(AppScene.ADD_CUSTOMER, loadLoader("addCustomer").load());
+    SceneManager.addScene(AppScene.CUSTOMER, loadLoader("customer").load());
     SceneManager.addScene(AppScene.SEARCH, loadLoader("search").load());
     SceneManager.addScene(AppScene.ADD_LOAN, loadLoader("addLoan").load());
-    SceneManager.addScene(AppScene.CUSTOMER_DETAILS, loadLoader("customerDetails").load());
     SceneManager.addScene(AppScene.LOAN_DETAILS, loadLoader("loanDetails").load());
     SceneManager.addScene(AppScene.PENDING_UPDATES, loadLoader("pendingUpdates").load());
 
