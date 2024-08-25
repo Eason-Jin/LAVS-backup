@@ -80,8 +80,8 @@ public class LoanController extends uoa.lavs.controllers.Controller {
 
   @FXML private Button addCoBorrowerButton;
   @FXML private TableView<Customer> coBorrowersTable;
-  @FXML private TableColumn<Customer, String> coBorrowerNameColumn;
   @FXML private TableColumn<Customer, String> coBorrowerIdColumn;
+  @FXML private TableColumn<Customer, String> coBorrowerNameColumn;
 
   @FXML private Tab repaymentsTab;
   @FXML private TableView<LoanRepayment> repaymentsTable;
@@ -97,9 +97,15 @@ public class LoanController extends uoa.lavs.controllers.Controller {
 
   @FXML
   public void initialize() {
-    coBorrowerNameColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));
+    coBorrowerIdColumn.setReorderable(false);
+    coBorrowerNameColumn.setReorderable(false);
     coBorrowerIdColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("id"));
+    coBorrowerNameColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));
 
+    repaymentDateColumn.setReorderable(false);
+    principalColumn.setReorderable(false);
+    interestColumn.setReorderable(false);
+    remainingColumn.setReorderable(false);
     repaymentDateColumn.setCellValueFactory(
         new PropertyValueFactory<LoanRepayment, String>("repaymentDate"));
     principalColumn.setCellValueFactory(
