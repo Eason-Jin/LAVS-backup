@@ -6,9 +6,8 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import uoa.lavs.mainframe.Frequency;
 import uoa.lavs.LocalInstance;
+import uoa.lavs.mainframe.Frequency;
 import uoa.lavs.mainframe.RateType;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.loan.FindLoan;
@@ -33,7 +32,7 @@ public class LoanFinder {
     return loans;
   }
 
-  private static List<Loan> findFromMainframe(String customerId) throws Exception {
+  public static List<Loan> findFromMainframe(String customerId) throws Exception {
     FindLoan findLoan = new FindLoan();
     LoadLoan loadLoan = new LoadLoan();
     findLoan.setId(customerId);
