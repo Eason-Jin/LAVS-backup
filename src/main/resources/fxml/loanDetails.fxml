@@ -22,11 +22,16 @@
             <Font name="Calibri Bold" size="56.0" />
          </font>
       </Label>
-      <Button fx:id="homeButton" layoutX="20.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClickHome" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/primer-light.css">
+      <Button fx:id="homeButton" layoutX="20.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClickHome" prefHeight="50.0" prefWidth="50.0">
          <styleClass>
             <String fx:value="button-circle" />
             <String fx:value="home" />
+            <String fx:value="popup-button" />
          </styleClass>
+         <stylesheets>
+            <URL value="@../css/primer-light.css" />
+            <URL value="@../css/application.css" />
+         </stylesheets>
       </Button>
       <Button fx:id="backButton" layoutX="1082.0" layoutY="20.0" mnemonicParsing="false" onAction="#onClickBack" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/primer-light.css">
          <styleClass>

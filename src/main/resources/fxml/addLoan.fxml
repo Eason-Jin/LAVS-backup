@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -16,13 +17,18 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="648.0" prefWidth="1152.0" stylesheets="@../css/primer-light.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.AddLoanController">
+<AnchorPane prefHeight="648.0" prefWidth="1152.0" stylesheets="@../css/primer-light.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.AddLoanController">
    <children>
-      <Button fx:id="homeButton" layoutX="20.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClickHome" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/primer-light.css">
+      <Button fx:id="homeButton" layoutX="20.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClickHome" prefHeight="50.0" prefWidth="50.0">
          <styleClass>
             <String fx:value="button-circle" />
             <String fx:value="home" />
+            <String fx:value="popup-button" />
          </styleClass>
+         <stylesheets>
+            <URL value="@../css/primer-light.css" />
+            <URL value="@../css/application.css" />
+         </stylesheets>
       </Button>
       <Label fx:id="titleLabel" layoutX="80.0" layoutY="65.0" text="New Loan for">
          <font>

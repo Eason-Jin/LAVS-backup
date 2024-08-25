@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -10,9 +11,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="648.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.PendingUpdatesController">
+<AnchorPane prefHeight="648.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.PendingUpdatesController">
    <children>
-      <Button fx:id="sendButtton" focusTraversable="false" graphicTextGap="10.0" layoutX="929.0" layoutY="70.0" mnemonicParsing="false" onAction="#onClickSend" prefHeight="60.0" prefWidth="150.0" style="-fx-background-radius: 30;" text="Send">
+      <Button fx:id="sendButtton" focusTraversable="false" graphicTextGap="10.0" layoutX="929.0" layoutY="70.0" mnemonicParsing="false" onAction="#onClickSend" prefHeight="60.0" prefWidth="150.0" style="-fx-background-radius: 30;" styleClass="popup-button" text="Send">
          <font>
             <Font size="20.0" />
          </font>
@@ -44,11 +45,20 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Button fx:id="backButton" focusTraversable="false" layoutX="30.0" layoutY="24.0" mnemonicParsing="false" onAction="#onClickBack" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/primer-light.css">
+      <Button fx:id="backButton" focusTraversable="false" layoutX="30.0" layoutY="24.0" mnemonicParsing="false" onAction="#onClickBack" prefHeight="50.0" prefWidth="50.0">
          <styleClass>
             <String fx:value="button-circle" />
             <String fx:value="home" />
+            <String fx:value="popup-button" />
          </styleClass>
+         <stylesheets>
+            <URL value="@../css/primer-light.css" />
+            <URL value="@../css/application.css" />
+         </stylesheets>
       </Button>
    </children>
+   <stylesheets>
+      <URL value="@../css/primer-light.css" />
+      <URL value="@../css/application.css" />
+   </stylesheets>
 </AnchorPane>

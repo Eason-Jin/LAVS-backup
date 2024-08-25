@@ -29,14 +29,12 @@
             </Label>
             <Button layoutX="395.0" layoutY="28.0" maxHeight="35.0" maxWidth="35.0" minHeight="35.0" minWidth="35.0" mnemonicParsing="false" onAction="#onClickSave" prefHeight="35.0" prefWidth="35.0" stylesheets="@../css/application.css">
                <styleClass>
-                  <String fx:value="input" />
                   <String fx:value="popup-button" />
                   <String fx:value="save" />
                </styleClass>
             </Button>
             <Button layoutX="354.0" layoutY="28.0" maxHeight="35.0" maxWidth="35.0" minHeight="35.0" minWidth="35.0" mnemonicParsing="false" onAction="#onClickClosePopup" prefHeight="35.0" prefWidth="35.0" stylesheets="@../css/application.css">
                <styleClass>
-                  <String fx:value="input" />
                   <String fx:value="cancel" />
                   <String fx:value="popup-button" />
                </styleClass>

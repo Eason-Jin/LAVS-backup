@@ -35,7 +35,7 @@
   -fx-background-radius: 20px;
   -fx-border-radius: 20px;
   -fx-border-color: #d0d7de;
-  -fx-border-width: 1.5px;
+  -fx-border-width: 1px;
   -fx-background-color: #f6f8fa;
 }
 
@@ -46,14 +46,14 @@
   -fx-prompt-text-fill: #6d7175;
   -fx-border-color: #d0d7de;
   -fx-background-color: white;
-  -fx-border-width: 1.5px;
+  -fx-border-width: 2px;
   -fx-padding: 0px 12px 0px 12px;
+  -fx-effect: none;
 }
 
 .combo-box {
   -fx-background-color: white;
   -fx-padding: -12px 0px -12px 0px;
-  -fx-fit-to-height: true;
 }
 
 .check-box {
@@ -64,7 +64,11 @@
   -fx-background-repeat: no-repeat;
   -fx-background-position: center;
   -fx-border-radius: 50%;
+  -fx-background-radius: 50%;
   -fx-border-width: 2px;
+  -fx-border-color: #d0d7de;
+  -fx-background-color: white;
+  -fx-effect: none;
 }
 
 .cancel {
@@ -108,4 +112,51 @@
 .home {
   -fx-background-image: url("../images/generic/home.png");
   -fx-background-size: 50%;
+}
+
+.cancel-red: hover {
+  -fx-background-color: #e29999;
+}
+
+.cancel-red: focused {
+  -fx-background-color: #D67373;
+}
+
+.save-green: hover {
+  -fx-background-color: #a1d6bf;
+}
+
+.save-green: focused {
+  -fx-background-color: #79BFA1;
+}
+
+.edit-blue: hover {
+  -fx-background-color: #70a3c7;
+}
+
+.edit-blue: focused {
+  -fx-background-color: #548DB7;
+}
+
+.add-blue: hover {
+  -fx-background-color: #70a3c7;
+}
+
+.add-blue: focused {
+  -fx-background-color: #548DB7;
+}
+
+.date-picker-display-node {
+  -fx-border-color: transparent;
+  -fx-background-color: transparent;
+  -fx-padding: 0px;
+}
+
+.date-picker-display-node: focused {
+  -fx-border-color: transparent;
+  -fx-background-color: transparent;
+} 
+
+.input: focused {
+  -fx-border-color: black;
 }
