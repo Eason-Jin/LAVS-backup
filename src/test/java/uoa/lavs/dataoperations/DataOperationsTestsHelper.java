@@ -162,6 +162,11 @@ public class DataOperationsTestsHelper {
                     VALUES ('1', 'Tech Corp', '123 Tech Street', 'Tech Suburb', 'Tech City', 1234, 'Tech Country', '0934534345', 'techcorp@tech.com', 'www.techcorp.com', 1, true, 0);
                     """;
 
+            String insertLoan = """
+                    INSERT INTO Loan (CustomerID, LoanID, Principal, RateType, RateValue, StartDate, Period, Term, PaymentAmount, PaymentFrequency, Compounding, Status, InMainframe)
+                    VALUES ('1', '1-01', 10000, 'Fixed', 2, '2021-01-01', 12, 1, 1000, 'Monthly', 'Monthly', 'Active', 0);
+                    """;
+
             stmt.executeUpdate(customerTable);
             stmt.executeUpdate(addressTable);
             stmt.executeUpdate(emailTable);
@@ -172,6 +177,7 @@ public class DataOperationsTestsHelper {
             stmt.executeUpdate(insertPhone);
             stmt.executeUpdate(insertAddress);
             stmt.executeUpdate(insertEmployer);
+            stmt.executeUpdate(insertLoan);
         }
     }
 }
