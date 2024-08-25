@@ -59,6 +59,7 @@ public class CustomerFinderTests {
             CustomerFinder.findFromMainframeByName(customerName);
         });
     }
+    
 
     @Test
     public void findExistingCustomer() throws Exception {

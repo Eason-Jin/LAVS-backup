@@ -45,6 +45,16 @@ public class PhoneFinderTests {
   }
 
   @Test
+  public void findNonExistingPhoneFromMainframe() throws Exception {
+    DataOperationsTestsHelper.createTestingDatabases();
+    String customerId = "654";
+
+    assertThrows(Exception.class, () -> {
+      PhoneFinder.findFromMainframe(customerId);
+    });
+  }
+
+  @Test
   public void findPhoneFromMainframeWithInvalidCustomerId() throws Exception {
     DataOperationsTestsHelper.createTestingDatabases();
     String customerId = "invalid-id";

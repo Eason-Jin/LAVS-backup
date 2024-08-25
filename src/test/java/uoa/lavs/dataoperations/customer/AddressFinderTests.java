@@ -62,6 +62,16 @@ public class AddressFinderTests {
     }
 
     @Test
+    public void findNonExistingAddressFromMainframe() throws Exception {
+        DataOperationsTestsHelper.createTestingDatabases();
+        String customerId = "654";
+
+        assertThrows(Exception.class, () -> {
+            AddressFinder.findFromMainframe(customerId);
+        });
+    }
+
+    @Test
     public void findAddressFromMainframeWithInvalidCustomerId() throws Exception {
         DataOperationsTestsHelper.createTestingDatabases();
         String customerId = "invalid-id";

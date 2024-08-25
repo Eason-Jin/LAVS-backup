@@ -48,6 +48,18 @@ public class LoanFinderTests {
   @Test
   public void findNonExistingLoanFromMainframe() throws Exception {
     DataOperationsTestsHelper.createTestingDatabases();
+    String customerId = "654";
+
+    assertThrows(
+        Exception.class,
+        () -> {
+          LoanFinder.findFromMainframe(customerId);
+        });
+  }
+
+  @Test
+  public void findLoanFromMainframeWithInvalidCustomerId() throws Exception {
+    DataOperationsTestsHelper.createTestingDatabases();
     String customerId = "invalid-id";
 
     assertThrows(
