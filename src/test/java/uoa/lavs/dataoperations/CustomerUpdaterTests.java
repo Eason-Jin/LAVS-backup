@@ -18,7 +18,7 @@ public class CustomerUpdaterTests {
   @BeforeEach
   public void setup() throws SQLException {
     DataOperationsTestsHelper.createTestingDatabases();
-  }
+  } 
 
   @Test
   public void testCreateCustomer() throws SQLException {
@@ -94,5 +94,12 @@ public class CustomerUpdaterTests {
         assertEquals("Active", resultSet.getString("Status"));
       }
     }
+  }
+
+  @Test
+  public void getFailedUpdates() throws SQLException {
+    CustomerUpdater.getFailedUpdates();
+
+    assertEquals(1, CustomerUpdater.getFailedUpdates().size());
   }
 }
