@@ -57,8 +57,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
   private Setting setting;
 
-  @Autowired private AddLoanController addLoanController;
-  @Autowired private LoanDetailsController loanDetailsController;
+  @Autowired private LoanController loanController;
 
   @FXML private Button homeButton;
   @FXML private Button saveButton;
@@ -188,13 +187,11 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
           row.setOnMouseClicked(
               event -> {
                 if (!row.isEmpty()) {
-                  if (!row.isEmpty()) {
-                    try {
-                      addressTableRow = row.getIndex();
-                      createAddressPopup((Pane) addressTable.getScene().getRoot(), row.getItem());
-                    } catch (IOException e) {
-                      e.printStackTrace();
-                    }
+                  try {
+                    addressTableRow = row.getIndex();
+                    createAddressPopup((Pane) addressTable.getScene().getRoot(), row.getItem());
+                  } catch (IOException e) {
+                    e.printStackTrace();
                   }
                 }
               });
@@ -268,9 +265,9 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
               event -> {
                 if (!row.isEmpty()) {
                   String loanId = row.getItem().getLoanId();
-                  System.out.println("Loan clicked with ID: " + loanId);
-                  loanDetailsController.setLoanDetails(loanId);
-                  Main.setScene(AppScene.LOAN_DETAILS);
+                  loanController.setUpViewLoan(loanId);
+                  resetScene();
+                  Main.setScene(AppScene.LOAN);
                 }
               });
 
@@ -365,7 +362,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     citizenshipField.clear();
     visaField.clear();
     notesArea.clear();
-    customer = null;
+    customer = new Customer();
     addresses.clear();
     emails.clear();
     phones.clear();
@@ -417,12 +414,9 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
   @FXML
   private void onClickAddLoan(ActionEvent event) {
-    addLoanController.setCustomer(customer);
-    addLoanController.setCustomerName();
-    addLoanController.addPrimeBorrower();
-
+    loanController.setUpAddLoan(customer.getId(), customer.getName());
     resetScene();
-    Main.setScene(AppScene.ADD_LOAN);
+    Main.setScene(AppScene.LOAN);
   }
 
   private void handleSave(Detail saved) {
@@ -515,7 +509,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   public boolean validateFields() {
     boolean dobFlag = validateDateFormat(dobPicker.getValue(), true);
     if (!dobFlag) {
-      dobPicker.setStyle(fieldRedBorder);
+      dobPicker.setStyle(redBorder);
       appendErrorMessage("Date of birth must be before today\n");
     }
     boolean addressFlag = addresses.size() >= 1;
@@ -530,110 +524,95 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
     boolean employersFlag = employers.size() >= 1;
     if (!employersFlag) {
-      employmentTable.setStyle(tableRedBorder);
+      employmentTable.setStyle(redBorder);
       appendErrorMessage("Please add at least one employer\n");
     }
 
     // Only one address can be primary, need at least one mailing address
-    int primaryAddressNum = 0;
-    int mailingAddressNum = 0;
-    for (Address address : addresses) {
-      if (address.getIsPrimary()) {
-        primaryAddressNum++;
-      }
-      if (address.getIsMailing()) {
-        mailingAddressNum++;
-      }
-    }
-    if (primaryAddressNum == 0) {
+    boolean doesPrimaryAddressExist = doesPrimaryAddressExist();
+    boolean doesMailingAddressExist = doesMailingAddressExist();
+    if (!doesPrimaryAddressExist) {
       if (errorMessage.indexOf("Please select a primary address") == -1) {
         errorMessage.append("Please select a primary address\n");
       }
     }
-    if (mailingAddressNum == 0) {
+    if (!doesMailingAddressExist) {
       if (errorMessage.indexOf("Please select a mailing address") == -1) {
         errorMessage.append("Please select a mailing address\n");
       }
     }
-    if (!addressFlag || primaryAddressNum == 0 || mailingAddressNum == 0) {
-      addressTable.setStyle(tableRedBorder);
+    if (!addressFlag || !doesPrimaryAddressExist || !doesMailingAddressExist) {
+      addressTable.setStyle(redBorder);
     }
 
     // Only one email can be primary
-    int primaryEmailNum = 0;
-    for (Email email : emails) {
-      if (email.getIsPrimary()) {
-        primaryEmailNum++;
+    boolean doesPrimaryEmailExist = doesPrimaryEmailExist();
+    if (!doesPrimaryEmailExist) {
+      if (errorMessage.indexOf("Please select a primary email") == -1) {
+        errorMessage.append("Please select a primary email\n");
       }
     }
-    if (primaryEmailNum == 0) {
-      appendErrorMessage("Please select a primary email\n");
-    }
-    if (!contactDetailsFlag || primaryEmailNum == 0) {
-      emailTable.setStyle(tableRedBorder);
+    if (!contactDetailsFlag || !doesPrimaryEmailExist) {
+      emailTable.setStyle(redBorder);
     }
 
     // Only one phone can be primary, need at least one texting phone
-    int primaryPhoneNum = 0;
-    int textingPhoneNum = 0;
-    for (Phone phone : phones) {
-      if (phone.getIsPrimary()) {
-        primaryPhoneNum++;
-      }
-      if (phone.getCanSendText()) {
-        textingPhoneNum++;
+    boolean doesPrimaryPhoneExist = doesPrimaryPhoneExist();
+    boolean doesTextingPhoneExist = doesTextingPhoneExist();
+    if (!doesPrimaryPhoneExist) {
+      if (errorMessage.indexOf("Please select a primary phone") == -1) {
+        errorMessage.append("Please select a primary phone\n");
       }
     }
-    if (primaryPhoneNum == 0) {
-      appendErrorMessage("Please select a primary phone\n");
+    if (!doesTextingPhoneExist) {
+      if (errorMessage.indexOf("Please select a texting phone") == -1) {
+        errorMessage.append("Please select a texting phone\n");
+      }
     }
-    if (textingPhoneNum == 0) {
-      appendErrorMessage("Please select a texting phone\n");
-    }
-    if (!contactDetailsFlag || primaryPhoneNum == 0 || textingPhoneNum == 0) {
-      phoneTable.setStyle(tableRedBorder);
+    if (!contactDetailsFlag || !doesPrimaryPhoneExist || !doesTextingPhoneExist) {
+      phoneTable.setStyle(redBorder);
     }
 
     return dobFlag
         && addressFlag
         && contactDetailsFlag
         && employersFlag
-        && primaryAddressNum == 1
-        && primaryEmailNum == 1
-        && primaryPhoneNum == 1
-        && mailingAddressNum >= 1
-        && textingPhoneNum >= 1;
+        && doesPrimaryAddressExist
+        && doesMailingAddressExist
+        && doesPrimaryEmailExist
+        && doesPrimaryPhoneExist
+        && doesTextingPhoneExist;
   }
 
   public boolean checkLengths() {
     boolean titleFieldFlag = !isTooLong(titleField.getText(), 10);
     if (titleFieldFlag) {
-      titleField.setStyle(fieldRedBorder);
+      titleField.setStyle(redBorder);
       appendErrorMessage("Title must be less than 10 characters\n");
     }
     boolean nameFieldFlag = !isTooLong(nameField.getText(), 60);
     if (nameFieldFlag) {
-      nameField.setStyle(fieldRedBorder);
+      nameField.setStyle(redBorder);
       appendErrorMessage("Name must be less than 60 characters\n");
     }
     boolean occupationFlag = !isTooLong(occupationField.getText(), 40);
     if (occupationFlag) {
-      occupationField.setStyle(fieldRedBorder);
+      occupationField.setStyle(redBorder);
       appendErrorMessage("Occupation must be less than 40 characters\n");
     }
     boolean citizenshipFieldFlag = !isTooLong(citizenshipField.getText(), 40);
     if (citizenshipFieldFlag) {
-      citizenshipField.setStyle(fieldRedBorder);
+      citizenshipField.setStyle(redBorder);
       appendErrorMessage("Citizenship must be less than 40 characters\n");
     }
     boolean visaFieldFlag = !isTooLong(visaField.getText(), 40);
     if (visaFieldFlag) {
-      visaField.setStyle(fieldRedBorder);
+      visaField.setStyle(redBorder);
       appendErrorMessage("Visa type must be less than 40 characters\n");
     }
     boolean notesAreaFlag = !isTooLong(notesArea.getText(), 1330);
     if (notesAreaFlag) {
-      notesArea.setStyle(fieldRedBorder);
+      notesArea.setStyle(redBorder);
       appendErrorMessage("Notes must be less than 1330 characters\n");
     }
 
@@ -646,16 +625,17 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   }
 
   private void resetFieldStyle() {
-    titleField.setStyle(fieldNormalBorder);
-    nameField.setStyle(fieldNormalBorder);
-    dobPicker.setStyle(fieldNormalBorder);
-    occupationField.setStyle(fieldNormalBorder);
-    citizenshipField.setStyle(fieldNormalBorder);
-    visaField.setStyle(fieldNormalBorder);
-    addressTable.setStyle(tableNormalBorder);
-    emailTable.setStyle(tableNormalBorder);
-    phoneTable.setStyle(tableNormalBorder);
-    employmentTable.setStyle(tableNormalBorder);
+    titleField.setStyle(normalBorder);
+    nameField.setStyle(normalBorder);
+    dobPicker.setStyle(normalBorder);
+    occupationField.setStyle(normalBorder);
+    citizenshipField.setStyle(normalBorder);
+    visaField.setStyle(normalBorder);
+    addressTable.setStyle(normalBorder);
+    emailTable.setStyle(normalBorder);
+    phoneTable.setStyle(normalBorder);
+    employmentTable.setStyle(normalBorder);
+    notesArea.setStyle(normalBorder);
   }
 
   @FXML
@@ -798,6 +778,15 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   private boolean doesPrimaryPhoneExist() {
     for (Phone phone : phones) {
       if (phone.getIsPrimary()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean doesTextingPhoneExist() {
+    for (Phone phone : phones) {
+      if (phone.getCanSendText()) {
         return true;
       }
     }

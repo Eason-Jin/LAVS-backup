@@ -35,7 +35,7 @@ public class SearchController {
   @FXML private TableColumn<Customer, String> dobColumn;
   @FXML private Label searchSceneTitleLabel;
 
-  @Autowired AddLoanController addLoanController;
+  @Autowired LoanController loanController;
 
   private boolean isCoBorrowerSearch;
 
@@ -56,8 +56,9 @@ public class SearchController {
                 }
 
                 if (isCoBorrowerSearch) {
-                  addLoanController.addCoBorrower(row);
-                  Main.setScene(AppScene.ADD_LOAN);
+                  isCoBorrowerSearch = false;
+                  loanController.addCoBorrower(row.getItem());
+                  Main.setScene(AppScene.LOAN);
                 } else {
                   String customerId = row.getItem().getId();
                   customerController.setUpViewCustomer(customerId);
@@ -143,7 +144,7 @@ public class SearchController {
   @FXML
   private void onClickBack(ActionEvent event) throws IOException {
     if (isCoBorrowerSearch) {
-      Main.setScene(AppScene.ADD_LOAN);
+      Main.setScene(AppScene.LOAN);
     } else {
       Main.setScene(AppScene.START);
     }
