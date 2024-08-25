@@ -76,15 +76,19 @@
                                  <children>
                                     <Label text="Principal" />
                                     <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" prefWidth="28.0" />
-                                    <TextField fx:id="principalField" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Principal" stylesheets="@../css/primer-light.css" />
+                                    <TextField fx:id="principalField" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Principal" styleClass="input">
+                                       <stylesheets>
+                                          <URL value="@../css/primer-light.css" />
+                                          <URL value="@../css/application.css" />
+                                       </stylesheets></TextField>
                                     <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
                                     <Label text="Start date" />
                                     <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
-                                    <DatePicker fx:id="startDatePicker" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Start Date" stylesheets="@../css/primer-light.css" />
+                                    <DatePicker fx:id="startDatePicker" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Start Date" styleClass="input" stylesheets="@../css/primer-light.css" />
                                     <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
                                     <Label text="Compounding" />
                                     <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
-                                    <ComboBox fx:id="compoundingBox" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Compounding">
+                                    <ComboBox fx:id="compoundingBox" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Compounding" styleClass="input">
                                        <items>
                                           <FXCollections fx:factory="observableArrayList">
                                              <String fx:value="Weekly" />
@@ -96,14 +100,14 @@
                                     <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
                                     <Label fx:id="totalInterestLabel" text="Total interest" />
                                     <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
-                                    <TextField fx:id="totalInterestField" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Total Interest" />
+                                    <TextField fx:id="totalInterestField" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Total Interest" styleClass="input" />
                                  </children>
                               </VBox>
                               <VBox layoutX="320.0" prefHeight="200.0" prefWidth="310.0">
                                  <children>
                                     <Label text="Rate type" />
                                     <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
-                                    <ComboBox fx:id="rateTypeBox" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Rate type">
+                                    <ComboBox fx:id="rateTypeBox" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Rate type" styleClass="input">
                                        <items>
                                           <FXCollections fx:factory="observableArrayList">
                                              <String fx:value="Floating" />
@@ -115,11 +119,11 @@
                                     <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
                                     <Label text="Period" />
                                     <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
-                                    <TextField fx:id="periodField" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Period" stylesheets="@../css/primer-light.css" />
+                                    <TextField fx:id="periodField" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Period" styleClass="input" stylesheets="@../css/primer-light.css" />
                                     <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
                                     <Label text="Payment frequency" />
                                     <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
-                                    <ComboBox fx:id="paymentFrequencyBox" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Payment frequency">
+                                    <ComboBox fx:id="paymentFrequencyBox" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Payment frequency" styleClass="input">
                                        <items>
                                           <FXCollections fx:factory="observableArrayList">
                                              <String fx:value="Weekly" />
@@ -131,26 +135,26 @@
                                     <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
                                     <Label fx:id="totalCostLabel" text="Total cost" />
                                     <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
-                                    <TextField fx:id="totalCostField" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Total cost" />
+                                    <TextField fx:id="totalCostField" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Total cost" styleClass="input" />
                                  </children>
                               </VBox>
                               <VBox layoutX="640.0" prefHeight="200.0" prefWidth="310.0">
                                  <children>
                                     <Label text="Rate" />
                                     <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
-                                    <TextField fx:id="rateValueField" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Rate" stylesheets="@../css/primer-light.css" />
+                                    <TextField fx:id="rateValueField" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Rate" styleClass="input" stylesheets="@../css/primer-light.css" />
                                     <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
                                     <Label text="Loan term" />
                                     <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
-                                    <TextField fx:id="loanTermField" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Loan term" stylesheets="@../css/primer-light.css" />
+                                    <TextField fx:id="loanTermField" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Loan term" styleClass="input" stylesheets="@../css/primer-light.css" />
                                     <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
                                     <Label text="Payment amount" />
                                     <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
-                                    <TextField fx:id="paymentAmountField" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Payment amount" stylesheets="@../css/primer-light.css" />
+                                    <TextField fx:id="paymentAmountField" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Payment amount" styleClass="input" stylesheets="@../css/primer-light.css" />
                                     <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
                                     <Label fx:id="payoffDateLabel" text="Payoff date" />
                                     <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
-                                    <TextField fx:id="payoffDateField" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Payoff date" />
+                                    <TextField fx:id="payoffDateField" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Payoff date" styleClass="input" />
                                  </children>
                               </VBox>
                            </children>
