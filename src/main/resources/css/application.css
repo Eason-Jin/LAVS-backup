@@ -131,7 +131,7 @@
   -fx-background-size: 50%;
 }
 
-.cancel-red: hover {
+.cancel-red:hover {
   -fx-background-color: #e29999;
 }
 
@@ -188,4 +188,12 @@
 
 .input:disabled {
   -fx-opacity: 1;
+}
+
+.invalid {
+  -fx-border-color: red;
+}
+
+.invalid:disabled {
+  -fx-border-color: red;
 }

@@ -39,12 +39,7 @@ public class AddressPopupController extends PopupController {
     boolean postcodeFlag = isEmpty(postcodeTextField);
     boolean countryFlag = isEmpty(countryTextField);
     boolean addressTypeFlag = isEmpty(addressTypeComboBox);
-    if (addressLine1Flag
-        || suburbFlag
-        || cityFlag
-        || postcodeFlag
-        || countryFlag
-        || addressTypeFlag) {
+    if (addressLine1Flag || suburbFlag || cityFlag || postcodeFlag || countryFlag || addressTypeFlag) {
       appendErrorMessage("Please fill in all required fields!\n");
     } else {
       boolean addressTypeLongFlag = isTooLong(addressTypeComboBox, 20);

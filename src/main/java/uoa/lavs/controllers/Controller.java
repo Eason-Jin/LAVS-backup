@@ -17,18 +17,18 @@ public abstract class Controller {
   protected String redBorder = "-fx-border-color: red";
 
   protected boolean validateEmailFormat(TextField email) {
-    email.setStyle(normalBorder);
+    email.getStyleClass().remove("invalid");
     // Email should be in the format of a@b.c
     if (email.getText().matches("^.+@.+\\..+$")) {
       return true;
     } else {
-      email.setStyle(redBorder);
+      email.getStyleClass().add("invalid");
       return false;
     }
   }
 
   protected boolean validateNumberFormat(TextField number, boolean isDouble) {
-    number.setStyle(normalBorder);
+    number.getStyleClass().remove("invalid");
     try {
       if (isDouble) {
         Double.parseDouble(number.getText());
@@ -36,25 +36,25 @@ public abstract class Controller {
         Long.parseLong(number.getText());
       }
     } catch (Exception e) {
-      number.setStyle(redBorder);
+      number.getStyleClass().add("invalid");
       return false;
     }
     return true;
   }
 
   protected boolean validateWebsiteFormat(TextField website) {
-    website.setStyle(normalBorder);
+    website.getStyleClass().remove("invalid");
     // Website should be in the format of a.b
     if (website.getText().matches("^.+\\..+$")) {
       return true;
     } else {
-      website.setStyle(redBorder);
+      website.getStyleClass().add("invalid");
       return false;
     }
   }
 
   protected boolean validateDateFormat(DatePicker dp, boolean beforeToday) {
-    dp.setStyle(normalBorder);
+    dp.getStyleClass().remove("invalid");
     try {
       LocalDate date = dp.getValue();
       if (beforeToday && date.isBefore(LocalDate.now())) {
@@ -62,40 +62,40 @@ public abstract class Controller {
       } else if (!beforeToday && date.isAfter(LocalDate.now())) {
         return true;
       }
-      dp.setStyle(redBorder);
+      dp.getStyleClass().add("invalid");
       return false;
     } catch (Exception e) {
-      dp.setStyle(redBorder);
+      dp.getStyleClass().add("invalid");
       return false;
     }
   }
 
   protected boolean isEmpty(Control ui) {
-    ui.setStyle(normalBorder);
+    ui.getStyleClass().remove("invalid");
     if (ui instanceof TextField) {
       TextField tf = (TextField) ui;
       try {
         tf.getText();
         if (tf.getText() == null || tf.getText().isEmpty()) {
-          tf.setStyle(redBorder);
+          tf.getStyleClass().add("invalid");
           return true;
         }
       } catch (Exception e) {
-        tf.setStyle(redBorder);
+        tf.getStyleClass().add("invalid");
         return true;
       }
     }
     if (ui instanceof ComboBox) {
       ComboBox<FXCollections> cb = (ComboBox<FXCollections>) ui;
       if (cb.getValue() == null) {
-        cb.setStyle(redBorder);
+        cb.getStyleClass().add("invalid");
         return true;
       }
     }
     if (ui instanceof DatePicker) {
       DatePicker dp = (DatePicker) ui;
       if (dp.getValue() == null) {
-        dp.setStyle(redBorder);
+        dp.getStyleClass().add("invalid");
         return true;
       }
     }
@@ -103,17 +103,17 @@ public abstract class Controller {
   }
 
   protected boolean isTooLong(Control str, int length) {
-    str.setStyle(normalBorder);
+    str.getStyleClass().remove("invalid");
     if (str instanceof TextField) {
       TextField tf = (TextField) str;
       if (tf.getText() == null || tf.getText().length() > length) {
-        tf.setStyle(redBorder);
+        tf.getStyleClass().add("invalid");
         return true;
       }
     } else if (str instanceof TextArea) {
       TextArea ta = (TextArea) str;
       if (ta.getText() == null || ta.getText().length() > length) {
-        ta.setStyle(redBorder);
+        ta.getStyleClass().add("invalid");
         return true;
       }
     }
