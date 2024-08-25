@@ -45,25 +45,25 @@ public class AddressPopupController extends PopupController {
         appendErrorMessage("Postcode must be numbers!\n");
       }
 
-      if (isTooLong(addressTypeComboBox.getValue(), 20)) {
+      if (isTooLong(addressTypeComboBox, 20)) {
         appendErrorMessage("Address type must be less than 20 characters!\n");
       }
-      if (isTooLong(addressLine1TextField.getText(), 60)) {
+      if (isTooLong(addressLine1TextField, 60)) {
         appendErrorMessage("Address line 1 must be less than 60 characters!\n");
       }
-      if (isTooLong(addressLine2TextField.getText(), 60)) {
+      if (isTooLong(addressLine2TextField, 60)) {
         appendErrorMessage("Address line 2 must be less than 60 characters!\n");
       }
-      if (isTooLong(suburbTextField.getText(), 30)) {
+      if (isTooLong(suburbTextField, 30)) {
         appendErrorMessage("Suburb must be less than 30 characters!\n");
       }
-      if (isTooLong(cityTextField.getText(), 30)) {
+      if (isTooLong(cityTextField, 30)) {
         appendErrorMessage("City must be less than 30 characters!\n");
       }
-      if (isTooLong(postcodeTextField.getText(), 10)) {
+      if (isTooLong(postcodeTextField, 10)) {
         appendErrorMessage("Postcode must be less than 10 characters!\n");
       }
-      if (isTooLong(countryTextField.getText(), 30)) {
+      if (isTooLong(countryTextField, 30)) {
         appendErrorMessage("Country must be less than 30 characters!\n");
       }
     }

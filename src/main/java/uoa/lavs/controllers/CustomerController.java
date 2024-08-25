@@ -507,7 +507,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   }
 
   public boolean validateFields() {
-    boolean dobFlag = validateDateFormat(dobPicker.getValue(), true);
+    boolean dobFlag = validateDateFormat(dobPicker, true);
     if (!dobFlag) {
       dobPicker.setStyle(redBorder);
       appendErrorMessage("Date of birth must be before today\n");
@@ -585,32 +585,32 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   }
 
   public boolean checkLengths() {
-    boolean titleFieldFlag = !isTooLong(titleField.getText(), 10);
+    boolean titleFieldFlag = !isTooLong(titleField, 10);
     if (titleFieldFlag) {
       titleField.setStyle(redBorder);
       appendErrorMessage("Title must be less than 10 characters\n");
     }
-    boolean nameFieldFlag = !isTooLong(nameField.getText(), 60);
+    boolean nameFieldFlag = !isTooLong(nameField, 60);
     if (nameFieldFlag) {
       nameField.setStyle(redBorder);
       appendErrorMessage("Name must be less than 60 characters\n");
     }
-    boolean occupationFlag = !isTooLong(occupationField.getText(), 40);
+    boolean occupationFlag = !isTooLong(occupationField, 40);
     if (occupationFlag) {
       occupationField.setStyle(redBorder);
       appendErrorMessage("Occupation must be less than 40 characters\n");
     }
-    boolean citizenshipFieldFlag = !isTooLong(citizenshipField.getText(), 40);
+    boolean citizenshipFieldFlag = !isTooLong(citizenshipField, 40);
     if (citizenshipFieldFlag) {
       citizenshipField.setStyle(redBorder);
       appendErrorMessage("Citizenship must be less than 40 characters\n");
     }
-    boolean visaFieldFlag = !isTooLong(visaField.getText(), 40);
+    boolean visaFieldFlag = !isTooLong(visaField, 40);
     if (visaFieldFlag) {
       visaField.setStyle(redBorder);
       appendErrorMessage("Visa type must be less than 40 characters\n");
     }
-    boolean notesAreaFlag = !isTooLong(notesArea.getText(), 1330);
+    boolean notesAreaFlag = !isTooLong(notesArea, 1330);
     if (notesAreaFlag) {
       notesArea.setStyle(redBorder);
       appendErrorMessage("Notes must be less than 1330 characters\n");

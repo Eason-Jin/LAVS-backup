@@ -1,7 +1,6 @@
 package uoa.lavs.controllers;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -13,7 +12,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -256,10 +254,11 @@ public class LoanController extends uoa.lavs.controllers.Controller {
     if (coBorrowers.contains(coBorrower) || coBorrower.getId().equals(primeBorrowerId)) {
       Alert exceptionAlert = new Alert(Alert.AlertType.ERROR);
       exceptionAlert.setTitle("Error");
-      exceptionAlert.setHeaderText("This customer has already been added as a co-borrower.");
+      exceptionAlert.setHeaderText(
+          coBorrowers.contains(coBorrower)
+              ? "This customer has already been added as a co-borrower."
+              : "This customer is the prime borrower.");
       exceptionAlert.showAndWait();
-      return;
-    } else if (coBorrower.getId().equals(primeBorrowerId)) {
       return;
     }
     coBorrowers.add(coBorrower);
@@ -278,15 +277,15 @@ public class LoanController extends uoa.lavs.controllers.Controller {
   }
 
   public boolean checkFields() {
-    boolean principalFlag = checkField(principalField);
-    boolean rateTypeFlag = checkField(rateTypeBox);
-    boolean rateValueFlag = checkField(rateValueField);
-    boolean startDateFlag = checkField(startDatePicker);
-    boolean periodFlag = checkField(periodField);
-    boolean loanTermFlag = checkField(loanTermField);
-    boolean compoundingFlag = checkField(compoundingBox);
-    boolean paymentFrequencyFlag = checkField(paymentFrequencyBox);
-    boolean paymentAmountFlag = checkField(paymentAmountField);
+    boolean principalFlag = !isEmpty(principalField);
+    boolean rateTypeFlag = !isEmpty(rateTypeBox);
+    boolean rateValueFlag = !isEmpty(rateValueField);
+    boolean startDateFlag = !isEmpty(startDatePicker);
+    boolean periodFlag = !isEmpty(periodField);
+    boolean loanTermFlag = !isEmpty(loanTermField);
+    boolean compoundingFlag = !isEmpty(compoundingBox);
+    boolean paymentFrequencyFlag = !isEmpty(paymentFrequencyBox);
+    boolean paymentAmountFlag = !isEmpty(paymentAmountField);
 
     if (principalFlag
         && rateTypeFlag
@@ -304,39 +303,13 @@ public class LoanController extends uoa.lavs.controllers.Controller {
     return false;
   }
 
-  public boolean checkField(Control ui) {
-    ui.setStyle(normalBorder);
-    if (ui instanceof TextField) {
-      TextField tf = (TextField) ui;
-      if (tf.getText().isEmpty()) {
-        tf.setStyle(redBorder);
-        return false;
-      }
-    }
-    if (ui instanceof ComboBox) {
-      ComboBox<FXCollections> cb = (ComboBox<FXCollections>) ui;
-      if (cb.getValue() == null) {
-        cb.setStyle(redBorder);
-        return false;
-      }
-    }
-    if (ui instanceof DatePicker) {
-      DatePicker dp = (DatePicker) ui;
-      if (dp.getValue() == null) {
-        dp.setStyle(redBorder);
-        return false;
-      }
-    }
-    return true;
-  }
-
   public boolean validateFields() {
-    boolean principalFlag = validateDoubleFormat(principalField.getText());
-    boolean rateValueFlag = validateDoubleFormat(rateValueField.getText());
-    boolean startDateFlag = validateDateFormat(startDatePicker.getValue(), false);
-    boolean periodFlag = validateIntegerFormat(periodField.getText());
-    boolean loanTermFlag = validateIntegerFormat(loanTermField.getText());
-    boolean paymentAmountFlag = validateDoubleFormat(paymentAmountField.getText());
+    boolean principalFlag = validateNumberFormat(principalField, true);
+    boolean rateValueFlag = validateNumberFormat(rateValueField, true);
+    boolean startDateFlag = validateDateFormat(startDatePicker, false);
+    boolean periodFlag = validateNumberFormat(periodField, false);
+    boolean loanTermFlag = validateNumberFormat(loanTermField, false);
+    boolean paymentAmountFlag = validateNumberFormat(paymentAmountField, true);
 
     return principalFlag
         && rateValueFlag

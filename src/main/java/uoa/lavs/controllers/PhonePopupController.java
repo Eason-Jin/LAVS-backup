@@ -31,17 +31,17 @@ public class PhonePopupController extends PopupController {
     if (isEmpty(phoneTypeComboBox) || isEmpty(prefixTextField) || isEmpty(phoneTextField)) {
       appendErrorMessage("Please fill in all required fields!\n");
     } else {
-      if (!validateIntegerFormat(prefixTextField.getText())) {
+      if (!validateNumberFormat(prefixTextField, false)) {
         appendErrorMessage("Prefix must be numbers!\n");
       }
-      if (!validateIntegerFormat(phoneTextField.getText())) {
+      if (!validateNumberFormat(phoneTextField, false)) {
         appendErrorMessage("Phone number must be numbers!\n");
       }
 
-      if (isTooLong(prefixTextField.getText(), 10)) {
+      if (isTooLong(prefixTextField, 10)) {
         appendErrorMessage("Prefix must be less than 10 characters!\n");
       }
-      if (isTooLong(phoneTextField.getText(), 20)) {
+      if (isTooLong(phoneTextField, 20)) {
         appendErrorMessage("Phone number must be less than 20 characters!\n");
       }
     }

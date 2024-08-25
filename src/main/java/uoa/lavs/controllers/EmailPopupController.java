@@ -28,11 +28,11 @@ public class EmailPopupController extends PopupController {
     if (isEmpty(emailTextField)) {
       appendErrorMessage("Please fill in all required fields!\n");
     } else {
-      if (!validateEmailFormat(emailTextField.getText())) {
+      if (!validateEmailFormat(emailTextField)) {
         appendErrorMessage("Email must be in the format of a@b.c!\n");
       }
 
-      if (isTooLong(emailTextField.getText(), 60)) {
+      if (isTooLong(emailTextField, 60)) {
         appendErrorMessage("Email must be less than 60 characters!\n");
       }
     }
