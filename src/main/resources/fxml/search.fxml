@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="648.0" prefWidth="1152.0" stylesheets="@../css/primer-light.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.SearchController">
+<AnchorPane prefHeight="648.0" prefWidth="1152.0" stylesheets="@../css/primer-light.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.SearchController">
    <children>
       <TextField fx:id="searchField" focusTraversable="false" layoutX="72.0" layoutY="101.0" onKeyPressed="#keyPressed" prefHeight="60.0" prefWidth="839.0" promptText="Search Customers by Name" style="-fx-background-radius: 30;" styleClass="input" stylesheets="@../css/application.css">
          <font>
@@ -37,7 +37,7 @@
       <Button fx:id="backButton" focusTraversable="false" layoutX="40.0" layoutY="34.0" mnemonicParsing="false" onAction="#onClickBack" prefHeight="50.0" prefWidth="50.0">
          <styleClass>
             <String fx:value="button-circle" />
-            <String fx:value="home" />
+            <String fx:value="back" />
             <String fx:value="popup-button" />
          </styleClass>
          <stylesheets>

@@ -107,6 +107,10 @@ public class Loan {
     return principal;
   }
 
+  public String getPrincipalString() {
+    return "$" + String.format("%.2f", principal);
+  }
+
   public void setPrincipal(Double principal) {
     this.principal = principal;
   }
@@ -153,6 +157,10 @@ public class Loan {
 
   public Double getPaymentAmount() {
     return paymentAmount;
+  }
+
+  public String getPaymentAmountString() {
+    return "$" + String.format("%.2f", paymentAmount);
   }
 
   public void setPaymentAmount(Double paymentAmount) {

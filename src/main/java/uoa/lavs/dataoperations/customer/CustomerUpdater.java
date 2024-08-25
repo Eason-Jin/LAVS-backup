@@ -25,7 +25,7 @@ public class CustomerUpdater {
       if (id == null) {
         id = customerID;
       }
-      if (message.indexOf("Mainframe update successful") != -1) {
+      if (message.indexOf("Mainframe update successful") == -1) {
         message.append("Mainframe update successful\n");
       }
     } catch (Exception e) {
@@ -34,7 +34,7 @@ public class CustomerUpdater {
     } finally {
       try {
         updateDatabase(id, customer);
-        if (message.indexOf("Mainframe update successful") != -1) {
+        if (message.indexOf("Database update successful") == -1) {
           message.append("Database update successful\n");
         }
       } catch (SQLException e) {

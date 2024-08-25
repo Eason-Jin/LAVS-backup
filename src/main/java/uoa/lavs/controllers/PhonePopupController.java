@@ -28,21 +28,27 @@ public class PhonePopupController extends PopupController {
   @Override
   @FXML
   public void onClickSave(ActionEvent event) {
-    if (isEmpty(phoneTypeComboBox) || isEmpty(prefixTextField) || isEmpty(phoneTextField)) {
+    boolean phoneTypeFlag = isEmpty(phoneTypeComboBox);
+    boolean prefixFlag = isEmpty(prefixTextField);
+    boolean phoneFlag = isEmpty(phoneTextField);
+    if (phoneTypeFlag || prefixFlag || phoneFlag) {
       appendErrorMessage("Please fill in all required fields!\n");
     } else {
-      if (!validateNumberFormat(prefixTextField.getText())) {
-        appendErrorMessage("Prefix must be numbers!\n");
-      }
-      if (!validateNumberFormat(phoneTextField.getText())) {
-        appendErrorMessage("Phone number must be numbers!\n");
-      }
-
-      if (isTooLong(prefixTextField.getText(), 10)) {
+      boolean prefixLongFlag = isTooLong(prefixTextField, 10);
+      if (prefixLongFlag) {
         appendErrorMessage("Prefix must be less than 10 characters!\n");
       }
-      if (isTooLong(phoneTextField.getText(), 20)) {
+      boolean phoneLongFlag = isTooLong(phoneTextField, 20);
+      if (phoneLongFlag) {
         appendErrorMessage("Phone number must be less than 20 characters!\n");
+      }
+      if (!(prefixLongFlag || phoneLongFlag)) {
+        if (!validateNumberFormat(prefixTextField, false)) {
+          appendErrorMessage("Prefix must be numbers!\n");
+        }
+        if (!validateNumberFormat(phoneTextField, false)) {
+          appendErrorMessage("Phone number must be numbers!\n");
+        }
       }
     }
 
@@ -66,13 +72,13 @@ public class PhonePopupController extends PopupController {
   }
 
   @Override
-  public void setUpPopup(Detail obj, Consumer<Detail> objectSaveHandler, boolean... args) {
+  public void setUpPopup(Detail obj, Consumer<Detail> objectSaveHandler, Boolean isPrimary) {
     this.phone = (Phone) obj;
     this.phoneSaveHandler = (Consumer<Phone>) (Object) objectSaveHandler;
     phoneTypeComboBox.setValue(phone.getType());
     prefixTextField.setText(phone.getPrefix());
     phoneTextField.setText(phone.getPhoneNumber());
-    isPrimaryPhoneCheckBox.setDisable((args.length > 0 ? args[0] : false) && !phone.getIsPrimary());
+    isPrimaryPhoneCheckBox.setDisable(isPrimary && !phone.getIsPrimary());
     isPrimaryPhoneCheckBox.setSelected(phone.getIsPrimary());
     sendTextsCheckBox.setSelected(phone.getCanSendText());
   }
