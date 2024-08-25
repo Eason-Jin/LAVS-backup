@@ -206,7 +206,7 @@ public class AddressUpdater {
       while (resultSet.next()) {
         String customerID = resultSet.getString("CustomerID");
         Integer number = resultSet.getInt("Number");
-        List<Address> addresses = AddressFinder.findData(customerID);
+        List<Address> addresses = AddressFinder.findFromDatabase(customerID);
         for (Address addressOnAccount : addresses) {
           if (addressOnAccount.getNumber().equals(number)
               && addressOnAccount.getCustomerId().equals(customerID)) {
@@ -215,7 +215,7 @@ public class AddressUpdater {
           }
         }
       }
-    } catch (SQLException e) {
+    } catch (Exception e) {
       System.out.println("Failed to get failed updates: " + e.getMessage());
     }
     return failedUpdates;

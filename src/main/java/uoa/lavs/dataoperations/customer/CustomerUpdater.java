@@ -199,8 +199,13 @@ public class CustomerUpdater {
         ResultSet resultSet = statement.executeQuery(sql)) {
       while (resultSet.next()) {
         String customerID = resultSet.getString("CustomerID");
-        Customer customer = CustomerLoader.loadData(customerID);
-        failedUpdates.add(customer);
+        Customer customer;
+        try {
+          customer = CustomerLoader.loadFromDatabase(customerID);
+          failedUpdates.add(customer);
+        } catch (Exception e) {
+          System.out.println("Failed to load customer: " + e.getMessage());
+        }
       }
     } catch (SQLException e) {
       System.out.println("Failed to get failed updates: " + e.getMessage());

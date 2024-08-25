@@ -109,21 +109,18 @@ public class PhoneUpdater {
 
     String sql;
     if (exists) {
-      sql =
-          "UPDATE Phone SET "
-              + "Type = COALESCE(?, Type), "
-              + "Prefix = COALESCE(?, Prefix), "
-              + "PhoneNumber = COALESCE(?, PhoneNumber), "
-              + "IsPrimary = COALESCE(?, IsPrimary), "
-              + "CanSendText = COALESCE(?, CanSendText) "
-              + "WHERE CustomerID = ? AND Number = ?";
+      sql = "UPDATE Phone SET "
+          + "Type = COALESCE(?, Type), "
+          + "Prefix = COALESCE(?, Prefix), "
+          + "PhoneNumber = COALESCE(?, PhoneNumber), "
+          + "IsPrimary = COALESCE(?, IsPrimary), "
+          + "CanSendText = COALESCE(?, CanSendText) "
+          + "WHERE CustomerID = ? AND Number = ?";
     } else {
       if (phone.getNumber() == null) {
-        String GET_MAX_NUMBER_SQL =
-            "SELECT COALESCE(MAX(Number), 0) + 1 FROM Phone WHERE CustomerID = ?";
+        String GET_MAX_NUMBER_SQL = "SELECT COALESCE(MAX(Number), 0) + 1 FROM Phone WHERE CustomerID = ?";
         try (Connection connection = Instance.getDatabaseConnection();
-            PreparedStatement getMaxNumberStatement =
-                connection.prepareStatement(GET_MAX_NUMBER_SQL)) {
+            PreparedStatement getMaxNumberStatement = connection.prepareStatement(GET_MAX_NUMBER_SQL)) {
           getMaxNumberStatement.setString(1, customerID);
           try (ResultSet resultSet = getMaxNumberStatement.executeQuery()) {
             if (resultSet.next()) {
@@ -132,14 +129,12 @@ public class PhoneUpdater {
           }
         }
       }
-      sql =
-          "INSERT INTO Phone (Type, Prefix, PhoneNumber, IsPrimary, CanSendText, CustomerID,"
-              + " Number) VALUES (?, ?, ?, ?, ?, ?, ?)";
+      sql = "INSERT INTO Phone (Type, Prefix, PhoneNumber, IsPrimary, CanSendText, CustomerID,"
+          + " Number) VALUES (?, ?, ?, ?, ?, ?, ?)";
     }
 
     try (Connection connection = Instance.getDatabaseConnection();
-        PreparedStatement statement =
-            connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
       statement.setString(1, phone.getType());
       statement.setString(2, phone.getPrefix());
@@ -187,20 +182,16 @@ public class PhoneUpdater {
         String customerID = resultSet.getString(1);
         Integer number = resultSet.getInt(2);
         List<Phone> phones;
-        try {
-          phones = PhoneFinder.findFromDatabase(customerID);
-          for (Phone phoneOnAccount : phones) {
-            if (phoneOnAccount.getNumber().equals(number)
-                && phoneOnAccount.getCustomerId().equals(customerID)) {
-              failedUpdates.add(phoneOnAccount);
-              break;
-            }
+        phones = PhoneFinder.findFromDatabase(customerID);
+        for (Phone phoneOnAccount : phones) {
+          if (phoneOnAccount.getNumber().equals(number)
+              && phoneOnAccount.getCustomerId().equals(customerID)) {
+            failedUpdates.add(phoneOnAccount);
+            break;
           }
-        } catch (Exception e) {
-          System.out.println("Failed to get failed updates: " + e.getMessage());
         }
       }
-    } catch (SQLException e) {
+    } catch (Exception e) {
       System.out.println("Failed to get failed updates: " + e.getMessage());
     }
     return failedUpdates;
@@ -211,8 +202,8 @@ public class PhoneUpdater {
     for (Phone phone : failedUpdates) {
       String customerID = phone.getCustomerId();
       Integer number = phone.getNumber();
-        updateMainframe(customerID, phone);
-        addInMainframe(customerID, number);
+      updateMainframe(customerID, phone);
+      addInMainframe(customerID, number);
     }
   }
 }

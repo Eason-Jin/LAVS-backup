@@ -32,7 +32,7 @@ public class CustomerLoader {
     return customer;
   }
 
-  private static Customer loadFromDatabase(String customerId) throws Exception {
+  public static Customer loadFromDatabase(String customerId) throws Exception {
     Customer customer = new Customer();
     Connection connection = Instance.getDatabaseConnection();
     String query = "SELECT * FROM customer WHERE CustomerID = ?";

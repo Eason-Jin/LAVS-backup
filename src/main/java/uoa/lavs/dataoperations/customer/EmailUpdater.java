@@ -100,18 +100,15 @@ public class EmailUpdater {
 
     String sql;
     if (exists) {
-      sql =
-          "UPDATE Email SET "
-              + "Address = COALESCE(?, Address), "
-              + "IsPrimary = COALESCE(?, IsPrimary) "
-              + "WHERE CustomerID = ? AND Number = ?";
+      sql = "UPDATE Email SET "
+          + "Address = COALESCE(?, Address), "
+          + "IsPrimary = COALESCE(?, IsPrimary) "
+          + "WHERE CustomerID = ? AND Number = ?";
     } else {
       if (email.getNumber() == null) {
-        String GET_MAX_NUMBER_SQL =
-            "SELECT COALESCE(MAX(Number), 0) + 1 FROM Email WHERE CustomerID = ?";
+        String GET_MAX_NUMBER_SQL = "SELECT COALESCE(MAX(Number), 0) + 1 FROM Email WHERE CustomerID = ?";
         try (Connection connection = Instance.getDatabaseConnection();
-            PreparedStatement getMaxNumberStatement =
-                connection.prepareStatement(GET_MAX_NUMBER_SQL)) {
+            PreparedStatement getMaxNumberStatement = connection.prepareStatement(GET_MAX_NUMBER_SQL)) {
           getMaxNumberStatement.setString(1, customerID);
           try (ResultSet resultSet = getMaxNumberStatement.executeQuery()) {
             if (resultSet.next()) {
@@ -124,8 +121,7 @@ public class EmailUpdater {
     }
 
     try (Connection connection = Instance.getDatabaseConnection();
-        PreparedStatement statement =
-            connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
       statement.setString(1, email.getAddress());
       statement.setBoolean(2, email.getIsPrimary());
@@ -170,32 +166,28 @@ public class EmailUpdater {
         String customerID = resultSet.getString("CustomerID");
         Integer number = resultSet.getInt("Number");
         List<Email> emails;
-        try {
-          emails = EmailFinder.findFromDatabase(customerID);
-          for (Email emailOnAccount : emails) {
-            if (emailOnAccount.getNumber().equals(number)
-                && emailOnAccount.getCustomerId().equals(customerID)) {
-              failedUpdates.add(emailOnAccount);
-              break;
-            }
+        emails = EmailFinder.findFromDatabase(customerID);
+        for (Email emailOnAccount : emails) {
+          if (emailOnAccount.getNumber().equals(number)
+              && emailOnAccount.getCustomerId().equals(customerID)) {
+            failedUpdates.add(emailOnAccount);
+            break;
           }
-        } catch (Exception e) {
-          System.out.println("Database find failed: " + e.getMessage());
         }
       }
-    } catch (SQLException e) {
+    } catch (Exception e) {
       System.out.println("Failed to get failed updates: " + e.getMessage());
     }
     return failedUpdates;
   }
 
-  public static void retryFailedUpdates() throws Exception  {
+  public static void retryFailedUpdates() throws Exception {
     List<Email> failedUpdates = getFailedUpdates();
     for (Email email : failedUpdates) {
       String customerID = email.getCustomerId();
       Integer number = email.getNumber();
-        updateMainframe(customerID, email);
-        addInMainframe(customerID, number);
+      updateMainframe(customerID, email);
+      addInMainframe(customerID, number);
     }
   }
 }
