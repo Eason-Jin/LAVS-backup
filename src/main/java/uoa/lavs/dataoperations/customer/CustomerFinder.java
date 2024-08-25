@@ -122,26 +122,30 @@ public class CustomerFinder {
 
   private static List<Customer> findFromDatabaseByName(String customerName) throws Exception {
     List<Customer> customers = new ArrayList<>();
-    Connection connection = LocalInstance.getDatabaseConnection();
     String query = "SELECT * FROM customer WHERE Name LIKE ?";
-    PreparedStatement preparedStatement = connection.prepareStatement(query);
-    preparedStatement.setString(1, customerName);
-    ResultSet resultSet = preparedStatement.executeQuery();
-    while (resultSet.next()) {
-      Customer customer = new Customer();
-      customer.setId(resultSet.getString("CustomerID"));
-      customer.setName(resultSet.getString("Name"));
-      String dobString = resultSet.getString("Dob");
-      LocalDate dob = LocalDate.parse(dobString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-      customer.setDob(dob);
-      customers.add(customer);
+
+    try (Connection connection = LocalInstance.getDatabaseConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+      preparedStatement.setString(1, "%" + customerName + "%");
+
+      try (ResultSet resultSet = preparedStatement.executeQuery()) {
+        while (resultSet.next()) {
+          Customer customer = new Customer();
+          customer.setId(resultSet.getString("CustomerID"));
+          customer.setName(resultSet.getString("Name"));
+          String dobString = resultSet.getString("Dob");
+          LocalDate dob = LocalDate.parse(dobString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+          customer.setDob(dob);
+          customers.add(customer);
+        }
+      }
     }
-    resultSet.close();
-    preparedStatement.close();
-    connection.close();
+
     if (customers.isEmpty()) {
       throw new Exception("Customer not found in database");
     }
+
     return customers;
   }
 }
