@@ -293,7 +293,7 @@ public class AddLoanController extends uoa.lavs.controllers.Controller {
   @FXML
   private void onClickInfo(ActionEvent event) throws IOException {}
 
-  public boolean checkFields() {
+  private boolean checkFields() {
     boolean repeatFlag = true;
     for (Node node : loanDetailsFields.values()) {
       try {
@@ -311,7 +311,7 @@ public class AddLoanController extends uoa.lavs.controllers.Controller {
     return repeatFlag;
   }
 
-  public boolean validateFields() {
+  private boolean validateFields() {
     boolean principalFlag = validateNumberFormat(principalField, true);
     if (!principalFlag) {
       appendErrorMessage("Principal must be a number!\n");

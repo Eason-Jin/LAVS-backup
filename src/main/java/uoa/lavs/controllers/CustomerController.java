@@ -497,7 +497,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     employmentPopupController.setUpPopup(employer, this::handleSave, null);
   }
 
-  public boolean checkFields() {
+  private boolean checkFields() {
     boolean titleFlag = !isEmpty(titleField);
     boolean nameFlag = !isEmpty(nameField);
     boolean dobFlag = !isEmpty(dobPicker);
@@ -512,7 +512,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     return false;
   }
 
-  public boolean validateFields() {
+  private boolean validateFields() {
     boolean dobFlag = validateDateFormat(dobPicker, true);
     if (!dobFlag) {
       dobPicker.setStyle(fieldRedBorder);
@@ -605,7 +605,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
         && textingPhoneNum >= 1;
   }
 
-  public boolean checkLengths() {
+  private boolean checkLengths() {
     boolean titleFieldFlag = isTooLong(titleField, 10);
     if (titleFieldFlag) {
       appendErrorMessage("Title must be less than 10 characters\n");
@@ -765,15 +765,6 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   private boolean doesPrimaryAddressExist() {
     for (Address address : addresses) {
       if (address.getIsPrimary()) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private boolean doesMailingAddressExist() {
-    for (Address address : addresses) {
-      if (address.getIsMailing()) {
         return true;
       }
     }
