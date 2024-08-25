@@ -36,6 +36,13 @@ public class AddLoanController extends uoa.lavs.controllers.Controller {
   @FXML private Label customerNameLabel;
   @FXML private Label titleLabel;
 
+  @FXML private TextField principalField;
+  @FXML private TextField rateValueField;
+  @FXML private TextField periodField;
+  @FXML private TextField loanTermField;
+  @FXML private TextField paymentAmountField;
+  @FXML private DatePicker startDatePicker;
+
   private int initialCoBorrowerCounter = 1;
   private int coBorrowerCounter = initialCoBorrowerCounter;
   private int numCoBorrowers = 0;
@@ -305,22 +312,36 @@ public class AddLoanController extends uoa.lavs.controllers.Controller {
   }
 
   public boolean validateFields() {
-    boolean repeatFlag = true;
-    boolean dateflag = true;
-    for (Node node : loanDetailsFields.values()) {
-      if (node instanceof TextField) {
-        if (!validateNumberFormat(((TextField) node))) {
-          repeatFlag = false;
-          appendErrorMessage("Fields must be numbers!\n");
-        }
-      }
-      if (node instanceof DatePicker) {
-        if (!validateDateFormat(((DatePicker) node), false)) {
-          dateflag = false;
-          appendErrorMessage("Start Date must be after today!\n");
-        }
-      }
+    boolean principalFlag = validateNumberFormat(principalField, true);
+    if (!principalFlag) {
+      appendErrorMessage("Principal must be a number!\n");
     }
-    return repeatFlag && dateflag;
+    boolean rateValueFlag = validateNumberFormat(rateValueField, true);
+    if (!rateValueFlag) {
+      appendErrorMessage("Rate value must be a number!\n");
+    }
+    boolean periodFlag = validateNumberFormat(periodField, false);
+    if (!periodFlag) {
+      appendErrorMessage("Period must be an integer!\n");
+    }
+    boolean loanTermFlag = validateNumberFormat(loanTermField, false);
+    if (!loanTermFlag) {
+      appendErrorMessage("Loan term must be an integer!\n");
+    }
+    boolean paymentAmountFlag = validateNumberFormat(paymentAmountField, true);
+    if (!paymentAmountFlag) {
+      appendErrorMessage("Payment amount must be a number!\n");
+    }
+    boolean startDateFlag = validateDateFormat(startDatePicker, false);
+    if (!startDateFlag) {
+      appendErrorMessage("Start date must be after today!\n");
+    }
+
+    return principalFlag
+        && rateValueFlag
+        && periodFlag
+        && loanTermFlag
+        && paymentAmountFlag
+        && startDateFlag;
   }
 }

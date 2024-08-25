@@ -88,7 +88,7 @@ public class AddressPopupController extends PopupController {
           || cityLongFlag
           || postcodeLongFlag
           || countryLongFlag)) {
-        if (!validateNumberFormat(postcodeTextField)) {
+        if (!validateNumberFormat(postcodeTextField, false)) {
           appendErrorMessage("Postcode must be numbers!\n");
         }
       }

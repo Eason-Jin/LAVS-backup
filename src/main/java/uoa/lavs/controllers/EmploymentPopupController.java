@@ -103,13 +103,13 @@ public class EmploymentPopupController extends PopupController {
           || companyPhoneLongFlag
           || companyEmailLongFlag
           || companyWebsiteLongFlag)) {
-        if (!validateNumberFormat(companyPostcodeTextField)) {
+        if (!validateNumberFormat(companyPostcodeTextField, false)) {
           appendErrorMessage("Postcode must be numbers!\n");
         }
         if (!validateEmailFormat(companyEmailTextField)) {
           appendErrorMessage("Email must be in the format of a@b.c!\n");
         }
-        if (!validateNumberFormat(companyPhoneTextField)) {
+        if (!validateNumberFormat(companyPhoneTextField, false)) {
           appendErrorMessage("Phone number must be numbers!\n");
         }
         if (!validateWebsiteFormat(companyWebsiteTextField)) {

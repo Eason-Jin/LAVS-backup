@@ -29,10 +29,14 @@ public abstract class Controller {
     }
   }
 
-  protected boolean validateNumberFormat(TextField number) {
+  protected boolean validateNumberFormat(TextField number, boolean isDouble) {
     number.setStyle(fieldNormalBorder);
     try {
-      Long.parseLong(number.getText());
+      if (isDouble) {
+        Double.parseDouble(number.getText());
+      } else {
+        Long.parseLong(number.getText());
+      }
     } catch (Exception e) {
       number.setStyle(fieldRedBorder);
       return false;
