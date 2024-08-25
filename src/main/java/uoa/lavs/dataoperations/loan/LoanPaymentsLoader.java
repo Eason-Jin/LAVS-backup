@@ -1,6 +1,6 @@
 package uoa.lavs.dataoperations.loan;
 
-import uoa.lavs.mainframe.Instance;
+import uoa.lavs.LocalInstance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.loan.LoadLoanPayments;
 import uoa.lavs.utility.AmortizingLoanCalculator;
@@ -32,24 +32,30 @@ public class LoanPaymentsLoader {
         return loanRepayments;
     }
 
-    public static List<LoanRepayment> calculateLocally(String loanId) throws Exception {
-        // Find the loan in the database
-        Connection connection = Instance.getDatabaseConnection();
+        public static List<LoanRepayment> calculateLocally(String loanId) throws Exception {
         String query = "SELECT * FROM loan WHERE LoanID = ?;";
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, loanId);
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        // Calculate repayments
-        AmortizingLoanCalculator calculator = new AmortizingLoanCalculator();
-        ArrayList<LoanRepayment> loanRepayments = calculator.generateRepaymentSchedule(
-                resultSet.getDouble("Principal"),
-                resultSet.getDouble("RateValue"),
-                resultSet.getDouble("PaymentAmount"),
-                PaymentFrequency.valueOf(resultSet.getString("PaymentFrequency")),
-                resultSet.getObject("StartDate", LocalDate.class)
-        );
-        return loanRepayments;
+        
+        try (Connection connection = LocalInstance.getDatabaseConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            
+            preparedStatement.setString(1, loanId);
+            
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    // Calculate repayments
+                    AmortizingLoanCalculator calculator = new AmortizingLoanCalculator();
+                    return calculator.generateRepaymentSchedule(
+                            resultSet.getDouble("Principal"),
+                            resultSet.getDouble("RateValue"),
+                            resultSet.getDouble("PaymentAmount"),
+                            PaymentFrequency.valueOf(resultSet.getString("PaymentFrequency")),
+                            resultSet.getObject("StartDate", LocalDate.class)
+                    );
+                } else {
+                    throw new Exception("Loan not found for ID: " + loanId);
+                }
+            }
+        }
     }
 
     private static List<LoanRepayment> calculateFromMainframe(String loanId) throws Exception {
@@ -59,7 +65,7 @@ public class LoanPaymentsLoader {
 
         // Send request to get the first page to determine total page count
         loadLoanPayments.setNumber(1);
-        Status status = loadLoanPayments.send(Instance.getConnection());
+        Status status = loadLoanPayments.send(LocalInstance.getConnection());
         if (!status.getWasSuccessful()) {
             System.out.println(
                     "Something went wrong - the Mainframe send failed! The code is " + status.getErrorCode());
@@ -77,7 +83,7 @@ public class LoanPaymentsLoader {
         // Loop over all pages
         for (int pageNumber = 1; pageNumber <= pageCount; pageNumber++) {
             loadLoanPayments.setNumber(pageNumber);
-            status = loadLoanPayments.send(Instance.getConnection());
+            status = loadLoanPayments.send(LocalInstance.getConnection());
             if (!status.getWasSuccessful()) {
                 String errorMessage = "Failed to retrieve page " + pageNumber + ". Error code: " + status.getErrorCode();
                 System.out.println(errorMessage);

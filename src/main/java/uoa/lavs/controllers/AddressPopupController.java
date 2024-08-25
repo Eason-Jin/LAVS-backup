@@ -33,38 +33,64 @@ public class AddressPopupController extends PopupController {
   @Override
   @FXML
   public void onClickSave(ActionEvent event) {
-    if (isEmpty(addressLine1TextField)
-        || isEmpty(suburbTextField)
-        || isEmpty(cityTextField)
-        || isEmpty(postcodeTextField)
-        || isEmpty(countryTextField)
-        || isEmpty(addressTypeComboBox)) {
+    boolean addressLine1Flag = isEmpty(addressLine1TextField);
+    boolean suburbFlag = isEmpty(suburbTextField);
+    boolean cityFlag = isEmpty(cityTextField);
+    boolean postcodeFlag = isEmpty(postcodeTextField);
+    boolean countryFlag = isEmpty(countryTextField);
+    boolean addressTypeFlag = isEmpty(addressTypeComboBox);
+    if (addressLine1Flag
+        || suburbFlag
+        || cityFlag
+        || postcodeFlag
+        || countryFlag
+        || addressTypeFlag) {
       appendErrorMessage("Please fill in all required fields!\n");
     } else {
-      if (!validatePostcodeFormat(postcodeTextField.getText())) {
-        appendErrorMessage("Postcode must be numbers!\n");
-      }
-
-      if (isTooLong(addressTypeComboBox.getValue(), 20)) {
+      boolean addressTypeLongFlag = isTooLong(addressTypeComboBox, 20);
+      if (addressTypeLongFlag) {
         appendErrorMessage("Address type must be less than 20 characters!\n");
       }
-      if (isTooLong(addressLine1TextField.getText(), 60)) {
+      boolean addressLine1LongFlag = isTooLong(addressLine1TextField, 60);
+      if (addressLine1LongFlag) {
         appendErrorMessage("Address line 1 must be less than 60 characters!\n");
       }
-      if (isTooLong(addressLine2TextField.getText(), 60)) {
+      boolean addressLine2LongFlag = isTooLong(addressLine2TextField, 60);
+      if (addressLine2LongFlag) {
         appendErrorMessage("Address line 2 must be less than 60 characters!\n");
       }
-      if (isTooLong(suburbTextField.getText(), 30)) {
+      boolean suburbLongFlag = isTooLong(suburbTextField, 30);
+      if (suburbLongFlag) {
         appendErrorMessage("Suburb must be less than 30 characters!\n");
       }
-      if (isTooLong(cityTextField.getText(), 30)) {
+      boolean cityLongFlag = isTooLong(cityTextField, 30);
+      if (cityLongFlag) {
         appendErrorMessage("City must be less than 30 characters!\n");
       }
-      if (isTooLong(postcodeTextField.getText(), 10)) {
+      boolean postcodeLongFlag = isTooLong(postcodeTextField, 10);
+      if (postcodeLongFlag) {
         appendErrorMessage("Postcode must be less than 10 characters!\n");
       }
-      if (isTooLong(countryTextField.getText(), 30)) {
+      boolean countryLongFlag = isTooLong(countryTextField, 30);
+      if (countryLongFlag) {
         appendErrorMessage("Country must be less than 30 characters!\n");
+      }
+      if (!(addressLine1Flag
+          || suburbFlag
+          || cityFlag
+          || postcodeFlag
+          || countryFlag
+          || addressTypeFlag
+          || addressTypeLongFlag
+          || addressLine1LongFlag
+          || addressLine2LongFlag
+          || suburbLongFlag
+          || cityLongFlag
+          || postcodeLongFlag
+          || countryLongFlag)) {
+        if (!validateNumberFormat(postcodeTextField, false)) {
+          appendErrorMessage("Postcode must be numbers!\n");
+        }
       }
     }
 
@@ -92,7 +118,7 @@ public class AddressPopupController extends PopupController {
   }
 
   @Override
-  public void setUpPopup(Detail obj, Consumer<Detail> objectSaveHandler, boolean... args) {
+  public void setUpPopup(Detail obj, Consumer<Detail> objectSaveHandler, Boolean isPrimary) {
     this.address = (Address) obj;
     this.addressSaveHandler = (Consumer<Address>) (Object) objectSaveHandler;
     addressLine1TextField.setText(address.getLine1());
@@ -103,19 +129,8 @@ public class AddressPopupController extends PopupController {
     countryTextField.setText(address.getCountry());
     addressTypeComboBox.setValue(address.getType());
     isPrimaryAddressCheckBox.setDisable(
-        (args.length > 0 ? args[0] : false) && !address.getIsPrimary());
+        isPrimary && !address.getIsPrimary());
     isPrimaryAddressCheckBox.setSelected(address.getIsPrimary());
-    isMailingAddressCheckBox.setDisable(
-        (args.length > 1 ? args[1] : false) && !address.getIsMailing());
     isMailingAddressCheckBox.setSelected(address.getIsMailing());
-  }
-
-  private boolean validatePostcodeFormat(String postcode) {
-    try {
-      Integer.parseInt(postcode);
-    } catch (Exception e) {
-      return false;
-    }
-    return true;
   }
 }

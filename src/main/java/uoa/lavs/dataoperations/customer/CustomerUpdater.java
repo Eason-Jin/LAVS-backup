@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import uoa.lavs.mainframe.Instance;
+import uoa.lavs.LocalInstance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomer;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomerNote;
@@ -25,7 +25,7 @@ public class CustomerUpdater {
       if (id == null) {
         id = customerID;
       }
-      if (message.indexOf("Mainframe update successful") != -1) {
+      if (message.indexOf("Mainframe update successful") == -1) {
         message.append("Mainframe update successful\n");
       }
     } catch (Exception e) {
@@ -34,7 +34,7 @@ public class CustomerUpdater {
     } finally {
       try {
         updateDatabase(id, customer);
-        if (message.indexOf("Mainframe update successful") != -1) {
+        if (message.indexOf("Database update successful") == -1) {
           message.append("Database update successful\n");
         }
       } catch (SQLException e) {
@@ -43,7 +43,7 @@ public class CustomerUpdater {
         if (failed) {
           addFailedUpdate(customer.getId());
         } else {
-          addInMainframe(customer.getId());
+          addInMainframe(customer.getId(), customer.getId());
         }
       }
     }
@@ -55,7 +55,7 @@ public class CustomerUpdater {
 
     // Check if CustomerID exists
     if (customerID != null) {
-      try (Connection connection = Instance.getDatabaseConnection();
+      try (Connection connection = LocalInstance.getDatabaseConnection();
           PreparedStatement checkStatement = connection.prepareStatement(CHECK_SQL)) {
         checkStatement.setString(1, customerID);
         try (ResultSet resultSet = checkStatement.executeQuery()) {
@@ -87,7 +87,7 @@ public class CustomerUpdater {
               + "  CustomerID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     }
 
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement =
             connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
       statement.setString(1, customer.getTitle());
@@ -98,17 +98,15 @@ public class CustomerUpdater {
       statement.setString(6, customer.getVisaType());
       statement.setString(7, customer.getStatus());
       statement.setString(8, customer.getNotes());
-      statement.setString(9, customerID);
+      if (customerID != null) {
+        statement.setString(9, customerID);
+      } else {
+        customerID = generateNewId();
+        statement.setString(9, customerID);
+      }
 
       statement.executeUpdate();
 
-      if (!exists) {
-        try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-          if (generatedKeys.next()) {
-            customerID = generatedKeys.getString(1);
-          }
-        }
-      }
       customer.setId(customerID);
     }
   }
@@ -116,7 +114,12 @@ public class CustomerUpdater {
   public static String updateMainframe(String customerID, Customer customer) throws Exception {
     UpdateCustomer updateCustomer = new UpdateCustomer();
     UpdateCustomerNote updateCustomerNote = new UpdateCustomerNote();
-    updateCustomer.setCustomerId(customerID);
+    if (customerID != null && !customerID.contains("Temporary")) {
+      updateCustomer.setCustomerId(customerID);
+    } else {
+      customerID = null;
+      updateCustomer.setCustomerId(null);
+    }
     Customer existingCustomer = null;
 
     try {
@@ -163,7 +166,7 @@ public class CustomerUpdater {
       }
     }
 
-    Status status = updateCustomer.send(Instance.getConnection());
+    Status status = updateCustomer.send(LocalInstance.getConnection());
     updateCustomerNote.setCustomerId(updateCustomer.getCustomerIdFromServer());
     if (!status.getWasSuccessful()) {
       failed = true;
@@ -171,7 +174,7 @@ public class CustomerUpdater {
           "Something went wrong - the Mainframe send failed! The code is " + status.getErrorCode());
       throw new Exception("Mainframe send failed");
     }
-    updateCustomerNote.send(Instance.getConnection());
+    updateCustomerNote.send(LocalInstance.getConnection());
     customer.setId(updateCustomer.getCustomerIdFromServer());
     customer.setStatus(updateCustomer.getStatusFromServer());
     return updateCustomer.getCustomerIdFromServer();
@@ -179,7 +182,7 @@ public class CustomerUpdater {
 
   private static void addFailedUpdate(String customerID) {
     String sql = "UPDATE Customer SET InMainframe = false WHERE CustomerID = ?";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql)) {
       statement.setString(1, customerID);
       statement.executeUpdate();
@@ -191,13 +194,18 @@ public class CustomerUpdater {
   public static List<Customer> getFailedUpdates() {
     List<Customer> failedUpdates = new ArrayList<>();
     String sql = "SELECT * FROM Customer WHERE InMainframe = false";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql)) {
       while (resultSet.next()) {
         String customerID = resultSet.getString("CustomerID");
-        Customer customer = CustomerLoader.loadData(customerID);
-        failedUpdates.add(customer);
+        Customer customer;
+        try {
+          customer = CustomerLoader.loadFromDatabase(customerID);
+          failedUpdates.add(customer);
+        } catch (Exception e) {
+          System.out.println("Failed to load customer: " + e.getMessage());
+        }
       }
     } catch (SQLException e) {
       System.out.println("Failed to get failed updates: " + e.getMessage());
@@ -209,20 +217,56 @@ public class CustomerUpdater {
     List<Customer> failedUpdates = getFailedUpdates();
     for (Customer customer : failedUpdates) {
       String customerID = customer.getId();
-      updateMainframe(customerID, customer);
-      addInMainframe(customerID);
+      String id = updateMainframe(customerID, customer);
+      customer.setId(id);
+      addInMainframe(customerID, id);
+      String sql = "UPDATE Customer SET Status = 'Active' WHERE CustomerId = ?";
+      try (Connection connection = LocalInstance.getDatabaseConnection();
+          PreparedStatement statement = connection.prepareStatement(sql)) {
+        statement.setString(1, id);
+        statement.executeUpdate();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
     }
   }
 
-  private static void addInMainframe(String customerID) {
-    String sql = "UPDATE Customer SET InMainframe = ? WHERE CustomerID = ?";
-    try (Connection connection = Instance.getDatabaseConnection();
+  private static void addInMainframe(String customerID, String mainframeId) {
+    String sql = "UPDATE Customer SET CustomerID = ?, InMainframe = ? WHERE CustomerID = ?";
+    try (Connection connection = LocalInstance.getDatabaseConnection();
+        Statement pragmaStatement = connection.createStatement();
         PreparedStatement statement = connection.prepareStatement(sql)) {
-      statement.setBoolean(1, true);
-      statement.setString(2, customerID);
+
+      pragmaStatement.execute("PRAGMA foreign_keys = ON");
+
+      statement.setString(1, mainframeId);
+      statement.setBoolean(2, true);
+      statement.setString(3, customerID);
       statement.executeUpdate();
+
     } catch (SQLException e) {
-      System.out.println("Failed to remove failed call: " + e.getMessage());
+      System.out.println("Failed to update CustomerID and InMainframe: " + e.getMessage());
     }
+  }
+
+  private static String generateNewId() throws SQLException {
+    String newId;
+
+    String selectLastId =
+        "SELECT CustomerID FROM Customer ORDER BY CAST(CustomerID AS INTEGER) DESC";
+    try (Statement stmt = LocalInstance.getDatabaseConnection().createStatement();
+        ResultSet rs = stmt.executeQuery(selectLastId)) {
+      if (rs.next()) {
+        String lastIdStr = rs.getString("CustomerID");
+        // Remove "(Temporary)" if it exists
+        lastIdStr = lastIdStr.replace(" (Temporary)", "");
+        int lastId = Integer.parseInt(lastIdStr);
+        newId = Integer.toString(lastId + 1);
+      } else {
+        newId = "1";
+      }
+    }
+
+    return newId + " (Temporary)";
   }
 }

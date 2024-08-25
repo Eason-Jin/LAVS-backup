@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import uoa.lavs.mainframe.Instance;
+import uoa.lavs.LocalInstance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomerEmployer;
 import uoa.lavs.models.Employer;
@@ -46,7 +46,7 @@ public class EmployerUpdater {
     if (employer.getNumber() != null) {
       List<Employer> existingEmployers = null;
       try {
-        existingEmployers = EmployerFinder.findData(customerID);
+        existingEmployers = EmployerFinder.findFromMainframe(customerID);
         for (Employer employerOnAccount : existingEmployers) {
           if (employerOnAccount.getNumber().equals(employer.getNumber())
               && employerOnAccount.getCustomerId().equals(employer.getCustomerId())) {
@@ -55,6 +55,7 @@ public class EmployerUpdater {
           }
         }
       } catch (Exception e) {
+        updateCustomerEmployer.setNumber(null);
         System.out.println("Employer %s not in mainframe: " + e.getMessage());
       }
     }
@@ -100,7 +101,7 @@ public class EmployerUpdater {
       updateCustomerEmployer.setIsOwner(employer.getIsOwner());
     }
 
-    Status status = updateCustomerEmployer.send(Instance.getConnection());
+    Status status = updateCustomerEmployer.send(LocalInstance.getConnection());
     if (!status.getWasSuccessful()) {
       failed = true;
       System.out.println(
@@ -116,7 +117,7 @@ public class EmployerUpdater {
     String CHECK_SQL = "SELECT COUNT(*) FROM Employer WHERE CustomerID = ? AND Number = ?";
 
     if (customerID != null && employer.getNumber() != null) {
-      try (Connection connection = Instance.getDatabaseConnection();
+      try (Connection connection = LocalInstance.getDatabaseConnection();
           PreparedStatement checkStatement = connection.prepareStatement(CHECK_SQL)) {
         checkStatement.setString(1, customerID);
         checkStatement.setInt(2, employer.getNumber());
@@ -130,27 +131,24 @@ public class EmployerUpdater {
 
     String sql;
     if (exists) {
-      sql =
-          "UPDATE Employer SET "
-              + "Name = COALESCE(?, Name), "
-              + "Line1 = COALESCE(?, Line1), "
-              + "Line2 = COALESCE(?, Line2), "
-              + "Suburb = COALESCE(?, Suburb), "
-              + "City = COALESCE(?, City), "
-              + "PostCode = COALESCE(?, PostCode), "
-              + "Country = COALESCE(?, Country), "
-              + "PhoneNumber = COALESCE(?, PhoneNumber), "
-              + "EmailAddress = COALESCE(?, EmailAddress), "
-              + "Website = COALESCE(?, Website), "
-              + "IsOwner = COALESCE(?, IsOwner) "
-              + "WHERE CustomerID = ? AND Number = ?";
+      sql = "UPDATE Employer SET "
+          + "Name = COALESCE(?, Name), "
+          + "Line1 = COALESCE(?, Line1), "
+          + "Line2 = COALESCE(?, Line2), "
+          + "Suburb = COALESCE(?, Suburb), "
+          + "City = COALESCE(?, City), "
+          + "PostCode = COALESCE(?, PostCode), "
+          + "Country = COALESCE(?, Country), "
+          + "PhoneNumber = COALESCE(?, PhoneNumber), "
+          + "EmailAddress = COALESCE(?, EmailAddress), "
+          + "Website = COALESCE(?, Website), "
+          + "IsOwner = COALESCE(?, IsOwner) "
+          + "WHERE CustomerID = ? AND Number = ?";
     } else {
       if (employer.getNumber() == null) {
-        String GET_MAX_NUMBER_SQL =
-            "SELECT COALESCE(MAX(Number), 0) + 1 FROM Employer WHERE CustomerID = ?";
-        try (Connection connection = Instance.getDatabaseConnection();
-            PreparedStatement getMaxNumberStatement =
-                connection.prepareStatement(GET_MAX_NUMBER_SQL)) {
+        String GET_MAX_NUMBER_SQL = "SELECT COALESCE(MAX(Number), 0) + 1 FROM Employer WHERE CustomerID = ?";
+        try (Connection connection = LocalInstance.getDatabaseConnection();
+            PreparedStatement getMaxNumberStatement = connection.prepareStatement(GET_MAX_NUMBER_SQL)) {
           getMaxNumberStatement.setString(1, customerID);
           try (ResultSet resultSet = getMaxNumberStatement.executeQuery()) {
             if (resultSet.next()) {
@@ -159,15 +157,13 @@ public class EmployerUpdater {
           }
         }
       }
-      sql =
-          "INSERT INTO Employer (Name, Line1, Line2, Suburb, City, PostCode, Country, PhoneNumber,"
-              + " EmailAddress, Website, IsOwner, CustomerID, Number) VALUES (?, ?, ?, ?, ?, ?, ?,"
-              + " ?, ?, ?, ?, ?, ?)";
+      sql = "INSERT INTO Employer (Name, Line1, Line2, Suburb, City, PostCode, Country, PhoneNumber,"
+          + " EmailAddress, Website, IsOwner, CustomerID, Number) VALUES (?, ?, ?, ?, ?, ?, ?,"
+          + " ?, ?, ?, ?, ?, ?)";
     }
 
-    try (Connection connection = Instance.getDatabaseConnection();
-        PreparedStatement statement =
-            connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+    try (Connection connection = LocalInstance.getDatabaseConnection();
+        PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
       statement.setString(1, employer.getName());
       statement.setString(2, employer.getLine1());
@@ -189,7 +185,7 @@ public class EmployerUpdater {
 
   private static void addFailedUpdate(String customerID, Integer number) {
     String sql = "UPDATE Employer SET InMainframe = false WHERE CustomerID = ? AND Number = ?";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql)) {
       statement.setString(1, customerID);
       statement.setInt(2, number);
@@ -201,7 +197,7 @@ public class EmployerUpdater {
 
   private static void addInMainframe(String customerID, Integer number) {
     String sql = "UPDATE Employer SET InMainframe = true WHERE CustomerID = ? AND Number = ?";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql)) {
       statement.setString(1, customerID);
       statement.setInt(2, number);
@@ -214,27 +210,23 @@ public class EmployerUpdater {
   public static List<Employer> getFailedUpdates() {
     List<Employer> failedUpdates = new ArrayList<>();
     String sql = "SELECT CustomerID, Number FROM Employer WHERE InMainframe = false";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
         ResultSet resultSet = statement.executeQuery()) {
       while (resultSet.next()) {
         String customerID = resultSet.getString(1);
         Integer number = resultSet.getInt(2);
         List<Employer> employers;
-        try {
-          employers = EmployerFinder.findFromDatabase(customerID);
-          for (Employer employerOnAccount : employers) {
-            if (employerOnAccount.getNumber().equals(number)
-                && employerOnAccount.getCustomerId().equals(customerID)) {
-              failedUpdates.add(employerOnAccount);
-              break;
-            }
+        employers = EmployerFinder.findFromDatabase(customerID);
+        for (Employer employerOnAccount : employers) {
+          if (employerOnAccount.getNumber().equals(number)
+              && employerOnAccount.getCustomerId().equals(customerID)) {
+            failedUpdates.add(employerOnAccount);
+            break;
           }
-        } catch (Exception e) {
-          System.out.println("Failed to find employer: " + e.getMessage());
         }
       }
-    } catch (SQLException e) {
+    } catch (Exception e) {
       System.out.println("Failed to get failed updates: " + e.getMessage());
     }
     return failedUpdates;
@@ -245,8 +237,8 @@ public class EmployerUpdater {
     for (Employer employer : failedUpdates) {
       String customerID = employer.getCustomerId();
       Integer number = employer.getNumber();
-        updateMainframe(customerID, employer);
-        addInMainframe(customerID, number);
+      updateMainframe(customerID, employer);
+      addInMainframe(customerID, number);
     }
   }
 }

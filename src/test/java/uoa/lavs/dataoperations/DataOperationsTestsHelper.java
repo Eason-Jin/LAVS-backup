@@ -3,13 +3,14 @@ package uoa.lavs.dataoperations;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import uoa.lavs.mainframe.Instance;
+
+import uoa.lavs.LocalInstance;
 
 public class DataOperationsTestsHelper {
 
     public static Connection createTestingDatabases() throws SQLException {
-        Instance.initializeTestConnections(true);
-        Connection connection = Instance.getDatabaseConnection();
+        LocalInstance.initializeTestConnections(true);
+        Connection connection = LocalInstance.getDatabaseConnection();
         createTables(connection);
         return connection;
     }

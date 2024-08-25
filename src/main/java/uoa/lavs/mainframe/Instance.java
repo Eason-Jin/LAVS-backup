@@ -27,47 +27,4 @@ public class Instance {
   public static Connection getConnection() {
     return SingletonHelper.INSTANCE;
   }
-
-  public static java.sql.Connection getDatabaseConnection() {
-    java.sql.Connection connection = null;
-    try {
-      if (_useTestConnections == true) {
-        connection = DriverManager.getConnection("jdbc:sqlite:testDatabase.sqlite");
-      } else {
-        connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    return connection;
-  }
-
-  public static void initializeTestConnections(boolean useTestConnections) {
-    _useTestConnections = useTestConnections;
-    SingletonHelper.INSTANCE = new NitriteConnection("testNitriteDatabase.txt");
-    resetTestDatabase();
-    resetNitriteDatabase();
-  }
-
-  private static void resetTestDatabase() {
-    Path testDatabasePath = Paths.get("testDatabase.sqlite");
-    try {
-      if (Files.exists(testDatabasePath)) {
-        Files.delete(testDatabasePath);
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
-
-  private static void resetNitriteDatabase() {
-    Path databasePath = Paths.get("testNitriteDatabase.txt");
-    try {
-      if (Files.exists(databasePath)) {
-        Files.delete(databasePath);
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
 }

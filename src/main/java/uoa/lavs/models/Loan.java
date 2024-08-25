@@ -50,8 +50,9 @@ public class Loan {
     this.paymentFrequency = paymentFrequency;
     this.compounding = compounding;
   }
-  
-  public Loan() {}
+
+  public Loan() {
+  }
 
   public String getLoanId() {
     return loanId;
@@ -78,6 +79,12 @@ public class Loan {
   }
 
   public String getStatus() {
+    try {
+      Integer.parseInt(status);
+    } catch (NumberFormatException e) {
+      return status;
+    }
+
     switch (status) {
       case "1":
         return LoanStatus.New.toString();
@@ -98,6 +105,10 @@ public class Loan {
 
   public Double getPrincipal() {
     return principal;
+  }
+
+  public String getPrincipalString() {
+    return "$" + String.format("%.2f", principal);
   }
 
   public void setPrincipal(Double principal) {
@@ -146,6 +157,10 @@ public class Loan {
 
   public Double getPaymentAmount() {
     return paymentAmount;
+  }
+
+  public String getPaymentAmountString() {
+    return "$" + String.format("%.2f", paymentAmount);
   }
 
   public void setPaymentAmount(Double paymentAmount) {

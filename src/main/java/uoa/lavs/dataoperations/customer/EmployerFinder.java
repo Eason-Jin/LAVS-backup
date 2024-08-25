@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import uoa.lavs.mainframe.Instance;
+import uoa.lavs.LocalInstance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.LoadCustomerEmployer;
 import uoa.lavs.mainframe.messages.customer.LoadCustomerEmployers;
@@ -34,7 +34,7 @@ public class EmployerFinder {
     LoadCustomerEmployer loadEmployer = new LoadCustomerEmployer();
     loadEmployers.setCustomerId(customerId);
     loadEmployer.setCustomerId(customerId);
-    Status status = loadEmployers.send(Instance.getConnection());
+    Status status = loadEmployers.send(LocalInstance.getConnection());
     if (!status.getWasSuccessful()) {
       System.out.println(
           "Something went wrong - the Mainframe send failed! The code is " + status.getErrorCode());
@@ -49,7 +49,7 @@ public class EmployerFinder {
     for (int i = 1; i <= employerCount; i++) {
       Employer employer = new Employer();
       loadEmployer.setNumber(loadEmployers.getNumberFromServer(i));
-      loadEmployer.send(Instance.getConnection());
+      loadEmployer.send(LocalInstance.getConnection());
       employer.setCustomerId(customerId);
       employer.setNumber(loadEmployers.getNumberFromServer(i));
       employer.setName(loadEmployers.getNameFromServer(i));
@@ -71,7 +71,7 @@ public class EmployerFinder {
   public static List<Employer> findFromDatabase(String customerId) throws Exception {
     List<Employer> employers = new ArrayList<>();
     String query = "SELECT * FROM Employer WHERE CustomerID = ?";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(query)) {
       statement.setString(1, customerId);
       try (ResultSet resultSet = statement.executeQuery()) {

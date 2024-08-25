@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import uoa.lavs.mainframe.Instance;
+import uoa.lavs.LocalInstance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomerPhoneNumber;
 import uoa.lavs.models.Phone;
@@ -46,7 +46,7 @@ public class PhoneUpdater {
     if (phone.getNumber() != null) {
       List<Phone> existingPhones = null;
       try {
-        existingPhones = PhoneFinder.findData(customerID);
+        existingPhones = PhoneFinder.findFromMainframe(customerID);
         for (Phone phoneOnAccount : existingPhones) {
           if (phoneOnAccount.getNumber().equals(phone.getNumber())
               && phoneOnAccount.getCustomerId().equals(phone.getCustomerId())) {
@@ -55,6 +55,7 @@ public class PhoneUpdater {
           }
         }
       } catch (Exception e) {
+        updateCustomerPhone.setNumber(null);
         System.out.println("Phone %s not in mainframe: " + e.getMessage());
       }
     }
@@ -78,7 +79,7 @@ public class PhoneUpdater {
       updateCustomerPhone.setCanSendTxt(phone.getCanSendText());
     }
 
-    Status status = updateCustomerPhone.send(Instance.getConnection());
+    Status status = updateCustomerPhone.send(LocalInstance.getConnection());
     if (!status.getWasSuccessful()) {
       failed = true;
       System.out.println(
@@ -94,7 +95,7 @@ public class PhoneUpdater {
     String CHECK_SQL = "SELECT COUNT(*) FROM Phone WHERE CustomerID = ? AND Number = ?";
 
     if (customerID != null && phone.getNumber() != null) {
-      try (Connection connection = Instance.getDatabaseConnection();
+      try (Connection connection = LocalInstance.getDatabaseConnection();
           PreparedStatement checkStatement = connection.prepareStatement(CHECK_SQL)) {
         checkStatement.setString(1, customerID);
         checkStatement.setInt(2, phone.getNumber());
@@ -108,21 +109,18 @@ public class PhoneUpdater {
 
     String sql;
     if (exists) {
-      sql =
-          "UPDATE Phone SET "
-              + "Type = COALESCE(?, Type), "
-              + "Prefix = COALESCE(?, Prefix), "
-              + "PhoneNumber = COALESCE(?, PhoneNumber), "
-              + "IsPrimary = COALESCE(?, IsPrimary), "
-              + "CanSendText = COALESCE(?, CanSendText) "
-              + "WHERE CustomerID = ? AND Number = ?";
+      sql = "UPDATE Phone SET "
+          + "Type = COALESCE(?, Type), "
+          + "Prefix = COALESCE(?, Prefix), "
+          + "PhoneNumber = COALESCE(?, PhoneNumber), "
+          + "IsPrimary = COALESCE(?, IsPrimary), "
+          + "CanSendText = COALESCE(?, CanSendText) "
+          + "WHERE CustomerID = ? AND Number = ?";
     } else {
       if (phone.getNumber() == null) {
-        String GET_MAX_NUMBER_SQL =
-            "SELECT COALESCE(MAX(Number), 0) + 1 FROM Phone WHERE CustomerID = ?";
-        try (Connection connection = Instance.getDatabaseConnection();
-            PreparedStatement getMaxNumberStatement =
-                connection.prepareStatement(GET_MAX_NUMBER_SQL)) {
+        String GET_MAX_NUMBER_SQL = "SELECT COALESCE(MAX(Number), 0) + 1 FROM Phone WHERE CustomerID = ?";
+        try (Connection connection = LocalInstance.getDatabaseConnection();
+            PreparedStatement getMaxNumberStatement = connection.prepareStatement(GET_MAX_NUMBER_SQL)) {
           getMaxNumberStatement.setString(1, customerID);
           try (ResultSet resultSet = getMaxNumberStatement.executeQuery()) {
             if (resultSet.next()) {
@@ -131,14 +129,12 @@ public class PhoneUpdater {
           }
         }
       }
-      sql =
-          "INSERT INTO Phone (Type, Prefix, PhoneNumber, IsPrimary, CanSendText, CustomerID,"
-              + " Number) VALUES (?, ?, ?, ?, ?, ?, ?)";
+      sql = "INSERT INTO Phone (Type, Prefix, PhoneNumber, IsPrimary, CanSendText, CustomerID,"
+          + " Number) VALUES (?, ?, ?, ?, ?, ?, ?)";
     }
 
-    try (Connection connection = Instance.getDatabaseConnection();
-        PreparedStatement statement =
-            connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+    try (Connection connection = LocalInstance.getDatabaseConnection();
+        PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
       statement.setString(1, phone.getType());
       statement.setString(2, phone.getPrefix());
@@ -154,7 +150,7 @@ public class PhoneUpdater {
 
   private static void addFailedUpdate(String customerID, Integer number) {
     String sql = "UPDATE Phone SET InMainframe = false WHERE CustomerID = ? AND Number = ?";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql)) {
       statement.setString(1, customerID);
       statement.setInt(2, number);
@@ -166,7 +162,7 @@ public class PhoneUpdater {
 
   private static void addInMainframe(String customerID, Integer number) {
     String sql = "UPDATE Phone SET InMainframe = true WHERE CustomerID = ? AND Number = ?";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql)) {
       statement.setString(1, customerID);
       statement.setInt(2, number);
@@ -179,27 +175,23 @@ public class PhoneUpdater {
   public static List<Phone> getFailedUpdates() {
     List<Phone> failedUpdates = new ArrayList<>();
     String sql = "SELECT CustomerID, Number FROM Phone WHERE InMainframe = false";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
         ResultSet resultSet = statement.executeQuery()) {
       while (resultSet.next()) {
         String customerID = resultSet.getString(1);
         Integer number = resultSet.getInt(2);
         List<Phone> phones;
-        try {
-          phones = PhoneFinder.findFromDatabase(customerID);
-          for (Phone phoneOnAccount : phones) {
-            if (phoneOnAccount.getNumber().equals(number)
-                && phoneOnAccount.getCustomerId().equals(customerID)) {
-              failedUpdates.add(phoneOnAccount);
-              break;
-            }
+        phones = PhoneFinder.findFromDatabase(customerID);
+        for (Phone phoneOnAccount : phones) {
+          if (phoneOnAccount.getNumber().equals(number)
+              && phoneOnAccount.getCustomerId().equals(customerID)) {
+            failedUpdates.add(phoneOnAccount);
+            break;
           }
-        } catch (Exception e) {
-          System.out.println("Failed to get failed updates: " + e.getMessage());
         }
       }
-    } catch (SQLException e) {
+    } catch (Exception e) {
       System.out.println("Failed to get failed updates: " + e.getMessage());
     }
     return failedUpdates;
@@ -210,8 +202,8 @@ public class PhoneUpdater {
     for (Phone phone : failedUpdates) {
       String customerID = phone.getCustomerId();
       Integer number = phone.getNumber();
-        updateMainframe(customerID, phone);
-        addInMainframe(customerID, number);
+      updateMainframe(customerID, phone);
+      addInMainframe(customerID, number);
     }
   }
 }
