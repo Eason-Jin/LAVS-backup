@@ -1,5 +1,6 @@
 package uoa.lavs.dataoperations.customer;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -19,10 +20,10 @@ public class CustomerUpdaterTests {
   @BeforeEach
   public void setup() throws SQLException {
     DataOperationsTestsHelper.createTestingDatabases();
-  } 
+  }
 
   @Test
-  public void createCustomer() throws SQLException {
+  public void createCustomerInDatabase() throws SQLException {
     // Arrange
     DataOperationsTestsHelper.createTestingDatabases();
     Customer customer = new Customer(
@@ -44,21 +45,24 @@ public class CustomerUpdaterTests {
       selectStmt.setString(1, customer.getId());
       try (ResultSet resultSet = selectStmt.executeQuery()) {
         assertTrue(resultSet.next());
-        assertEquals("Ms", resultSet.getString("Title"));
-        assertEquals("Jessica", resultSet.getString("Name"));
-        String dobString = resultSet.getString("Dob");
-        LocalDate dob = LocalDate.parse(dobString);
-        assertEquals(LocalDate.of(2001, 4, 10), dob);
-        assertEquals("Student", resultSet.getString("Occupation"));
-        assertEquals("NZ", resultSet.getString("Citizenship"));
-        assertEquals("Work", resultSet.getString("VisaType"));
-        assertEquals("Pending", resultSet.getString("Status"));
+        assertAll("customer",
+            () -> assertEquals("Ms", resultSet.getString("Title")),
+            () -> assertEquals("Jessica", resultSet.getString("Name")),
+            () -> {
+              String dobString = resultSet.getString("Dob");
+              LocalDate dob = LocalDate.parse(dobString);
+              assertEquals(LocalDate.of(2001, 4, 10), dob);
+            },
+            () -> assertEquals("Student", resultSet.getString("Occupation")),
+            () -> assertEquals("NZ", resultSet.getString("Citizenship")),
+            () -> assertEquals("Work", resultSet.getString("VisaType")),
+            () -> assertEquals("Pending", resultSet.getString("Status")));
       }
     }
   }
 
   @Test
-  public void updateCustomer() throws SQLException {
+  public void updateCustomerInDatabase() throws SQLException {
 
     DataOperationsTestsHelper.createTestingDatabases();
     // Arrange
@@ -82,15 +86,18 @@ public class CustomerUpdaterTests {
       selectStmt.setString(1, "1");
       try (ResultSet resultSet = selectStmt.executeQuery()) {
         assertTrue(resultSet.next());
-        assertEquals("Dr", resultSet.getString("Title"));
-        assertEquals("Jessie", resultSet.getString("Name"));
-        String dobString = resultSet.getString("Dob");
-        LocalDate dob = LocalDate.parse(dobString);
-        assertEquals(LocalDate.of(1995, 8, 15), dob);
-        assertEquals("Engineer", resultSet.getString("Occupation"));
-        assertEquals("NZ", resultSet.getString("Citizenship"));
-        assertEquals("Permanent", resultSet.getString("VisaType"));
-        assertEquals("Active", resultSet.getString("Status"));
+        assertAll("customer",
+            () -> assertEquals("Dr", resultSet.getString("Title")),
+            () -> assertEquals("Jessie", resultSet.getString("Name")),
+            () -> {
+              String dobString = resultSet.getString("Dob");
+              LocalDate dob = LocalDate.parse(dobString);
+              assertEquals(LocalDate.of(1995, 8, 15), dob);
+            },
+            () -> assertEquals("Engineer", resultSet.getString("Occupation")),
+            () -> assertEquals("NZ", resultSet.getString("Citizenship")),
+            () -> assertEquals("Permanent", resultSet.getString("VisaType")),
+            () -> assertEquals("Active", resultSet.getString("Status")));
       }
     }
   }

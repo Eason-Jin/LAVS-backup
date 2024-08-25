@@ -85,6 +85,9 @@ public class PhoneFinder {
     } finally {
       connection.close();
     }
+    if (phones.isEmpty()) {
+      throw new Exception("Phone not found in database");
+    }
     return phones;
   }
 }

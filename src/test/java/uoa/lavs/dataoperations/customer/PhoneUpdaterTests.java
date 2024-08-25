@@ -1,5 +1,6 @@
 package uoa.lavs.dataoperations.customer;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -22,16 +23,17 @@ public class PhoneUpdaterTests {
         PhoneUpdater.updateDatabase("1", phone);
 
         try (PreparedStatement selectStmt = LocalInstance.getDatabaseConnection()
-                .prepareStatement("SELECT * FROM phone WHERE CustomerID = ? AND Number = ?")) { 
+                .prepareStatement("SELECT * FROM phone WHERE CustomerID = ? AND Number = ?")) {
             selectStmt.setString(1, phone.getCustomerId());
-            selectStmt.setInt(2, 2);
+            selectStmt.setInt(2, 2); // Assuming the number is 2 for this test case
             try (ResultSet resultSet = selectStmt.executeQuery()) {
                 assertTrue(resultSet.next());
-                assertEquals("1", resultSet.getString("CustomerID"));
-                assertEquals("12345678", resultSet.getString("PhoneNumber"));
-                assertEquals(true, resultSet.getBoolean("IsPrimary"));
-                assertEquals(false, resultSet.getBoolean("InMainframe"));
-                assertEquals(2, resultSet.getInt("Number"));
+                assertAll("phone",
+                        () -> assertEquals("1", resultSet.getString("CustomerID")),
+                        () -> assertEquals("12345678", resultSet.getString("PhoneNumber")),
+                        () -> assertEquals(true, resultSet.getBoolean("IsPrimary")),
+                        () -> assertEquals(false, resultSet.getBoolean("InMainframe")),
+                        () -> assertEquals(2, resultSet.getInt("Number")));
             }
         }
     }
@@ -41,16 +43,18 @@ public class PhoneUpdaterTests {
         DataOperationsTestsHelper.createTestingDatabases();
         Phone phone = new Phone("1", "Mobile", "64", "987654", true, false, 1);
         PhoneUpdater.updateDatabase("1", phone);
+
         try (PreparedStatement selectStmt = LocalInstance.getDatabaseConnection()
                 .prepareStatement("SELECT * FROM phone WHERE CustomerID = ? AND Number = ?")) {
             selectStmt.setString(1, phone.getCustomerId());
             selectStmt.setInt(2, phone.getNumber());
             try (ResultSet resultSet = selectStmt.executeQuery()) {
                 assertTrue(resultSet.next());
-                assertEquals("1", resultSet.getString("CustomerID"));
-                assertEquals("987654", resultSet.getString("PhoneNumber"));
-                assertEquals(true, resultSet.getBoolean("IsPrimary"));
-                assertEquals(false, resultSet.getBoolean("CanSendText"));
+                assertAll("phone",
+                        () -> assertEquals("1", resultSet.getString("CustomerID")),
+                        () -> assertEquals("987654", resultSet.getString("PhoneNumber")),
+                        () -> assertEquals(true, resultSet.getBoolean("IsPrimary")),
+                        () -> assertEquals(false, resultSet.getBoolean("CanSendText")));
             }
         }
     }

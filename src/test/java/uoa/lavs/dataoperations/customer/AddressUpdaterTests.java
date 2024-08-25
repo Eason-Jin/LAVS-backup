@@ -1,5 +1,6 @@
 package uoa.lavs.dataoperations.customer;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -16,7 +17,7 @@ import uoa.lavs.models.Address;
 public class AddressUpdaterTests {
 
     @Test
-    public void addAddress() throws SQLException {
+    public void addAddressInDatabase() throws SQLException {
         DataOperationsTestsHelper.createTestingDatabases();
         Address address = new Address("1", "Business", "36", "Main Street", "Springfield", "IL", "62701", "USA", true,
                 false, null);
@@ -28,22 +29,23 @@ public class AddressUpdaterTests {
             selectStmt.setInt(2, 2);
             try (ResultSet resultSet = selectStmt.executeQuery()) {
                 assertTrue(resultSet.next());
-                assertEquals("1", resultSet.getString("CustomerID"));
-                assertEquals(2, resultSet.getInt("Number"));
-                assertEquals("36", resultSet.getString("Line1"));
-                assertEquals("Main Street", resultSet.getString("Line2"));
-                assertEquals("Springfield", resultSet.getString("Suburb"));
-                assertEquals("IL", resultSet.getString("City"));
-                assertEquals("62701", resultSet.getString("Postcode"));
-                assertEquals("USA", resultSet.getString("Country"));
-                assertEquals(true, resultSet.getBoolean("IsPrimary"));
-                assertEquals(false, resultSet.getBoolean("IsMailing"));
+                assertAll("address",
+                        () -> assertEquals("1", resultSet.getString("CustomerID")),
+                        () -> assertEquals(2, resultSet.getInt("Number")),
+                        () -> assertEquals("36", resultSet.getString("Line1")),
+                        () -> assertEquals("Main Street", resultSet.getString("Line2")),
+                        () -> assertEquals("Springfield", resultSet.getString("Suburb")),
+                        () -> assertEquals("IL", resultSet.getString("City")),
+                        () -> assertEquals("62701", resultSet.getString("Postcode")),
+                        () -> assertEquals("USA", resultSet.getString("Country")),
+                        () -> assertEquals(true, resultSet.getBoolean("IsPrimary")),
+                        () -> assertEquals(false, resultSet.getBoolean("IsMailing")));
             }
         }
     }
 
     @Test
-    public void updateAddress() throws SQLException {
+    public void updateAddressInDatabase() throws SQLException {
         DataOperationsTestsHelper.createTestingDatabases();
         Address address = new Address();
         address.setCustomerId("1");
@@ -59,10 +61,11 @@ public class AddressUpdaterTests {
             selectStmt.setInt(2, address.getNumber());
             try (ResultSet resultSet = selectStmt.executeQuery()) {
                 assertTrue(resultSet.next());
-                assertEquals("1", resultSet.getString("CustomerID"));
-                assertEquals("Elm St", resultSet.getString("Line1"));
-                assertEquals("Auckland", resultSet.getString("City"));
-                assertEquals(false, resultSet.getBoolean("IsPrimary"));
+                assertAll("address",
+                        () -> assertEquals("1", resultSet.getString("CustomerID")),
+                        () -> assertEquals("Elm St", resultSet.getString("Line1")),
+                        () -> assertEquals("Auckland", resultSet.getString("City")),
+                        () -> assertEquals(false, resultSet.getBoolean("IsPrimary")));
             }
         }
     }
