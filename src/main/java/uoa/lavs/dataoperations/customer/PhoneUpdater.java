@@ -90,7 +90,7 @@ public class PhoneUpdater {
     return updateCustomerPhone.getNumberFromServer();
   }
 
-  private static void updateDatabase(String customerID, Phone phone) throws SQLException {
+  public static void updateDatabase(String customerID, Phone phone) throws SQLException {
     boolean exists = false;
     String CHECK_SQL = "SELECT COUNT(*) FROM Phone WHERE CustomerID = ? AND Number = ?";
 

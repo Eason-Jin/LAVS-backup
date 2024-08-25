@@ -102,7 +102,7 @@ public class AddressUpdater {
     return updateCustomerAddress.getNumberFromServer();
   }
 
-  private static void updateDatabase(String customerID, Address address) throws SQLException {
+  public static void updateDatabase(String customerID, Address address) throws SQLException {
     boolean exists = false;
     String CHECK_SQL = "SELECT COUNT(*) FROM Address WHERE CustomerID = ? AND Number = ?";
 

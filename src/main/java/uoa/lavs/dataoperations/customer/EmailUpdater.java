@@ -81,7 +81,7 @@ public class EmailUpdater {
     return updateCustomerEmail.getNumberFromServer();
   }
 
-  private static void updateDatabase(String customerID, Email email) throws SQLException {
+  public static void updateDatabase(String customerID, Email email) throws SQLException {
     boolean exists = false;
     String CHECK_SQL = "SELECT COUNT(*) FROM Email WHERE CustomerID = ? AND Number = ?";
 
