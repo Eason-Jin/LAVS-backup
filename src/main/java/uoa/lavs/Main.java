@@ -53,6 +53,7 @@ public class Main extends Application {
     currentScene = new Scene(loadLoader("start").load(), 1152, 648);
     stage.setScene(currentScene);
     stage.show();
+    stage.setResizable(false);
     stage.setOnCloseRequest(e -> System.exit(0));
   }
 
