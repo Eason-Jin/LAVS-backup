@@ -363,9 +363,7 @@ public class DataOperationsTestsHelper {
                 .put("[03].line", "Test line #3")
                 .put("[04].line", "Test line #4")
                 .put("[05].line", "Test line #5")
-                .put("[06].line", "Test line #6")
-                .put("[07].line", "Test line #7")
-                .put("[08].line", "Test line #8");
+                .put("[06].line", null);
         ArrayList<Document> items = getItemArray(document, NitriteConnection.Internal.ITEM_NOTES);
         items.add(note);
         return document;
