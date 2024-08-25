@@ -55,6 +55,7 @@ public class EmailUpdater {
           }
         }
       } catch (Exception e) {
+        updateCustomerEmail.setNumber(null);
         System.out.println("Email %s not in mainframe: " + e.getMessage());
       }
     }

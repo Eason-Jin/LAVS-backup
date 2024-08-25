@@ -46,7 +46,7 @@ public class AddressUpdater {
     if (address.getNumber() != null) {
       List<Address> existingAddresses = null;
       try {
-        existingAddresses = AddressFinder.findData(customerID);
+        existingAddresses = AddressFinder.findFromMainframe(customerID);
         for (Address addressOnAccount : existingAddresses) {
           if (addressOnAccount.getNumber().equals(address.getNumber())
               && addressOnAccount.getCustomerId().equals(address.getCustomerId())) {
@@ -55,6 +55,7 @@ public class AddressUpdater {
           }
         }
       } catch (Exception e) {
+        updateCustomerAddress.setNumber(null);
         System.out.println("Address %s not in mainframe: " + e.getMessage());
       }
     }
@@ -224,6 +225,7 @@ public class AddressUpdater {
     List<Address> failedUpdates = getFailedUpdates();
     for (Address address : failedUpdates) {
       String customerID = address.getCustomerId();
+      System.out.println("Retrying update for customer " + customerID);
       Integer number = address.getNumber();
         updateMainframe(customerID, address);
         addInMainframe(customerID, number);

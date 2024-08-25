@@ -38,7 +38,9 @@ public class PhoneFinder {
       throw new Exception("Mainframe send failed");
     }
     Integer phoneCount = loadCustomerPhoneNumbers.getCountFromServer();
-
+    if (phoneCount == 0) {
+      throw new Exception("Phone not found in mainframe");
+    }
     List<Phone> phones = new ArrayList<>(phoneCount);
 
     for (int i = 1; i <= phoneCount; i++) {

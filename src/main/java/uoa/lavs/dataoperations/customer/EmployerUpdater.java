@@ -46,7 +46,7 @@ public class EmployerUpdater {
     if (employer.getNumber() != null) {
       List<Employer> existingEmployers = null;
       try {
-        existingEmployers = EmployerFinder.findData(customerID);
+        existingEmployers = EmployerFinder.findFromMainframe(customerID);
         for (Employer employerOnAccount : existingEmployers) {
           if (employerOnAccount.getNumber().equals(employer.getNumber())
               && employerOnAccount.getCustomerId().equals(employer.getCustomerId())) {
@@ -55,6 +55,7 @@ public class EmployerUpdater {
           }
         }
       } catch (Exception e) {
+        updateCustomerEmployer.setNumber(null);
         System.out.println("Employer %s not in mainframe: " + e.getMessage());
       }
     }

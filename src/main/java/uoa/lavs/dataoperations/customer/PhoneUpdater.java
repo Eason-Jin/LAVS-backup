@@ -46,7 +46,7 @@ public class PhoneUpdater {
     if (phone.getNumber() != null) {
       List<Phone> existingPhones = null;
       try {
-        existingPhones = PhoneFinder.findData(customerID);
+        existingPhones = PhoneFinder.findFromMainframe(customerID);
         for (Phone phoneOnAccount : existingPhones) {
           if (phoneOnAccount.getNumber().equals(phone.getNumber())
               && phoneOnAccount.getCustomerId().equals(phone.getCustomerId())) {
@@ -55,6 +55,7 @@ public class PhoneUpdater {
           }
         }
       } catch (Exception e) {
+        updateCustomerPhone.setNumber(null);
         System.out.println("Phone %s not in mainframe: " + e.getMessage());
       }
     }
