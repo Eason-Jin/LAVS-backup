@@ -45,9 +45,9 @@ public class PhoneFinderTests {
   }
 
   @Test
-  public void findNonExistingPhoneFromMainframe() throws Exception {
+  public void findPhoneFromMainframeWithInvalidCustomerId() throws Exception {
     DataOperationsTestsHelper.createTestingDatabases();
-    String customerId = "2";
+    String customerId = "invalid-id";
 
     assertThrows(Exception.class, () -> {
       PhoneFinder.findFromMainframe(customerId);
@@ -71,14 +71,14 @@ public class PhoneFinderTests {
   @Test
   public void findNonExistingPhone() {
     DataOperationsTestsHelper.createTestingDatabases();
-    String customerId = "invalid-id";
+    String customerId = "3";
 
     List<Phone> phones = PhoneFinder.findData(customerId);
     assertTrue(phones.isEmpty());
   }
 
   @Test
-  public void findPhoneExistingInDatabase() {
+  public void findPhoneOnlyExistingInDatabase() {
     DataOperationsTestsHelper.createTestingDatabases();
     String customerId = "1";
 
