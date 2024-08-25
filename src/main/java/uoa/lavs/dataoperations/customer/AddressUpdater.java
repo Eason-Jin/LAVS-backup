@@ -20,6 +20,7 @@ public class AddressUpdater {
     try {
       updateMainframe(customerID, address);
     } catch (Exception e) {
+      failed = true;
       System.out.println("Mainframe update failed: " + e.getMessage());
     } finally {
       try {
@@ -45,7 +46,7 @@ public class AddressUpdater {
     if (address.getNumber() != null) {
       List<Address> existingAddresses = null;
       try {
-        existingAddresses = AddressFinder.findData(customerID);
+        existingAddresses = AddressFinder.findFromMainframe(customerID);
         for (Address addressOnAccount : existingAddresses) {
           if (addressOnAccount.getNumber().equals(address.getNumber())
               && addressOnAccount.getCustomerId().equals(address.getCustomerId())) {
@@ -54,6 +55,7 @@ public class AddressUpdater {
           }
         }
       } catch (Exception e) {
+        updateCustomerAddress.setNumber(null);
         System.out.println("Address %s not in mainframe: " + e.getMessage());
       }
     }
@@ -204,7 +206,7 @@ public class AddressUpdater {
       while (resultSet.next()) {
         String customerID = resultSet.getString("CustomerID");
         Integer number = resultSet.getInt("Number");
-        List<Address> addresses = AddressFinder.findData(customerID);
+        List<Address> addresses = AddressFinder.findFromDatabase(customerID);
         for (Address addressOnAccount : addresses) {
           if (addressOnAccount.getNumber().equals(number)
               && addressOnAccount.getCustomerId().equals(customerID)) {
@@ -213,7 +215,7 @@ public class AddressUpdater {
           }
         }
       }
-    } catch (SQLException e) {
+    } catch (Exception e) {
       System.out.println("Failed to get failed updates: " + e.getMessage());
     }
     return failedUpdates;
@@ -223,6 +225,7 @@ public class AddressUpdater {
     List<Address> failedUpdates = getFailedUpdates();
     for (Address address : failedUpdates) {
       String customerID = address.getCustomerId();
+      System.out.println("Retrying update for customer " + customerID);
       Integer number = address.getNumber();
         updateMainframe(customerID, address);
         addInMainframe(customerID, number);
