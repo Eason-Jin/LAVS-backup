@@ -70,26 +70,23 @@ public class CustomerUpdater {
 
     String sql;
     if (exists) {
-      sql =
-          "UPDATE Customer SET "
-              + "Title = COALESCE(?, Title), "
-              + "Name = COALESCE(?, Name), "
-              + "Dob = COALESCE(?, Dob), "
-              + "Occupation = COALESCE(?, Occupation), "
-              + "Citizenship = COALESCE(?, Citizenship), "
-              + "VisaType = COALESCE(?, VisaType), "
-              + "Status = COALESCE(?, Status), "
-              + "Note = COALESCE(?, Note) "
-              + "WHERE CustomerID = ?";
+      sql = "UPDATE Customer SET "
+          + "Title = COALESCE(?, Title), "
+          + "Name = COALESCE(?, Name), "
+          + "Dob = COALESCE(?, Dob), "
+          + "Occupation = COALESCE(?, Occupation), "
+          + "Citizenship = COALESCE(?, Citizenship), "
+          + "VisaType = COALESCE(?, VisaType), "
+          + "Status = COALESCE(?, Status), "
+          + "Note = COALESCE(?, Note) "
+          + "WHERE CustomerID = ?";
     } else {
-      sql =
-          "INSERT INTO Customer (Title, Name, Dob, Occupation, Citizenship, VisaType, Status, Note,"
-              + "  CustomerID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      sql = "INSERT INTO Customer (Title, Name, Dob, Occupation, Citizenship, VisaType, Status, Note,"
+          + "  CustomerID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     }
 
     try (Connection connection = LocalInstance.getDatabaseConnection();
-        PreparedStatement statement =
-            connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
       statement.setString(1, customer.getTitle());
       statement.setString(2, customer.getName());
       statement.setObject(3, customer.getDob());
@@ -200,14 +197,10 @@ public class CustomerUpdater {
       while (resultSet.next()) {
         String customerID = resultSet.getString("CustomerID");
         Customer customer;
-        try {
-          customer = CustomerLoader.loadFromDatabase(customerID);
-          failedUpdates.add(customer);
-        } catch (Exception e) {
-          System.out.println("Failed to load customer: " + e.getMessage());
-        }
+        customer = CustomerLoader.loadFromDatabase(customerID);
+        failedUpdates.add(customer);
       }
-    } catch (SQLException e) {
+    } catch (Exception e) {
       System.out.println("Failed to get failed updates: " + e.getMessage());
     }
     return failedUpdates;
@@ -252,8 +245,7 @@ public class CustomerUpdater {
   private static String generateNewId() throws SQLException {
     String newId;
 
-    String selectLastId =
-        "SELECT CustomerID FROM Customer ORDER BY CAST(CustomerID AS INTEGER) DESC";
+    String selectLastId = "SELECT CustomerID FROM Customer ORDER BY CAST(CustomerID AS INTEGER) DESC";
     try (Statement stmt = LocalInstance.getDatabaseConnection().createStatement();
         ResultSet rs = stmt.executeQuery(selectLastId)) {
       if (rs.next()) {
