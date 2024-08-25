@@ -56,6 +56,7 @@ public class SearchController {
                 }
 
                 if (isCoBorrowerSearch) {
+                  clearSearch();
                   isCoBorrowerSearch = false;
                   loanController.addCoBorrower(row.getItem());
                   Main.setScene(AppScene.LOAN);
