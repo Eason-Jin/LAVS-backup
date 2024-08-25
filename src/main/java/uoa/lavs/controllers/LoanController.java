@@ -212,7 +212,7 @@ public class LoanController extends uoa.lavs.controllers.Controller {
 
     loanIdLabel.setText("Loan ID: " + loanId);
 
-    principalField.setText("$" + String.valueOf(loan.getPrincipal()));
+    principalField.setText(loan.getPrincipalString());
     rateTypeBox.setValue(String.valueOf(loan.getRateType()));
     rateValueField.setText(String.valueOf(loan.getRateValue()));
     startDatePicker.setValue(loan.getStartDate());
@@ -220,7 +220,7 @@ public class LoanController extends uoa.lavs.controllers.Controller {
     loanTermField.setText(String.valueOf(loan.getTerm()));
     compoundingBox.setValue(String.valueOf(loan.getCompounding()));
     paymentFrequencyBox.setValue(String.valueOf(loan.getPaymentFrequency()));
-    paymentAmountField.setText("$" + String.valueOf(loan.getPaymentAmount()));
+    paymentAmountField.setText(loan.getPaymentAmountString());
     totalInterestField.setText("$" + String.valueOf(loanSummary.getTotalInterest()));
     totalCostField.setText("$" + String.valueOf(loanSummary.getTotalCost()));
     payoffDateField.setText(loanSummary.getPayOffDate().toString());

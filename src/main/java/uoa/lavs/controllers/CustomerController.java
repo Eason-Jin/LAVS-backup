@@ -175,7 +175,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
     loanIdColumn.setCellValueFactory(new PropertyValueFactory<Loan, String>("loanId"));
     statusColumn.setCellValueFactory(new PropertyValueFactory<Loan, String>("status"));
-    principalColumn.setCellValueFactory(new PropertyValueFactory<Loan, String>("principal"));
+    principalColumn.setCellValueFactory(new PropertyValueFactory<Loan, String>("principalString"));
     startDateColumn.setCellValueFactory(new PropertyValueFactory<Loan, String>("startDate"));
     paymentFrequencyColumn.setCellValueFactory(
         new PropertyValueFactory<Loan, String>("paymentFrequency"));
@@ -294,7 +294,6 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   public void setUpEditCustomer() {
     setting = Setting.EDIT;
     titleLabel.setText("Edit Customer");
-    // detailsTabPane.getSelectionModel().select(0);
     setDisableForFields(false);
     setVisabilityForButtons(true);
   }
