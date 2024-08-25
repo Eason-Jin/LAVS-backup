@@ -1,4 +1,4 @@
-package uoa.lavs.dataoperations.Customer;
+package uoa.lavs.dataoperations.customer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 import uoa.lavs.LocalInstance;
 import uoa.lavs.dataoperations.DataOperationsTestsHelper;
-import uoa.lavs.dataoperations.customer.CustomerUpdater;
 import uoa.lavs.models.Customer;
 
 public class CustomerUpdaterTests {

@@ -1,9 +1,8 @@
-package uoa.lavs.dataoperations.Customer;
+package uoa.lavs.dataoperations.customer;
 
 import org.junit.jupiter.api.Test;
 
 import uoa.lavs.dataoperations.DataOperationsTestsHelper;
-import uoa.lavs.dataoperations.customer.CustomerFinder;
 import uoa.lavs.models.Customer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
