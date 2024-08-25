@@ -138,6 +138,31 @@ public class DataOperationsTestsHelper {
 
                     """;
 
+            String loanTable = """
+                    CREATE TABLE Loan (
+                        LoanID           TEXT      PRIMARY KEY
+                                                   NOT NULL,
+                        CustomerID       TEXT      NOT NULL,
+                        CustomerName     TEXT (40) NOT NULL,
+                        Status           TEXT (30) NOT NULL,
+                        Principal        NUMERIC   NOT NULL,
+                        RateValue        NUMERIC   NOT NULL,
+                        RateType         TEXT (30) NOT NULL,
+                        StartDate        TEXT (30) NOT NULL,
+                        Period           INTEGER   NOT NULL,
+                        Term             INTEGER   NOT NULL,
+                        PaymentAmount    NUMERIC   NOT NULL,
+                        PaymentFrequency TEXT (30) NOT NULL,
+                        Compounding      TEXT (30) NOT NULL,
+                        InMainframe      INTEGER,
+                        FOREIGN KEY (
+                            CustomerID
+                        )
+                        REFERENCES Customer (CustomerID) ON DELETE CASCADE
+                                                         ON UPDATE CASCADE
+                    );
+                    """;
+
             String insertCustomer = """
                     INSERT INTO Customer (CustomerID, Name, Title, Status, Dob, Occupation, Citizenship, VisaType, Note, InMainframe)
                     VALUES ('1', 'Bob Black', 'Mr', 'Active', '1990-01-01', 'Engineer', 'NZ', 'Work', 'Note', 0);
@@ -162,22 +187,17 @@ public class DataOperationsTestsHelper {
                     VALUES ('1', 'Tech Corp', '123 Tech Street', 'Tech Suburb', 'Tech City', 1234, 'Tech Country', '0934534345', 'techcorp@tech.com', 'www.techcorp.com', 1, true, 0);
                     """;
 
-            String insertLoan = """
-                    INSERT INTO Loan (CustomerID, LoanID, Principal, RateType, RateValue, StartDate, Period, Term, PaymentAmount, PaymentFrequency, Compounding, Status, InMainframe)
-                    VALUES ('1', '1-01', 10000, 'Fixed', 2, '2021-01-01', 12, 1, 1000, 'Monthly', 'Monthly', 'Active', 0);
-                    """;
-
             stmt.executeUpdate(customerTable);
             stmt.executeUpdate(addressTable);
             stmt.executeUpdate(emailTable);
             stmt.executeUpdate(employerTable);
             stmt.executeUpdate(phoneTable);
+            stmt.executeUpdate(loanTable);
             stmt.executeUpdate(insertCustomer);
             stmt.executeUpdate(insertEmail);
             stmt.executeUpdate(insertPhone);
             stmt.executeUpdate(insertAddress);
             stmt.executeUpdate(insertEmployer);
-            stmt.executeUpdate(insertLoan);
         }
     }
 }
