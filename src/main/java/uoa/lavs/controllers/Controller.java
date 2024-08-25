@@ -6,6 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public abstract class Controller {
@@ -17,60 +18,104 @@ public abstract class Controller {
   protected String tableNormalBorder = "-fx-border-color: #d0d7de";
   protected String tableRedBorder = "-fx-border-color: red";
 
-  protected boolean validateEmailFormat(String email) {
+  protected boolean validateEmailFormat(TextField email) {
+    email.setStyle(fieldNormalBorder);
     // Email should be in the format of a@b.c
-    return email.matches("^.+@.+\\..+$");
+    if (email.getText().matches("^.+@.+\\..+$")) {
+      return true;
+    } else {
+      email.setStyle(fieldRedBorder);
+      return false;
+    }
   }
 
-  protected boolean validateNumberFormat(String number) {
+  protected boolean validateNumberFormat(TextField number) {
+    number.setStyle(fieldNormalBorder);
     try {
-      Integer.parseInt(number);
+      Long.parseLong(number.getText());
     } catch (Exception e) {
+      number.setStyle(fieldRedBorder);
       return false;
     }
     return true;
   }
 
-  protected boolean validateWebsiteFormat(String website) {
+  protected boolean validateWebsiteFormat(TextField website) {
+    website.setStyle(fieldNormalBorder);
     // Website should be in the format of a.b
-    return website.matches("^.+\\..+$");
+    if (website.getText().matches("^.+\\..+$")) {
+      return true;
+    } else {
+      website.setStyle(fieldRedBorder);
+      return false;
+    }
   }
 
-  protected boolean validateDateFormat(LocalDate date, boolean beforeToday) {
-    if (beforeToday) {
-      return date.isBefore(LocalDate.now());
-    } else {
-      return date.isAfter(LocalDate.now());
+  protected boolean validateDateFormat(DatePicker dp, boolean beforeToday) {
+    dp.setStyle(fieldNormalBorder);
+    try {
+      LocalDate date = dp.getValue();
+      if (beforeToday && date.isBefore(LocalDate.now())) {
+        return true;
+      } else if (!beforeToday && date.isAfter(LocalDate.now())) {
+        return true;
+      }
+      dp.setStyle(fieldRedBorder);
+      return false;
+    } catch (Exception e) {
+      dp.setStyle(fieldRedBorder);
+      return false;
     }
   }
 
   protected boolean isEmpty(Control ui) {
+    ui.setStyle(fieldNormalBorder);
     if (ui instanceof TextField) {
       TextField tf = (TextField) ui;
       try {
         tf.getText();
-        if (tf.getText() == null) return true;
+        if (tf.getText() == null || tf.getText().isEmpty()) {
+          tf.setStyle(fieldRedBorder);
+          return true;
+        }
       } catch (Exception e) {
+        tf.setStyle(fieldRedBorder);
         return true;
       }
     }
     if (ui instanceof ComboBox) {
       ComboBox<FXCollections> cb = (ComboBox<FXCollections>) ui;
       if (cb.getValue() == null) {
+        cb.setStyle(fieldRedBorder);
         return true;
       }
     }
     if (ui instanceof DatePicker) {
       DatePicker dp = (DatePicker) ui;
       if (dp.getValue() == null) {
+        dp.setStyle(fieldRedBorder);
         return true;
       }
     }
     return false;
   }
 
-  protected boolean isTooLong(String str, int length) {
-    return str.length() > length;
+  protected boolean isTooLong(Control str, int length) {
+    str.setStyle(fieldNormalBorder);
+    if (str instanceof TextField) {
+      TextField tf = (TextField) str;
+      if (tf.getText() == null || tf.getText().length() > length) {
+        tf.setStyle(fieldRedBorder);
+        return true;
+      }
+    } else if (str instanceof TextArea) {
+      TextArea ta = (TextArea) str;
+      if (ta.getText() == null || ta.getText().length() > length) {
+        ta.setStyle(fieldRedBorder);
+        return true;
+      }
+    }
+    return false;
   }
 
   protected void showAlert() {

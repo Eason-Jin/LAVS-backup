@@ -309,13 +309,13 @@ public class AddLoanController extends uoa.lavs.controllers.Controller {
     boolean dateflag = true;
     for (Node node : loanDetailsFields.values()) {
       if (node instanceof TextField) {
-        if (!validateNumberFormat(((TextField) node).getText())) {
+        if (!validateNumberFormat(((TextField) node))) {
           repeatFlag = false;
           appendErrorMessage("Fields must be numbers!\n");
         }
       }
       if (node instanceof DatePicker) {
-        if (!validateDateFormat(((DatePicker) node).getValue(), false)) {
+        if (!validateDateFormat(((DatePicker) node), false)) {
           dateflag = false;
           appendErrorMessage("Start Date must be after today!\n");
         }

@@ -28,21 +28,27 @@ public class PhonePopupController extends PopupController {
   @Override
   @FXML
   public void onClickSave(ActionEvent event) {
-    if (isEmpty(phoneTypeComboBox) || isEmpty(prefixTextField) || isEmpty(phoneTextField)) {
+    boolean phoneTypeFlag = isEmpty(phoneTypeComboBox);
+    boolean prefixFlag = isEmpty(prefixTextField);
+    boolean phoneFlag = isEmpty(phoneTextField);
+    if (phoneTypeFlag || prefixFlag || phoneFlag) {
       appendErrorMessage("Please fill in all required fields!\n");
     } else {
-      if (!validateNumberFormat(prefixTextField.getText())) {
-        appendErrorMessage("Prefix must be numbers!\n");
-      }
-      if (!validateNumberFormat(phoneTextField.getText())) {
-        appendErrorMessage("Phone number must be numbers!\n");
-      }
-
-      if (isTooLong(prefixTextField.getText(), 10)) {
+      boolean prefixLongFlag = isTooLong(prefixTextField, 10);
+      if (prefixLongFlag) {
         appendErrorMessage("Prefix must be less than 10 characters!\n");
       }
-      if (isTooLong(phoneTextField.getText(), 20)) {
+      boolean phoneLongFlag = isTooLong(phoneTextField, 20);
+      if (phoneLongFlag) {
         appendErrorMessage("Phone number must be less than 20 characters!\n");
+      }
+      if (!(prefixLongFlag || phoneLongFlag)) {
+        if (!validateNumberFormat(prefixTextField)) {
+          appendErrorMessage("Prefix must be numbers!\n");
+        }
+        if (!validateNumberFormat(phoneTextField)) {
+          appendErrorMessage("Phone number must be numbers!\n");
+        }
       }
     }
 

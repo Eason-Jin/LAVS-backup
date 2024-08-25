@@ -24,16 +24,15 @@ public class EmailPopupController extends PopupController {
   @Override
   @FXML
   public void onClickSave(ActionEvent event) {
-    System.out.println(emailTextField.getText());
     if (isEmpty(emailTextField)) {
       appendErrorMessage("Please fill in all required fields!\n");
     } else {
-      if (!validateEmailFormat(emailTextField.getText())) {
-        appendErrorMessage("Email must be in the format of a@b.c!\n");
-      }
-
-      if (isTooLong(emailTextField.getText(), 60)) {
+      if (isTooLong(emailTextField, 60)) {
         appendErrorMessage("Email must be less than 60 characters!\n");
+      } else {
+        if (!validateEmailFormat(emailTextField)) {
+          appendErrorMessage("Email must be in the format of a@b.c!\n");
+        }
       }
     }
 
