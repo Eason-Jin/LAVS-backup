@@ -71,7 +71,7 @@ public class LoanFinder {
     return loans;
   }
 
-  private static List<Loan> findFromDatabase(String customerId) throws Exception {
+  public static List<Loan> findFromDatabase(String customerId) throws Exception {
     List<Loan> loans = new ArrayList<>();
     Connection connection = LocalInstance.getDatabaseConnection();
     String query = "SELECT * FROM loan WHERE CustomerID = ?;";

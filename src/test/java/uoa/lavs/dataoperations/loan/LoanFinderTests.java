@@ -13,10 +13,25 @@ import uoa.lavs.models.Loan;
 public class LoanFinderTests {
 
   @Test
-  public void findExistingLoanFromDatabase() throws Exception {}
+  public void findExistingLoanFromDatabase() throws Exception {
+    DataOperationsTestsHelper.createTestingDatabases();
+    String customerId = "1";
+
+    List<Loan> loans = LoanFinder.findFromDatabase(customerId);
+
+    assertAll(
+        () -> assertEquals("1", loans.get(0).getCustomerId()),
+        () -> assertEquals("1-01", loans.get(0).getLoanId()));
+  }
 
   @Test
-  public void findNonExistingLoanFromDatabase() throws Exception {}
+  public void findNonExistingLoanFromDatabase() throws Exception {
+    DataOperationsTestsHelper.createTestingDatabases();
+    String customerId = "invalid-id";
+    List<Loan> loans = LoanFinder.findFromDatabase(customerId);
+
+    assertTrue(loans.isEmpty());
+  }
 
   @Test
   public void findExistingLoanFromMainframe() throws Exception {
