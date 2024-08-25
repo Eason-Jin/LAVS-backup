@@ -199,7 +199,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
               });
           row.setOnMouseEntered(
                   event -> {
-                    if (!row.isEmpty()) {
+                    if (!row.isEmpty() && setting != Setting.VIEW) {
                       row.styleProperty().set("-fx-background-color: #f0f0f0");
                     }
                   });
@@ -231,7 +231,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
               });
           row.setOnMouseEntered(
                   event -> {
-                    if (!row.isEmpty()) {
+                    if (!row.isEmpty() && setting != Setting.VIEW) {
                       row.styleProperty().set("-fx-background-color: #f0f0f0");
                     }
                   });
@@ -263,7 +263,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
               });
           row.setOnMouseEntered(
                   event -> {
-                    if (!row.isEmpty()) {
+                    if (!row.isEmpty() && setting != Setting.VIEW) {
                       row.styleProperty().set("-fx-background-color: #f0f0f0");
                     }
                   });
@@ -296,7 +296,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
               });
           row.setOnMouseEntered(
                   event -> {
-                    if (!row.isEmpty()) {
+                    if (!row.isEmpty() && setting != Setting.VIEW) {
                       row.styleProperty().set("-fx-background-color: #f0f0f0");
                     }
                   });
@@ -326,7 +326,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
               });
           row.setOnMouseEntered(
                   event -> {
-                    if (!row.isEmpty()) {
+                    if (!row.isEmpty() && setting != Setting.VIEW) {
                       row.styleProperty().set("-fx-background-color: #f0f0f0");
                     }
                   });
