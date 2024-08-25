@@ -51,6 +51,16 @@ public class EmailFinderTests {
     }
 
     @Test
+    public void findNoneExistinEmailFromMainframe() throws Exception {
+        DataOperationsTestsHelper.createTestingDatabases();
+        String customerId = "654";
+
+        assertThrows(Exception.class, () -> {
+            EmailFinder.findFromMainframe(customerId);
+        });
+    }
+
+    @Test
     public void findEmailFromMainframeWithInvalidCustomerId() throws Exception {
         DataOperationsTestsHelper.createTestingDatabases();
         String customerId = "invalid-id";

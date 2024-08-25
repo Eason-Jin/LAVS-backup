@@ -67,6 +67,16 @@ public class EmployerFinderTests {
     }
 
     @Test
+    public void findNonExistingEmployerFromMainframe() throws Exception {
+        DataOperationsTestsHelper.createTestingDatabases();
+        String customerId = "654";
+
+        assertThrows(Exception.class, () -> {
+            EmployerFinder.findFromMainframe(customerId);
+        });
+    }
+
+    @Test
     public void findEmployerFromMainframeWithInvalidCustomerId() throws Exception {
         DataOperationsTestsHelper.createTestingDatabases();
         String customerId = "invalid-id";
