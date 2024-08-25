@@ -12,9 +12,9 @@
 <Pane fx:id="employmentPopupPane" maxHeight="666.0" maxWidth="1167.0" minHeight="648.0" minWidth="1152.0" prefHeight="666.0" prefWidth="1167.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.EmploymentPopupController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#727272" height="666.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1167.0" />
-      <Pane layoutX="176.0" layoutY="110.0" maxHeight="420.0" maxWidth="800.0" minHeight="420.0" minWidth="800.0" prefHeight="420.0" prefWidth="800.0" styleClass="popup-pane" stylesheets="@../css/application.css">
+      <Pane layoutX="176.0" layoutY="108.0" maxHeight="430.0" maxWidth="800.0" minHeight="430.0" minWidth="800.0" prefHeight="430.0" prefWidth="800.0" styleClass="popup-pane" stylesheets="@../css/application.css">
          <children>
-            <Label layoutX="48.0" layoutY="46.0" prefHeight="45.0" prefWidth="391.0" text="Employment">
+            <Label layoutX="63.0" layoutY="42.0" prefHeight="45.0" prefWidth="391.0" text="Employment">
                <font>
                   <Font name="System Bold" size="36.0" />
                </font>
@@ -31,96 +31,96 @@
                   <String fx:value="popup-button" />
                </styleClass>
             </Button>
-            <TextField fx:id="companyAddressLine1TextField" layoutX="50.0" layoutY="188.0" maxHeight="30.0" maxWidth="330.0" minHeight="30.0" minWidth="330.0" prefHeight="30.0" prefWidth="330.0" styleClass="input">
+            <TextField fx:id="companyAddressLine1TextField" layoutX="65.0" layoutY="191.0" maxHeight="35.0" maxWidth="330.0" minHeight="35.0" minWidth="330.0" prefHeight="35.0" prefWidth="330.0" styleClass="input">
                <font>
                   <Font size="15.0" />
                </font></TextField>
-            <TextField fx:id="companyAddressLine2TextField" layoutX="390.0" layoutY="188.0" maxHeight="30.0" maxWidth="330.0" minHeight="30.0" minWidth="330.0" prefHeight="30.0" prefWidth="330.0" styleClass="input">
+            <TextField fx:id="companyAddressLine2TextField" layoutX="405.0" layoutY="188.0" maxHeight="35.0" maxWidth="330.0" minHeight="35.0" minWidth="330.0" prefHeight="35.0" prefWidth="330.0" styleClass="input">
                <font>
                   <Font size="15.0" />
                </font></TextField>
-            <Label layoutX="61.0" layoutY="163.0" text="Company Address Line 1">
+            <Label layoutX="76.0" layoutY="165.0" text="Company Address Line 1">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="401.0" layoutY="163.0" text="Company Address Line 2">
+            <Label layoutX="416.0" layoutY="165.0" text="Company Address Line 2">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="companySuburbTextField" layoutX="50.0" layoutY="249.0" maxHeight="30.0" maxWidth="160.0" minHeight="30.0" minWidth="160.0" prefHeight="30.0" prefWidth="160.0" styleClass="input">
+            <TextField fx:id="companySuburbTextField" layoutX="65.0" layoutY="259.0" maxHeight="35.0" maxWidth="160.0" minHeight="35.0" minWidth="160.0" prefHeight="35.0" prefWidth="160.0" styleClass="input">
                <font>
                   <Font size="15.0" />
                </font></TextField>
-            <Label layoutX="61.0" layoutY="224.0" text="Company Suburb">
+            <Label layoutX="76.0" layoutY="233.0" text="Company Suburb">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="companyCityTextField" layoutX="220.0" layoutY="249.0" maxHeight="30.0" maxWidth="160.0" minHeight="30.0" minWidth="160.0" prefHeight="30.0" prefWidth="160.0" styleClass="input">
+            <TextField fx:id="companyCityTextField" layoutX="235.0" layoutY="259.0" maxHeight="35.0" maxWidth="160.0" minHeight="35.0" minWidth="160.0" prefHeight="35.0" prefWidth="160.0" styleClass="input">
                <font>
                   <Font size="15.0" />
                </font></TextField>
-            <Label layoutX="230.0" layoutY="224.0" text="Company City">
+            <Label layoutX="245.0" layoutY="233.0" text="Company City">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="companyPostcodeTextField" layoutX="390.0" layoutY="249.0" maxHeight="30.0" maxWidth="160.0" minHeight="30.0" minWidth="160.0" prefHeight="30.0" prefWidth="160.0" styleClass="input">
+            <TextField fx:id="companyPostcodeTextField" layoutX="405.0" layoutY="259.0" maxHeight="35.0" maxWidth="160.0" minHeight="35.0" minWidth="160.0" prefHeight="35.0" prefWidth="160.0" styleClass="input">
                <font>
                   <Font size="15.0" />
                </font></TextField>
-            <Label layoutX="399.0" layoutY="224.0" text="Company Postcode">
+            <Label layoutX="414.0" layoutY="233.0" text="Company Postcode">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="companyCountryTextField" layoutX="560.0" layoutY="249.0" maxHeight="30.0" maxWidth="160.0" minHeight="30.0" minWidth="160.0" prefHeight="30.0" prefWidth="160.0" styleClass="input">
+            <TextField fx:id="companyCountryTextField" layoutX="575.0" layoutY="259.0" maxHeight="35.0" maxWidth="160.0" minHeight="35.0" minWidth="160.0" prefHeight="35.0" prefWidth="160.0" styleClass="input">
                <font>
                   <Font size="15.0" />
                </font></TextField>
-            <Label layoutX="569.0" layoutY="224.0" text="Company Country">
+            <Label layoutX="584.0" layoutY="233.0" text="Company Country">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="companyNameTextField" layoutX="50.0" layoutY="127.0" maxHeight="30.0" maxWidth="330.0" minHeight="30.0" minWidth="330.0" prefHeight="30.0" prefWidth="330.0" styleClass="input">
+            <TextField fx:id="companyNameTextField" layoutX="65.0" layoutY="123.0" maxHeight="35.0" maxWidth="330.0" minHeight="35.0" minWidth="330.0" prefHeight="35.0" prefWidth="330.0" styleClass="input">
                <font>
                   <Font size="15.0" />
                </font></TextField>
-            <Label layoutX="61.0" layoutY="102.0" text="Company Name">
+            <Label layoutX="76.0" layoutY="97.0" text="Company Name">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="companyPhoneTextField" layoutX="50.0" layoutY="309.0" maxHeight="30.0" maxWidth="330.0" minHeight="30.0" minWidth="330.0" prefHeight="30.0" prefWidth="330.0" styleClass="input">
+            <TextField fx:id="companyPhoneTextField" layoutX="65.0" layoutY="326.0" maxHeight="35.0" maxWidth="330.0" minHeight="35.0" minWidth="330.0" prefHeight="35.0" prefWidth="330.0" styleClass="input">
                <font>
                   <Font size="15.0" />
                </font></TextField>
-            <Label layoutX="61.0" layoutY="284.0" text="Company Phone Number">
+            <Label layoutX="75.0" layoutY="300.0" text="Company Phone Number">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="companyEmailTextField" layoutX="390.0" layoutY="309.0" maxHeight="30.0" maxWidth="330.0" minHeight="30.0" minWidth="330.0" prefHeight="30.0" prefWidth="330.0" styleClass="input">
+            <TextField fx:id="companyEmailTextField" layoutX="405.0" layoutY="326.0" maxHeight="35.0" maxWidth="330.0" minHeight="35.0" minWidth="330.0" prefHeight="35.0" prefWidth="330.0" styleClass="input">
                <font>
                   <Font size="15.0" />
                </font></TextField>
-            <Label layoutX="401.0" layoutY="284.0" text="Company Email Address">
+            <Label layoutX="416.0" layoutY="300.0" text="Company Email Address">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <CheckBox fx:id="isOwnerCheckBox" layoutX="68.0" layoutY="355.0" mnemonicParsing="false" stylesheets="@../css/application.css" text="Company Owner">
+            <CheckBox fx:id="isOwnerCheckBox" layoutX="82.0" layoutY="374.0" mnemonicParsing="false" stylesheets="@../css/application.css" text="Company Owner">
                <font>
                   <Font size="15.0" />
                </font></CheckBox>
-            <TextField fx:id="companyWebsiteTextField" layoutX="390.0" layoutY="127.0" maxHeight="30.0" maxWidth="330.0" minHeight="30.0" minWidth="330.0" prefHeight="30.0" prefWidth="330.0" styleClass="input">
+            <TextField fx:id="companyWebsiteTextField" layoutX="405.0" layoutY="123.0" maxHeight="35.0" maxWidth="330.0" minHeight="35.0" minWidth="330.0" prefHeight="35.0" prefWidth="330.0" styleClass="input">
                <font>
                   <Font size="15.0" />
                </font></TextField>
-            <Label layoutX="401.0" layoutY="102.0" text="Company Website">
+            <Label layoutX="416.0" layoutY="97.0" text="Company Website">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>

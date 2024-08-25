@@ -2,7 +2,6 @@ package uoa.lavs.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -189,14 +188,12 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
           row.setOnMouseClicked(
               event -> {
-                if (!row.isEmpty()) {
-                  if (!row.isEmpty()) {
-                    try {
-                      addressTableRow = row.getIndex();
-                      createAddressPopup((Pane) addressTable.getScene().getRoot(), row.getItem());
-                    } catch (IOException e) {
-                      e.printStackTrace();
-                    }
+                if (!row.isEmpty() && setting != Setting.VIEW) {
+                  try {
+                    addressTableRow = row.getIndex();
+                    createAddressPopup((Pane) addressTable.getScene().getRoot(), row.getItem());
+                  } catch (IOException e) {
+                    e.printStackTrace();
                   }
                 }
               });
@@ -210,7 +207,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
           row.setOnMouseClicked(
               event -> {
-                if (!row.isEmpty()) {
+                if (!row.isEmpty() && setting != Setting.VIEW) {
                   try {
                     emailTableRow = row.getIndex();
                     createEmailPopup((Pane) emailTable.getScene().getRoot(), row.getItem());
@@ -229,7 +226,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
           row.setOnMouseClicked(
               event -> {
-                if (!row.isEmpty()) {
+                if (!row.isEmpty() && setting != Setting.VIEW) {
                   try {
                     phoneTableRow = row.getIndex();
                     createPhonePopup((Pane) phoneTable.getScene().getRoot(), row.getItem());
@@ -248,7 +245,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
           row.setOnMouseClicked(
               event -> {
-                if (!row.isEmpty()) {
+                if (!row.isEmpty() && setting != Setting.VIEW) {
                   try {
                     employmentTableRow = row.getIndex();
                     createEmploymentPopup(
@@ -315,10 +312,6 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
   private void setDisableForFields(boolean isDisabled) {
     generalDetailsPane.setDisable(isDisabled);
-    addressTable.setDisable(isDisabled);
-    emailTable.setDisable(isDisabled);
-    phoneTable.setDisable(isDisabled);
-    employmentTable.setDisable(isDisabled);
     notesArea.setDisable(isDisabled);
     loansTab.setDisable(!isDisabled);
   }

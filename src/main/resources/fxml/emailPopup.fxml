@@ -11,19 +11,19 @@
 
 <Pane fx:id="addEmailPane" maxHeight="694.0" maxWidth="1193.0" minHeight="648.0" minWidth="1152.0" prefHeight="694.0" prefWidth="1193.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.EmailPopupController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#727272" height="693.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1193.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#727272" height="694.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1193.0" />
       <Pane layoutX="351.0" layoutY="195.0" maxHeight="250.0" maxWidth="450.0" minHeight="250.0" minWidth="450.0" prefHeight="250.0" prefWidth="450.0" styleClass="popup-pane" stylesheets="@../css/application.css">
          <children>
-            <Label layoutX="46.0" layoutY="44.0" prefHeight="36.0" prefWidth="245.0" text="Email">
+            <Label layoutX="57.0" layoutY="44.0" prefHeight="36.0" prefWidth="245.0" text="Email">
                <font>
                   <Font name="System Bold" size="36.0" />
                </font>
             </Label>
-            <TextField fx:id="emailTextField" layoutX="41.0" layoutY="126.0" maxHeight="35.0" maxWidth="330.0" minHeight="35.0" minWidth="330.0" prefHeight="35.0" prefWidth="330.0" styleClass="input">
+            <TextField fx:id="emailTextField" layoutX="60.0" layoutY="129.0" maxHeight="35.0" maxWidth="330.0" minHeight="35.0" minWidth="330.0" prefHeight="35.0" prefWidth="330.0" styleClass="input">
                <font>
                   <Font size="15.0" />
                </font></TextField>
-            <Label layoutX="54.0" layoutY="101.0" text="Email Address">
+            <Label layoutX="73.0" layoutY="101.0" text="Email Address">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -40,7 +40,7 @@
                   <String fx:value="popup-button" />
                </styleClass>
             </Button>
-            <CheckBox fx:id="isPrimaryEmailCheckBox" layoutX="60.0" layoutY="173.0" mnemonicParsing="false" stylesheets="@../css/application.css" text="Primary Email Address">
+            <CheckBox fx:id="isPrimaryEmailCheckBox" layoutX="79.0" layoutY="177.0" mnemonicParsing="false" stylesheets="@../css/application.css" text="Primary Email Address">
                <font>
                   <Font size="15.0" />
                </font></CheckBox>
