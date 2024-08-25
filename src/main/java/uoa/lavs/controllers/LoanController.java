@@ -234,19 +234,21 @@ public class LoanController extends uoa.lavs.controllers.Controller {
     repaymentsTable.setItems(repayments);
   }
 
-  public void addCoBorrower(Customer coBorrower) {
+  public boolean addCoBorrower(Customer coBorrower) {
     if (coBorrowers.contains(coBorrower) || coBorrower.getId().equals(primeBorrowerId)) {
       Alert exceptionAlert = new Alert(Alert.AlertType.ERROR);
       exceptionAlert.setTitle("Error");
       exceptionAlert.setHeaderText(
-          coBorrowers.contains(coBorrower)
-              ? "This customer has already been added as a co-borrower."
-              : "This customer is the prime borrower.");
-      exceptionAlert.showAndWait();
-      return;
+          coBorrower.getId().equals(primeBorrowerId)
+              ? "This customer is the prime borrower."
+              : "This customer has already been added as a co-borrower.");
+      if (exceptionAlert.showAndWait().get() == ButtonType.OK) {
+        return false;
+      }
     }
     coBorrowers.add(coBorrower);
     coBorrowersTable.setItems(coBorrowers);
+    return true;
   }
 
   public void addPrimeBorrower(String primeBorrowerId) {
