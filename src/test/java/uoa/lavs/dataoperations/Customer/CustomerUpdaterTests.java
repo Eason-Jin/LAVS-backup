@@ -22,7 +22,7 @@ public class CustomerUpdaterTests {
   } 
 
   @Test
-  public void testCreateCustomer() throws SQLException {
+  public void createCustomer() throws SQLException {
     // Arrange
     DataOperationsTestsHelper.createTestingDatabases();
     Customer customer = new Customer(
@@ -58,10 +58,9 @@ public class CustomerUpdaterTests {
   }
 
   @Test
-  public void testUpdateCustomer() throws SQLException {
+  public void updateCustomer() throws SQLException {
 
     DataOperationsTestsHelper.createTestingDatabases();
-    DataOperationsTestsHelper.insertCustomer();
     // Arrange
     Customer updatedCustomer = new Customer(
         "1",
@@ -97,9 +96,8 @@ public class CustomerUpdaterTests {
   }
 
   @Test
-  public void getFailedUpdates() throws SQLException {
+  public void getFailedCustomerUpdates() throws SQLException {
     DataOperationsTestsHelper.createTestingDatabases();
-    DataOperationsTestsHelper.insertCustomer();
     CustomerUpdater.getFailedUpdates();
 
     assertEquals(1, CustomerUpdater.getFailedUpdates().size());

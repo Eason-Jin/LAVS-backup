@@ -16,7 +16,6 @@ public class CustomerFinderTests {
     @Test
     public void findCustomerFromDatabase() throws Exception {
         DataOperationsTestsHelper.createTestingDatabases();
-        DataOperationsTestsHelper.insertCustomer();
 
         List<Customer> customers = CustomerFinder.findFromDatabaseByName("John");
 
@@ -31,7 +30,7 @@ public class CustomerFinderTests {
         DataOperationsTestsHelper.createTestingDatabases();
 
         assertThrows(Exception.class, () -> {
-            CustomerFinder.findFromDatabaseByName("John");
+            CustomerFinder.findFromDatabaseByName("Jane");
         });
     }
 }

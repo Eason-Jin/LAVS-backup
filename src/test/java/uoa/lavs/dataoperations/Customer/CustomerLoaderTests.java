@@ -15,7 +15,6 @@ public class CustomerLoaderTests {
     @Test
     public void loadCustomerFromDatabase() throws Exception {
         DataOperationsTestsHelper.createTestingDatabases();
-        DataOperationsTestsHelper.insertCustomer();
 
         Customer customer = CustomerLoader.loadFromDatabase("1");
 
@@ -35,7 +34,7 @@ public class CustomerLoaderTests {
         DataOperationsTestsHelper.createTestingDatabases();
 
         assertThrows(Exception.class, () -> {
-            CustomerLoader.loadFromDatabase("1");
+            CustomerLoader.loadFromDatabase("2");
         });
     }
 }
