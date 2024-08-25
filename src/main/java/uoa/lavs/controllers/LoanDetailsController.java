@@ -58,6 +58,8 @@ public class LoanDetailsController {
   @Autowired SearchController searchController;
   @Autowired CustomerController customerController;
 
+  private Loan loan;
+
   @FXML
   private void initialize() {
     coBorrowerNameColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));
@@ -70,7 +72,7 @@ public class LoanDetailsController {
   }
 
   public void setLoanDetails(String loanId) {
-    Loan loan = LoanLoader.loadData(loanId);
+    loan = LoanLoader.loadData(loanId);
     LoanSummary loanSummary = LoanSummaryLoader.calculateLoanSummary(loanId);
 
     titleLabel.setText("Loan Details for Loan ID: " + loanId);
@@ -129,6 +131,7 @@ public class LoanDetailsController {
 
   @FXML
   private void onClickBack(ActionEvent event) throws IOException {
+    customerController.setUpViewCustomer(loan.getCustomerId());
     resetScene();
     Main.setScene(AppScene.CUSTOMER);
   }
