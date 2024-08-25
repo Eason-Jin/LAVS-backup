@@ -142,8 +142,10 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
   private String tableNormalBorder = "-fx-border-color: #d0d7de";
   private String tableRedBorder = "-fx-border-color: red";
 
+  private int addressTableRow = -1;
   private int emailTableRow = -1;
   private int phoneTableRow = -1;
+  private int employmentTableRow = -1;
 
   @FXML
   public void initialize() {
@@ -194,6 +196,7 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
                 if (!row.isEmpty()) {
                   if (!row.isEmpty()) {
                     try {
+                      addressTableRow = row.getIndex();
                       createAddressPopup((Pane) addressTable.getScene().getRoot(), row.getItem());
                     } catch (IOException e) {
                       e.printStackTrace();
@@ -251,6 +254,7 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
               event -> {
                 if (!row.isEmpty()) {
                   try {
+                    employmentTableRow = row.getIndex();
                     createEmploymentPopup(
                         (Pane) employmentTable.getScene().getRoot(), row.getItem());
                   } catch (IOException e) {
@@ -431,7 +435,12 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
   }
 
   private void handleAddressSave(Address savedAddress) {
-    addresses.add(savedAddress);
+    if (addressTableRow != -1) {
+      addresses.set(addressTableRow, savedAddress);
+    } else {
+      addresses.add(savedAddress);
+    }
+    addressTableRow = -1;
     addressTable.setItems(addresses);
   }
 
@@ -442,7 +451,6 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
       emails.add(savedEmail);
     }
     emailTableRow = -1;
-
     emailTable.setItems(emails);
   }
 
@@ -452,11 +460,17 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
     } else {
       phones.add(savedPhone);
     }
+    phoneTableRow = -1;
     phoneTable.setItems(phones);
   }
 
   private void handleEmploymentSave(Employer savedEmployer) {
-    employers.add(savedEmployer);
+    if (employmentTableRow != -1) {
+      employers.set(employmentTableRow, savedEmployer);
+    } else {
+      employers.add(savedEmployer);
+    }
+    employmentTableRow = -1;
     employmentTable.setItems(employers);
   }
 
@@ -468,10 +482,10 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
   }
 
   private void createAddressPopup(Pane currentRoot, Address address) throws IOException {
-    // FXMLLoader loader = createPopup("/fxml/addressPopup.fxml", currentRoot);
-    // AddressPopupController addressPopupController = loader.getController();
-    // addressPopupController.setUpAddressPopup(
-    //     address, doesPrimaryAddressExist(), this::handleAddressSave);
+    FXMLLoader loader = createPopup("/fxml/addressPopup.fxml", currentRoot);
+    AddressPopupController addressPopupController = loader.getController();
+    addressPopupController.setUpAddressPopup(
+        address, doesPrimaryAddressExist(), doesMailingAddressExist(), this::handleAddressSave);
   }
 
   private void createEmailPopup(Pane currentRoot, Email email) throws IOException {
@@ -487,9 +501,9 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
   }
 
   private void createEmploymentPopup(Pane currentRoot, Employer employer) throws IOException {
-    // FXMLLoader loader = createPopup("/fxml/employmentPopup.fxml", currentRoot);
-    // EmploymentPopupController employmentPopupController = loader.getController();
-    // employmentPopupController.setUpEmploymentPopup(employer, this::handleEmploymentSave);
+    FXMLLoader loader = createPopup("/fxml/employmentPopup.fxml", currentRoot);
+    EmploymentPopupController employmentPopupController = loader.getController();
+    employmentPopupController.setUpEmploymentPopup(employer, this::handleEmploymentSave);
   }
 
   @Override
@@ -805,6 +819,15 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
   private boolean doesPrimaryAddressExist() {
     for (Address address : addresses) {
       if (address.getIsPrimary()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean doesMailingAddressExist() {
+    for (Address address : addresses) {
+      if (address.getIsMailing()) {
         return true;
       }
     }

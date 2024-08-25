@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="employmentPopupPane" maxHeight="666.0" maxWidth="1167.0" minHeight="648.0" minWidth="1152.0" prefHeight="666.0" prefWidth="1167.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.EmailPopupController">
+<Pane fx:id="employmentPopupPane" maxHeight="666.0" maxWidth="1167.0" minHeight="648.0" minWidth="1152.0" prefHeight="666.0" prefWidth="1167.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.EmploymentPopupController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#727272" height="666.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1167.0" />
       <Pane layoutX="176.0" layoutY="120.0" maxHeight="400.0" maxWidth="800.0" minHeight="400.0" minWidth="800.0" prefHeight="400.0" prefWidth="800.0" styleClass="popup-pane" stylesheets="@../css/application.css">
