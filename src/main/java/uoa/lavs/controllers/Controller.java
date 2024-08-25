@@ -10,8 +10,6 @@ import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import uoa.lavs.Main;
-import uoa.lavs.SceneManager.AppScene;
 
 public abstract class Controller {
   protected enum Setting {
