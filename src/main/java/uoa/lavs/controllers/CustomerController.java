@@ -702,6 +702,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
         successAlert.setTitle("Success");
         successAlert.setHeaderText(
             setting == Setting.ADD ? "Customer has been added" : "Customer has been updated");
+        successAlert.setContentText(CustomerUpdater.message.toString());
         if (successAlert.showAndWait().get() == ButtonType.OK) {
           resetFieldStyle();
           setUpViewCustomer(customerId);
