@@ -574,7 +574,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     }
 
     boolean contactDetailsFlag = false;
-    
+
     boolean primaryEmailFlag = true;
     if (emails.size() > 0) {
       contactDetailsFlag = true;
@@ -582,7 +582,6 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
       for (Email email : emails) {
         if (email.getIsPrimary()) {
           primaryEmailFlag = true;
-          break;
         }
       }
       if (!primaryEmailFlag) {
@@ -599,11 +598,9 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
       for (Phone phone : phones) {
         if (phone.getIsPrimary()) {
           primaryPhoneFlag = true;
-          break;
         }
         if (phone.getCanSendText()) {
           textingPhoneFlag = true;
-          break;
         }
       }
       if (!primaryPhoneFlag) {
