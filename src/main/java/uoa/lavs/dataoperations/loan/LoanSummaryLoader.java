@@ -29,14 +29,14 @@ public class LoanSummaryLoader {
 
     }
 
-    private static LoanSummary calculateLocally(String loanId) throws Exception {
+    public static LoanSummary calculateLocally(String loanId) throws Exception {
         LoanPaymentsLoader loanPaymentsLoader = new LoanPaymentsLoader();
         List<LoanRepayment> loanRepayments = loanPaymentsLoader.calculateLocally(loanId);
         LoanSummary loanSummary = new LoanSummary((ArrayList<LoanRepayment>) loanRepayments);
         return loanSummary;
     }
 
-    private static LoanSummary calculateFromMainframe(String loanId) throws Exception {
+    public static LoanSummary calculateFromMainframe(String loanId) throws Exception {
         LoadLoanSummary loadLoanSummary = new LoadLoanSummary();
         loadLoanSummary.setLoanId(loanId);
         Status status = loadLoanSummary.send(LocalInstance.getConnection());
