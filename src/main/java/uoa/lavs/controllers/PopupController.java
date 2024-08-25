@@ -21,7 +21,7 @@ public abstract class PopupController extends Controller {
   @FXML
   abstract void onClickSave(ActionEvent event);
 
-  abstract void setUpPopup(Detail obj, Consumer<Detail> objectSaveHandler, boolean... args);
+  abstract void setUpPopup(Detail obj, Consumer<Detail> objectSaveHandler, Boolean isPrimary);
 
   protected void closePopup() {
     ((Pane) popupPane.getScene().getRoot()).getChildren().remove(popupPane);

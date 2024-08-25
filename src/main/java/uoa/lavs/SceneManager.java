@@ -12,9 +12,8 @@ public class SceneManager {
         CUSTOMER,
         ADD_CUSTOMER,
         SEARCH,
-        ADD_LOAN,
         CUSTOMER_DETAILS,
-        LOAN_DETAILS,
+        LOAN,
         PENDING_UPDATES
     }
 
