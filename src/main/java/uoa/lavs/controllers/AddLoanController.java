@@ -317,7 +317,7 @@ public class AddLoanController extends uoa.lavs.controllers.Controller {
       if (node instanceof DatePicker) {
         if (!validateDateFormat(((DatePicker) node).getValue(), false)) {
           dateflag = false;
-          appendErrorMessage("Start Date must be afterg today!\n");
+          appendErrorMessage("Start Date must be after today!\n");
         }
       }
     }

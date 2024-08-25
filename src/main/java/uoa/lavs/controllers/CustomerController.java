@@ -357,7 +357,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   }
 
   private void resetScene() {
-    resetFieldStyle();
+    // resetFieldStyle();
     titleField.clear();
     nameField.clear();
     dobPicker.setValue(null);
@@ -740,6 +740,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
       case EDIT:
         alertCancel.setTitle("Cancel editing customer");
         if (alertCancel.showAndWait().get() == ButtonType.OK) {
+          resetScene();
           setUpViewCustomer(customer.getId());
         }
         break;

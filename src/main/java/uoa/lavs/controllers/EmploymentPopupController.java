@@ -99,8 +99,8 @@ public class EmploymentPopupController extends PopupController {
     this.employment.setCity(companyCityTextField.getText());
     this.employment.setPostCode(companyPostcodeTextField.getText());
     this.employment.setCountry(companyCountryTextField.getText());
-    this.employment.setPhoneNumber(companyWebsiteTextField.getText());
-    this.employment.setEmailAddress(companyWebsiteTextField.getText());
+    this.employment.setPhoneNumber(companyPhoneTextField.getText());
+    this.employment.setEmailAddress(companyEmailTextField.getText());
     this.employment.setWebsite(companyWebsiteTextField.getText());
     this.employment.setIsOwner(isOwnerCheckBox.isSelected());
 

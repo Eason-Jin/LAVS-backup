@@ -12,8 +12,8 @@ public abstract class Controller {
   protected Alert alert = new Alert(Alert.AlertType.ERROR);
   protected StringBuilder errorMessage = new StringBuilder();
 
-  protected String fieldNormalBorder = "-fx-border-color: #d0d7de; -fx-border-radius: 4";
-  protected String fieldRedBorder = "-fx-border-color: red; -fx-border-radius: 4";
+  protected String fieldNormalBorder = "-fx-border-color: #d0d7de;";
+  protected String fieldRedBorder = "-fx-border-color: red;";
   protected String tableNormalBorder = "-fx-border-color: #d0d7de";
   protected String tableRedBorder = "-fx-border-color: red";
 

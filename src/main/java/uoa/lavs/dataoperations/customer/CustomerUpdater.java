@@ -25,14 +25,18 @@ public class CustomerUpdater {
       if (id == null) {
         id = customerID;
       }
-      message.append("Mainframe update successful\n");
+      if (message.indexOf("Mainframe update successful") != -1) {
+        message.append("Mainframe update successful\n");
+      }
     } catch (Exception e) {
       System.out.println("Mainframe update failed: " + e.getMessage());
       failed = true;
     } finally {
       try {
         updateDatabase(id, customer);
-        message.append("Database update successful\n");
+        if (message.indexOf("Mainframe update successful") != -1) {
+          message.append("Database update successful\n");
+        }
       } catch (SQLException e) {
         System.out.println("Database update failed: " + e.getMessage());
       } finally {
