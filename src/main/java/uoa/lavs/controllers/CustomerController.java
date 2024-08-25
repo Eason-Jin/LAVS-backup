@@ -528,12 +528,6 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
       appendErrorMessage("Please add at least one email or phone\n");
     }
 
-    boolean employersFlag = employers.size() >= 1;
-    if (!employersFlag) {
-      employmentTable.setStyle(tableRedBorder);
-      appendErrorMessage("Please add at least one employer\n");
-    }
-
     // Only one address can be primary, need at least one mailing address
     int primaryAddressNum = 0;
     int mailingAddressNum = 0;
@@ -597,7 +591,6 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     return dobFlag
         && addressFlag
         && contactDetailsFlag
-        && employersFlag
         && primaryAddressNum == 1
         && primaryEmailNum == 1
         && primaryPhoneNum == 1
