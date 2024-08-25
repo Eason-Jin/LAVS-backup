@@ -564,17 +564,17 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
         mailingAddressNum++;
       }
     }
-    if (primaryAddressNum == 0) {
-      if (errorMessage.indexOf("Please select a primary address") == -1) {
-        errorMessage.append("Please select a primary address\n");
-      }
+    boolean primaryAddressFlag = true;
+    if (primaryAddressNum == 0 && addresses.size() > 0) {
+      primaryAddressFlag = false;
+      appendErrorMessage("Please select a primary address\n");
     }
-    if (mailingAddressNum == 0) {
-      if (errorMessage.indexOf("Please select a mailing address") == -1) {
-        errorMessage.append("Please select a mailing address\n");
-      }
+    boolean mailingAddressFlag = true;
+    if (mailingAddressNum == 0 && addresses.size() > 0) {
+      mailingAddressFlag = false;
+      appendErrorMessage("Please select a mailing address\n");
     }
-    if (!addressFlag || primaryAddressNum == 0 || mailingAddressNum == 0) {
+    if (!addressFlag || !primaryAddressFlag || !mailingAddressFlag) {
       addressTable.setStyle(tableRedBorder);
     }
 
@@ -585,7 +585,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
         primaryEmailNum++;
       }
     }
-    if (primaryEmailNum == 0) {
+    if (primaryEmailNum == 0 && emails.size() > 0) {
       appendErrorMessage("Please select a primary email\n");
     }
     if (!contactDetailsFlag || primaryEmailNum == 0) {
@@ -603,24 +603,27 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
         textingPhoneNum++;
       }
     }
-    if (primaryPhoneNum == 0) {
+    boolean primaryPhoneFlag = true;
+    if (primaryPhoneNum == 0 && phones.size() > 0) {
+      primaryPhoneFlag = false;
       appendErrorMessage("Please select a primary phone\n");
     }
-    if (textingPhoneNum == 0) {
+    boolean textingPhoneFlag = true;
+    if (textingPhoneNum == 0 && phones.size() > 0) {
+      textingPhoneFlag = false;
       appendErrorMessage("Please select a texting phone\n");
     }
-    if (!contactDetailsFlag || primaryPhoneNum == 0 || textingPhoneNum == 0) {
+    if (!contactDetailsFlag || !primaryPhoneFlag || !textingPhoneFlag) {
       phoneTable.setStyle(tableRedBorder);
     }
 
     return dobFlag
         && addressFlag
         && contactDetailsFlag
-        && primaryAddressNum == 1
-        && primaryEmailNum == 1
-        && primaryPhoneNum == 1
-        && mailingAddressNum >= 1
-        && textingPhoneNum >= 1;
+        && primaryAddressFlag
+        && mailingAddressFlag
+        && primaryPhoneFlag
+        && textingPhoneFlag;
   }
 
   private boolean checkLengths() {
@@ -672,6 +675,10 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
   @FXML
   private void onClickSave(ActionEvent event) {
+    addressTable.setStyle(tableNormalBorder);
+    emailTable.setStyle(tableNormalBorder);
+    phoneTable.setStyle(tableNormalBorder);
+    employmentTable.setStyle(tableNormalBorder);
     if (checkFields() && checkLengths() && validateFields()) {
       try {
         customer =
