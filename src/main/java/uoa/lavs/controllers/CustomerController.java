@@ -476,7 +476,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     FXMLLoader loader = createPopup("/fxml/addressPopup.fxml", currentRoot);
     AddressPopupController addressPopupController = loader.getController();
     addressPopupController.setUpPopup(
-        address, this::handleSave, doesPrimaryAddressExist(), doesMailingAddressExist());
+        address, this::handleSave, doesPrimaryAddressExist());
   }
 
   private void createEmailPopup(Pane currentRoot, Email email) throws IOException {
@@ -494,7 +494,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   private void createEmploymentPopup(Pane currentRoot, Employer employer) throws IOException {
     FXMLLoader loader = createPopup("/fxml/employmentPopup.fxml", currentRoot);
     EmploymentPopupController employmentPopupController = loader.getController();
-    employmentPopupController.setUpPopup(employer, this::handleSave);
+    employmentPopupController.setUpPopup(employer, this::handleSave, null);
   }
 
   public boolean checkFields() {

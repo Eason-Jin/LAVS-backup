@@ -72,13 +72,13 @@ public class PhonePopupController extends PopupController {
   }
 
   @Override
-  public void setUpPopup(Detail obj, Consumer<Detail> objectSaveHandler, boolean... args) {
+  public void setUpPopup(Detail obj, Consumer<Detail> objectSaveHandler, Boolean isPrimary) {
     this.phone = (Phone) obj;
     this.phoneSaveHandler = (Consumer<Phone>) (Object) objectSaveHandler;
     phoneTypeComboBox.setValue(phone.getType());
     prefixTextField.setText(phone.getPrefix());
     phoneTextField.setText(phone.getPhoneNumber());
-    isPrimaryPhoneCheckBox.setDisable((args.length > 0 ? args[0] : false) && !phone.getIsPrimary());
+    isPrimaryPhoneCheckBox.setDisable(isPrimary && !phone.getIsPrimary());
     isPrimaryPhoneCheckBox.setSelected(phone.getIsPrimary());
     sendTextsCheckBox.setSelected(phone.getCanSendText());
   }

@@ -118,7 +118,7 @@ public class AddressPopupController extends PopupController {
   }
 
   @Override
-  public void setUpPopup(Detail obj, Consumer<Detail> objectSaveHandler, boolean... args) {
+  public void setUpPopup(Detail obj, Consumer<Detail> objectSaveHandler, Boolean isPrimary) {
     this.address = (Address) obj;
     this.addressSaveHandler = (Consumer<Address>) (Object) objectSaveHandler;
     addressLine1TextField.setText(address.getLine1());
@@ -129,10 +129,8 @@ public class AddressPopupController extends PopupController {
     countryTextField.setText(address.getCountry());
     addressTypeComboBox.setValue(address.getType());
     isPrimaryAddressCheckBox.setDisable(
-        (args.length > 0 ? args[0] : false) && !address.getIsPrimary());
+        isPrimary && !address.getIsPrimary());
     isPrimaryAddressCheckBox.setSelected(address.getIsPrimary());
-    isMailingAddressCheckBox.setDisable(
-        (args.length > 1 ? args[1] : false) && !address.getIsMailing());
     isMailingAddressCheckBox.setSelected(address.getIsMailing());
   }
 }
