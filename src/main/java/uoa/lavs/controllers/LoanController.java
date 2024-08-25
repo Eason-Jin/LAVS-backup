@@ -2,6 +2,7 @@ package uoa.lavs.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,9 +25,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager.AppScene;
+import uoa.lavs.dataoperations.customer.CustomerLoader;
+import uoa.lavs.dataoperations.loan.CoborrowerLoader;
+import uoa.lavs.dataoperations.loan.LoanLoader;
+import uoa.lavs.dataoperations.loan.LoanPaymentsLoader;
+import uoa.lavs.dataoperations.loan.LoanSummaryLoader;
 import uoa.lavs.models.Customer;
 import uoa.lavs.models.Loan;
 import uoa.lavs.utility.LoanRepayment;
+import uoa.lavs.utility.LoanSummary;
 
 @Controller
 public class LoanController extends uoa.lavs.controllers.Controller {
@@ -123,12 +130,131 @@ public class LoanController extends uoa.lavs.controllers.Controller {
     repayments = FXCollections.observableArrayList(new ArrayList<>());
   }
 
-  public void setUpAddLoan(String customerId, String customerName) {}
+  public void setUpAddLoan(String customerId, String customerName) {
+    setting = Setting.ADD;
+    titleLabel.setText("New Loan for " + customerName);
+    loanIdLabel.setText("");
+    detailsTabPane.getSelectionModel().select(0);
+    addPrimeBorrower(customerId);
+    setDisableForFields(false);
+    setVisabilityForFields(true);
+  }
 
-  public void setUpViewLoan(String loanId) {}
+  public void setUpViewLoan(String loanId) {
+    setting = Setting.VIEW;
+    titleLabel.setText("Loan Details");
+    detailsTabPane.getSelectionModel().select(0);
+    setLoanDetails(loanId);
+    setDisableForFields(true);
+    setVisabilityForFields(false);
+  }
+
+  private void setDisableForFields(boolean isDisabled) {
+    loanDetailsPane.setDisable(isDisabled);
+    coBorrowersTable.setDisable(isDisabled);
+    repaymentsTab.setDisable(!isDisabled);
+  }
+
+  private void setVisabilityForFields(boolean isVisible) {
+    totalInterestLabel.setVisible(!isVisible);
+    totalCostLabel.setVisible(!isVisible);
+    payoffDateLabel.setVisible(!isVisible);
+    totalInterestField.setVisible(!isVisible);
+    totalCostField.setVisible(!isVisible);
+    payoffDateField.setVisible(!isVisible);
+    saveButton.setVisible(isVisible);
+    addCoBorrowerButton.setVisible(isVisible);
+  }
+
+  private void resetScene() {
+    resetFieldStyle();
+    principalField.clear();
+    rateTypeBox.setValue(null);
+    rateValueField.clear();
+    startDatePicker.setValue(null);
+    periodField.clear();
+    loanTermField.clear();
+    compoundingBox.setValue(null);
+    paymentFrequencyBox.setValue(null);
+    paymentAmountField.clear();
+    totalInterestField.clear();
+    totalCostField.clear();
+    payoffDateField.clear();
+    loan = new Loan();
+    primeBorrowerId = null;
+    coBorrowers.clear();
+    repayments.clear();
+    coBorrowersTable.getItems().clear();
+    repaymentsTable.getItems().clear();
+  }
+
+  private void resetFieldStyle() {
+    principalField.setStyle(normalBorder);
+    rateTypeBox.setStyle(normalBorder);
+    rateValueField.setStyle(normalBorder);
+    startDatePicker.setStyle(normalBorder);
+    periodField.setStyle(normalBorder);
+    loanTermField.setStyle(normalBorder);
+    compoundingBox.setStyle(normalBorder);
+    paymentFrequencyBox.setStyle(normalBorder);
+    paymentAmountField.setStyle(normalBorder);
+  }
+
+  public void setLoanDetails(String loanId) {
+    loan = LoanLoader.loadData(loanId);
+    primeBorrowerId = loan.getCustomerId();
+    LoanSummary loanSummary = LoanSummaryLoader.calculateLoanSummary(loanId);
+
+    loanIdLabel.setText("Loan ID: " + loanId);
+
+    principalField.setText("$" + String.valueOf(loan.getPrincipal()));
+    rateTypeBox.setValue(String.valueOf(loan.getRateType()));
+    rateValueField.setText(String.valueOf(loan.getRateValue()));
+    startDatePicker.setValue(loan.getStartDate());
+    periodField.setText(String.valueOf(loan.getPeriod()));
+    loanTermField.setText(String.valueOf(loan.getTerm()));
+    compoundingBox.setValue(String.valueOf(loan.getCompounding()));
+    paymentFrequencyBox.setValue(String.valueOf(loan.getPaymentFrequency()));
+    paymentAmountField.setText("$" + String.valueOf(loan.getPaymentAmount()));
+    totalInterestField.setText("$" + String.valueOf(loanSummary.getTotalInterest()));
+    totalCostField.setText("$" + String.valueOf(loanSummary.getTotalCost()));
+    payoffDateField.setText(loanSummary.getPayOffDate().toString());
+
+    setCoBorrowersTable(loanId);
+    setRepaymentsTable(loanId);
+  }
+
+  private void setCoBorrowersTable(String loanId) {
+    List<String> coBorrowerIds = CoborrowerLoader.loadData(loanId);
+
+    // Extract the first part of the Loan-ID (before the dash "-")
+    String loanIdPrefix = loanId.split("-")[0];
+    // Remove the coBorrower ID that matches the first part of the Loan-ID
+    coBorrowerIds.removeIf(id -> id.equals(loanIdPrefix));
+
+    for (String id : coBorrowerIds) {
+      Customer coBorrower = CustomerLoader.loadData(id);
+      coBorrowers.add(coBorrower);
+    }
+    coBorrowersTable.setItems(coBorrowers);
+  }
+
+  private void setRepaymentsTable(String loanId) {
+    repayments =
+        FXCollections.observableArrayList(LoanPaymentsLoader.calculateLoanRepayments(loanId));
+    repaymentsTable.setItems(repayments);
+  }
+
+  public void addPrimeBorrower(String primeBorrowerId) {
+    this.primeBorrowerId = primeBorrowerId;
+  }
 
   @FXML
-  private void onClickAddCoBorrower(ActionEvent event) throws IOException {}
+  private void onClickAddCoBorrower(ActionEvent event) throws IOException {
+    searchController.clearSearch();
+    searchController.setCoBorrowerSearch(true);
+    Main.setScene(AppScene.SEARCH);
+  }
 
   @FXML
   private void onClickSave(ActionEvent event) {}
@@ -137,5 +263,8 @@ public class LoanController extends uoa.lavs.controllers.Controller {
   private void onClickCancel(ActionEvent event) {}
 
   @FXML
-  private void onClickHome(ActionEvent event) {}
+  private void onClickHome(ActionEvent event) {
+    resetScene();
+    Main.setScene(AppScene.START);
+  }
 }

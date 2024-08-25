@@ -12,10 +12,8 @@ public abstract class Controller {
   protected Alert alert = new Alert(Alert.AlertType.ERROR);
   protected StringBuilder errorMessage = new StringBuilder();
 
-  protected String fieldNormalBorder = "-fx-border-color: #d0d7de;";
-  protected String fieldRedBorder = "-fx-border-color: red;";
-  protected String tableNormalBorder = "-fx-border-color: #d0d7de";
-  protected String tableRedBorder = "-fx-border-color: red";
+  protected String normalBorder = "-fx-border-color: #d0d7de";
+  protected String redBorder = "-fx-border-color: red";
 
   protected boolean validateEmailFormat(String email) {
     // Email should be in the format of a@b.c
