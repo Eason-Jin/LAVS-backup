@@ -14,30 +14,36 @@
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#727272" height="693.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1193.0" />
       <Pane layoutX="351.0" layoutY="195.0" maxHeight="250.0" maxWidth="450.0" minHeight="250.0" minWidth="450.0" prefHeight="250.0" prefWidth="450.0" styleClass="popup-pane" stylesheets="@../css/application.css">
          <children>
-            <Label layoutX="46.0" layoutY="61.0" prefHeight="36.0" prefWidth="245.0" text="Add Email">
+            <Label layoutX="46.0" layoutY="44.0" prefHeight="36.0" prefWidth="245.0" text="Email">
                <font>
-                  <Font name="System Bold" size="30.0" />
+                  <Font name="System Bold" size="36.0" />
                </font>
             </Label>
-            <TextField fx:id="emailTextField" layoutX="43.0" layoutY="127.0" maxHeight="30.0" maxWidth="330.0" minHeight="30.0" minWidth="330.0" prefHeight="30.0" prefWidth="330.0" styleClass="input" />
-            <Label layoutX="56.0" layoutY="108.0" text="Email Address">
+            <TextField fx:id="emailTextField" layoutX="41.0" layoutY="126.0" maxHeight="35.0" maxWidth="330.0" minHeight="35.0" minWidth="330.0" prefHeight="35.0" prefWidth="330.0" styleClass="input">
                <font>
-                  <Font name="System Bold" size="13.0" />
+                  <Font size="15.0" />
+               </font></TextField>
+            <Label layoutX="54.0" layoutY="101.0" text="Email Address">
+               <font>
+                  <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Button layoutX="395.0" layoutY="28.0" maxHeight="35.0" maxWidth="35.0" minHeight="35.0" minWidth="35.0" mnemonicParsing="false" onAction="#onClickSave" prefHeight="35.0" prefWidth="35.0" stylesheets="@../css/application.css">
+            <Button layoutX="354.0" layoutY="28.0" maxHeight="35.0" maxWidth="35.0" minHeight="35.0" minWidth="35.0" mnemonicParsing="false" onAction="#onClickSave" prefHeight="35.0" prefWidth="35.0" stylesheets="@../css/application.css">
                <styleClass>
                   <String fx:value="popup-button" />
                   <String fx:value="save" />
                </styleClass>
             </Button>
-            <Button layoutX="354.0" layoutY="28.0" maxHeight="35.0" maxWidth="35.0" minHeight="35.0" minWidth="35.0" mnemonicParsing="false" onAction="#onClickClosePopup" prefHeight="35.0" prefWidth="35.0" stylesheets="@../css/application.css">
+            <Button layoutX="395.0" layoutY="28.0" maxHeight="35.0" maxWidth="35.0" minHeight="35.0" minWidth="35.0" mnemonicParsing="false" onAction="#onClickClosePopup" prefHeight="35.0" prefWidth="35.0" stylesheets="@../css/application.css">
                <styleClass>
                   <String fx:value="cancel" />
                   <String fx:value="popup-button" />
                </styleClass>
             </Button>
-            <CheckBox fx:id="isPrimaryEmailCheckBox" layoutX="62.0" layoutY="168.0" mnemonicParsing="false" stylesheets="@../css/application.css" text="Primary Email Address" />
+            <CheckBox fx:id="isPrimaryEmailCheckBox" layoutX="60.0" layoutY="173.0" mnemonicParsing="false" stylesheets="@../css/application.css" text="Primary Email Address">
+               <font>
+                  <Font size="15.0" />
+               </font></CheckBox>
          </children>
       </Pane>
    </children>

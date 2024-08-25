@@ -2,6 +2,8 @@ package uoa.lavs.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

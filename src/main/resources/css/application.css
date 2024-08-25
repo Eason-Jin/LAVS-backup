@@ -13,8 +13,8 @@
 /*    -fx-background-color: linear-gradient(#DBF1FE 75%, white 25%) no-repeat;*/
 /*}*/
 
-.combo-box:disabled,
-.text-field:disabled,
+/* .combo-box:disabled,
+.text-field:disabled, */
 .text-area:disabled {
   -fx-background-color: #f6f8fa;
   -fx-border-color: #d0d7de;
@@ -23,8 +23,8 @@
 }
 
 .date-picker:disabled,
-.date-picker > .date-picker-text-field:disabled,
-.date-picker > .date-picker-display-node:disabled,
+/* .date-picker > .date-picker-text-field:disabled,
+.date-picker > .date-picker-display-node:disabled, */
 .label:disabled,
 .check-box:disabled,
 .check-box > .box:disabled {
@@ -150,6 +150,7 @@
   -fx-border-color: transparent;
   -fx-background-color: transparent;
   -fx-padding: 0px;
+  pointer-events: none; 
 }
 
 .date-picker-display-node: focused {
@@ -157,6 +158,14 @@
   -fx-background-color: transparent;
 } 
 
+.date-picker-display-node: disabled {
+  -fx-border-color: transparent;
+  -fx-background-color: transparent;
+}
 .input: focused {
   -fx-border-color: black;
+}
+
+.input: disabled {
+  -fx-opacity: 1;
 }
