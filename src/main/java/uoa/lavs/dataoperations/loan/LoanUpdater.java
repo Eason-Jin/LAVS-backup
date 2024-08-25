@@ -31,7 +31,7 @@ public class LoanUpdater {
         if (failed) {
           addFailedUpdate(loan.getLoanId());
         } else {
-          addInMainframe(loan.getLoanId());
+          addInMainframe(loan.getLoanId(), loan.getLoanId());
         }
       }
     }
@@ -50,7 +50,7 @@ public class LoanUpdater {
         try (ResultSet resultSet = getMaxNumberStatement.executeQuery()) {
           if (resultSet.next()) {
             int nextNumber = resultSet.getInt(1);
-            loan.setLoanId(loan.getCustomerId() + "-" + String.format("%02d", nextNumber));
+            loan.setLoanId(loan.getCustomerId().replace(" (Temporary)", "") + "-" + String.format("%02d", nextNumber) + " (Temporary)");
           }
         }
       }
@@ -126,11 +126,15 @@ public class LoanUpdater {
     }
   }
 
-  private static void addInMainframe(String loanId) {
-    String sql = "UPDATE Loan SET InMainframe = true WHERE LoanID = ?";
+  private static void addInMainframe(String loanId, String mainframeId) {
+    String sql = "UPDATE Loan SET LoanID = ?, InMainframe = ? WHERE LoanID = ?";
     try (Connection connection = Instance.getDatabaseConnection();
+        Statement pragmaStatement = connection.createStatement();
         PreparedStatement statement = connection.prepareStatement(sql)) {
-      statement.setString(1, loanId);
+      pragmaStatement.execute("PRAGMA foreign_keys = ON");
+      statement.setString(1, mainframeId);
+      statement.setBoolean(2, true);
+      statement.setString(3, loanId);
       statement.executeUpdate();
     } catch (SQLException e) {
       System.out.println("Failed to update database: " + e.getMessage());
@@ -165,8 +169,8 @@ public class LoanUpdater {
     for (Loan loan : failedUpdates) {
       String loanId = loan.getLoanId();
       loan.setLoanId(null); // Reset loan ID before retrying
-        updateMainframe(loanId, loan);
-        addInMainframe(loanId);
+      String id = updateMainframe(loanId, loan);
+      addInMainframe(loanId, id);
     }
   }
 }

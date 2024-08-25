@@ -66,7 +66,7 @@ public class AddressFinder {
     return addresses;
   }
 
-  private static List<Address> findFromDatabase(String customerId) throws Exception {
+  public static List<Address> findFromDatabase(String customerId) throws Exception {
     List<Address> addresses = new ArrayList<>();
     String query = "SELECT * FROM Address WHERE CustomerID = ?";
     try (Connection connection = Instance.getDatabaseConnection();
