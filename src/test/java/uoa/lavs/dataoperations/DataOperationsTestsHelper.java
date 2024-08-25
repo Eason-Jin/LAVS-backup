@@ -96,7 +96,7 @@ public class DataOperationsTestsHelper {
                         City         TEXT (30) NOT NULL,
                         Postcode     INTEGER   NOT NULL,
                         Country      TEXT (30) NOT NULL,
-                        PhoneNumber  INTEGER   NOT NULL,
+                        PhoneNumber  TEXT   NOT NULL,
                         EmailAddress TEXT (60) NOT NULL,
                         Website      TEXT (60) NOT NULL,
                         Number       INTEGER   NOT NULL,
@@ -138,24 +138,40 @@ public class DataOperationsTestsHelper {
 
                                         """;
 
+            String insertCustomer = """
+                    INSERT INTO Customer (CustomerID, Name, Title, Status, Dob, Occupation, Citizenship, VisaType, Note, InMainframe)
+                    VALUES ('1', 'John Doe', 'Mr', 'Active', '1990-01-01', 'Engineer', 'NZ', 'Work', 'Note', 0);
+                    """;
+
+            String insertEmail = """
+                    INSERT INTO Email (CustomerID, Address, IsPrimary, Number, InMainframe)
+                    VALUES ('1', 'john@gmail.com', true, 1, 0);
+                    """;
+
+            String insertPhone = """
+                    INSERT INTO Phone (CustomerID, Type, Prefix, Number, IsPrimary, CanSendText, PhoneNumber, InMainframe)
+                    VALUES ('1', 'Mobile', 64, 1, true, true, '123456789', 0);
+                    """;
+
+            String insertAddress = """
+                    INSERT INTO Address (CustomerID, Line1, Suburb, City, Postcode, Country, IsPrimary, IsMailing, Number, Type, InMainframe)
+                    VALUES ('1', '35 Owens Road', 'Mt Eden', 'Auckland', 1234, 'New Zealand', true, true, 1, 'Residential', 0);
+                    """;
+            String insertEmployer = """
+                    INSERT INTO Employer (CustomerID, Name, Line1, Suburb, City, Postcode, Country, PhoneNumber, EmailAddress, Website, Number, IsOwner, InMainframe)
+                    VALUES ('1', 'Tech Corp', '123 Tech Street', 'Tech Suburb', 'Tech City', 1234, 'Tech Country', '0934534345', 'techcorp@tech.com', 'www.techcorp.com', 1, true, 0);
+                    """;
+
             stmt.executeUpdate(customerTable);
             stmt.executeUpdate(addressTable);
             stmt.executeUpdate(emailTable);
             stmt.executeUpdate(employerTable);
             stmt.executeUpdate(phoneTable);
-        }
-    }
-
-    public static void insertCustomer() {
-        try (Connection connection = LocalInstance.getDatabaseConnection();
-                Statement stmt = connection.createStatement()) {
-            String insertCustomer = """
-                    INSERT INTO Customer (CustomerID, Name, Title, Status, Dob, Occupation, Citizenship, VisaType, Note, InMainframe)
-                    VALUES ('1', 'John Doe', 'Mr', 'Active', '1990-01-01', 'Engineer', 'NZ', 'Work', 'Note', 0);
-                    """;
             stmt.executeUpdate(insertCustomer);
-        } catch (SQLException e) {
-            e.printStackTrace();
+            stmt.executeUpdate(insertEmail);
+            stmt.executeUpdate(insertPhone);
+            stmt.executeUpdate(insertAddress);
+            stmt.executeUpdate(insertEmployer);
         }
     }
 }
