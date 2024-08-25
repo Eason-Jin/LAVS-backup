@@ -30,7 +30,7 @@ public class CustomerFinder {
     return customers;
   }
 
-  private static List<Customer> findFromMainframeByName(String customerName) throws Exception {
+  public static List<Customer> findFromMainframeByName(String customerName) throws Exception {
     FindCustomerAdvanced findCustomer = new FindCustomerAdvanced();
     findCustomer.setSearchName(customerName);
     Status status = findCustomer.send(LocalInstance.getConnection());
