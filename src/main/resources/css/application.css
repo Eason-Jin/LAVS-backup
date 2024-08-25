@@ -13,8 +13,6 @@
 /*    -fx-background-color: linear-gradient(#DBF1FE 75%, white 25%) no-repeat;*/
 /*}*/
 
-.combo-box:disabled,
-.text-field:disabled,
 .text-area:disabled {
   -fx-background-color: #f6f8fa;
   -fx-border-color: #d0d7de;
@@ -22,6 +20,8 @@
   -fx-opacity: 1;
 }
 
+.input:disabled,
+.combo-box:disabled,
 .date-picker:disabled,
 .date-picker > .date-picker-text-field:disabled,
 .date-picker > .date-picker-display-node:disabled,
@@ -111,6 +111,11 @@
 
 .home {
   -fx-background-image: url("../images/generic/home.png");
+  -fx-background-size: 50%;
+}
+
+.back {
+  -fx-background-image: url("../images/generic/back.png");
   -fx-background-size: 50%;
 }
 

@@ -13,24 +13,22 @@ public abstract class Controller {
   protected Alert alert = new Alert(Alert.AlertType.ERROR);
   protected StringBuilder errorMessage = new StringBuilder();
 
-  protected String fieldNormalBorder = "-fx-border-color: #d0d7de;";
-  protected String fieldRedBorder = "-fx-border-color: red;";
-  protected String tableNormalBorder = "-fx-border-color: #d0d7de";
-  protected String tableRedBorder = "-fx-border-color: red";
+  protected String normalBorder = "-fx-border-color: #d0d7de";
+  protected String redBorder = "-fx-border-color: red";
 
   protected boolean validateEmailFormat(TextField email) {
-    email.setStyle(fieldNormalBorder);
+    email.setStyle(normalBorder);
     // Email should be in the format of a@b.c
     if (email.getText().matches("^.+@.+\\..+$")) {
       return true;
     } else {
-      email.setStyle(fieldRedBorder);
+      email.setStyle(redBorder);
       return false;
     }
   }
 
   protected boolean validateNumberFormat(TextField number, boolean isDouble) {
-    number.setStyle(fieldNormalBorder);
+    number.setStyle(normalBorder);
     try {
       if (isDouble) {
         Double.parseDouble(number.getText());
@@ -38,25 +36,25 @@ public abstract class Controller {
         Long.parseLong(number.getText());
       }
     } catch (Exception e) {
-      number.setStyle(fieldRedBorder);
+      number.setStyle(redBorder);
       return false;
     }
     return true;
   }
 
   protected boolean validateWebsiteFormat(TextField website) {
-    website.setStyle(fieldNormalBorder);
+    website.setStyle(normalBorder);
     // Website should be in the format of a.b
     if (website.getText().matches("^.+\\..+$")) {
       return true;
     } else {
-      website.setStyle(fieldRedBorder);
+      website.setStyle(redBorder);
       return false;
     }
   }
 
   protected boolean validateDateFormat(DatePicker dp, boolean beforeToday) {
-    dp.setStyle(fieldNormalBorder);
+    dp.setStyle(normalBorder);
     try {
       LocalDate date = dp.getValue();
       if (beforeToday && date.isBefore(LocalDate.now())) {
@@ -64,40 +62,40 @@ public abstract class Controller {
       } else if (!beforeToday && date.isAfter(LocalDate.now())) {
         return true;
       }
-      dp.setStyle(fieldRedBorder);
+      dp.setStyle(redBorder);
       return false;
     } catch (Exception e) {
-      dp.setStyle(fieldRedBorder);
+      dp.setStyle(redBorder);
       return false;
     }
   }
 
   protected boolean isEmpty(Control ui) {
-    ui.setStyle(fieldNormalBorder);
+    ui.setStyle(normalBorder);
     if (ui instanceof TextField) {
       TextField tf = (TextField) ui;
       try {
         tf.getText();
         if (tf.getText() == null || tf.getText().isEmpty()) {
-          tf.setStyle(fieldRedBorder);
+          tf.setStyle(redBorder);
           return true;
         }
       } catch (Exception e) {
-        tf.setStyle(fieldRedBorder);
+        tf.setStyle(redBorder);
         return true;
       }
     }
     if (ui instanceof ComboBox) {
       ComboBox<FXCollections> cb = (ComboBox<FXCollections>) ui;
       if (cb.getValue() == null) {
-        cb.setStyle(fieldRedBorder);
+        cb.setStyle(redBorder);
         return true;
       }
     }
     if (ui instanceof DatePicker) {
       DatePicker dp = (DatePicker) ui;
       if (dp.getValue() == null) {
-        dp.setStyle(fieldRedBorder);
+        dp.setStyle(redBorder);
         return true;
       }
     }
@@ -105,17 +103,17 @@ public abstract class Controller {
   }
 
   protected boolean isTooLong(Control str, int length) {
-    str.setStyle(fieldNormalBorder);
+    str.setStyle(normalBorder);
     if (str instanceof TextField) {
       TextField tf = (TextField) str;
       if (tf.getText() == null || tf.getText().length() > length) {
-        tf.setStyle(fieldRedBorder);
+        tf.setStyle(redBorder);
         return true;
       }
     } else if (str instanceof TextArea) {
       TextArea ta = (TextArea) str;
       if (ta.getText() == null || ta.getText().length() > length) {
-        ta.setStyle(fieldRedBorder);
+        ta.setStyle(redBorder);
         return true;
       }
     }

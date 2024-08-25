@@ -57,8 +57,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
   private Setting setting;
 
-  @Autowired private AddLoanController addLoanController;
-  @Autowired private LoanDetailsController loanDetailsController;
+  @Autowired private LoanController loanController;
 
   @FXML private Button homeButton;
   @FXML private Button saveButton;
@@ -199,7 +198,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     loanIdColumn.setReorderable(false);
     statusColumn.setCellValueFactory(new PropertyValueFactory<Loan, String>("status"));
     statusColumn.setReorderable(false);
-    principalColumn.setCellValueFactory(new PropertyValueFactory<Loan, String>("principal"));
+    principalColumn.setCellValueFactory(new PropertyValueFactory<Loan, String>("principalString"));
     principalColumn.setReorderable(false);
     startDateColumn.setCellValueFactory(new PropertyValueFactory<Loan, String>("startDate"));
     startDateColumn.setReorderable(false);
@@ -214,13 +213,11 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
           row.setOnMouseClicked(
               event -> {
                 if (!row.isEmpty()) {
-                  if (!row.isEmpty()) {
-                    try {
-                      addressTableRow = row.getIndex();
-                      createAddressPopup((Pane) addressTable.getScene().getRoot(), row.getItem());
-                    } catch (IOException e) {
-                      e.printStackTrace();
-                    }
+                  try {
+                    addressTableRow = row.getIndex();
+                    createAddressPopup((Pane) addressTable.getScene().getRoot(), row.getItem());
+                  } catch (IOException e) {
+                    e.printStackTrace();
                   }
                 }
               });
@@ -294,9 +291,9 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
               event -> {
                 if (!row.isEmpty()) {
                   String loanId = row.getItem().getLoanId();
-                  System.out.println("Loan clicked with ID: " + loanId);
-                  loanDetailsController.setLoanDetails(loanId);
-                  Main.setScene(AppScene.LOAN_DETAILS);
+                  loanController.setUpViewLoan(loanId);
+                  resetScene();
+                  Main.setScene(AppScene.LOAN);
                 }
               });
 
@@ -323,7 +320,6 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   public void setUpEditCustomer() {
     setting = Setting.EDIT;
     titleLabel.setText("Edit Customer");
-    // detailsTabPane.getSelectionModel().select(0);
     setDisableForFields(false);
     setVisabilityForButtons(true);
   }
@@ -391,7 +387,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     citizenshipField.clear();
     visaField.clear();
     notesArea.clear();
-    customer = null;
+    customer = new Customer();
     addresses.clear();
     emails.clear();
     phones.clear();
@@ -443,12 +439,9 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
   @FXML
   private void onClickAddLoan(ActionEvent event) {
-    addLoanController.setCustomer(customer);
-    addLoanController.setCustomerName();
-    addLoanController.addPrimeBorrower();
-
+    loanController.setUpAddLoan(customer.getId(), customer.getName());
     resetScene();
-    Main.setScene(AppScene.ADD_LOAN);
+    Main.setScene(AppScene.LOAN);
   }
 
   private void handleSave(Detail saved) {
@@ -540,7 +533,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   private boolean validateFields() {
     boolean dobFlag = validateDateFormat(dobPicker, true);
     if (!dobFlag) {
-      dobPicker.setStyle(fieldRedBorder);
+      dobPicker.setStyle(redBorder);
       appendErrorMessage("Date of birth must be before today!\n");
     }
     boolean addressFlag = addresses.size() >= 1;
@@ -570,7 +563,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
       appendErrorMessage("Please select a mailing address!\n");
     }
     if (!addressFlag || !primaryAddressFlag || !mailingAddressFlag) {
-      addressTable.setStyle(tableRedBorder);
+      addressTable.setStyle(redBorder);
     }
 
     boolean contactDetailsFlag = false;
@@ -585,7 +578,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
         }
       }
       if (!primaryEmailFlag) {
-        emailTable.setStyle(tableRedBorder);
+        emailTable.setStyle(redBorder);
         appendErrorMessage("Please select a primary email!\n");
       }
     }
@@ -604,18 +597,18 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
         }
       }
       if (!primaryPhoneFlag) {
-        phoneTable.setStyle(tableRedBorder);
+        phoneTable.setStyle(redBorder);
         appendErrorMessage("Please select a primary phone!\n");
       }
       if (!textingPhoneFlag) {
-        phoneTable.setStyle(tableRedBorder);
+        phoneTable.setStyle(redBorder);
         appendErrorMessage("Please select a texting phone!\n");
       }
     }
 
     if (!contactDetailsFlag) {
-      emailTable.setStyle(tableRedBorder);
-      phoneTable.setStyle(tableRedBorder);
+      emailTable.setStyle(redBorder);
+      phoneTable.setStyle(redBorder);
       appendErrorMessage("Please add at least one email or phone number!\n");
     }
 
@@ -632,26 +625,32 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   private boolean checkLengths() {
     boolean titleFieldFlag = isTooLong(titleField, 10);
     if (titleFieldFlag) {
+      titleField.setStyle(redBorder);
       appendErrorMessage("Title must be less than 10 characters\n");
     }
     boolean nameFieldFlag = isTooLong(nameField, 60);
     if (nameFieldFlag) {
+      nameField.setStyle(redBorder);
       appendErrorMessage("Name must be less than 60 characters\n");
     }
     boolean occupationFlag = isTooLong(occupationField, 40);
     if (occupationFlag) {
+      occupationField.setStyle(redBorder);
       appendErrorMessage("Occupation must be less than 40 characters\n");
     }
     boolean citizenshipFieldFlag = isTooLong(citizenshipField, 40);
     if (citizenshipFieldFlag) {
+      citizenshipField.setStyle(redBorder);
       appendErrorMessage("Citizenship must be less than 40 characters\n");
     }
     boolean visaFieldFlag = isTooLong(visaField, 40);
     if (visaFieldFlag) {
+      visaField.setStyle(redBorder);
       appendErrorMessage("Visa type must be less than 40 characters\n");
     }
     boolean notesAreaFlag = isTooLong(notesArea, 1330);
     if (notesAreaFlag) {
+      notesArea.setStyle(redBorder);
       appendErrorMessage("Notes must be less than 1330 characters\n");
     }
 
@@ -664,16 +663,17 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   }
 
   private void resetFieldStyle() {
-    titleField.setStyle(fieldNormalBorder);
-    nameField.setStyle(fieldNormalBorder);
-    dobPicker.setStyle(fieldNormalBorder);
-    occupationField.setStyle(fieldNormalBorder);
-    citizenshipField.setStyle(fieldNormalBorder);
-    visaField.setStyle(fieldNormalBorder);
-    addressTable.setStyle(tableNormalBorder);
-    emailTable.setStyle(tableNormalBorder);
-    phoneTable.setStyle(tableNormalBorder);
-    employmentTable.setStyle(tableNormalBorder);
+    titleField.setStyle(normalBorder);
+    nameField.setStyle(normalBorder);
+    dobPicker.setStyle(normalBorder);
+    occupationField.setStyle(normalBorder);
+    citizenshipField.setStyle(normalBorder);
+    visaField.setStyle(normalBorder);
+    addressTable.setStyle(normalBorder);
+    emailTable.setStyle(normalBorder);
+    phoneTable.setStyle(normalBorder);
+    employmentTable.setStyle(normalBorder);
+    notesArea.setStyle(normalBorder);
   }
 
   @FXML
@@ -759,7 +759,6 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
       case EDIT:
         alertCancel.setTitle("Cancel editing customer");
         if (alertCancel.showAndWait().get() == ButtonType.OK) {
-          resetScene();
           setUpViewCustomer(customer.getId());
         }
         break;
@@ -808,6 +807,15 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   private boolean doesPrimaryPhoneExist() {
     for (Phone phone : phones) {
       if (phone.getIsPrimary()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean doesTextingPhoneExist() {
+    for (Phone phone : phones) {
+      if (phone.getCanSendText()) {
         return true;
       }
     }
