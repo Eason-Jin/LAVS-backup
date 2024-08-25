@@ -47,7 +47,7 @@ public class PhoneFinderTests {
   @Test
   public void findNonExistingPhoneFromMainframe() throws Exception {
     DataOperationsTestsHelper.createTestingDatabases();
-    String customerId = "123";
+    String customerId = "2";
 
     assertThrows(Exception.class, () -> {
       PhoneFinder.findFromMainframe(customerId);
