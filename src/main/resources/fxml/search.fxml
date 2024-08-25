@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -11,9 +12,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="648.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.SearchController">
+<AnchorPane prefHeight="648.0" prefWidth="1152.0" stylesheets="@../css/primer-light.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.SearchController">
    <children>
-      <TextField fx:id="searchField" focusTraversable="false" layoutX="72.0" layoutY="101.0" onKeyPressed="#keyPressed" prefHeight="60.0" prefWidth="839.0" promptText="Search Customers by Name" style="-fx-background-radius: 30;">
+      <TextField fx:id="searchField" focusTraversable="false" layoutX="72.0" layoutY="101.0" onKeyPressed="#keyPressed" prefHeight="60.0" prefWidth="839.0" promptText="Search Customers by Name" style="-fx-background-radius: 30;" styleClass="input" stylesheets="@../css/application.css">
          <font>
             <Font size="18.0" />
          </font>
@@ -33,13 +34,18 @@
             <Font name="System Bold" size="50.0" />
          </font>
       </Label>
-      <Button fx:id="backButton" focusTraversable="false" layoutX="40.0" layoutY="34.0" mnemonicParsing="false" onAction="#onClickBack" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/primer-light.css">
+      <Button fx:id="backButton" focusTraversable="false" layoutX="40.0" layoutY="34.0" mnemonicParsing="false" onAction="#onClickBack" prefHeight="50.0" prefWidth="50.0">
          <styleClass>
             <String fx:value="button-circle" />
             <String fx:value="home" />
+            <String fx:value="popup-button" />
          </styleClass>
+         <stylesheets>
+            <URL value="@../css/primer-light.css" />
+            <URL value="@../css/application.css" />
+         </stylesheets>
       </Button>
-      <Button fx:id="searchButton" focusTraversable="false" graphicTextGap="10.0" layoutX="928.0" layoutY="101.0" mnemonicParsing="false" onAction="#onClickSearch" prefHeight="60.0" prefWidth="150.0" style="-fx-background-radius: 30;" text="Search">
+      <Button fx:id="searchButton" focusTraversable="false" graphicTextGap="10.0" layoutX="928.0" layoutY="101.0" mnemonicParsing="false" onAction="#onClickSearch" prefHeight="60.0" prefWidth="150.0" style="-fx-background-radius: 30;" styleClass="popup-button" stylesheets="@../css/application.css" text="Search">
          <font>
             <Font size="20.0" />
          </font>

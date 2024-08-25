@@ -137,8 +137,8 @@ public class CustomerController implements ValidateType, CheckLength, CheckEmpty
   private Alert alert;
   private StringBuilder errorString;
 
-  private String fieldNormalBorder = "-fx-border-color: #d0d7de; -fx-border-radius: 4";
-  private String fieldRedBorder = "-fx-border-color: red; -fx-border-radius: 4";
+  private String fieldNormalBorder = "-fx-border-color: #d0d7de;";
+  private String fieldRedBorder = "-fx-border-color: red;";
   private String tableNormalBorder = "-fx-border-color: #d0d7de";
   private String tableRedBorder = "-fx-border-color: red";
 
