@@ -2,7 +2,6 @@ package uoa.lavs.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,7 +26,6 @@ import javafx.scene.layout.Pane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
-import uoa.lavs.SceneManager;
 import uoa.lavs.SceneManager.AppScene;
 import uoa.lavs.dataoperations.customer.AddressFinder;
 import uoa.lavs.dataoperations.customer.AddressUpdater;
@@ -50,12 +48,6 @@ import uoa.lavs.models.Phone;
 
 @Controller
 public class CustomerController extends uoa.lavs.controllers.Controller {
-  private enum Setting {
-    ADD,
-    EDIT,
-    VIEW
-  }
-
   private Setting setting;
 
   @Autowired private LoanController loanController;
@@ -223,19 +215,19 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
                 }
               });
           row.setOnMouseEntered(
-                  event -> {
-                    if (!row.isEmpty() && setting != Setting.VIEW) {
-                      row.styleProperty().set("-fx-background-color: #f0f0f0");
-                    }
-                  });
+              event -> {
+                if (!row.isEmpty() && setting != Setting.VIEW) {
+                  row.styleProperty().set("-fx-background-color: #f0f0f0");
+                }
+              });
 
           row.setOnMouseExited(
-                  event -> {
-                    if (!row.isEmpty()) {
-                      row.styleProperty().set("-fx-background-color: none");
-                      row.styleProperty().set("-fx-border-width: 5");
-                    }
-                  });
+              event -> {
+                if (!row.isEmpty()) {
+                  row.styleProperty().set("-fx-background-color: none");
+                  row.styleProperty().set("-fx-border-width: 5");
+                }
+              });
           return row;
         });
 
@@ -255,19 +247,19 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
                 }
               });
           row.setOnMouseEntered(
-                  event -> {
-                    if (!row.isEmpty() && setting != Setting.VIEW) {
-                      row.styleProperty().set("-fx-background-color: #f0f0f0");
-                    }
-                  });
+              event -> {
+                if (!row.isEmpty() && setting != Setting.VIEW) {
+                  row.styleProperty().set("-fx-background-color: #f0f0f0");
+                }
+              });
 
           row.setOnMouseExited(
-                  event -> {
-                    if (!row.isEmpty()) {
-                      row.styleProperty().set("-fx-background-color: none");
-                      row.styleProperty().set("-fx-border-width: 5");
-                    }
-                  });
+              event -> {
+                if (!row.isEmpty()) {
+                  row.styleProperty().set("-fx-background-color: none");
+                  row.styleProperty().set("-fx-border-width: 5");
+                }
+              });
           return row;
         });
 
@@ -287,19 +279,19 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
                 }
               });
           row.setOnMouseEntered(
-                  event -> {
-                    if (!row.isEmpty() && setting != Setting.VIEW) {
-                      row.styleProperty().set("-fx-background-color: #f0f0f0");
-                    }
-                  });
+              event -> {
+                if (!row.isEmpty() && setting != Setting.VIEW) {
+                  row.styleProperty().set("-fx-background-color: #f0f0f0");
+                }
+              });
 
           row.setOnMouseExited(
-                  event -> {
-                    if (!row.isEmpty()) {
-                      row.styleProperty().set("-fx-background-color: none");
-                      row.styleProperty().set("-fx-border-width: 5");
-                    }
-                  });
+              event -> {
+                if (!row.isEmpty()) {
+                  row.styleProperty().set("-fx-background-color: none");
+                  row.styleProperty().set("-fx-border-width: 5");
+                }
+              });
           return row;
         });
 
@@ -320,19 +312,19 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
                 }
               });
           row.setOnMouseEntered(
-                  event -> {
-                    if (!row.isEmpty() && setting != Setting.VIEW) {
-                      row.styleProperty().set("-fx-background-color: #f0f0f0");
-                    }
-                  });
+              event -> {
+                if (!row.isEmpty() && setting != Setting.VIEW) {
+                  row.styleProperty().set("-fx-background-color: #f0f0f0");
+                }
+              });
 
           row.setOnMouseExited(
-                  event -> {
-                    if (!row.isEmpty()) {
-                      row.styleProperty().set("-fx-background-color: none");
-                      row.styleProperty().set("-fx-border-width: 5");
-                    }
-                  });
+              event -> {
+                if (!row.isEmpty()) {
+                  row.styleProperty().set("-fx-background-color: none");
+                  row.styleProperty().set("-fx-border-width: 5");
+                }
+              });
           return row;
         });
 
@@ -350,19 +342,19 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
                 }
               });
           row.setOnMouseEntered(
-                  event -> {
-                    if (!row.isEmpty()) {
-                      row.styleProperty().set("-fx-background-color: #f0f0f0");
-                    }
-                  });
+              event -> {
+                if (!row.isEmpty()) {
+                  row.styleProperty().set("-fx-background-color: #f0f0f0");
+                }
+              });
 
           row.setOnMouseExited(
-                  event -> {
-                    if (!row.isEmpty()) {
-                      row.styleProperty().set("-fx-background-color: none");
-                      row.styleProperty().set("-fx-border-width: 5");
-                    }
-                  });
+              event -> {
+                if (!row.isEmpty()) {
+                  row.styleProperty().set("-fx-background-color: none");
+                  row.styleProperty().set("-fx-border-width: 5");
+                }
+              });
           return row;
         });
 
@@ -816,7 +808,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
         alertCancel.setTitle("Cancel adding customer");
         if (alertCancel.showAndWait().get() == ButtonType.OK) {
           resetScene();
-          Main.setScene(SceneManager.AppScene.START);
+          Main.setScene(AppScene.START);
         }
         break;
       case EDIT:
@@ -841,8 +833,10 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
   @FXML
   private void onClickHome(ActionEvent event) {
-    resetScene();
-    Main.setScene(AppScene.START);
+    if (handleHomeClick(setting)) {
+      resetScene();
+      Main.setScene(AppScene.START);
+    }
   }
 
   public String getCustomerID() {
@@ -870,15 +864,6 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   private boolean doesPrimaryPhoneExist() {
     for (Phone phone : phones) {
       if (phone.getIsPrimary()) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private boolean doesTextingPhoneExist() {
-    for (Phone phone : phones) {
-      if (phone.getCanSendText()) {
         return true;
       }
     }

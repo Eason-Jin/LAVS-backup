@@ -41,11 +41,6 @@ import uoa.lavs.utility.LoanSummary;
 
 @Controller
 public class LoanController extends uoa.lavs.controllers.Controller {
-  private enum Setting {
-    VIEW,
-    ADD
-  }
-
   private Setting setting;
 
   @Autowired private CustomerController customerController;
@@ -400,7 +395,9 @@ public class LoanController extends uoa.lavs.controllers.Controller {
 
   @FXML
   private void onClickHome(ActionEvent event) {
-    resetScene();
-    Main.setScene(AppScene.START);
+    if (handleHomeClick(setting)) {
+      resetScene();
+      Main.setScene(AppScene.START);
+    }
   }
 }
