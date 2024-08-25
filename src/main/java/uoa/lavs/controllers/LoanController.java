@@ -40,6 +40,8 @@ import uoa.lavs.models.Loan;
 import uoa.lavs.utility.LoanRepayment;
 import uoa.lavs.utility.LoanSummary;
 
+import javax.xml.transform.Source;
+
 @Controller
 public class LoanController extends uoa.lavs.controllers.Controller {
   private enum Setting {
@@ -197,24 +199,46 @@ public class LoanController extends uoa.lavs.controllers.Controller {
   }
 
   public void setLoanDetails(String loanId) {
+    if (loanId != null) {
+      loanIdLabel.setText("Loan ID: " + loanId);
+    }
+    else {
+      System.out.println("loanId provided is null");
+    }
+
     loan = LoanLoader.loadData(loanId);
-    primeBorrowerId = loan.getCustomerId();
-    LoanSummary loanSummary = LoanSummaryLoader.calculateLoanSummary(loanId);
 
-    loanIdLabel.setText("Loan ID: " + loanId);
+    if (loan != null) {
+      primeBorrowerId = loan.getCustomerId();
+      LoanSummary loanSummary = LoanSummaryLoader.calculateLoanSummary(loanId);
 
-    principalField.setText(loan.getPrincipalString());
-    rateTypeBox.setValue(String.valueOf(loan.getRateType()));
-    rateValueField.setText(String.valueOf(loan.getRateValue()));
-    startDatePicker.setValue(loan.getStartDate());
-    periodField.setText(String.valueOf(loan.getPeriod()));
-    loanTermField.setText(String.valueOf(loan.getTerm()));
-    compoundingBox.setValue(String.valueOf(loan.getCompounding()));
-    paymentFrequencyBox.setValue(String.valueOf(loan.getPaymentFrequency()));
-    paymentAmountField.setText(loan.getPaymentAmountString());
-    totalInterestField.setText("$" + String.format("%.2f", loanSummary.getTotalInterest()));
-    totalCostField.setText("$" + String.format("%.2f", loanSummary.getTotalCost()));
-    payoffDateField.setText(loanSummary.getPayOffDate().toString());
+      principalField.setText(loan.getPrincipalString() != null ? loan.getPrincipalString() : "COULD NOT FIND");
+      rateTypeBox.setValue(loan.getRateType() != null ? String.valueOf(loan.getRateType()): "COULD NOT FIND");
+      rateValueField.setText(loan.getRateValue() != null ? String.valueOf(loan.getRateValue()) : "COULD NOT FIND");
+      startDatePicker.setValue(loan.getStartDate() != null ? loan.getStartDate() : null);
+      periodField.setText(loan.getPeriod() != null ? String.valueOf(loan.getPeriod()) : "COULD NOT FIND");
+      loanTermField.setText(loan.getTerm() != null ? String.valueOf(loan.getTerm()) : "COULD NOT FIND");
+      compoundingBox.setValue(loan.getCompounding() != null ? String.valueOf(loan.getCompounding()) : "COULD NOT FIND");
+      paymentFrequencyBox.setValue(loan.getPaymentFrequency() != null ? String.valueOf(loan.getPaymentFrequency()) : "COULD NOT FIND");
+      paymentAmountField.setText(loan.getPaymentAmountString() != null ? loan.getPaymentAmountString() : "COULD NOT FIND");
+      totalInterestField.setText((loanSummary != null && loanSummary.getTotalInterest() != null) ? ("$" + String.format("%.2f", loanSummary.getTotalInterest())) : "COULD NOT FIND");
+      totalCostField.setText((loanSummary != null && loanSummary.getTotalCost() != null) ? ("$" + String.format("%.2f", loanSummary.getTotalCost())) : "COULD NOT FIND");
+      payoffDateField.setText((loanSummary != null && loanSummary.getPayOffDate() != null) ? loanSummary.getPayOffDate().toString() : "COULD NOT FIND");
+    }
+    else {
+      principalField.setText("COULD NOT FIND");
+      rateTypeBox.setValue("COULD NOT FIND");
+      rateValueField.setText("COULD NOT FIND");
+      startDatePicker.setValue(null);
+      periodField.setText("COULD NOT FIND");
+      loanTermField.setText("COULD NOT FIND");
+      compoundingBox.setValue("COULD NOT FIND");
+      paymentFrequencyBox.setValue("COULD NOT FIND");
+      paymentAmountField.setText("COULD NOT FIND");
+      totalInterestField.setText("COULD NOT FIND");
+      totalCostField.setText("COULD NOT FIND");
+      payoffDateField.setText("COULD NOT FIND");
+    }
 
     setCoBorrowersTable(loanId);
     setRepaymentsTable(loanId);
@@ -230,7 +254,12 @@ public class LoanController extends uoa.lavs.controllers.Controller {
 
     for (String id : coBorrowerIds) {
       Customer coBorrower = CustomerLoader.loadData(id);
-      coBorrowers.add(coBorrower);
+      if (coBorrower != null) {
+        coBorrowers.add(coBorrower);
+      }
+      else {
+        System.out.println("CoBorrower not found: " + id);
+      }
     }
     coBorrowersTable.setItems(coBorrowers);
   }
@@ -252,7 +281,12 @@ public class LoanController extends uoa.lavs.controllers.Controller {
       exceptionAlert.showAndWait();
       return;
     }
-    coBorrowers.add(coBorrower);
+    if (coBorrower != null) {
+      coBorrowers.add(coBorrower);
+    }
+    else {
+      System.out.println("coBorrower not found: " + coBorrower.getId());
+    }
     coBorrowersTable.setItems(coBorrowers);
   }
 
