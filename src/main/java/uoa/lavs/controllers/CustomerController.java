@@ -689,7 +689,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
                 dobPicker.getValue(),
                 occupationField.getText(),
                 citizenshipField.getText(),
-                visaField.getText().isEmpty() ? null : visaField.getText(),
+                visaField.getText(),
                 "Active",
                 notesArea.getText());
 
