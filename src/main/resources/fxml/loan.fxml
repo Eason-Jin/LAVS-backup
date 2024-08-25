@@ -140,7 +140,7 @@
                               </VBox>
                               <VBox layoutX="640.0" prefHeight="200.0" prefWidth="310.0">
                                  <children>
-                                    <Label text="Rate" />
+                                    <Label text="Rate (%)" />
                                     <Separator maxHeight="-Infinity" minHeight="-Infinity" opacity="0.0" orientation="VERTICAL" prefHeight="5.0" />
                                     <TextField fx:id="rateValueField" maxHeight="36.0" maxWidth="310.0" minHeight="36.0" minWidth="310.0" promptText="Rate" styleClass="input" stylesheets="@../css/primer-light.css" />
                                     <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />

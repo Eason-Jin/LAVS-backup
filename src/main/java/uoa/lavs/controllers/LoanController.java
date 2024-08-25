@@ -221,8 +221,8 @@ public class LoanController extends uoa.lavs.controllers.Controller {
     compoundingBox.setValue(String.valueOf(loan.getCompounding()));
     paymentFrequencyBox.setValue(String.valueOf(loan.getPaymentFrequency()));
     paymentAmountField.setText(loan.getPaymentAmountString());
-    totalInterestField.setText("$" + String.valueOf(loanSummary.getTotalInterest()));
-    totalCostField.setText("$" + String.valueOf(loanSummary.getTotalCost()));
+    totalInterestField.setText("$" + String.format("%.2f", loanSummary.getTotalInterest()));
+    totalCostField.setText("$" + String.format("%.2f", loanSummary.getTotalCost()));
     payoffDateField.setText(loanSummary.getPayOffDate().toString());
 
     setCoBorrowersTable(loanId);
@@ -235,7 +235,7 @@ public class LoanController extends uoa.lavs.controllers.Controller {
     // Extract the first part of the Loan-ID (before the dash "-")
     String loanIdPrefix = loanId.split("-")[0];
     // Remove the coBorrower ID that matches the first part of the Loan-ID
-    coBorrowerIds.removeIf(id -> id.equals(loanIdPrefix));
+    coBorrowerIds.removeIf(id -> id.equals(loanIdPrefix) || id.equals(loanIdPrefix + " (Temporary)"));
 
     for (String id : coBorrowerIds) {
       Customer coBorrower = CustomerLoader.loadData(id);
@@ -306,10 +306,29 @@ public class LoanController extends uoa.lavs.controllers.Controller {
   public boolean validateFields() {
     boolean principalFlag = validateNumberFormat(principalField, true);
     boolean rateValueFlag = validateNumberFormat(rateValueField, true);
-    boolean startDateFlag = validateDateFormat(startDatePicker, false);
     boolean periodFlag = validateNumberFormat(periodField, false);
     boolean loanTermFlag = validateNumberFormat(loanTermField, false);
     boolean paymentAmountFlag = validateNumberFormat(paymentAmountField, true);
+    boolean startDateFlag = validateDateFormat(startDatePicker, false);
+
+    if (!principalFlag) {
+      errorMessage.append("\tPrincipal must be a number\n");
+    }
+    if (!rateValueFlag) {
+      errorMessage.append("\tRate value must be a number\n");
+    }
+    if (!periodFlag) {
+      errorMessage.append("\tPeriod must be an integer\n");
+    }
+    if (!loanTermFlag) {
+      errorMessage.append("\tLoan term must be an integer\n");
+    }
+    if (!paymentAmountFlag) {
+      errorMessage.append("\tPayment amount must be a number\n");
+    }
+    if (!startDateFlag) {
+      errorMessage.append("\tStart date must be after today\n");
+    }
 
     return principalFlag
         && rateValueFlag
