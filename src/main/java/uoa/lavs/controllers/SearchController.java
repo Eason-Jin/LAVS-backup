@@ -60,7 +60,7 @@ public class SearchController {
 
                 if (isCoBorrowerSearch) {
                   clearSearch();
-                  isCoBorrowerSearch = false;
+                  setCoBorrowerSearch(false);
                   loanController.addCoBorrower(row.getItem());
                   Main.setScene(AppScene.LOAN);
                 } else {
@@ -147,9 +147,11 @@ public class SearchController {
 
   @FXML
   private void onClickBack(ActionEvent event) throws IOException {
+    clearSearch();
     if (isCoBorrowerSearch) {
       Main.setScene(AppScene.LOAN);
     } else {
+      setCoBorrowerSearch(false);
       Main.setScene(AppScene.START);
     }
   }

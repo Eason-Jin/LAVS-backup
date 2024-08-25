@@ -116,21 +116,6 @@ public class LoanController extends uoa.lavs.controllers.Controller {
 
     coBorrowersTable.setPlaceholder(new Label("No co-borrowers for this loan"));
 
-    coBorrowersTable.setRowFactory(
-        tableView -> {
-          final TableRow<Customer> row = new TableRow<Customer>();
-
-          row.setOnMouseClicked(
-              event -> {
-                if (!row.isEmpty()) {
-                  customerController.setUpViewCustomer(row.getItem().getId());
-                  Main.setScene(AppScene.CUSTOMER);
-                }
-              });
-
-          return row;
-        });
-
     alert = new Alert(AlertType.ERROR);
     alert.setTitle("Error");
     alert.setHeaderText("Please fix the following issues:");
@@ -368,8 +353,11 @@ public class LoanController extends uoa.lavs.controllers.Controller {
 
         String loanId = loan.getLoanId();
 
+        List<String> existingCoborrowers = CoborrowerLoader.loadData(loanId);
         for (Customer coborrower : coBorrowers) {
-          CoborrowerUpdater.updateData(loanId, coborrower.getId(), null);
+          if (!existingCoborrowers.contains(coborrower.getId())) {
+            CoborrowerUpdater.updateData(loanId, coborrower.getId(), null);
+          }
         }
         Alert successAlert = new Alert(AlertType.INFORMATION);
         successAlert.setTitle("Success");

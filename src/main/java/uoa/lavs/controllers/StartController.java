@@ -158,7 +158,7 @@ public class StartController {
 
   @FXML
   private void onClickSearch(ActionEvent event) throws IOException {
-    searchController.setIsCoBorrowerSearch(false);
+    searchController.setCoBorrowerSearch(false);
     searchController.clearSearch();
     Main.setScene(AppScene.SEARCH);
   }

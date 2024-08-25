@@ -351,7 +351,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
               });
           row.setOnMouseEntered(
                   event -> {
-                    if (!row.isEmpty() && setting != Setting.VIEW) {
+                    if (!row.isEmpty()) {
                       row.styleProperty().set("-fx-background-color: #f0f0f0");
                     }
                   });
@@ -496,6 +496,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     Button sourceButton = (Button) event.getSource();
     Pane currentRoot = (Pane) sourceButton.getScene().getRoot();
     Employer employment = new Employer();
+    employment.setIsOwner(false);
     createEmploymentPopup(currentRoot, employment);
   }
 
