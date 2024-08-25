@@ -144,42 +144,68 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     loanTable.setPlaceholder(new Label("No loans for this customer"));
 
     addressTypeColumn.setCellValueFactory(new PropertyValueFactory<Address, String>("type"));
+    addressTypeColumn.setReorderable(false);
     streetAddressColumn.setCellValueFactory(
         new PropertyValueFactory<Address, String>("streetAddress"));
+    startDateColumn.setReorderable(false);
     suburbColumn.setCellValueFactory(new PropertyValueFactory<Address, String>("suburb"));
+    suburbColumn.setReorderable(false);
     cityColumn.setCellValueFactory(new PropertyValueFactory<Address, String>("city"));
+    cityColumn.setReorderable(false);
     postcodeColumn.setCellValueFactory(new PropertyValueFactory<Address, String>("postCode"));
+    postcodeColumn.setReorderable(false);
     countryColumn.setCellValueFactory(new PropertyValueFactory<Address, String>("country"));
+    countryColumn.setReorderable(false);
     primaryAddressColumn.setCellValueFactory(
         new PropertyValueFactory<Address, String>("isPrimary"));
+    primaryAddressColumn.setReorderable(false);
     mailingAddressColumn.setCellValueFactory(
         new PropertyValueFactory<Address, String>("isMailing"));
+    mailingAddressColumn.setReorderable(false);
 
     emailAddressColumn.setCellValueFactory(new PropertyValueFactory<Email, String>("address"));
+    emailAddressColumn.setReorderable(false);
     primaryEmailColumn.setCellValueFactory(new PropertyValueFactory<Email, String>("isPrimary"));
+    primaryEmailColumn.setReorderable(false);
 
     phoneTypeColumn.setCellValueFactory(new PropertyValueFactory<Phone, String>("type"));
+    phoneTypeColumn.setReorderable(false);
     prefixColumn.setCellValueFactory(new PropertyValueFactory<Phone, String>("prefix"));
+    prefixColumn.setReorderable(false);
     phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<Phone, String>("phoneNumber"));
+    phoneNumberColumn.setReorderable(false);
     primaryPhoneColumn.setCellValueFactory(new PropertyValueFactory<Phone, String>("isPrimary"));
+    primaryPhoneColumn.setReorderable(false);
     textingPhoneColumn.setCellValueFactory(new PropertyValueFactory<Phone, String>("canSendText"));
+    textingPhoneColumn.setReorderable(false);
 
     nameColumn.setCellValueFactory(new PropertyValueFactory<Employer, String>("name"));
+    nameColumn.setReorderable(false);
     employmentStreetAddressColumn.setCellValueFactory(
         new PropertyValueFactory<Employer, String>("streetAddress"));
+    employmentStreetAddressColumn.setReorderable(false);
     employmentPhoneNumberColumn.setCellValueFactory(
         new PropertyValueFactory<Employer, String>("phoneNumber"));
+    employmentPhoneNumberColumn.setReorderable(false);
     employmentEmailAddressColumn.setCellValueFactory(
         new PropertyValueFactory<Employer, String>("emailAddress"));
+    employmentEmailAddressColumn.setReorderable(false);
     websiteColumn.setCellValueFactory(new PropertyValueFactory<Employer, String>("website"));
+    websiteColumn.setReorderable(false);
     ownerColumn.setCellValueFactory(new PropertyValueFactory<Employer, String>("isOwner"));
+    ownerColumn.setReorderable(false);
 
     loanIdColumn.setCellValueFactory(new PropertyValueFactory<Loan, String>("loanId"));
+    loanIdColumn.setReorderable(false);
     statusColumn.setCellValueFactory(new PropertyValueFactory<Loan, String>("status"));
+    statusColumn.setReorderable(false);
     principalColumn.setCellValueFactory(new PropertyValueFactory<Loan, String>("principal"));
+    principalColumn.setReorderable(false);
     startDateColumn.setCellValueFactory(new PropertyValueFactory<Loan, String>("startDate"));
+    startDateColumn.setReorderable(false);
     paymentFrequencyColumn.setCellValueFactory(
         new PropertyValueFactory<Loan, String>("paymentFrequency"));
+    paymentFrequencyColumn.setReorderable(false);
 
     addressTable.setRowFactory(
         tableView -> {
