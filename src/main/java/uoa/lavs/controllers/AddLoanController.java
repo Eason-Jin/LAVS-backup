@@ -243,7 +243,8 @@ public class AddLoanController extends uoa.lavs.controllers.Controller {
               Double.parseDouble(((TextField) loanDetailsFields.get("principalField")).getText()),
               Double.parseDouble(((TextField) loanDetailsFields.get("rateValueField")).getText()),
               RateType.valueOf(
-                  ((String) (Object) ((ComboBox) loanDetailsFields.get("rateTypeBox")).getValue())
+                  (((ComboBox) loanDetailsFields.get("rateTypeBox")).getValue())
+                      .toString()
                       .replaceAll("\\s", "")),
               ((DatePicker) loanDetailsFields.get("startDatePicker")).getValue(),
               Integer.parseInt(((TextField) loanDetailsFields.get("periodField")).getText()),
@@ -251,12 +252,10 @@ public class AddLoanController extends uoa.lavs.controllers.Controller {
               Double.parseDouble(
                   ((TextField) loanDetailsFields.get("paymentAmountField")).getText()),
               Frequency.valueOf(
-                  (String)
-                      (Object)
-                          ((ComboBox) loanDetailsFields.get("paymentFrequencyBox")).getValue()),
+                  (((ComboBox) loanDetailsFields.get("paymentFrequencyBox")).getValue())
+                      .toString()),
               Frequency.valueOf(
-                  (String)
-                      (Object) ((ComboBox) loanDetailsFields.get("compoundingBox")).getValue()));
+                  (((ComboBox) loanDetailsFields.get("compoundingBox")).getValue()).toString()));
 
       LoanUpdater.updateData(null, loan);
 
