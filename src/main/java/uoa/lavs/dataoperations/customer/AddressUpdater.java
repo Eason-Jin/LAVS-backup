@@ -74,9 +74,9 @@ public class AddressUpdater {
       updateCustomerAddress.setCountry(
           address.getCountry() != null ? address.getCountry() : existingAddress.getCountry());
       updateCustomerAddress.setIsPrimary(
-          address.isPrimary() != null ? address.isPrimary() : existingAddress.isPrimary());
+          address.getIsPrimary() != null ? address.getIsPrimary() : existingAddress.getIsPrimary());
       updateCustomerAddress.setIsMailing(
-          address.isMailing() != null ? address.isMailing() : existingAddress.isMailing());
+          address.getIsMailing() != null ? address.getIsMailing() : existingAddress.getIsMailing());
     } else {
       updateCustomerAddress.setType(address.getType());
       updateCustomerAddress.setLine1(address.getLine1());
@@ -85,8 +85,8 @@ public class AddressUpdater {
       updateCustomerAddress.setCity(address.getCity());
       updateCustomerAddress.setPostCode(address.getPostCode());
       updateCustomerAddress.setCountry(address.getCountry());
-      updateCustomerAddress.setIsPrimary(address.isPrimary());
-      updateCustomerAddress.setIsMailing(address.isMailing());
+      updateCustomerAddress.setIsPrimary(address.getIsPrimary());
+      updateCustomerAddress.setIsMailing(address.getIsMailing());
     }
 
     Status status = updateCustomerAddress.send(Instance.getConnection());
@@ -162,8 +162,8 @@ public class AddressUpdater {
       statement.setString(5, address.getCity());
       statement.setString(6, address.getPostCode());
       statement.setString(7, address.getCountry());
-      statement.setBoolean(8, address.isPrimary());
-      statement.setBoolean(9, address.isMailing());
+      statement.setBoolean(8, address.getIsPrimary());
+      statement.setBoolean(9, address.getIsMailing());
       statement.setString(10, customerID);
       statement.setInt(11, address.getNumber());
 

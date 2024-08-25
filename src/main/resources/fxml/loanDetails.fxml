@@ -15,18 +15,23 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="648.0" prefWidth="1152.0" stylesheets="@../css/primer-light.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.LoanDetailsController">
+<AnchorPane prefHeight="648.0" prefWidth="1152.0" stylesheets="@../css/primer-light.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.LoanDetailsController">
    <children>
       <Label fx:id="titleLabel" layoutX="80.0" layoutY="65.0" prefHeight="64.0" prefWidth="1000.0" text="Loan Details for Loan ID: ID">
          <font>
             <Font name="Calibri Bold" size="56.0" />
          </font>
       </Label>
-      <Button fx:id="homeButton" layoutX="20.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClickHome" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/primer-light.css">
+      <Button fx:id="homeButton" layoutX="20.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClickHome" prefHeight="50.0" prefWidth="50.0">
          <styleClass>
             <String fx:value="button-circle" />
             <String fx:value="home" />
+            <String fx:value="popup-button" />
          </styleClass>
+         <stylesheets>
+            <URL value="@../css/primer-light.css" />
+            <URL value="@../css/application.css" />
+         </stylesheets>
       </Button>
       <Button fx:id="backButton" layoutX="1082.0" layoutY="20.0" mnemonicParsing="false" onAction="#onClickBack" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/primer-light.css">
          <styleClass>
@@ -35,13 +40,13 @@
             <String fx:value="cross" />
          </styleClass>
       </Button>
-      <TabPane fx:id="detailsTabPane" layoutX="76.0" layoutY="130.0" prefHeight="518.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="detailsTabPane" layoutX="76.0" layoutY="130.0" prefHeight="518.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="30.0" tabMaxWidth="140.0" tabMinHeight="30.0" tabMinWidth="140.0">
          <tabs>
             <Tab fx:id="generalDetailsTab" text="Loan Details">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="1000.0">
                      <children>
-                        <Pane fx:id="loanDetailsPane" disable="true" layoutX="25.0" layoutY="55.0" prefHeight="203.0" prefWidth="950.0">
+                        <Pane fx:id="loanDetailsPane" disable="true" layoutX="25.0" layoutY="60.0" prefHeight="203.0" prefWidth="950.0">
                            <children>
                               <VBox layoutX="640.0" prefHeight="200.0" prefWidth="310.0">
                                  <children>
@@ -124,7 +129,7 @@
                               <Font name="Calibri" size="30.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="coBorrowersTable" fixedCellSize="50.0" layoutX="18.0" layoutY="55.0" maxHeight="400.0" maxWidth="965.0" minHeight="400.0" minWidth="950.0" prefHeight="400.0" prefWidth="965.0">
+                        <TableView fx:id="coBorrowersTable" fixedCellSize="50.0" layoutX="18.0" layoutY="60.0" maxHeight="400.0" maxWidth="965.0" minHeight="400.0" minWidth="950.0" prefHeight="400.0" prefWidth="965.0">
                            <columns>
                               <TableColumn fx:id="coBorrowerNameColumn" editable="false" maxWidth="500.0" minWidth="500.0" prefWidth="500.0" resizable="false" sortable="false" text="Co-borrower Name" />
                               <TableColumn fx:id="coBorrowerIdColumn" maxWidth="500.0" minWidth="500.0" prefWidth="500.0" resizable="false" sortable="false" text="Co-borrower ID" />
@@ -146,7 +151,7 @@
                               <Font name="Calibri" size="30.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="repaymentsTable" fixedCellSize="50.0" layoutX="18.0" layoutY="55.0" maxHeight="400.0" maxWidth="965.0" minHeight="400.0" minWidth="965.0">
+                        <TableView fx:id="repaymentsTable" fixedCellSize="50.0" layoutX="18.0" layoutY="60.0" maxHeight="400.0" maxWidth="965.0" minHeight="400.0" minWidth="965.0">
                            <columns>
                               <TableColumn fx:id="repaymentDateColumn" editable="false" maxWidth="241.25" minWidth="241.25" prefWidth="-1.0" resizable="false" sortable="false" text="Repayment Date" />
                               <TableColumn fx:id="principalColumn" maxWidth="241.25" minWidth="241.25" prefWidth="-1.0" resizable="false" sortable="false" text="Principal" />

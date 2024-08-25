@@ -9,6 +9,7 @@ public class SceneManager {
     /** The different views available. */
     public enum AppScene {
         START,
+        CUSTOMER,
         ADD_CUSTOMER,
         SEARCH,
         ADD_LOAN,

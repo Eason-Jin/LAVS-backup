@@ -56,7 +56,7 @@ public class LoanDetailsController {
   @FXML private TableColumn<LoanRepayment, String> remainingColumn;
 
   @Autowired SearchController searchController;
-  @Autowired CustomerDetailsController customerDetailsController;
+  @Autowired CustomerController customerController;
 
   @FXML
   private void initialize() {
@@ -130,6 +130,6 @@ public class LoanDetailsController {
   @FXML
   private void onClickBack(ActionEvent event) throws IOException {
     resetScene();
-    Main.setScene(AppScene.CUSTOMER_DETAILS);
+    Main.setScene(AppScene.CUSTOMER);
   }
 }

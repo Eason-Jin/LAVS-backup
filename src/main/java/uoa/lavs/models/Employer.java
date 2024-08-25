@@ -3,7 +3,7 @@ package uoa.lavs.models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Employer {
+public class Employer extends Detail {
   private String customerId;
   private Integer number;
   private String name;
@@ -152,6 +152,10 @@ public class Employer {
 
   public void setIsOwner(Boolean isOwner) {
     this.isOwner = isOwner;
+  }
+
+  public String getStreetAddress() {
+    return line1 + " " + line2;
   }
 
   public List<String> getListRepresentation() {

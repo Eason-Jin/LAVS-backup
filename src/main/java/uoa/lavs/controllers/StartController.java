@@ -26,8 +26,8 @@ import uoa.lavs.SceneManager.AppScene;
 @Controller
 public class StartController {
 
+  @Autowired private CustomerController customerController;
   @Autowired private SearchController searchController;
-
   @Autowired private PendingUpdatesController pendingUpdatesController;
 
   @FXML private StackPane stackPane;
@@ -152,7 +152,8 @@ public class StartController {
 
   @FXML
   private void onClickAddCustomer(ActionEvent event) throws IOException {
-    Main.setScene(AppScene.ADD_CUSTOMER);
+    customerController.setUpAddCustomer();
+    Main.setScene(AppScene.CUSTOMER);
   }
 
   @FXML
