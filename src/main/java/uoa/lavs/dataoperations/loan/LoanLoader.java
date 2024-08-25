@@ -17,9 +17,6 @@ public class LoanLoader {
     Loan loan = new Loan();
     try {
       loan = loadFromMainframe(loanId);
-      if (loan.getCustomerName() == null) {
-        throw new Exception("Loan not in mainframe");
-      }
     } catch (Exception e) {
       System.out.println("Mainframe load failed: " + e.getMessage());
       System.out.println("Trying to load from database");
