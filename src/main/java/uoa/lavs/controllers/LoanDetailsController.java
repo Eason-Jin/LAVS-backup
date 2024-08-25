@@ -130,6 +130,6 @@ public class LoanDetailsController {
   @FXML
   private void onClickBack(ActionEvent event) throws IOException {
     resetScene();
-    Main.setScene(AppScene.CUSTOMER_DETAILS);
+    Main.setScene(AppScene.CUSTOMER);
   }
 }
