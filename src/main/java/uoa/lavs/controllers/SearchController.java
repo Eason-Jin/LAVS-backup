@@ -60,9 +60,10 @@ public class SearchController {
 
                 if (isCoBorrowerSearch) {
                   clearSearch();
-                  setCoBorrowerSearch(false);
-                  loanController.addCoBorrower(row.getItem());
-                  Main.setScene(AppScene.LOAN);
+                  if (loanController.addCoBorrower(row.getItem())) {
+                    setCoBorrowerSearch(false);
+                    Main.setScene(AppScene.LOAN);
+                  }
                 } else {
                   String customerId = row.getItem().getId();
                   customerController.setUpViewCustomer(customerId);

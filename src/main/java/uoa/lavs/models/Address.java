@@ -1,8 +1,5 @@
 package uoa.lavs.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Address extends Detail {
   private String customerId;
   private Integer number;
@@ -134,19 +131,5 @@ public class Address extends Detail {
 
   public String getStreetAddress() {
     return line1 + " " + line2;
-  }
-
-  public List<String> getListRepresentation() {
-    List<String> list = new ArrayList<>();
-    list.add(type);
-    list.add(line1);
-    list.add(line2);
-    list.add(suburb);
-    list.add(city);
-    list.add(postCode);
-    list.add(country);
-    list.add(isPrimary.toString());
-    list.add(isMailing.toString());
-    return list;
   }
 }

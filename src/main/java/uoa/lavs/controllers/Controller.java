@@ -3,6 +3,8 @@ package uoa.lavs.controllers;
 import java.time.LocalDate;
 import javafx.collections.FXCollections;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
@@ -10,6 +12,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public abstract class Controller {
+  protected enum Setting {
+    ADD,
+    EDIT,
+    VIEW
+  }
+
   protected Alert alert = new Alert(Alert.AlertType.ERROR);
   protected StringBuilder errorMessage = new StringBuilder();
 
@@ -131,5 +139,19 @@ public abstract class Controller {
     if (errorMessage.indexOf(message) == -1) {
       errorMessage.append(message);
     }
+  }
+
+  protected boolean handleHomeClick(Setting setting) {
+    if (setting != Setting.VIEW) {
+      Alert alertHome = new Alert(AlertType.CONFIRMATION);
+      alertHome.setTitle("Going home?");
+      alertHome.setHeaderText("If you go home, all progress will be lost.");
+      alertHome.setContentText("Are you sure you want to go home?");
+
+      if (alertHome.showAndWait().get() != ButtonType.OK) {
+        return false;
+      }
+    }
+    return true;
   }
 }
