@@ -1,8 +1,5 @@
 package uoa.lavs.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Phone extends Detail {
   private String customerId;
   private Integer number;
@@ -85,15 +82,5 @@ public class Phone extends Detail {
 
   public void setCanSendText(Boolean canSendText) {
     this.canSendText = canSendText;
-  }
-
-  public List<String> getListRepresentation() {
-    List<String> list = new ArrayList<>();
-    list.add(type);
-    list.add(prefix);
-    list.add(phoneNumber);
-    list.add(isPrimary.toString());
-    list.add(canSendText.toString());
-    return list;
   }
 }
