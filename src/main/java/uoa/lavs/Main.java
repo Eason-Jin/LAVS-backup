@@ -45,8 +45,7 @@ public class Main extends Application {
     SceneManager.addScene(AppScene.START, loadLoader("start").load());
     SceneManager.addScene(AppScene.CUSTOMER, loadLoader("customer").load());
     SceneManager.addScene(AppScene.SEARCH, loadLoader("search").load());
-    SceneManager.addScene(AppScene.ADD_LOAN, loadLoader("addLoan").load());
-    SceneManager.addScene(AppScene.LOAN_DETAILS, loadLoader("loanDetails").load());
+    SceneManager.addScene(AppScene.LOAN, loadLoader("loan").load());
     SceneManager.addScene(AppScene.PENDING_UPDATES, loadLoader("pendingUpdates").load());
 
     currentStage = stage;
