@@ -20,9 +20,18 @@ public abstract class Controller {
     return email.matches("^.+@.+\\..+$");
   }
 
-  protected boolean validateNumberFormat(String number) {
+  protected boolean validateIntegerFormat(String number) {
     try {
-      Integer.parseInt(number);
+      Long.parseLong(number);
+    } catch (Exception e) {
+      return false;
+    }
+    return true;
+  }
+
+  protected boolean validateDoubleFormat(String number) {
+    try {
+      Double.parseDouble(number);
     } catch (Exception e) {
       return false;
     }
@@ -38,7 +47,7 @@ public abstract class Controller {
     if (beforeToday) {
       return date.isBefore(LocalDate.now());
     } else {
-      return date.isAfter(LocalDate.now());
+      return date.isAfter(LocalDate.now()) || date.isEqual(LocalDate.now());
     }
   }
 

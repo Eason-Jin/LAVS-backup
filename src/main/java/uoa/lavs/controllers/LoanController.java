@@ -1,6 +1,7 @@
 package uoa.lavs.controllers;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -10,7 +11,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -27,9 +30,13 @@ import uoa.lavs.Main;
 import uoa.lavs.SceneManager.AppScene;
 import uoa.lavs.dataoperations.customer.CustomerLoader;
 import uoa.lavs.dataoperations.loan.CoborrowerLoader;
+import uoa.lavs.dataoperations.loan.CoborrowerUpdater;
 import uoa.lavs.dataoperations.loan.LoanLoader;
 import uoa.lavs.dataoperations.loan.LoanPaymentsLoader;
 import uoa.lavs.dataoperations.loan.LoanSummaryLoader;
+import uoa.lavs.dataoperations.loan.LoanUpdater;
+import uoa.lavs.mainframe.Frequency;
+import uoa.lavs.mainframe.RateType;
 import uoa.lavs.models.Customer;
 import uoa.lavs.models.Loan;
 import uoa.lavs.utility.LoanRepayment;
@@ -245,6 +252,20 @@ public class LoanController extends uoa.lavs.controllers.Controller {
     repaymentsTable.setItems(repayments);
   }
 
+  public void addCoBorrower(Customer coBorrower) {
+    if (coBorrowers.contains(coBorrower) || coBorrower.getId().equals(primeBorrowerId)) {
+      Alert exceptionAlert = new Alert(Alert.AlertType.ERROR);
+      exceptionAlert.setTitle("Error");
+      exceptionAlert.setHeaderText("This customer has already been added as a co-borrower.");
+      exceptionAlert.showAndWait();
+      return;
+    } else if (coBorrower.getId().equals(primeBorrowerId)) {
+      return;
+    }
+    coBorrowers.add(coBorrower);
+    coBorrowersTable.setItems(coBorrowers);
+  }
+
   public void addPrimeBorrower(String primeBorrowerId) {
     this.primeBorrowerId = primeBorrowerId;
   }
@@ -256,11 +277,142 @@ public class LoanController extends uoa.lavs.controllers.Controller {
     Main.setScene(AppScene.SEARCH);
   }
 
-  @FXML
-  private void onClickSave(ActionEvent event) {}
+  public boolean checkFields() {
+    boolean principalFlag = checkField(principalField);
+    boolean rateTypeFlag = checkField(rateTypeBox);
+    boolean rateValueFlag = checkField(rateValueField);
+    boolean startDateFlag = checkField(startDatePicker);
+    boolean periodFlag = checkField(periodField);
+    boolean loanTermFlag = checkField(loanTermField);
+    boolean compoundingFlag = checkField(compoundingBox);
+    boolean paymentFrequencyFlag = checkField(paymentFrequencyBox);
+    boolean paymentAmountFlag = checkField(paymentAmountField);
+
+    if (principalFlag
+        && rateTypeFlag
+        && rateValueFlag
+        && startDateFlag
+        && periodFlag
+        && loanTermFlag
+        && compoundingFlag
+        && paymentFrequencyFlag
+        && paymentAmountFlag) {
+      return true;
+    }
+    errorMessage.append("\tPlease fill in the required fields\n");
+
+    return false;
+  }
+
+  public boolean checkField(Control ui) {
+    ui.setStyle(normalBorder);
+    if (ui instanceof TextField) {
+      TextField tf = (TextField) ui;
+      if (tf.getText().isEmpty()) {
+        tf.setStyle(redBorder);
+        return false;
+      }
+    }
+    if (ui instanceof ComboBox) {
+      ComboBox<FXCollections> cb = (ComboBox<FXCollections>) ui;
+      if (cb.getValue() == null) {
+        cb.setStyle(redBorder);
+        return false;
+      }
+    }
+    if (ui instanceof DatePicker) {
+      DatePicker dp = (DatePicker) ui;
+      if (dp.getValue() == null) {
+        dp.setStyle(redBorder);
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public boolean validateFields() {
+    boolean principalFlag = validateDoubleFormat(principalField.getText());
+    boolean rateValueFlag = validateDoubleFormat(rateValueField.getText());
+    boolean startDateFlag = validateDateFormat(startDatePicker.getValue(), false);
+    boolean periodFlag = validateIntegerFormat(periodField.getText());
+    boolean loanTermFlag = validateIntegerFormat(loanTermField.getText());
+    boolean paymentAmountFlag = validateDoubleFormat(paymentAmountField.getText());
+
+    return principalFlag
+        && rateValueFlag
+        && startDateFlag
+        && periodFlag
+        && loanTermFlag
+        && paymentAmountFlag;
+  }
 
   @FXML
-  private void onClickCancel(ActionEvent event) {}
+  private void onClickSave(ActionEvent event) {
+    if (checkFields() && validateFields()) {
+      try {
+        loan =
+            new Loan(
+                null,
+                primeBorrowerId,
+                CustomerLoader.loadData(primeBorrowerId).getName(),
+                "Active",
+                Double.parseDouble(principalField.getText()),
+                Double.parseDouble(rateValueField.getText()),
+                RateType.valueOf((rateTypeBox.getValue()).replaceAll("\\s", "")),
+                startDatePicker.getValue(),
+                Integer.parseInt(periodField.getText()),
+                Integer.parseInt(loanTermField.getText()),
+                Double.parseDouble(paymentAmountField.getText()),
+                Frequency.valueOf(paymentFrequencyBox.getValue()),
+                Frequency.valueOf(compoundingBox.getValue()));
+
+        LoanUpdater.updateData(null, loan);
+
+        String loanId = loan.getLoanId();
+
+        for (Customer coborrower : coBorrowers) {
+          CoborrowerUpdater.updateData(loanId, coborrower.getId(), null);
+        }
+        Alert successAlert = new Alert(AlertType.INFORMATION);
+        successAlert.setTitle("Success");
+        successAlert.setHeaderText("Loan has been added");
+        if (successAlert.showAndWait().get() == ButtonType.OK) {
+          setUpViewLoan(loanId);
+        }
+      } catch (Exception e) {
+        System.out.println(e.getLocalizedMessage());
+        Alert exceptionAlert = new Alert(AlertType.ERROR);
+        exceptionAlert.setTitle("Error");
+        exceptionAlert.setHeaderText("An error occurred while saving the loan");
+        exceptionAlert.setContentText("Please try again later");
+        exceptionAlert.showAndWait();
+      }
+    } else {
+      alert.setContentText(errorMessage.toString());
+      alert.showAndWait();
+      errorMessage = new StringBuilder();
+    }
+  }
+
+  @FXML
+  private void onClickCancel(ActionEvent event) {
+    Alert alertCancel = new Alert(AlertType.CONFIRMATION);
+    alertCancel.setTitle("Cancel adding loan");
+    alertCancel.setHeaderText("If you cancel, all progress will be lost.");
+    alertCancel.setContentText("Are you sure you want to cancel?");
+
+    if (setting == Setting.ADD) {
+      if (alertCancel.showAndWait().get() == ButtonType.OK) {
+        customerController.setUpViewCustomer(primeBorrowerId);
+        resetScene();
+        Main.setScene(AppScene.CUSTOMER);
+      }
+    } else {
+      customerController.setUpViewCustomer(primeBorrowerId);
+      resetScene();
+      Main.setScene(AppScene.CUSTOMER);
+    }
+  }
 
   @FXML
   private void onClickHome(ActionEvent event) {

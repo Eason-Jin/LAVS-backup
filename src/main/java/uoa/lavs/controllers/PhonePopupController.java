@@ -31,10 +31,10 @@ public class PhonePopupController extends PopupController {
     if (isEmpty(phoneTypeComboBox) || isEmpty(prefixTextField) || isEmpty(phoneTextField)) {
       appendErrorMessage("Please fill in all required fields!\n");
     } else {
-      if (!validateNumberFormat(prefixTextField.getText())) {
+      if (!validateIntegerFormat(prefixTextField.getText())) {
         appendErrorMessage("Prefix must be numbers!\n");
       }
-      if (!validateNumberFormat(phoneTextField.getText())) {
+      if (!validateIntegerFormat(phoneTextField.getText())) {
         appendErrorMessage("Phone number must be numbers!\n");
       }
 

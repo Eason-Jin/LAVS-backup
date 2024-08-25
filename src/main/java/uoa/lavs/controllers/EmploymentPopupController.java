@@ -44,13 +44,13 @@ public class EmploymentPopupController extends PopupController {
         || isEmpty(companyWebsiteTextField)) {
       appendErrorMessage("Please fill in all required fields!\n");
     } else {
-      if (!validateNumberFormat(companyPostcodeTextField.getText())) {
+      if (!validateIntegerFormat(companyPostcodeTextField.getText())) {
         appendErrorMessage("Postcode must be numbers!\n");
       }
       if (!validateEmailFormat(companyEmailTextField.getText())) {
         appendErrorMessage("Email must be in the format of a@b.c!\n");
       }
-      if (!validateNumberFormat(companyPhoneTextField.getText())) {
+      if (!validateIntegerFormat(companyPhoneTextField.getText())) {
         appendErrorMessage("Phone number must be numbers!\n");
       }
       if (!validateWebsiteFormat(companyWebsiteTextField.getText())) {

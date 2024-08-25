@@ -13,7 +13,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
 import uoa.lavs.SceneManager.AppScene;
@@ -37,8 +36,6 @@ public class PendingUpdatesController {
   @FXML private TableColumn<PendingUpdateRow, Boolean> employerColumn;
   @FXML private TableColumn<PendingUpdateRow, Boolean> loanColumn;
   @FXML private TableColumn<PendingUpdateRow, Boolean> coborrowerColumn;
-
-  @Autowired AddLoanController addLoanController;
 
   private List<Address> failedAddressUpdates;
   private List<Customer> failedCustomerUpdates;
