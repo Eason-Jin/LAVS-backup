@@ -7,10 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import uoa.lavs.mainframe.Instance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomerAddress;
 import uoa.lavs.models.Address;
+import uoa.lavs.LocalInstance;
 
 public class AddressUpdater {
 
@@ -91,7 +91,7 @@ public class AddressUpdater {
       updateCustomerAddress.setIsMailing(address.getIsMailing());
     }
 
-    Status status = updateCustomerAddress.send(Instance.getConnection());
+    Status status = updateCustomerAddress.send(LocalInstance.getConnection());
     if (!status.getWasSuccessful()) {
       failed = true;
       System.out.println(
@@ -107,7 +107,7 @@ public class AddressUpdater {
     String CHECK_SQL = "SELECT COUNT(*) FROM Address WHERE CustomerID = ? AND Number = ?";
 
     if (customerID != null && address.getNumber() != null) {
-      try (Connection connection = Instance.getDatabaseConnection();
+      try (Connection connection = LocalInstance.getDatabaseConnection();
           PreparedStatement checkStatement = connection.prepareStatement(CHECK_SQL)) {
         checkStatement.setString(1, customerID);
         checkStatement.setInt(2, address.getNumber());
@@ -137,7 +137,7 @@ public class AddressUpdater {
       if (address.getNumber() == null) {
         String GET_MAX_NUMBER_SQL =
             "SELECT COALESCE(MAX(Number), 0) + 1 FROM Address WHERE CustomerID = ?";
-        try (Connection connection = Instance.getDatabaseConnection();
+        try (Connection connection = LocalInstance.getDatabaseConnection();
             PreparedStatement getMaxNumberStatement =
                 connection.prepareStatement(GET_MAX_NUMBER_SQL)) {
           getMaxNumberStatement.setString(1, customerID);
@@ -153,7 +153,7 @@ public class AddressUpdater {
               + " IsMailing, CustomerID, Number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     }
 
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement =
             connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -175,7 +175,7 @@ public class AddressUpdater {
 
   private static void addFailedUpdate(String customerID, Integer number) {
     String sql = "UPDATE Address SET InMainframe = false WHERE CustomerID = ? AND Number = ?";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql)) {
       statement.setString(1, customerID);
       statement.setInt(2, number);
@@ -187,7 +187,7 @@ public class AddressUpdater {
 
   private static void addInMainframe(String customerID, Integer number) {
     String sql = "UPDATE Address SET InMainframe = true WHERE CustomerID = ? AND Number = ?";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql)) {
       statement.setString(1, customerID);
       statement.setInt(2, number);
@@ -200,7 +200,7 @@ public class AddressUpdater {
   public static List<Address> getFailedUpdates() {
     List<Address> failedUpdates = new ArrayList<>();
     String sql = "SELECT CustomerID, Number FROM Address WHERE InMainframe = false";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
         ResultSet resultSet = statement.executeQuery()) {
       while (resultSet.next()) {

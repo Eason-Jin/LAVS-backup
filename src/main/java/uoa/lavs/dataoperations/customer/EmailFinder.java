@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import uoa.lavs.mainframe.Instance;
+import uoa.lavs.LocalInstance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.LoadCustomerEmails;
 import uoa.lavs.models.Email;
@@ -31,7 +31,7 @@ public class EmailFinder {
   public static List<Email> findFromMainframe(String customerId) throws Exception {
     LoadCustomerEmails loadCustomerEmails = new LoadCustomerEmails();
     loadCustomerEmails.setCustomerId(customerId);
-    Status status = loadCustomerEmails.send(Instance.getConnection());
+    Status status = loadCustomerEmails.send(LocalInstance.getConnection());
     if (!status.getWasSuccessful()) {
       System.out.println(
           "Something went wrong - the Mainframe send failed! The code is " + status.getErrorCode());
@@ -61,7 +61,7 @@ public class EmailFinder {
     ResultSet resultSet = null;
 
     try {
-      connection = Instance.getDatabaseConnection();
+      connection = LocalInstance.getDatabaseConnection();
       String query = "SELECT * FROM Email WHERE CustomerID = ?";
       preparedStatement = connection.prepareStatement(query);
       preparedStatement.setString(1, customerId);

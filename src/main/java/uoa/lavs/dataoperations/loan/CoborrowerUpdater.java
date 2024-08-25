@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import uoa.lavs.mainframe.Instance;
+import uoa.lavs.LocalInstance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.loan.UpdateLoanCoborrower;
 
@@ -43,7 +43,7 @@ public class CoborrowerUpdater {
     // PreparedStatement prepares an SQL statement for execution. We then obtain the auto generated
     // incremented
     // key value.
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement =
             connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
       statement.setString(1, coborrowerId);
@@ -66,7 +66,7 @@ public class CoborrowerUpdater {
       updateLoanCoborrower.setLoanId(loanId);
       updateLoanCoborrower.setCoborrowerId(coborrowerId);
     }
-    Status status = updateLoanCoborrower.send(Instance.getConnection());
+    Status status = updateLoanCoborrower.send(LocalInstance.getConnection());
     if (!status.getWasSuccessful()) {
       failed = true;
       System.out.println(
@@ -78,7 +78,7 @@ public class CoborrowerUpdater {
 
   private static void addFailedUpdate(String loanId, String coborrowerId) {
     String sql = "UPDATE Coborrower SET InMainframe = false WHERE LoanID = ? AND CoborrowerID = ?";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql)) {
       statement.setString(1, loanId);
       statement.setString(2, coborrowerId);
@@ -90,7 +90,7 @@ public class CoborrowerUpdater {
 
   private static void addInMainframe(String loanId, String coborrowerId) {
     String sql = "UPDATE Coborrower SET InMainframe = true WHERE LoanID = ? AND CoborrowerID = ?";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql)) {
       statement.setString(1, loanId);
       statement.setString(2, coborrowerId);
@@ -103,7 +103,7 @@ public class CoborrowerUpdater {
   public static List<String> getFailedUpdates() {
     List<String> failedUpdates = new ArrayList<>();
     String sql = "SELECT LoanID, CoborrowerID FROM Coborrower WHERE InMainframe = false";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
         ResultSet resultSet = statement.executeQuery()) {
       while (resultSet.next()) {

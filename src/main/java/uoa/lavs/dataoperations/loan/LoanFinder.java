@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uoa.lavs.mainframe.Frequency;
-import uoa.lavs.mainframe.Instance;
+import uoa.lavs.LocalInstance;
 import uoa.lavs.mainframe.RateType;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.loan.FindLoan;
@@ -37,7 +37,7 @@ public class LoanFinder {
     FindLoan findLoan = new FindLoan();
     LoadLoan loadLoan = new LoadLoan();
     findLoan.setId(customerId);
-    Status status = findLoan.send(Instance.getConnection());
+    Status status = findLoan.send(LocalInstance.getConnection());
     if (!status.getWasSuccessful()) {
       System.out.println(
           "Something went wrong - the Mainframe send failed! The code is " + status.getErrorCode());
@@ -52,7 +52,7 @@ public class LoanFinder {
     for (int i = 1; i <= loanCount; i++) {
       Loan loan = new Loan();
       loadLoan.setLoanId(findLoan.getLoanIdFromServer(i));
-      loadLoan.send(Instance.getConnection());
+      loadLoan.send(LocalInstance.getConnection());
       loan.setLoanId(findLoan.getLoanIdFromServer(i));
       loan.setCustomerId(findLoan.getCustomerIdFromServer());
       loan.setCustomerName(findLoan.getCustomerNameFromServer());
@@ -74,7 +74,7 @@ public class LoanFinder {
 
   private static List<Loan> findFromDatabase(String customerId) throws Exception {
     List<Loan> loans = new ArrayList<>();
-    Connection connection = Instance.getDatabaseConnection();
+    Connection connection = LocalInstance.getDatabaseConnection();
     String query = "SELECT * FROM loan WHERE CustomerID = ?;";
     PreparedStatement preparedStatement = connection.prepareStatement(query);
     preparedStatement.setString(1, customerId);

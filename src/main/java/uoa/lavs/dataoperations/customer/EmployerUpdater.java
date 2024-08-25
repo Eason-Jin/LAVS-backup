@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import uoa.lavs.mainframe.Instance;
+import uoa.lavs.LocalInstance;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.customer.UpdateCustomerEmployer;
 import uoa.lavs.models.Employer;
@@ -101,7 +101,7 @@ public class EmployerUpdater {
       updateCustomerEmployer.setIsOwner(employer.getIsOwner());
     }
 
-    Status status = updateCustomerEmployer.send(Instance.getConnection());
+    Status status = updateCustomerEmployer.send(LocalInstance.getConnection());
     if (!status.getWasSuccessful()) {
       failed = true;
       System.out.println(
@@ -117,7 +117,7 @@ public class EmployerUpdater {
     String CHECK_SQL = "SELECT COUNT(*) FROM Employer WHERE CustomerID = ? AND Number = ?";
 
     if (customerID != null && employer.getNumber() != null) {
-      try (Connection connection = Instance.getDatabaseConnection();
+      try (Connection connection = LocalInstance.getDatabaseConnection();
           PreparedStatement checkStatement = connection.prepareStatement(CHECK_SQL)) {
         checkStatement.setString(1, customerID);
         checkStatement.setInt(2, employer.getNumber());
@@ -147,7 +147,7 @@ public class EmployerUpdater {
     } else {
       if (employer.getNumber() == null) {
         String GET_MAX_NUMBER_SQL = "SELECT COALESCE(MAX(Number), 0) + 1 FROM Employer WHERE CustomerID = ?";
-        try (Connection connection = Instance.getDatabaseConnection();
+        try (Connection connection = LocalInstance.getDatabaseConnection();
             PreparedStatement getMaxNumberStatement = connection.prepareStatement(GET_MAX_NUMBER_SQL)) {
           getMaxNumberStatement.setString(1, customerID);
           try (ResultSet resultSet = getMaxNumberStatement.executeQuery()) {
@@ -162,7 +162,7 @@ public class EmployerUpdater {
           + " ?, ?, ?, ?, ?, ?)";
     }
 
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
       statement.setString(1, employer.getName());
@@ -185,7 +185,7 @@ public class EmployerUpdater {
 
   private static void addFailedUpdate(String customerID, Integer number) {
     String sql = "UPDATE Employer SET InMainframe = false WHERE CustomerID = ? AND Number = ?";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql)) {
       statement.setString(1, customerID);
       statement.setInt(2, number);
@@ -197,7 +197,7 @@ public class EmployerUpdater {
 
   private static void addInMainframe(String customerID, Integer number) {
     String sql = "UPDATE Employer SET InMainframe = true WHERE CustomerID = ? AND Number = ?";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql)) {
       statement.setString(1, customerID);
       statement.setInt(2, number);
@@ -210,7 +210,7 @@ public class EmployerUpdater {
   public static List<Employer> getFailedUpdates() {
     List<Employer> failedUpdates = new ArrayList<>();
     String sql = "SELECT CustomerID, Number FROM Employer WHERE InMainframe = false";
-    try (Connection connection = Instance.getDatabaseConnection();
+    try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
         ResultSet resultSet = statement.executeQuery()) {
       while (resultSet.next()) {
