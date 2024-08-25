@@ -41,8 +41,11 @@ public class SearchController {
 
   public void initialize() {
     idColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("id"));
+    idColumn.setReorderable(false);
     nameColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));
+    nameColumn.setReorderable(false);
     dobColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("dob"));
+    dobColumn.setReorderable(false);
     searchTable.setPlaceholder(new Label(""));
 
     searchTable.setRowFactory(

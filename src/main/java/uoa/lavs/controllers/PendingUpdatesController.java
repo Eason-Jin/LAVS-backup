@@ -156,13 +156,13 @@ public class PendingUpdatesController {
               .anyMatch(employer -> employer.getCustomerId().equals(customerId));
       boolean loanFailed =
           failedLoanUpdates.stream().anyMatch(loan -> loan.getCustomerId().equals(customerId));
-      boolean coborrowerFailed =
-          failedCoborrowerUpdates.stream()
-              .anyMatch(
-                  coborrowerId ->
-                      coborrowerId != null
-                          && !coborrowerId.isEmpty()
-                          && coborrowerId.charAt(0) == customerId.charAt(0));
+                        boolean coborrowerFailed =
+                failedCoborrowerUpdates.stream()
+                    .anyMatch(
+                        coborrowerId ->
+                            coborrowerId != null
+                                && !coborrowerId.isEmpty()
+                                && coborrowerId.split(",")[1].equals(customerId));
 
       // Create a new row with all the relevant information
       PendingUpdateRow row =
@@ -208,13 +208,12 @@ public class PendingUpdatesController {
       customerIds.add(loan.getCustomerId());
     }
 
-    for (String coborrower : failedCoborrowerUpdates) {
-      if (coborrower != null && !coborrower.isEmpty()) {
-        // Takes the first character of the Loan ID string, which corresponds to the customer who
-        // owns this loan
-        // who has had their co-borrower changed
-        customerIds.add(String.valueOf(coborrower.charAt(0)));
-      }
+        for (String coborrower : failedCoborrowerUpdates) {
+        if (coborrower != null && !coborrower.isEmpty()) {
+            // Split the coborrower string by the hyphen and take the first part
+            String customerId = coborrower.split(",")[1];
+            customerIds.add(customerId);
+        }
     }
 
     return customerIds;

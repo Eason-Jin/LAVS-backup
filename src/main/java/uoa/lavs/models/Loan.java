@@ -50,8 +50,9 @@ public class Loan {
     this.paymentFrequency = paymentFrequency;
     this.compounding = compounding;
   }
-  
-  public Loan() {}
+
+  public Loan() {
+  }
 
   public String getLoanId() {
     return loanId;
@@ -78,6 +79,12 @@ public class Loan {
   }
 
   public String getStatus() {
+    try {
+      Integer.parseInt(status);
+    } catch (NumberFormatException e) {
+      return status;
+    }
+
     switch (status) {
       case "1":
         return LoanStatus.New.toString();

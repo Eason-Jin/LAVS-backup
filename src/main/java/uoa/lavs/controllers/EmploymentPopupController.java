@@ -33,56 +33,88 @@ public class EmploymentPopupController extends PopupController {
   @Override
   @FXML
   public void onClickSave(ActionEvent event) {
-    if (isEmpty(companyNameTextField)
-        || isEmpty(companyAddressLine1TextField)
-        || isEmpty(companySuburbTextField)
-        || isEmpty(companyCityTextField)
-        || isEmpty(companyPostcodeTextField)
-        || isEmpty(companyCountryTextField)
-        || isEmpty(companyPhoneTextField)
-        || isEmpty(companyEmailTextField)
-        || isEmpty(companyWebsiteTextField)) {
+    boolean companyNameFlag = isEmpty(companyNameTextField);
+    boolean companyAddressLine1Flag = isEmpty(companyAddressLine1TextField);
+    boolean companySuburbFlag = isEmpty(companySuburbTextField);
+    boolean companyCityFlag = isEmpty(companyCityTextField);
+    boolean companyPostcodeFlag = isEmpty(companyPostcodeTextField);
+    boolean companyCountryFlag = isEmpty(companyCountryTextField);
+    boolean companyPhoneFlag = isEmpty(companyPhoneTextField);
+    boolean companyEmailFlag = isEmpty(companyEmailTextField);
+    boolean companyWebsiteFlag = isEmpty(companyWebsiteTextField);
+    if (companyNameFlag
+        || companyAddressLine1Flag
+        || companySuburbFlag
+        || companyCityFlag
+        || companyPostcodeFlag
+        || companyCountryFlag
+        || companyPhoneFlag
+        || companyEmailFlag
+        || companyWebsiteFlag) {
       appendErrorMessage("Please fill in all required fields!\n");
     } else {
-      if (!validateNumberFormat(companyPostcodeTextField, false)) {
-        appendErrorMessage("Postcode must be numbers!\n");
-      }
-      if (!validateEmailFormat(companyEmailTextField)) {
-        appendErrorMessage("Email must be in the format of a@b.c!\n");
-      }
-      if (!validateNumberFormat(companyPhoneTextField, false)) {
-        appendErrorMessage("Phone number must be numbers!\n");
-      }
-      if (!validateWebsiteFormat(companyWebsiteTextField)) {
-        appendErrorMessage("Website must be in the format of a.b!\n");
-      }
-
-      if (isTooLong(companyNameTextField, 60)) {
+      boolean companyNameLongFlag = isTooLong(companyNameTextField, 60);
+      if (companyNameLongFlag) {
         appendErrorMessage("Company name must be less than 60 characters!\n");
       }
-      if (isTooLong(companyAddressLine1TextField, 60)) {
+      boolean companyAddressLine1LongFlag = isTooLong(companyAddressLine1TextField, 60);
+      if (companyAddressLine1LongFlag) {
         appendErrorMessage("Address line 1 must be less than 60 characters!\n");
       }
-      if (isTooLong(companyAddressLine2TextField, 60)) {
+      boolean companyAddressLine2LongFlag = isTooLong(companyAddressLine2TextField, 60);
+      if (companyAddressLine2LongFlag) {
         appendErrorMessage("Address line 2 must be less than 60 characters!\n");
       }
-      if (isTooLong(companySuburbTextField, 30)) {
+      boolean companySuburbLongFlag = isTooLong(companySuburbTextField, 30);
+      if (companySuburbLongFlag) {
         appendErrorMessage("Suburb must be less than 30 characters!\n");
       }
-      if (isTooLong(companyCityTextField, 30)) {
+      boolean companyCityLongFlag = isTooLong(companyCityTextField, 30);
+      if (companyCityLongFlag) {
         appendErrorMessage("City must be less than 30 characters!\n");
       }
-      if (isTooLong(companyPostcodeTextField, 10)) {
+      boolean companyPostcodeLongFlag = isTooLong(companyPostcodeTextField, 10);
+      if (companyPostcodeLongFlag) {
         appendErrorMessage("Postcode must be less than 10 characters!\n");
       }
-      if (isTooLong(companyCountryTextField, 30)) {
+      boolean companyCountryLongFlag = isTooLong(companyCountryTextField, 30);
+      if (companyCountryLongFlag) {
         appendErrorMessage("Country must be less than 30 characters!\n");
       }
-      if (isTooLong(companyEmailTextField, 60)) {
+      boolean companyPhoneLongFlag = isTooLong(companyPhoneTextField, 20);
+      if (companyPhoneLongFlag) {
+        appendErrorMessage("Phone number must be less than 30 characters!\n");
+      }
+      boolean companyEmailLongFlag = isTooLong(companyEmailTextField, 60);
+      if (companyEmailLongFlag) {
         appendErrorMessage("Email must be less than 60 characters!\n");
       }
-      if (isTooLong(companyWebsiteTextField, 60)) {
+      boolean companyWebsiteLongFlag = isTooLong(companyWebsiteTextField, 20);
+      if (companyWebsiteLongFlag) {
         appendErrorMessage("Website must be less than 60 characters!\n");
+      }
+      if (!(companyNameLongFlag
+          || companyAddressLine1LongFlag
+          || companyAddressLine2LongFlag
+          || companySuburbLongFlag
+          || companyCityLongFlag
+          || companyPostcodeLongFlag
+          || companyCountryLongFlag
+          || companyPhoneLongFlag
+          || companyEmailLongFlag
+          || companyWebsiteLongFlag)) {
+        if (!validateNumberFormat(companyPostcodeTextField, false)) {
+          appendErrorMessage("Postcode must be numbers!\n");
+        }
+        if (!validateEmailFormat(companyEmailTextField)) {
+          appendErrorMessage("Email must be in the format of a@b.c!\n");
+        }
+        if (!validateNumberFormat(companyPhoneTextField, false)) {
+          appendErrorMessage("Phone number must be numbers!\n");
+        }
+        if (!validateWebsiteFormat(companyWebsiteTextField)) {
+          appendErrorMessage("Website must be in the format of a.b!\n");
+        }
       }
     }
 
@@ -112,7 +144,7 @@ public class EmploymentPopupController extends PopupController {
   }
 
   @Override
-  public void setUpPopup(Detail obj, Consumer<Detail> objectSaveHandler, boolean... args) {
+  public void setUpPopup(Detail obj, Consumer<Detail> objectSaveHandler, Boolean isPrimary) {
 
     this.employment = (Employer) obj;
     this.employmentSaveHandler = (Consumer<Employer>) (Object) objectSaveHandler;
@@ -128,6 +160,6 @@ public class EmploymentPopupController extends PopupController {
     companyPhoneTextField.setText(employment.getPhoneNumber());
     companyEmailTextField.setText(employment.getEmailAddress());
     companyWebsiteTextField.setText(employment.getWebsite());
-    isOwnerCheckBox.setSelected(employment.getIsOwner() == null ? false : employment.getIsOwner());
+    isOwnerCheckBox.setSelected(employment.getIsOwner());
   }
 }
