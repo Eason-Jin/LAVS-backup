@@ -52,6 +52,7 @@ public class AddressUpdater {
             existingAddress = addressOnAccount;
             break;
           }
+          updateCustomerAddress.setNumber(null);
         }
       } catch (Exception e) {
         updateCustomerAddress.setNumber(null);
