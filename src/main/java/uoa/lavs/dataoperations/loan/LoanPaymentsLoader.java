@@ -58,7 +58,7 @@ public class LoanPaymentsLoader {
         }
     }
 
-    private static List<LoanRepayment> calculateFromMainframe(String loanId) throws Exception {
+    public static List<LoanRepayment> calculateFromMainframe(String loanId) throws Exception {
         // Initialise LoadLoanPayments message
         LoadLoanPayments loadLoanPayments = new LoadLoanPayments();
         loadLoanPayments.setLoanId(loanId);

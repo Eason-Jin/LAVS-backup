@@ -261,6 +261,8 @@ public class DataOperationsTestsHelper {
                 .insert(generateLoanDocument());
         database.getCollection(NitriteConnection.Internal.IDS_COLLECTION)
                 .insert(Document.createDocument("type", "customer").put("id", 124));
+        database.getCollection(NitriteConnection.Internal.CUSTOMERS_COLLECTION)
+                .insert(generateCustomerDocument("1", "Bob Black", true));
         return database;
     }
 

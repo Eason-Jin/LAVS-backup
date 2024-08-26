@@ -37,7 +37,7 @@ public class LoanUpdater {
     }
   }
 
-  private static void updateDatabase(String loanId, Loan loan) throws SQLException {
+  public static void updateDatabase(String loanId, Loan loan) throws SQLException {
     String sql;
     if (loan.getLoanId() == null) {
       String GET_MAX_NUMBER_SQL = "SELECT COALESCE(MAX(CAST(SUBSTR(LoanID, INSTR(LoanID, '-') + 1) AS INTEGER)), 0) + 1"
@@ -78,7 +78,7 @@ public class LoanUpdater {
     }
   }
 
-  private static String updateMainframe(String loanId, Loan loan) throws Exception {
+  static String updateMainframe(String loanId, Loan loan) throws Exception {
     UpdateLoan updateLoan = new UpdateLoan();
     UpdateLoanStatus updateLoanStatus = new UpdateLoanStatus();
     updateLoan.setLoanId(null);
