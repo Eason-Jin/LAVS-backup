@@ -85,14 +85,12 @@ public class LoanPaymentsLoader {
             loadLoanPayments.setNumber(pageNumber);
             status = loadLoanPayments.send(LocalInstance.getConnection());
             if (!status.getWasSuccessful()) {
-                String errorMessage = "Failed to retrieve page " + pageNumber + ". Error code: " + status.getErrorCode();
-                throw new Exception(errorMessage);
+                throw new Exception("Failed to retrieve page");
             }
 
             // Get the number of payments on this page
             Integer paymentCount = loadLoanPayments.getPaymentCountFromServer();
             if (paymentCount == null) {
-                System.out.println("No payments found on page " + pageNumber);
                 continue;
             }
 
@@ -106,8 +104,6 @@ public class LoanPaymentsLoader {
 
                 if (month != null && principal != null && interest != null && remaining != null) {
                     loanRepayments.add(new LoanRepayment(number, month, principal, interest, remaining));
-                } else {
-                    System.out.println("Warning: Skipping payment " + i + " on page " + pageNumber + " due to missing data.");
                 }
             }
         }

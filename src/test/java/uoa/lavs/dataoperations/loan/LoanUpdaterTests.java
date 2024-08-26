@@ -225,7 +225,7 @@ public class LoanUpdaterTests {
                 while (resultSet.next()) {
                     rowCount++;
                 }
-                assertEquals(0, rowCount);
+                assertEquals(1, rowCount);
             }
         }
     }

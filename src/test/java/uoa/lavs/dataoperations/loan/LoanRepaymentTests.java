@@ -56,7 +56,7 @@ public class LoanRepaymentTests {
   @Test
   public void testCalculateLoanRepaymentDatabase() throws Exception {
     DataOperationsTestsHelper.createTestingDatabasesForLoans();
-    String loanId = "1-01";
+    String loanId = "1-02";
     List<LoanRepayment> loanRepayments = LoanPaymentsLoader.calculateLoanRepayments(loanId);
 
     assert loanRepayments.size() > 0;

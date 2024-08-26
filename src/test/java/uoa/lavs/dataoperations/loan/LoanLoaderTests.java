@@ -62,13 +62,13 @@ public class LoanLoaderTests {
   @Test
   public void loadExistingDatabaseLoan() {
     DataOperationsTestsHelper.createTestingDatabasesForLoans();
-    String loanId = "1-01";
+    String loanId = "1-02";
 
     Loan loan = LoanLoader.loadData(loanId);
 
     assertAll(
         () -> assertEquals("1", loan.getCustomerId()),
-        () -> assertEquals("1-01", loan.getLoanId()));
+        () -> assertEquals("1-02", loan.getLoanId()));
   }
 
   @Test

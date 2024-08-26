@@ -240,6 +240,12 @@ public class DataOperationsTestsHelper {
                     INSERT INTO Loan (LoanID, CustomerID, CustomerName, Status, Principal, RateValue, RateType, StartDate, Period, Term, PaymentAmount, PaymentFrequency, Compounding, InMainframe)
                     VALUES ('1-01', '1', 'Bob Black', 'Active', 1000, 0.1, 'Fixed', '2021-01-01', 12, 12, 100, 'Monthly', 'Monthly', 0);
                     """;
+
+            String insertLoan2 = """
+                    INSERT INTO Loan (LoanID, CustomerID, CustomerName, Status, Principal, RateValue, RateType, StartDate, Period, Term, PaymentAmount, PaymentFrequency, Compounding, InMainframe)
+                    VALUES ('1-02', '1', 'Bob Black', 'Active', 1000, 0.1, 'Fixed', '2021-01-01', 12, 12, 100, 'Monthly', 'Monthly', 0);
+                    """;
+
             String insertEmail2 = """
                     INSERT INTO Email (CustomerID, Address, IsPrimary, Number, InMainframe)
                      VALUES ('1', 'john@gmail.com', true, 2, 0);
@@ -284,6 +290,7 @@ public class DataOperationsTestsHelper {
             stmt.executeUpdate(insertPhone2);
             stmt.executeUpdate(insertEmployer2);
             stmt.executeUpdate(insertCoborrower);
+            stmt.executeUpdate(insertLoan2);
         }
     }
 
