@@ -47,7 +47,7 @@ public class Customer extends Detail {
   }
 
   public String getTitle() {
-    return (title == null || title == "null") ? "" : title;
+    return title;
   }
 
   public void setTitle(String title) {
@@ -55,7 +55,7 @@ public class Customer extends Detail {
   }
 
   public String getName() {
-    return (name == null || name == "null") ? "" : name;
+    return name;
   }
 
   public void setName(String name) {
@@ -63,7 +63,7 @@ public class Customer extends Detail {
   }
 
   public LocalDate getDob() {
-    return (dob == null) ? LocalDate.of(1, 1, 1) : dob;
+    return dob;
   }
 
   public void setDob(LocalDate dob) {
@@ -71,7 +71,7 @@ public class Customer extends Detail {
   }
 
   public String getOccupation() {
-    return (occupation == null || occupation == "null") ? "" : occupation;
+    return occupation;
   }
 
   public void setOccupation(String occupation) {
@@ -79,7 +79,7 @@ public class Customer extends Detail {
   }
 
   public String getCitizenship() {
-    return (citizenship == null || citizenship == "null") ? "" : citizenship;
+    return citizenship;
   }
 
   public void setCitizenship(String citizenship) {
@@ -87,7 +87,7 @@ public class Customer extends Detail {
   }
 
   public String getVisaType() {
-    return (visaType == null || visaType == "null") ? "" : visaType;
+    return visaType;
   }
 
   public void setVisaType(String visaType) {
@@ -95,7 +95,7 @@ public class Customer extends Detail {
   }
 
   public String getStatus() {
-    return (status == null || status == "null") ? "" : status;
+    return status;
   }
 
   public void setStatus(String status) {
@@ -103,7 +103,7 @@ public class Customer extends Detail {
   }
 
   public String getNotes() {
-    return (notes == null || notes == "null") ? "" : notes;
+    return notes;
   }
 
   public void setNotes(String notes) {

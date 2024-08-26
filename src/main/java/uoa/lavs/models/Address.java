@@ -57,7 +57,7 @@ public class Address extends Detail {
   }
 
   public String getType() {
-    return (type == null || type == "null") ? "" : type;
+    return type;
   }
 
   public void setType(String type) {
@@ -65,7 +65,7 @@ public class Address extends Detail {
   }
 
   public String getLine1() {
-    return (line1 == null || line1 == "null") ? "" : line1;
+    return line1;
   }
 
   public void setLine1(String line1) {
@@ -73,7 +73,7 @@ public class Address extends Detail {
   }
 
   public String getLine2() {
-    return (line2 == null || line2 == "null") ? "" : line2;
+    return line2;
   }
 
   public void setLine2(String line2) {
@@ -81,7 +81,7 @@ public class Address extends Detail {
   }
 
   public String getSuburb() {
-    return (suburb == null || suburb == "null") ? "" : suburb;
+    return suburb;
   }
 
   public void setSuburb(String suburb) {
@@ -89,7 +89,7 @@ public class Address extends Detail {
   }
 
   public String getCity() {
-    return (city == null || city == "null") ? "" : city;
+    return city;
   }
 
   public void setCity(String city) {
@@ -97,7 +97,7 @@ public class Address extends Detail {
   }
 
   public String getPostCode() {
-    return (postCode == null || postCode == "null") ? "" : postCode;
+    return postCode;
   }
 
   public void setPostCode(String postCode) {
@@ -105,7 +105,7 @@ public class Address extends Detail {
   }
 
   public String getCountry() {
-    return (country == null || country == "null") ? "" : country;
+    return country;
   }
 
   public void setCountry(String country) {
@@ -113,7 +113,7 @@ public class Address extends Detail {
   }
 
   public Boolean getIsPrimary() {
-    return (isPrimary == null) ? false : isPrimary;
+    return isPrimary;
   }
 
   public void setIsPrimary(boolean isPrimary) {
@@ -121,7 +121,7 @@ public class Address extends Detail {
   }
 
   public Boolean getIsMailing() {
-    return (isMailing == null) ? false : isMailing;
+    return isMailing;
   }
 
   public void setIsMailing(boolean isMailing) {
