@@ -37,10 +37,9 @@ public class EmployerUpdater {
     }
   }
 
-  private static Integer updateMainframe(String customerID, Employer employer) throws Exception {
+  public static Integer updateMainframe(String customerID, Employer employer) throws Exception {
     UpdateCustomerEmployer updateCustomerEmployer = new UpdateCustomerEmployer();
     updateCustomerEmployer.setCustomerId(customerID);
-    updateCustomerEmployer.setNumber(employer.getNumber());
     Employer existingEmployer = null;
 
     if (employer.getNumber() != null) {
@@ -48,11 +47,11 @@ public class EmployerUpdater {
       try {
         existingEmployers = EmployerFinder.findFromMainframe(customerID);
         for (Employer employerOnAccount : existingEmployers) {
-          if (employerOnAccount.getNumber().equals(employer.getNumber())
-              && employerOnAccount.getCustomerId().equals(employer.getCustomerId())) {
+          if (employerOnAccount.getNumber().equals(employer.getNumber())) {
             existingEmployer = employerOnAccount;
             break;
           }
+          updateCustomerEmployer.setNumber(null);
         }
       } catch (Exception e) {
         updateCustomerEmployer.setNumber(null);
@@ -61,6 +60,7 @@ public class EmployerUpdater {
     }
 
     if (existingEmployer != null) {
+          updateCustomerEmployer.setNumber(employer.getNumber());
       updateCustomerEmployer.setName(
           employer.getName() != null ? employer.getName() : existingEmployer.getName());
       updateCustomerEmployer.setLine1(
@@ -112,7 +112,7 @@ public class EmployerUpdater {
     return updateCustomerEmployer.getNumberFromServer();
   }
 
-  private static void updateDatabase(String customerID, Employer employer) throws SQLException {
+  public static void updateDatabase(String customerID, Employer employer) throws SQLException {
     boolean exists = false;
     String CHECK_SQL = "SELECT COUNT(*) FROM Employer WHERE CustomerID = ? AND Number = ?";
 
@@ -219,10 +219,8 @@ public class EmployerUpdater {
         List<Employer> employers;
         employers = EmployerFinder.findFromDatabase(customerID);
         for (Employer employerOnAccount : employers) {
-          if (employerOnAccount.getNumber().equals(number)
-              && employerOnAccount.getCustomerId().equals(customerID)) {
+          if (employerOnAccount.getNumber().equals(number)) {
             failedUpdates.add(employerOnAccount);
-            break;
           }
         }
       }

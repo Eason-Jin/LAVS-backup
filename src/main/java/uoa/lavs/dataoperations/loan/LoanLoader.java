@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
-import uoa.lavs.mainframe.Frequency;
 import uoa.lavs.LocalInstance;
+import uoa.lavs.mainframe.Frequency;
 import uoa.lavs.mainframe.RateType;
 import uoa.lavs.mainframe.Status;
 import uoa.lavs.mainframe.messages.loan.LoadLoan;
@@ -17,9 +17,6 @@ public class LoanLoader {
     Loan loan = new Loan();
     try {
       loan = loadFromMainframe(loanId);
-      if (loan.getCustomerName() == null) {
-        throw new Exception("Loan not in mainframe");
-      }
     } catch (Exception e) {
       System.out.println("Mainframe load failed: " + e.getMessage());
       System.out.println("Trying to load from database");
@@ -32,7 +29,7 @@ public class LoanLoader {
     return loan;
   }
 
-  private static Loan loadFromDatabase(String loanId) throws Exception {
+  public static Loan loadFromDatabase(String loanId) throws Exception {
     Loan loan = new Loan();
     String query = "SELECT * FROM Loan WHERE LoanID = ?";
     try (Connection connection = LocalInstance.getDatabaseConnection();
@@ -60,7 +57,7 @@ public class LoanLoader {
     return loan;
   }
 
-  private static Loan loadFromMainframe(String loanId) throws Exception {
+  public static Loan loadFromMainframe(String loanId) throws Exception {
     LoadLoan loadLoan = new LoadLoan();
     loadLoan.setLoanId(loanId);
     Status status = loadLoan.send(LocalInstance.getConnection());

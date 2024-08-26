@@ -36,7 +36,7 @@ public class CoborrowerUpdater {
     }
   }
 
-  private static void updateDatabase(String loanId, String coborrowerId) throws SQLException {
+  public static void updateDatabase(String loanId, String coborrowerId) throws SQLException {
 
     String sql = "INSERT INTO Coborrower (CoborrowerID, LoanID)" + " VALUES (?, ?)";
 
@@ -54,7 +54,7 @@ public class CoborrowerUpdater {
     }
   }
 
-  private static int updateMainframe(String loanId, String coborrowerId, Integer number)
+  public static int updateMainframe(String loanId, String coborrowerId, Integer number)
       throws Exception {
     UpdateLoanCoborrower updateLoanCoborrower = new UpdateLoanCoborrower();
 

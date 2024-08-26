@@ -37,10 +37,9 @@ public class PhoneUpdater {
     }
   }
 
-  private static Integer updateMainframe(String customerID, Phone phone) throws Exception {
+  public static Integer updateMainframe(String customerID, Phone phone) throws Exception {
     UpdateCustomerPhoneNumber updateCustomerPhone = new UpdateCustomerPhoneNumber();
     updateCustomerPhone.setCustomerId(customerID);
-    updateCustomerPhone.setNumber(phone.getNumber());
     Phone existingPhone = null;
 
     if (phone.getNumber() != null) {
@@ -48,11 +47,11 @@ public class PhoneUpdater {
       try {
         existingPhones = PhoneFinder.findFromMainframe(customerID);
         for (Phone phoneOnAccount : existingPhones) {
-          if (phoneOnAccount.getNumber().equals(phone.getNumber())
-              && phoneOnAccount.getCustomerId().equals(phone.getCustomerId())) {
+          if (phoneOnAccount.getNumber().equals(phone.getNumber())) {
             existingPhone = phoneOnAccount;
             break;
           }
+          updateCustomerPhone.setNumber(null);
         }
       } catch (Exception e) {
         updateCustomerPhone.setNumber(null);
@@ -61,6 +60,7 @@ public class PhoneUpdater {
     }
 
     if (existingPhone != null) {
+      updateCustomerPhone.setNumber(phone.getNumber());
       updateCustomerPhone.setType(
           phone.getType() != null ? phone.getType() : existingPhone.getType());
       updateCustomerPhone.setPrefix(
@@ -90,7 +90,7 @@ public class PhoneUpdater {
     return updateCustomerPhone.getNumberFromServer();
   }
 
-  private static void updateDatabase(String customerID, Phone phone) throws SQLException {
+  public static void updateDatabase(String customerID, Phone phone) throws SQLException {
     boolean exists = false;
     String CHECK_SQL = "SELECT COUNT(*) FROM Phone WHERE CustomerID = ? AND Number = ?";
 
@@ -184,10 +184,8 @@ public class PhoneUpdater {
         List<Phone> phones;
         phones = PhoneFinder.findFromDatabase(customerID);
         for (Phone phoneOnAccount : phones) {
-          if (phoneOnAccount.getNumber().equals(number)
-              && phoneOnAccount.getCustomerId().equals(customerID)) {
+          if (phoneOnAccount.getNumber().equals(number)) {
             failedUpdates.add(phoneOnAccount);
-            break;
           }
         }
       }

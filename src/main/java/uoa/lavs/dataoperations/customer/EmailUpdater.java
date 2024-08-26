@@ -37,10 +37,9 @@ public class EmailUpdater {
     }
   }
 
-  private static Integer updateMainframe(String customerID, Email email) throws Exception {
+  public static Integer updateMainframe(String customerID, Email email) throws Exception {
     UpdateCustomerEmail updateCustomerEmail = new UpdateCustomerEmail();
     updateCustomerEmail.setCustomerId(customerID);
-    updateCustomerEmail.setNumber(email.getNumber());
     Email existingEmail = null;
 
     if (email.getNumber() != null) {
@@ -48,11 +47,11 @@ public class EmailUpdater {
       try {
         existingEmails = EmailFinder.findFromMainframe(customerID);
         for (Email emailOnAccount : existingEmails) {
-          if (emailOnAccount.getNumber().equals(email.getNumber())
-              && emailOnAccount.getCustomerId().equals(email.getCustomerId())) {
+          if (emailOnAccount.getNumber().equals(email.getNumber())) {
             existingEmail = emailOnAccount;
             break;
           }
+          updateCustomerEmail.setNumber(null);
         }
       } catch (Exception e) {
         updateCustomerEmail.setNumber(null);
@@ -61,6 +60,7 @@ public class EmailUpdater {
     }
 
     if (existingEmail != null) {
+      updateCustomerEmail.setNumber(email.getNumber());
       updateCustomerEmail.setAddress(
           email.getAddress() != null ? email.getAddress() : existingEmail.getAddress());
       updateCustomerEmail.setIsPrimary(
@@ -81,7 +81,7 @@ public class EmailUpdater {
     return updateCustomerEmail.getNumberFromServer();
   }
 
-  private static void updateDatabase(String customerID, Email email) throws SQLException {
+  public static void updateDatabase(String customerID, Email email) throws SQLException {
     boolean exists = false;
     String CHECK_SQL = "SELECT COUNT(*) FROM Email WHERE CustomerID = ? AND Number = ?";
 
@@ -168,10 +168,8 @@ public class EmailUpdater {
         List<Email> emails;
         emails = EmailFinder.findFromDatabase(customerID);
         for (Email emailOnAccount : emails) {
-          if (emailOnAccount.getNumber().equals(number)
-              && emailOnAccount.getCustomerId().equals(customerID)) {
+          if (emailOnAccount.getNumber().equals(number)) {
             failedUpdates.add(emailOnAccount);
-            break;
           }
         }
       }
