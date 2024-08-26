@@ -2,6 +2,7 @@ package uoa.lavs.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -794,12 +795,17 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
           EmployerUpdater.updateData(customerId, employer);
         }
 
-        Alert successAlert = new Alert(AlertType.INFORMATION);
+        Alert successAlert = new Alert(AlertType.CONFIRMATION);
+
+        successAlert.getButtonTypes().setAll(new ButtonType("Home"), new ButtonType("View"));
         successAlert.setTitle("Success");
         successAlert.setHeaderText(
             setting == Setting.ADD ? "Customer has been added" : "Customer has been updated");
         successAlert.setContentText(CustomerUpdater.message.toString());
-        if (successAlert.showAndWait().get() == ButtonType.OK) {
+        if (successAlert.showAndWait().get().getText().equals("Home")) {
+          resetScene();
+          Main.setScene(AppScene.START);
+        } else {
           resetFieldStyle();
           setUpViewCustomer(customerId);
         }
