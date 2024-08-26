@@ -141,7 +141,6 @@ public class LoanController extends uoa.lavs.controllers.Controller {
 
   private void setDisableForFields(boolean isDisabled) {
     loanDetailsPane.setDisable(isDisabled);
-    coBorrowersTable.setDisable(isDisabled);
     repaymentsTab.setDisable(!isDisabled);
   }
 
