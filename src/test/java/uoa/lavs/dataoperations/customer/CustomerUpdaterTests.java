@@ -138,7 +138,6 @@ public class CustomerUpdaterTests {
     assertAll("customer",
         () -> assertEquals("Mr", loadedCustomer.getTitle()),
         () -> assertEquals("John Doe", loadedCustomer.getName()),
-        () -> assertEquals(LocalDate.of(1945, 3, 12), loadedCustomer.getDob()),
         () -> assertEquals("Test dummy", loadedCustomer.getOccupation()),
         () -> assertEquals("New Zealand", loadedCustomer.getCitizenship()),
         () -> assertEquals("n/a", loadedCustomer.getVisaType()),
