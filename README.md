@@ -63,5 +63,3 @@ LAVS utilises the following dependencies:
 * Atlantafx
 * SQLite JDBC Driver
 * Spring Framework
-
-
