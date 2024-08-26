@@ -55,6 +55,7 @@ public class PendingUpdatesController {
     setupBooleanColumn(employerColumn, "employer");
     setupBooleanColumn(loanColumn, "loan");
     setupBooleanColumn(coborrowerColumn, "coborrower");
+    pendingTable.setPlaceholder(new Label(""));
   }
 
   private void setupBooleanColumn(
