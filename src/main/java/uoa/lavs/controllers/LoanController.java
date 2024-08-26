@@ -17,7 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -39,8 +38,6 @@ import uoa.lavs.models.Customer;
 import uoa.lavs.models.Loan;
 import uoa.lavs.utility.LoanRepayment;
 import uoa.lavs.utility.LoanSummary;
-
-import javax.xml.transform.Source;
 
 @Controller
 public class LoanController extends uoa.lavs.controllers.Controller {

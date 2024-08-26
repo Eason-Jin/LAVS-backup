@@ -13,9 +13,6 @@ public abstract class Controller {
   protected Alert alert = new Alert(Alert.AlertType.ERROR);
   protected StringBuilder errorMessage = new StringBuilder();
 
-  protected String normalBorder = "-fx-border-color: #d0d7de";
-  protected String redBorder = "-fx-border-color: red";
-
   protected boolean validateEmailFormat(TextField email) {
     email.getStyleClass().remove("invalid");
     // Email should be in the format of a@b.c
