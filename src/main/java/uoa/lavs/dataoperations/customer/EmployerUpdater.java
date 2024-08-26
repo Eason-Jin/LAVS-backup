@@ -37,7 +37,7 @@ public class EmployerUpdater {
     }
   }
 
-  private static Integer updateMainframe(String customerID, Employer employer) throws Exception {
+  public static Integer updateMainframe(String customerID, Employer employer) throws Exception {
     UpdateCustomerEmployer updateCustomerEmployer = new UpdateCustomerEmployer();
     updateCustomerEmployer.setCustomerId(customerID);
     updateCustomerEmployer.setNumber(employer.getNumber());
@@ -48,8 +48,7 @@ public class EmployerUpdater {
       try {
         existingEmployers = EmployerFinder.findFromMainframe(customerID);
         for (Employer employerOnAccount : existingEmployers) {
-          if (employerOnAccount.getNumber().equals(employer.getNumber())
-              && employerOnAccount.getCustomerId().equals(employer.getCustomerId())) {
+          if (employerOnAccount.getNumber().equals(employer.getNumber())) {
             existingEmployer = employerOnAccount;
             break;
           }

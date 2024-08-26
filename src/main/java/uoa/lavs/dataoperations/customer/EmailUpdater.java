@@ -37,7 +37,7 @@ public class EmailUpdater {
     }
   }
 
-  private static Integer updateMainframe(String customerID, Email email) throws Exception {
+  public static Integer updateMainframe(String customerID, Email email) throws Exception {
     UpdateCustomerEmail updateCustomerEmail = new UpdateCustomerEmail();
     updateCustomerEmail.setCustomerId(customerID);
     updateCustomerEmail.setNumber(email.getNumber());
@@ -48,8 +48,7 @@ public class EmailUpdater {
       try {
         existingEmails = EmailFinder.findFromMainframe(customerID);
         for (Email emailOnAccount : existingEmails) {
-          if (emailOnAccount.getNumber().equals(email.getNumber())
-              && emailOnAccount.getCustomerId().equals(email.getCustomerId())) {
+          if (emailOnAccount.getNumber().equals(email.getNumber())) {
             existingEmail = emailOnAccount;
             break;
           }

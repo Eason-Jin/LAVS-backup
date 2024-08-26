@@ -37,7 +37,7 @@ public class PhoneUpdater {
     }
   }
 
-  private static Integer updateMainframe(String customerID, Phone phone) throws Exception {
+  public static Integer updateMainframe(String customerID, Phone phone) throws Exception {
     UpdateCustomerPhoneNumber updateCustomerPhone = new UpdateCustomerPhoneNumber();
     updateCustomerPhone.setCustomerId(customerID);
     updateCustomerPhone.setNumber(phone.getNumber());
@@ -48,8 +48,7 @@ public class PhoneUpdater {
       try {
         existingPhones = PhoneFinder.findFromMainframe(customerID);
         for (Phone phoneOnAccount : existingPhones) {
-          if (phoneOnAccount.getNumber().equals(phone.getNumber())
-              && phoneOnAccount.getCustomerId().equals(phone.getCustomerId())) {
+          if (phoneOnAccount.getNumber().equals(phone.getNumber())) {
             existingPhone = phoneOnAccount;
             break;
           }
@@ -186,7 +185,6 @@ public class PhoneUpdater {
         for (Phone phoneOnAccount : phones) {
           if (phoneOnAccount.getNumber().equals(number)) {
             failedUpdates.add(phoneOnAccount);
-            break;
           }
         }
       }

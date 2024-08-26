@@ -22,21 +22,12 @@ public class CustomerUpdater {
     String id = customerID;
     try {
       id = updateMainframe(customerID, customer);
-      if (id == null) {
-        id = customerID;
-      }
-      if (message.indexOf("Mainframe update successful") == -1) {
-        message.append("Mainframe update successful\n");
-      }
     } catch (Exception e) {
       System.out.println("Mainframe update failed: " + e.getMessage());
       failed = true;
     } finally {
       try {
         updateDatabase(id, customer);
-        if (message.indexOf("Database update successful") == -1) {
-          message.append("Database update successful\n");
-        }
       } catch (SQLException e) {
         System.out.println("Database update failed: " + e.getMessage());
       } finally {
@@ -59,9 +50,7 @@ public class CustomerUpdater {
           PreparedStatement checkStatement = connection.prepareStatement(CHECK_SQL)) {
         checkStatement.setString(1, customerID);
         try (ResultSet resultSet = checkStatement.executeQuery()) {
-          if (resultSet.next()) {
-            exists = resultSet.getInt(1) > 0;
-          }
+          exists = resultSet.next() && resultSet.getInt(1) > 0;
         }
       }
     } else { // If new customer and mainframe add failed, set status to pending
@@ -224,7 +213,7 @@ public class CustomerUpdater {
     }
   }
 
-  private static void addInMainframe(String customerID, String mainframeId) {
+  public static void addInMainframe(String customerID, String mainframeId) {
     String sql = "UPDATE Customer SET CustomerID = ?, InMainframe = ? WHERE CustomerID = ?";
     try (Connection connection = LocalInstance.getDatabaseConnection();
         Statement pragmaStatement = connection.createStatement();
