@@ -67,8 +67,8 @@ public class PendingUpdatesController {
               private final ImageView imageView = new ImageView();
 
               {
-                imageView.setFitHeight(21);
-                imageView.setFitWidth(30);
+                imageView.setFitHeight(30);
+                imageView.setFitWidth(68);
               }
 
               @Override
@@ -83,11 +83,11 @@ public class PendingUpdatesController {
                   if (Boolean.TRUE.equals(item)) {
                     imageView.setImage(
                         new Image(getClass().getResourceAsStream("/images/pending/push.png")));
-                    setStyle("-fx-background-color: #d43943;");
+                    setStyle("-fx-background-color: #D67373;");
                   } else {
                     imageView.setImage(
                         new Image(getClass().getResourceAsStream("/images/pending/no-change.png")));
-                    setStyle("-fx-background-color: #2da44e;");
+                    setStyle("-fx-background-color: #79BFA1;");
                   }
                   setGraphic(imageView);
                   setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
