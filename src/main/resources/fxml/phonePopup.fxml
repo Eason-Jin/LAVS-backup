@@ -11,7 +11,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="phonePopupPane" maxHeight="673.0" maxWidth="1173.0" minHeight="648.0" minWidth="1152.0" prefHeight="673.0" prefWidth="1173.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.PhonePopupController">
+<Pane fx:id="phonePopupPane" maxHeight="673.0" maxWidth="1173.0" minHeight="648.0" minWidth="1152.0" prefHeight="673.0" prefWidth="1173.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.PhonePopupController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#727272" height="673.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1173.0" />
       <Pane layoutX="326.0" layoutY="146.0" maxHeight="300.0" maxWidth="500.0" minHeight="300.0" minWidth="500.0" prefHeight="300.0" prefWidth="500.0" styleClass="popup-pane" stylesheets="@../css/application.css">
@@ -21,40 +21,7 @@
                   <Font name="System Bold" size="36.0" />
                </font>
             </Label>
-            <TextField fx:id="phoneTextField" layoutX="144.0" layoutY="185.0" maxHeight="35.0" maxWidth="245.0" minHeight="35.0" minWidth="245.0" prefHeight="35.0" prefWidth="245.0" styleClass="input">
-               <font>
-                  <Font size="15.0" />
-               </font></TextField>
-            <Label layoutX="156.0" layoutY="161.0" text="Phone Number">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-            <Button layoutX="407.0" layoutY="26.0" maxHeight="35.0" maxWidth="35.0" minHeight="35.0" minWidth="35.0" mnemonicParsing="false" onAction="#onClickSave" prefHeight="35.0" prefWidth="35.0" stylesheets="@../css/application.css">
-               <styleClass>
-                  <String fx:value="popup-button" />
-                  <String fx:value="save" />
-               </styleClass>
-            </Button>
-            <Button layoutX="448.0" layoutY="26.0" maxHeight="35.0" maxWidth="35.0" minHeight="35.0" minWidth="35.0" mnemonicParsing="false" onAction="#onClickClosePopup" prefHeight="35.0" prefWidth="35.0" stylesheets="@../css/application.css">
-               <styleClass>
-                  <String fx:value="cancel" />
-                  <String fx:value="popup-button" />
-               </styleClass>
-            </Button>
-            <CheckBox fx:id="isPrimaryPhoneCheckBox" layoutX="52.0" layoutY="238.0" mnemonicParsing="false" stylesheets="@../css/application.css" text="Primary Phone Number">
-               <font>
-                  <Font size="15.0" />
-               </font></CheckBox>
-            <CheckBox fx:id="sendTextsCheckBox" layoutX="261.0" layoutY="238.0" mnemonicParsing="false" stylesheets="@../css/application.css" text="Send Texts to this Number">
-               <font>
-                  <Font size="15.0" />
-               </font></CheckBox>
-            <TextField fx:id="prefixTextField" layoutX="54.0" layoutY="185.0" maxHeight="35.0" maxWidth="80.0" minHeight="35.0" minWidth="80.0" prefHeight="35.0" prefWidth="80.0" styleClass="input">
-               <font>
-                  <Font size="15.0" />
-               </font></TextField>
-            <Label layoutX="65.0" layoutY="161.0" text="Prefix">
+            <Label layoutX="65.0" layoutY="92.0" text="Type">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -67,11 +34,44 @@
                </FXCollections>
             </items>
             </ComboBox>
-            <Label layoutX="65.0" layoutY="92.0" text="Type">
+            <Label layoutX="65.0" layoutY="161.0" text="Prefix">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
+            <TextField fx:id="prefixTextField" layoutX="54.0" layoutY="185.0" maxHeight="35.0" maxWidth="80.0" minHeight="35.0" minWidth="80.0" prefHeight="35.0" prefWidth="80.0" styleClass="input">
+               <font>
+                  <Font size="15.0" />
+               </font></TextField>
+            <Label layoutX="156.0" layoutY="161.0" text="Phone Number">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="phoneTextField" layoutX="144.0" layoutY="185.0" maxHeight="35.0" maxWidth="245.0" minHeight="35.0" minWidth="245.0" prefHeight="35.0" prefWidth="245.0" styleClass="input">
+               <font>
+                  <Font size="15.0" />
+               </font></TextField>
+            <CheckBox fx:id="isPrimaryPhoneCheckBox" layoutX="52.0" layoutY="238.0" mnemonicParsing="false" stylesheets="@../css/application.css" text="Primary Phone Number">
+               <font>
+                  <Font size="15.0" />
+               </font></CheckBox>
+            <CheckBox fx:id="sendTextsCheckBox" layoutX="261.0" layoutY="238.0" mnemonicParsing="false" stylesheets="@../css/application.css" text="Send Texts to this Number">
+               <font>
+                  <Font size="15.0" />
+               </font></CheckBox>
+            <Button layoutX="407.0" layoutY="26.0" maxHeight="35.0" maxWidth="35.0" minHeight="35.0" minWidth="35.0" mnemonicParsing="false" onAction="#onClickSave" prefHeight="35.0" prefWidth="35.0" stylesheets="@../css/application.css">
+               <styleClass>
+                  <String fx:value="popup-button" />
+                  <String fx:value="save" />
+               </styleClass>
+            </Button>
+            <Button layoutX="448.0" layoutY="26.0" maxHeight="35.0" maxWidth="35.0" minHeight="35.0" minWidth="35.0" mnemonicParsing="false" onAction="#onClickClosePopup" prefHeight="35.0" prefWidth="35.0" stylesheets="@../css/application.css">
+               <styleClass>
+                  <String fx:value="cancel" />
+                  <String fx:value="popup-button" />
+               </styleClass>
+            </Button>
          </children>
       </Pane>
    </children>
