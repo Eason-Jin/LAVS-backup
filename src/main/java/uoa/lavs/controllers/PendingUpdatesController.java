@@ -83,11 +83,11 @@ public class PendingUpdatesController {
                   if (Boolean.TRUE.equals(item)) {
                     imageView.setImage(
                         new Image(getClass().getResourceAsStream("/images/pending/push.png")));
-                    setStyle("-fx-background-color: #2da44e;");
+                    setStyle("-fx-background-color: #d43943;");
                   } else {
                     imageView.setImage(
                         new Image(getClass().getResourceAsStream("/images/pending/no-change.png")));
-                    setStyle("-fx-background-color: #d43943;");
+                    setStyle("-fx-background-color: #2da44e;");
                   }
                   setGraphic(imageView);
                   setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
