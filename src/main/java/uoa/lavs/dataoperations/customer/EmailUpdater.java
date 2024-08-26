@@ -40,7 +40,6 @@ public class EmailUpdater {
   public static Integer updateMainframe(String customerID, Email email) throws Exception {
     UpdateCustomerEmail updateCustomerEmail = new UpdateCustomerEmail();
     updateCustomerEmail.setCustomerId(customerID);
-    updateCustomerEmail.setNumber(email.getNumber());
     Email existingEmail = null;
 
     if (email.getNumber() != null) {
@@ -52,6 +51,7 @@ public class EmailUpdater {
             existingEmail = emailOnAccount;
             break;
           }
+          updateCustomerEmail.setNumber(null);
         }
       } catch (Exception e) {
         updateCustomerEmail.setNumber(null);
@@ -60,6 +60,7 @@ public class EmailUpdater {
     }
 
     if (existingEmail != null) {
+      updateCustomerEmail.setNumber(email.getNumber());
       updateCustomerEmail.setAddress(
           email.getAddress() != null ? email.getAddress() : existingEmail.getAddress());
       updateCustomerEmail.setIsPrimary(
