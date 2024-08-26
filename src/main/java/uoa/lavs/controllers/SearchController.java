@@ -40,6 +40,7 @@ public class SearchController {
   private boolean isCoBorrowerSearch;
 
   public void initialize() {
+    searchButton.disableProperty().bind(searchField.textProperty().isEmpty());
     idColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("id"));
     idColumn.setReorderable(false);
     nameColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));
@@ -109,16 +110,6 @@ public class SearchController {
 
   private void searchCustomers() {
     String customerName = searchField.getText();
-
-    if (customerName == "") {
-      Platform.runLater(
-          () -> {
-            searchTable.getItems().clear();
-            searchTable.setPlaceholder(new Label("Please enter a name"));
-          });
-      return;
-    }
-
     List<Customer> customers = CustomerFinder.findCustomerByName(customerName);
 
     if (customers.isEmpty()) {

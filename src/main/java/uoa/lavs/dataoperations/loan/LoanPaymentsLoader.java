@@ -86,7 +86,6 @@ public class LoanPaymentsLoader {
             status = loadLoanPayments.send(LocalInstance.getConnection());
             if (!status.getWasSuccessful()) {
                 String errorMessage = "Failed to retrieve page " + pageNumber + ". Error code: " + status.getErrorCode();
-                System.out.println(errorMessage);
                 throw new Exception(errorMessage);
             }
 

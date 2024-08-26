@@ -129,7 +129,6 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
   @FXML
   public void initialize() {
-    System.out.println(notesArea.getStyleClass());
     addressTable.setPlaceholder(new Label("No addresses for this customer"));
     emailTable.setPlaceholder(new Label("No emails for this customer"));
     phoneTable.setPlaceholder(new Label("No phones for this customer"));
@@ -385,14 +384,12 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   }
 
   public void setUpViewCustomer(String customerId) {
-    System.out.println(notesArea.getStyleClass());
     setting = Setting.VIEW;
     titleLabel.setText("Customer Details");
     detailsTabPane.getSelectionModel().select(0);
     setCustomerDetails(customerId);
     setDisableForFields(true);
     setVisabilityForButtons(false);
-    System.out.println(notesArea.getStyleClass());
   }
 
   private void clearNotFoundFields() {
@@ -644,7 +641,6 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     }
     if (!addressFlag || !primaryAddressFlag || !mailingAddressFlag) {
       addressTable.getStyleClass().add("invalid");
-      System.out.println(addressTable.getStyleClass());
     }
 
     boolean contactDetailsFlag = false;
@@ -732,7 +728,6 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     boolean notesAreaFlag = isTooLong(notesArea, 1330);
     if (notesAreaFlag) {
       notesArea.getStyleClass().add("invalid");
-      System.out.println(notesArea.getStyleClass());
       appendErrorMessage("Notes must be less than 1330 characters\n");
     }
 
@@ -756,7 +751,6 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     phoneTable.getStyleClass().remove("invalid");
     employmentTable.getStyleClass().remove("invalid");
     notesArea.getStyleClass().remove("invalid");
-    System.out.println(notesArea.getStyleClass());
   }
 
   @FXML
