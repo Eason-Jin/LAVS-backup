@@ -445,38 +445,28 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   private void onClickAddAddress(ActionEvent event) throws IOException {
     Button sourceButton = (Button) event.getSource();
     Pane currentRoot = (Pane) sourceButton.getScene().getRoot();
-    Address address = new Address();
-    address.setIsPrimary(false);
-    address.setIsMailing(false);
-    createAddressPopup(currentRoot, address);
+    createAddressPopup(currentRoot, new Address());
   }
 
   @FXML
   private void onClickAddEmail(ActionEvent event) throws IOException {
     Button sourceButton = (Button) event.getSource();
     Pane currentRoot = (Pane) sourceButton.getScene().getRoot();
-    Email email = new Email();
-    email.setIsPrimary(false);
-    createEmailPopup(currentRoot, email);
+    createEmailPopup(currentRoot, new Email());
   }
 
   @FXML
   private void onClickAddPhone(ActionEvent event) throws IOException {
     Button sourceButton = (Button) event.getSource();
     Pane currentRoot = (Pane) sourceButton.getScene().getRoot();
-    Phone phone = new Phone();
-    phone.setIsPrimary(false);
-    phone.setCanSendText(false);
-    createPhonePopup(currentRoot, phone);
+    createPhonePopup(currentRoot, new Phone());
   }
 
   @FXML
   private void onClickAddEmployment(ActionEvent event) throws IOException {
     Button sourceButton = (Button) event.getSource();
     Pane currentRoot = (Pane) sourceButton.getScene().getRoot();
-    Employer employment = new Employer();
-    employment.setIsOwner(false);
-    createEmploymentPopup(currentRoot, employment);
+    createEmploymentPopup(currentRoot, new Employer());
   }
 
   @FXML
