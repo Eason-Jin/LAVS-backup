@@ -8,15 +8,18 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -24,6 +27,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
@@ -82,21 +87,21 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   @FXML private TableColumn<Address, String> cityColumn;
   @FXML private TableColumn<Address, String> postcodeColumn;
   @FXML private TableColumn<Address, String> countryColumn;
-  @FXML private TableColumn<Address, String> primaryAddressColumn;
-  @FXML private TableColumn<Address, String> mailingAddressColumn;
+  @FXML private TableColumn<Address, Boolean> primaryAddressColumn;
+  @FXML private TableColumn<Address, Boolean> mailingAddressColumn;
 
   @FXML private Button addEmailButton;
   @FXML private TableView<Email> emailTable;
   @FXML private TableColumn<Email, String> emailAddressColumn;
-  @FXML private TableColumn<Email, String> primaryEmailColumn;
+  @FXML private TableColumn<Email, Boolean> primaryEmailColumn;
 
   @FXML private Button addPhoneButton;
   @FXML private TableView<Phone> phoneTable;
   @FXML private TableColumn<Phone, String> phoneTypeColumn;
   @FXML private TableColumn<Phone, String> prefixColumn;
   @FXML private TableColumn<Phone, String> phoneNumberColumn;
-  @FXML private TableColumn<Phone, String> primaryPhoneColumn;
-  @FXML private TableColumn<Phone, String> textingPhoneColumn;
+  @FXML private TableColumn<Phone, Boolean> primaryPhoneColumn;
+  @FXML private TableColumn<Phone, Boolean> textingPhoneColumn;
 
   @FXML private Button addEmploymentButton;
   @FXML private TableView<Employer> employmentTable;
@@ -105,7 +110,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   @FXML private TableColumn<Employer, String> employmentPhoneNumberColumn;
   @FXML private TableColumn<Employer, String> employmentEmailAddressColumn;
   @FXML private TableColumn<Employer, String> websiteColumn;
-  @FXML private TableColumn<Employer, String> ownerColumn;
+  @FXML private TableColumn<Employer, Boolean> ownerColumn;
 
   @FXML private Tab loansTab;
   @FXML private Button addLoanButton;
@@ -149,16 +154,14 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     postcodeColumn.setReorderable(false);
     countryColumn.setCellValueFactory(new PropertyValueFactory<Address, String>("country"));
     countryColumn.setReorderable(false);
-    primaryAddressColumn.setCellValueFactory(
-        new PropertyValueFactory<Address, String>("isPrimary"));
+    setupBooleanColumn((TableColumn) primaryAddressColumn, "isPrimary");
     primaryAddressColumn.setReorderable(false);
-    mailingAddressColumn.setCellValueFactory(
-        new PropertyValueFactory<Address, String>("isMailing"));
+    setupBooleanColumn((TableColumn) mailingAddressColumn, "isMailing");
     mailingAddressColumn.setReorderable(false);
 
     emailAddressColumn.setCellValueFactory(new PropertyValueFactory<Email, String>("address"));
     emailAddressColumn.setReorderable(false);
-    primaryEmailColumn.setCellValueFactory(new PropertyValueFactory<Email, String>("isPrimary"));
+    setupBooleanColumn((TableColumn) primaryEmailColumn, "isPrimary");
     primaryEmailColumn.setReorderable(false);
 
     phoneTypeColumn.setCellValueFactory(new PropertyValueFactory<Phone, String>("type"));
@@ -167,9 +170,9 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     prefixColumn.setReorderable(false);
     phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<Phone, String>("phoneNumber"));
     phoneNumberColumn.setReorderable(false);
-    primaryPhoneColumn.setCellValueFactory(new PropertyValueFactory<Phone, String>("isPrimary"));
+    setupBooleanColumn((TableColumn) primaryPhoneColumn, "isPrimary");
     primaryPhoneColumn.setReorderable(false);
-    textingPhoneColumn.setCellValueFactory(new PropertyValueFactory<Phone, String>("canSendText"));
+    setupBooleanColumn((TableColumn) textingPhoneColumn, "canSendText");
     textingPhoneColumn.setReorderable(false);
 
     nameColumn.setCellValueFactory(new PropertyValueFactory<Employer, String>("name"));
@@ -185,7 +188,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     employmentEmailAddressColumn.setReorderable(false);
     websiteColumn.setCellValueFactory(new PropertyValueFactory<Employer, String>("website"));
     websiteColumn.setReorderable(false);
-    ownerColumn.setCellValueFactory(new PropertyValueFactory<Employer, String>("isOwner"));
+    setupBooleanColumn((TableColumn) ownerColumn, "isOwner");
     ownerColumn.setReorderable(false);
 
     loanIdColumn.setCellValueFactory(new PropertyValueFactory<Loan, String>("loanId"));
@@ -314,6 +317,35 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     employers = FXCollections.observableArrayList(new ArrayList<Employer>());
     loans = FXCollections.observableArrayList(new ArrayList<Loan>());
   }
+
+  private void setupBooleanColumn(TableColumn<Detail, Boolean> column, String propertyName) {
+    column.setCellValueFactory(new PropertyValueFactory<>(propertyName));
+    column.setCellFactory(
+        col ->
+            new TableCell<Detail, Boolean>() {
+              private final CheckBox checkBox = new CheckBox();
+              {
+                checkBox.setDisable(true);
+              }
+              private final VBox vBox = new VBox();
+              {
+                vBox.setAlignment(Pos.CENTER);
+                vBox.getChildren().add(checkBox);
+              }
+
+              @Override
+              protected void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                  setGraphic(null);
+                } else {
+                  checkBox.setSelected(Boolean.TRUE.equals(item));
+                  setGraphic(vBox);
+                }
+              }
+            });
+  }
+
 
   private <T> void onRowHover(TableRow<T> row) {
     row.setOnMouseEntered(

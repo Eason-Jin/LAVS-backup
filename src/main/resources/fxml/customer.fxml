@@ -152,11 +152,11 @@
                            <columns>
                               <TableColumn fx:id="addressTypeColumn" editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="-1.0" resizable="false" sortable="false" text="Type" />
                               <TableColumn fx:id="streetAddressColumn" editable="false" maxWidth="250.0" minWidth="250.0" prefWidth="-1.0" resizable="false" sortable="false" text="Street Address" />
-                              <TableColumn fx:id="suburbColumn" editable="false" maxWidth="150.0" minWidth="142.4000244140625" prefWidth="142.4000244140625" resizable="false" sortable="false" text="Suburb" />
-                              <TableColumn fx:id="cityColumn" editable="false" maxWidth="158.4000244140625" minWidth="136.0" prefWidth="139.20001220703125" resizable="false" sortable="false" text="City" />
-                              <TableColumn fx:id="postcodeColumn" editable="false" maxWidth="104.0" minWidth="80.0" prefWidth="100.79998779296875" resizable="false" sortable="false" text="Postcode" />
-                              <TableColumn fx:id="countryColumn" editable="false" maxWidth="120.0" minWidth="114.39996337890625" prefWidth="114.39996337890625" resizable="false" sortable="false" text="Country" />
-                              <TableColumn fx:id="primaryAddressColumn" editable="false" maxWidth="80.80010986328125" minWidth="75.0" prefWidth="80.80010986328125" resizable="false" sortable="false" text="Primary" />
+                              <TableColumn fx:id="suburbColumn" editable="false" maxWidth="150.0" minWidth="150.0" prefWidth="-1.0" resizable="false" sortable="false" text="Suburb" />
+                              <TableColumn fx:id="cityColumn" editable="false" maxWidth="150.0" minWidth="150.0" prefWidth="-1.0" resizable="false" sortable="false" text="City" />
+                              <TableColumn fx:id="postcodeColumn" editable="false" maxWidth="80.0" minWidth="80.0" prefWidth="-1.0" resizable="false" sortable="false" text="Postcode" />
+                              <TableColumn fx:id="countryColumn" editable="false" maxWidth="120.0" minWidth="120.0" prefWidth="-1.0" resizable="false" sortable="false" text="Country" />
+                              <TableColumn fx:id="primaryAddressColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="-1.0" resizable="false" sortable="false" text="Primary" />
                               <TableColumn fx:id="mailingAddressColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="-1.0" resizable="false" sortable="false" text="Mailing" />
                            </columns>
                            <columnResizePolicy>

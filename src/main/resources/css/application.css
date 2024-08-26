@@ -17,9 +17,7 @@
 .text-area:disabled,
 .combo-box:disabled,
 .date-picker:disabled,
-.label:disabled,
-.check-box:disabled,
-.check-box > .box:disabled {
+.label:disabled {
   -fx-opacity: 1;
 }
 
