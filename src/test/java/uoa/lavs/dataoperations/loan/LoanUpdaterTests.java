@@ -23,7 +23,7 @@ public class LoanUpdaterTests {
 
     @Test
     public void addLoanInDatabase() throws SQLException {
-        DataOperationsTestsHelper.createTestingDatabases();
+        DataOperationsTestsHelper.createTestingDatabasesForLoans();
 
         Loan loan = new Loan(
             null,
@@ -68,7 +68,7 @@ public class LoanUpdaterTests {
 
     @Test
     public void updateLoanInDatabase() throws SQLException {
-        DataOperationsTestsHelper.createTestingDatabases();
+        DataOperationsTestsHelper.createTestingDatabasesForLoans();
         Loan loan = new Loan(
             "5-01",
             "5",
@@ -110,7 +110,7 @@ public class LoanUpdaterTests {
 
     @Test
     public void updateLoanInMainframe() throws Exception {
-        DataOperationsTestsHelper.createTestingDatabases();
+        DataOperationsTestsHelper.createTestingDatabasesForLoans();
         Loan loan = new Loan(
             "123-10",
             "123",
@@ -133,7 +133,7 @@ public class LoanUpdaterTests {
 
     @Test
     public void addLoanInMainframe() throws Exception {
-        DataOperationsTestsHelper.createTestingDatabases();
+        DataOperationsTestsHelper.createTestingDatabasesForLoans();
         Loan loan = new Loan(
             null,
             "123",
@@ -155,7 +155,7 @@ public class LoanUpdaterTests {
 
     @Test
     public void updateNonExistingLoanInMainframe() throws Exception {
-        DataOperationsTestsHelper.createTestingDatabases();
+        DataOperationsTestsHelper.createTestingDatabasesForLoans();
         Loan loan = new Loan();
         loan.setLoanId("9999");
         loan.setCustomerId("1000");
@@ -171,7 +171,7 @@ public class LoanUpdaterTests {
 
     @Test
     public void addInvalidLoan() throws SQLException {
-        DataOperationsTestsHelper.createTestingDatabases();
+        DataOperationsTestsHelper.createTestingDatabasesForLoans();
         String customerId = null;
         assertThrows(Exception.class, () -> {
             LoanUpdater.updateData(customerId, null);
@@ -180,7 +180,7 @@ public class LoanUpdaterTests {
 
     @Test
     public void addLoan() throws Exception {
-        DataOperationsTestsHelper.createTestingDatabases();
+        DataOperationsTestsHelper.createTestingDatabasesForLoans();
 
         String customerId = "654";
         Loan loan = new Loan(
@@ -215,7 +215,7 @@ public class LoanUpdaterTests {
 
     @Test
     public void retryFailedUpdates() throws Exception {
-        DataOperationsTestsHelper.createTestingDatabases();
+        DataOperationsTestsHelper.createTestingDatabasesForLoans();
         LoanUpdater.retryFailedUpdates();
         try (PreparedStatement selectStmt = LocalInstance.getDatabaseConnection()
                 .prepareStatement("SELECT * FROM loan WHERE InMainframe = false")) {
@@ -231,10 +231,8 @@ public class LoanUpdaterTests {
 
     @Test
     public void getFailedUpdates() throws Exception {
-        DataOperationsTestsHelper.createTestingDatabases();
+        DataOperationsTestsHelper.createTestingDatabasesForLoans();
         List<Loan> failedUpdates = LoanUpdater.getFailedUpdates();
         assertEquals(1, failedUpdates.size());
     }
-
-    
 }

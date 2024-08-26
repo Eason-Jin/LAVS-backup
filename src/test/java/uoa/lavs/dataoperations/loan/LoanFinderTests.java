@@ -14,7 +14,7 @@ public class LoanFinderTests {
 
   @Test
   public void findExistingLoanFromDatabase() throws Exception {
-    DataOperationsTestsHelper.createTestingDatabases();
+    DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String customerId = "1";
 
     List<Loan> loans = LoanFinder.findFromDatabase(customerId);
@@ -26,7 +26,7 @@ public class LoanFinderTests {
 
   @Test
   public void findNonExistingLoanFromDatabase() throws Exception {
-    DataOperationsTestsHelper.createTestingDatabases();
+    DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String customerId = "invalid-id";
     List<Loan> loans = LoanFinder.findFromDatabase(customerId);
 
@@ -35,7 +35,7 @@ public class LoanFinderTests {
 
   @Test
   public void findExistingLoanFromMainframe() throws Exception {
-    DataOperationsTestsHelper.createTestingDatabases();
+    DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String customerId = "123";
 
     List<Loan> loans = LoanFinder.findData(customerId);
@@ -47,7 +47,7 @@ public class LoanFinderTests {
 
   @Test
   public void findNonExistingLoanFromMainframe() throws Exception {
-    DataOperationsTestsHelper.createTestingDatabases();
+    DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String customerId = "654";
 
     assertThrows(
@@ -59,7 +59,7 @@ public class LoanFinderTests {
 
   @Test
   public void findLoanFromMainframeWithInvalidCustomerId() throws Exception {
-    DataOperationsTestsHelper.createTestingDatabases();
+    DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String customerId = "invalid-id";
 
     assertThrows(
@@ -71,7 +71,7 @@ public class LoanFinderTests {
 
   @Test
   public void findExistingLoan() throws Exception {
-    DataOperationsTestsHelper.createTestingDatabases();
+    DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String customerId = "123";
 
     List<Loan> loans = LoanFinder.findData(customerId);
@@ -83,7 +83,7 @@ public class LoanFinderTests {
 
   @Test
   public void findNonExistingLoan() throws Exception {
-    DataOperationsTestsHelper.createTestingDatabases();
+    DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String customerId = "3";
 
     List<Loan> phones = LoanFinder.findData(customerId);

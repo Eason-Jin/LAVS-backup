@@ -32,6 +32,17 @@ public class DataOperationsTestsHelper {
         return connection;
     }
 
+    public static Connection createTestingDatabasesForLoans() {
+        LocalInstance.initializeTestConnections(true, generateNitriteDatabaseForLoans());
+        Connection connection = LocalInstance.getDatabaseConnection();
+        try {
+            generateSqliteDatabase(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return connection;
+    }
+
     private static void generateSqliteDatabase(Connection connection) throws SQLException {
         try (Statement stmt = connection.createStatement()) {
             String customerTable = """
@@ -250,6 +261,21 @@ public class DataOperationsTestsHelper {
     }
 
     private static Nitrite generateNitriteDatabase() {
+        Nitrite database = Nitrite.builder().openOrCreate();
+        database.getCollection(NitriteConnection.Internal.CUSTOMERS_COLLECTION)
+                .insert(generateCustomerDocument("123", "John Doe", true));
+        database.getCollection(NitriteConnection.Internal.CUSTOMERS_COLLECTION)
+                .insert(generateCustomerDocument("456", "Jane Doe", false));
+        database.getCollection(NitriteConnection.Internal.CUSTOMERS_COLLECTION)
+                .insert(generateCustomerDetailsOnly("654", "Jane Doe", false));
+        database.getCollection(NitriteConnection.Internal.LOANS_COLLECTION)
+                .insert(generateLoanDocument());
+        database.getCollection(NitriteConnection.Internal.IDS_COLLECTION)
+                .insert(Document.createDocument("type", "customer").put("id", 124));
+        return database;
+    }
+
+    private static Nitrite generateNitriteDatabaseForLoans() {
         Nitrite database = Nitrite.builder().openOrCreate();
         database.getCollection(NitriteConnection.Internal.CUSTOMERS_COLLECTION)
                 .insert(generateCustomerDocument("123", "John Doe", true));

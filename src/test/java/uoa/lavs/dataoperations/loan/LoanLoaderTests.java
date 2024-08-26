@@ -12,7 +12,7 @@ public class LoanLoaderTests {
 
   @Test
   public void loadExistingLoanFromDatabase() throws Exception {
-    DataOperationsTestsHelper.createTestingDatabases();
+    DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String loanId = "1-01";
 
     Loan loan = LoanLoader.loadFromDatabase(loanId);
@@ -24,7 +24,7 @@ public class LoanLoaderTests {
 
   @Test
   public void loadNonExistingLoanFromDatabase() {
-    DataOperationsTestsHelper.createTestingDatabases();
+    DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String loanId = "invalid-id";
 
     assertThrows(
@@ -36,7 +36,7 @@ public class LoanLoaderTests {
 
   @Test
   public void loadExistingLoanFromMainframe() throws Exception {
-    DataOperationsTestsHelper.createTestingDatabases();
+    DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String loanId = "123-09";
 
     Loan loan = LoanLoader.loadFromMainframe(loanId);
@@ -48,7 +48,7 @@ public class LoanLoaderTests {
 
   @Test
   public void loadNonExistingLoanFromMainframe() {
-    DataOperationsTestsHelper.createTestingDatabases();
+    DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String loanId = "invalid-id";
 
     assertThrows(
@@ -60,7 +60,7 @@ public class LoanLoaderTests {
 
   @Test
   public void loadExistingDatabaseLoan() {
-    DataOperationsTestsHelper.createTestingDatabases();
+    DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String loanId = "1-01";
 
     Loan loan = LoanLoader.loadData(loanId);
@@ -72,7 +72,7 @@ public class LoanLoaderTests {
 
   @Test
   public void loadExistingMainframeLoan() {
-    DataOperationsTestsHelper.createTestingDatabases();
+    DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String loanId = "123-09";
 
     Loan loan = LoanLoader.loadData(loanId);
@@ -84,7 +84,7 @@ public class LoanLoaderTests {
 
   @Test
   public void loadNonExistingLoan() {
-    DataOperationsTestsHelper.createTestingDatabases();
+    DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String loanId = "invalid-id";
 
     Loan loan = LoanLoader.loadData(loanId);

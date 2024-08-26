@@ -12,7 +12,7 @@ public class LoanSummaryTests {
 
   @Test
   public void testCalculateLoanSummaryLocally() throws Exception {
-    DataOperationsTestsHelper.createTestingDatabases();
+    DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String loanId = "1-01";
 
     LoanSummary loanSummary = LoanSummaryLoader.calculateLocally(loanId);
@@ -22,7 +22,7 @@ public class LoanSummaryTests {
 
   @Test
   public void testCalculateLoanSummaryFromMainframeSuccess() throws Exception {
-    DataOperationsTestsHelper.createTestingDatabases();
+    DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String loanId = "123-09";
 
     LoanSummary loanSummary = LoanSummaryLoader.calculateFromMainframe(loanId);
@@ -32,7 +32,7 @@ public class LoanSummaryTests {
 
   @Test
   public void testCalculateLoanSummaryFromMainframeFailure() {
-    DataOperationsTestsHelper.createTestingDatabases();
+    DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String loanId = "invalid-id";
 
     assertThrows(
@@ -44,7 +44,7 @@ public class LoanSummaryTests {
 
   @Test
   public void testCalculateLoanSummarySuccessDatabase() {
-    DataOperationsTestsHelper.createTestingDatabases();
+    DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String loanId = "1-01";
 
     LoanSummary loanSummary = LoanSummaryLoader.calculateLoanSummary(loanId);
@@ -54,7 +54,7 @@ public class LoanSummaryTests {
 
   @Test
   public void testCalculateLoanSummarySuccessMainframe() {
-    DataOperationsTestsHelper.createTestingDatabases();
+    DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String loanId = "123-09";
 
     LoanSummary loanSummary = LoanSummaryLoader.calculateLoanSummary(loanId);
@@ -64,7 +64,7 @@ public class LoanSummaryTests {
 
   @Test
   public void testCalculateLoanSummaryFailure() {
-    DataOperationsTestsHelper.createTestingDatabases();
+    DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String loanId = "invalid-id";
 
     LoanSummary loanSummary = LoanSummaryLoader.calculateLoanSummary(loanId);
