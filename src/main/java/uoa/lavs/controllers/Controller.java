@@ -35,12 +35,45 @@ public abstract class Controller {
 
   protected boolean validateNumberFormat(TextField number, boolean isDouble) {
     number.getStyleClass().remove("invalid");
+    if (!Character.isDigit(number.getText().charAt(0))) {
+      number.getStyleClass().add("invalid");
+      return false;
+    }
+
     try {
       if (isDouble) {
         Double.parseDouble(number.getText());
       } else {
         Long.parseLong(number.getText());
       }
+    } catch (Exception e) {
+      number.getStyleClass().add("invalid");
+      return false;
+    }
+    return true;
+  }
+
+  protected boolean validatePhoneFormat(TextField number, boolean hasPrefix) {
+    number.getStyleClass().remove("invalid");
+    String phone = number.getText();
+    if (hasPrefix) {
+      if (phone.charAt(0) != '+') {
+        if (!Character.isDigit(phone.charAt(0))) {
+          number.getStyleClass().add("invalid");
+          return false;
+        }
+      } else {
+        phone = phone.replaceFirst("\\+", "");
+      }
+    } else {
+      if (!Character.isDigit(phone.charAt(0))) {
+        number.getStyleClass().add("invalid");
+        return false;
+      }
+    }
+
+    try {
+      Long.parseLong(phone.replaceAll("-", ""));
     } catch (Exception e) {
       number.getStyleClass().add("invalid");
       return false;

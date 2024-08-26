@@ -43,10 +43,10 @@ public class PhonePopupController extends PopupController {
         appendErrorMessage("Phone number must be less than 20 characters!\n");
       }
       if (!(prefixLongFlag || phoneLongFlag)) {
-        if (!validateNumberFormat(prefixTextField, false)) {
+        if (!validatePhoneFormat(prefixTextField, true)) {
           appendErrorMessage("Prefix must be numbers or start with the '+' character!\n");
         }
-        if (!validateNumberFormat(phoneTextField, false)) {
+        if (!validatePhoneFormat(phoneTextField, false)) {
           appendErrorMessage("Phone number must be numbers or '-' characters!\n");
         }
       }
