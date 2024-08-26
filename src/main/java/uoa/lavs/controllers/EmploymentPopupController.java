@@ -109,8 +109,8 @@ public class EmploymentPopupController extends PopupController {
         if (!validateEmailFormat(companyEmailTextField)) {
           appendErrorMessage("Email must be in the format of a@b.c!\n");
         }
-        if (!validateNumberFormat(companyPhoneTextField, false)) {
-          appendErrorMessage("Phone number must be numbers!\n");
+        if (!validatePhoneFormat(companyPhoneTextField, true)) {
+          appendErrorMessage("Phone number must be numbers or start with '+'!\n");
         }
         if (!validateWebsiteFormat(companyWebsiteTextField)) {
           appendErrorMessage("Website must be in the format of a.b!\n");
