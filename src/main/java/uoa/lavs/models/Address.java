@@ -38,7 +38,6 @@ public class Address extends Detail {
     this.number = number;
   }
 
-
   public Address() {}
 
   public String getCustomerId() {
@@ -58,7 +57,7 @@ public class Address extends Detail {
   }
 
   public String getType() {
-    return type;
+    return (type == null || type == "null") ? "" : type;
   }
 
   public void setType(String type) {
@@ -66,7 +65,7 @@ public class Address extends Detail {
   }
 
   public String getLine1() {
-    return line1;
+    return (line1 == null || line1 == "null") ? "" : line1;
   }
 
   public void setLine1(String line1) {
@@ -74,7 +73,7 @@ public class Address extends Detail {
   }
 
   public String getLine2() {
-    return line2;
+    return (line2 == null || line2 == "null") ? "" : line2;
   }
 
   public void setLine2(String line2) {
@@ -82,7 +81,7 @@ public class Address extends Detail {
   }
 
   public String getSuburb() {
-    return suburb;
+    return (suburb == null || suburb == "null") ? "" : suburb;
   }
 
   public void setSuburb(String suburb) {
@@ -90,7 +89,7 @@ public class Address extends Detail {
   }
 
   public String getCity() {
-    return city;
+    return (city == null || city == "null") ? "" : city;
   }
 
   public void setCity(String city) {
@@ -98,7 +97,7 @@ public class Address extends Detail {
   }
 
   public String getPostCode() {
-    return postCode;
+    return (postCode == null || postCode == "null") ? "" : postCode;
   }
 
   public void setPostCode(String postCode) {
@@ -106,7 +105,7 @@ public class Address extends Detail {
   }
 
   public String getCountry() {
-    return country;
+    return (country == null || country == "null") ? "" : country;
   }
 
   public void setCountry(String country) {
@@ -114,7 +113,7 @@ public class Address extends Detail {
   }
 
   public Boolean getIsPrimary() {
-    return isPrimary;
+    return (isPrimary == null) ? false : isPrimary;
   }
 
   public void setIsPrimary(boolean isPrimary) {
@@ -122,7 +121,7 @@ public class Address extends Detail {
   }
 
   public Boolean getIsMailing() {
-    return isMailing;
+    return (isMailing == null) ? false : isMailing;
   }
 
   public void setIsMailing(boolean isMailing) {
@@ -130,6 +129,6 @@ public class Address extends Detail {
   }
 
   public String getStreetAddress() {
-    return line1 + " " + line2;
+    return getLine1() + " " + getLine2();
   }
 }

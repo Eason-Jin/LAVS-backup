@@ -33,7 +33,7 @@ public class Email extends Detail {
   }
 
   public String getAddress() {
-    return address;
+    return (address == null || address == "null") ? "" : address;
   }
 
   public void setAddress(String address) {
@@ -41,7 +41,7 @@ public class Email extends Detail {
   }
 
   public Boolean getIsPrimary() {
-    return isPrimary;
+    return (isPrimary == null) ? false : isPrimary;
   }
 
   public void setIsPrimary(Boolean isPrimary) {
