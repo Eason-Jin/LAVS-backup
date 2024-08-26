@@ -128,4 +128,16 @@ public class Customer extends Detail {
     lines.add(notes.substring(l));
     return lines;
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == this) {
+      return true;
+    }
+    if (!(obj instanceof Customer)) {
+      return false;
+    }
+    Customer c = (Customer) obj;
+    return c.getId().equals(id);
+  }
 }

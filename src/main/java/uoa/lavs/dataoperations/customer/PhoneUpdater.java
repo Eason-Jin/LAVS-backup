@@ -40,7 +40,6 @@ public class PhoneUpdater {
   public static Integer updateMainframe(String customerID, Phone phone) throws Exception {
     UpdateCustomerPhoneNumber updateCustomerPhone = new UpdateCustomerPhoneNumber();
     updateCustomerPhone.setCustomerId(customerID);
-    updateCustomerPhone.setNumber(phone.getNumber());
     Phone existingPhone = null;
 
     if (phone.getNumber() != null) {
@@ -52,6 +51,7 @@ public class PhoneUpdater {
             existingPhone = phoneOnAccount;
             break;
           }
+          updateCustomerPhone.setNumber(null);
         }
       } catch (Exception e) {
         updateCustomerPhone.setNumber(null);
@@ -60,6 +60,7 @@ public class PhoneUpdater {
     }
 
     if (existingPhone != null) {
+      updateCustomerPhone.setNumber(phone.getNumber());
       updateCustomerPhone.setType(
           phone.getType() != null ? phone.getType() : existingPhone.getType());
       updateCustomerPhone.setPrefix(

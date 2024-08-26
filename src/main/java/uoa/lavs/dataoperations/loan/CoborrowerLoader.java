@@ -56,7 +56,6 @@ public class CoborrowerLoader {
     List<String> coborrowerIds = new ArrayList<>();
     for (int i = 1; i <= coborrowerCount; i++) {
       String coborrowerId = loadLoanCoborrower.getCoborrowerIdFromServer(i);
-      System.out.println("Coborrower ID: " + coborrowerId);
       coborrowerIds.add(coborrowerId);
     }
     return coborrowerIds;

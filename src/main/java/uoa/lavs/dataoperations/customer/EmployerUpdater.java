@@ -40,7 +40,6 @@ public class EmployerUpdater {
   public static Integer updateMainframe(String customerID, Employer employer) throws Exception {
     UpdateCustomerEmployer updateCustomerEmployer = new UpdateCustomerEmployer();
     updateCustomerEmployer.setCustomerId(customerID);
-    updateCustomerEmployer.setNumber(employer.getNumber());
     Employer existingEmployer = null;
 
     if (employer.getNumber() != null) {
@@ -52,6 +51,7 @@ public class EmployerUpdater {
             existingEmployer = employerOnAccount;
             break;
           }
+          updateCustomerEmployer.setNumber(null);
         }
       } catch (Exception e) {
         updateCustomerEmployer.setNumber(null);
@@ -60,6 +60,7 @@ public class EmployerUpdater {
     }
 
     if (existingEmployer != null) {
+          updateCustomerEmployer.setNumber(employer.getNumber());
       updateCustomerEmployer.setName(
           employer.getName() != null ? employer.getName() : existingEmployer.getName());
       updateCustomerEmployer.setLine1(
