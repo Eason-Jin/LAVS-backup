@@ -18,6 +18,7 @@ public class EmailFinderTests {
     public void findExistingEmailFromDatabase() throws Exception {
         DataOperationsTestsHelper.createTestingDatabases();
 
+        EmailFinder emailFinder = new EmailFinder();
         List<Email> emails = EmailFinder.findFromDatabase("1");
 
         // Assert

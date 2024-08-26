@@ -17,6 +17,7 @@ public class PhoneFinderTests {
     DataOperationsTestsHelper.createTestingDatabases();
     String customerId = "1";
 
+    PhoneFinder phoneFinder = new PhoneFinder();
     List<Phone> phones = PhoneFinder.findFromDatabase(customerId);
 
     assertAll(

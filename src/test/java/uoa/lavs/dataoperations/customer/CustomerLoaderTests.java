@@ -17,6 +17,7 @@ public class CustomerLoaderTests {
     public void loadExistingCustomerFromDatabase() throws Exception {
         DataOperationsTestsHelper.createTestingDatabases();
 
+        CustomerLoader customerLoader = new CustomerLoader();
         Customer customer = CustomerLoader.loadFromDatabase("1");
 
         // Assert
@@ -34,9 +35,10 @@ public class CustomerLoaderTests {
     @Test
     public void loadNonExistingCustomerFromDatabase() throws Exception {
         DataOperationsTestsHelper.createTestingDatabases();
+        String customerId = "invalid-id";
 
         assertThrows(Exception.class, () -> {
-            CustomerLoader.loadFromDatabase("2");
+            CustomerLoader.loadFromDatabase(customerId);
         });
     }
 

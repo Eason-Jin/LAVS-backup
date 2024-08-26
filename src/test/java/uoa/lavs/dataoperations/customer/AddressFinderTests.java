@@ -17,6 +17,7 @@ public class AddressFinderTests {
     public void findExsistingAddressFromDatabase() throws Exception {
         DataOperationsTestsHelper.createTestingDatabases();
 
+        AddressFinder addressFinder = new AddressFinder();
         List<Address> addresses = AddressFinder.findFromDatabase("1");
 
         // Assert

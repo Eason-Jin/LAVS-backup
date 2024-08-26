@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -79,9 +78,20 @@ public class AddressUpdaterTests {
         DataOperationsTestsHelper.createTestingDatabases();
         Address address = new Address("123", "Business", "36", "Main Street", "Springfield", "IL", "62701", "USA", true,
                 false, 1);
+        AddressUpdater.updateMainframe("123", address);
 
-        Integer number = AddressUpdater.updateMainframe("123", address);
-        assertEquals(1, number);
+        List<Address> addresses = AddressFinder.findFromMainframe("123");
+        assertAll("address",
+                () -> assertEquals(1, addresses.get(0).getNumber()),
+                () -> assertEquals("123", addresses.get(0).getCustomerId()),
+                () -> assertEquals("36", addresses.get(0).getLine1()),
+                () -> assertEquals("Main Street", addresses.get(0).getLine2()),
+                () -> assertEquals("Springfield", addresses.get(0).getSuburb()),
+                () -> assertEquals("IL", addresses.get(0).getCity()),
+                () -> assertEquals("62701", addresses.get(0).getPostCode()),
+                () -> assertEquals("USA", addresses.get(0).getCountry()),
+                () -> assertEquals(true, addresses.get(0).getIsPrimary()),
+                () -> assertEquals(false, addresses.get(0).getIsMailing()));
     }
 
     @Test
@@ -90,8 +100,19 @@ public class AddressUpdaterTests {
         Address address = new Address();
         address.setCustomerId("123");
         address.setNumber(1);
-        Integer number = AddressUpdater.updateMainframe("123", address);
-        assertEquals(1, number);
+        AddressUpdater.updateMainframe("123", address);
+        List<Address> addresses = AddressFinder.findFromMainframe("123");
+        assertAll("address",
+                () -> assertEquals(1, addresses.get(0).getNumber()),
+                () -> assertEquals("123", addresses.get(0).getCustomerId()),
+                () -> assertEquals("5 Somewhere Lane", addresses.get(0).getLine1()),
+                () -> assertEquals("Nowhere", addresses.get(0).getLine2()),
+                () -> assertEquals("Important", addresses.get(0).getSuburb()),
+                () -> assertEquals("Auckland", addresses.get(0).getCity()),
+                () -> assertEquals("1234", addresses.get(0).getPostCode()),
+                () -> assertEquals("New Zealand", addresses.get(0).getCountry()),
+                () -> assertEquals(true, addresses.get(0).getIsPrimary()),
+                () -> assertEquals(true, addresses.get(0).getIsMailing()));
     }
 
     @Test
@@ -104,7 +125,15 @@ public class AddressUpdaterTests {
         address.setIsPrimary(false);
         address.setIsMailing(false);
         AddressUpdater.updateMainframe("123", address);
-        assertEquals(2, address.getNumber());
+        List<Address> addresses = AddressFinder.findFromMainframe("123");
+        for (Address a : addresses) {
+            if (a.getNumber() == address.getNumber()) {
+                assertEquals("123", a.getCustomerId());
+                assertEquals("Elm St", a.getLine1());
+                assertEquals("Business", a.getType());
+                assertEquals(false, a.getIsPrimary());
+            }
+        }
     }
 
     @Test

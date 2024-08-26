@@ -18,6 +18,7 @@ public class EmployerFinderTests {
     public void findExistingEmployerFromDatabase() throws Exception {
         DataOperationsTestsHelper.createTestingDatabases();
 
+        EmployerFinder employerFinder = new EmployerFinder();
         List<Employer> employers = EmployerFinder.findFromDatabase("1");
 
         // Assert

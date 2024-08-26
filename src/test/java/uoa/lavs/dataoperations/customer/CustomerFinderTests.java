@@ -19,6 +19,7 @@ public class CustomerFinderTests {
     public void findExistingCustomerFromDatabase() throws Exception {
         DataOperationsTestsHelper.createTestingDatabases();
 
+        CustomerFinder customerFinder = new CustomerFinder();
         List<Customer> customers = CustomerFinder.findFromDatabaseByName("Bob");
 
         // Assert
