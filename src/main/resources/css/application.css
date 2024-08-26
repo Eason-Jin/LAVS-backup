@@ -13,14 +13,8 @@
 /*    -fx-background-color: linear-gradient(#DBF1FE 75%, white 25%) no-repeat;*/
 /*}*/
 
-.text-area:disabled {
-  -fx-background-color: #f6f8fa;
-  -fx-border-color: #d0d7de;
-  -fx-border-radius: 4;
-  -fx-opacity: 1;
-}
-
 .input:disabled,
+.text-area:disabled,
 .combo-box:disabled,
 .date-picker:disabled,
 .label:disabled,
@@ -49,7 +43,7 @@
   -fx-effect: none;
 }
 
-.text-area {
+.text-area-input {
   -fx-background-radius: 20px;
   -fx-border-radius: 20px;
   -fx-text-fill: #000000;
@@ -60,7 +54,7 @@
   -fx-border-width: 2px;
 }
 
-.text-area:focused {
+.text-area-input:focused {
   -fx-border-color: black;
 }
 .combo-box {
@@ -131,7 +125,7 @@
   -fx-background-size: 50%;
 }
 
-.cancel-red: hover {
+.cancel-red:hover {
   -fx-background-color: #e29999;
 }
 
@@ -188,4 +182,12 @@
 
 .input:disabled {
   -fx-opacity: 1;
+}
+
+.invalid {
+  -fx-border-color: red;
+}
+
+.invalid:disabled {
+  -fx-border-color: red;
 }

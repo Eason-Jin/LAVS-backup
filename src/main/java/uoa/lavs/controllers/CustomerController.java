@@ -2,7 +2,6 @@ package uoa.lavs.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,7 +26,6 @@ import javafx.scene.layout.Pane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import uoa.lavs.Main;
-import uoa.lavs.SceneManager;
 import uoa.lavs.SceneManager.AppScene;
 import uoa.lavs.dataoperations.customer.AddressFinder;
 import uoa.lavs.dataoperations.customer.AddressUpdater;
@@ -50,12 +48,6 @@ import uoa.lavs.models.Phone;
 
 @Controller
 public class CustomerController extends uoa.lavs.controllers.Controller {
-  private enum Setting {
-    ADD,
-    EDIT,
-    VIEW
-  }
-
   private Setting setting;
 
   @Autowired private LoanController loanController;
@@ -70,7 +62,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
   @FXML private TabPane detailsTabPane;
 
-  @FXML private Pane generalDetailsPane;
+  @FXML private Pane profileInformationPane;
 
   @FXML private TextField titleField;
   @FXML private TextField nameField;
@@ -223,19 +215,19 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
                 }
               });
           row.setOnMouseEntered(
-                  event -> {
-                    if (!row.isEmpty() && setting != Setting.VIEW) {
-                      row.styleProperty().set("-fx-background-color: #f0f0f0");
-                    }
-                  });
+              event -> {
+                if (!row.isEmpty() && setting != Setting.VIEW) {
+                  row.styleProperty().set("-fx-background-color: #f0f0f0");
+                }
+              });
 
           row.setOnMouseExited(
-                  event -> {
-                    if (!row.isEmpty()) {
-                      row.styleProperty().set("-fx-background-color: none");
-                      row.styleProperty().set("-fx-border-width: 5");
-                    }
-                  });
+              event -> {
+                if (!row.isEmpty()) {
+                  row.styleProperty().set("-fx-background-color: none");
+                  row.styleProperty().set("-fx-border-width: 5");
+                }
+              });
           return row;
         });
 
@@ -255,19 +247,19 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
                 }
               });
           row.setOnMouseEntered(
-                  event -> {
-                    if (!row.isEmpty() && setting != Setting.VIEW) {
-                      row.styleProperty().set("-fx-background-color: #f0f0f0");
-                    }
-                  });
+              event -> {
+                if (!row.isEmpty() && setting != Setting.VIEW) {
+                  row.styleProperty().set("-fx-background-color: #f0f0f0");
+                }
+              });
 
           row.setOnMouseExited(
-                  event -> {
-                    if (!row.isEmpty()) {
-                      row.styleProperty().set("-fx-background-color: none");
-                      row.styleProperty().set("-fx-border-width: 5");
-                    }
-                  });
+              event -> {
+                if (!row.isEmpty()) {
+                  row.styleProperty().set("-fx-background-color: none");
+                  row.styleProperty().set("-fx-border-width: 5");
+                }
+              });
           return row;
         });
 
@@ -287,19 +279,19 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
                 }
               });
           row.setOnMouseEntered(
-                  event -> {
-                    if (!row.isEmpty() && setting != Setting.VIEW) {
-                      row.styleProperty().set("-fx-background-color: #f0f0f0");
-                    }
-                  });
+              event -> {
+                if (!row.isEmpty() && setting != Setting.VIEW) {
+                  row.styleProperty().set("-fx-background-color: #f0f0f0");
+                }
+              });
 
           row.setOnMouseExited(
-                  event -> {
-                    if (!row.isEmpty()) {
-                      row.styleProperty().set("-fx-background-color: none");
-                      row.styleProperty().set("-fx-border-width: 5");
-                    }
-                  });
+              event -> {
+                if (!row.isEmpty()) {
+                  row.styleProperty().set("-fx-background-color: none");
+                  row.styleProperty().set("-fx-border-width: 5");
+                }
+              });
           return row;
         });
 
@@ -320,19 +312,19 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
                 }
               });
           row.setOnMouseEntered(
-                  event -> {
-                    if (!row.isEmpty() && setting != Setting.VIEW) {
-                      row.styleProperty().set("-fx-background-color: #f0f0f0");
-                    }
-                  });
+              event -> {
+                if (!row.isEmpty() && setting != Setting.VIEW) {
+                  row.styleProperty().set("-fx-background-color: #f0f0f0");
+                }
+              });
 
           row.setOnMouseExited(
-                  event -> {
-                    if (!row.isEmpty()) {
-                      row.styleProperty().set("-fx-background-color: none");
-                      row.styleProperty().set("-fx-border-width: 5");
-                    }
-                  });
+              event -> {
+                if (!row.isEmpty()) {
+                  row.styleProperty().set("-fx-background-color: none");
+                  row.styleProperty().set("-fx-border-width: 5");
+                }
+              });
           return row;
         });
 
@@ -350,19 +342,19 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
                 }
               });
           row.setOnMouseEntered(
-                  event -> {
-                    if (!row.isEmpty()) {
-                      row.styleProperty().set("-fx-background-color: #f0f0f0");
-                    }
-                  });
+              event -> {
+                if (!row.isEmpty()) {
+                  row.styleProperty().set("-fx-background-color: #f0f0f0");
+                }
+              });
 
           row.setOnMouseExited(
-                  event -> {
-                    if (!row.isEmpty()) {
-                      row.styleProperty().set("-fx-background-color: none");
-                      row.styleProperty().set("-fx-border-width: 5");
-                    }
-                  });
+              event -> {
+                if (!row.isEmpty()) {
+                  row.styleProperty().set("-fx-background-color: none");
+                  row.styleProperty().set("-fx-border-width: 5");
+                }
+              });
           return row;
         });
 
@@ -388,6 +380,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     titleLabel.setText("Edit Customer");
     setDisableForFields(false);
     setVisabilityForButtons(true);
+    clearNotFoundFields();
   }
 
   public void setUpViewCustomer(String customerId) {
@@ -399,8 +392,20 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     setVisabilityForButtons(false);
   }
 
+  private void clearNotFoundFields() {
+    titleField.setText(titleField.getText().equals(missingDataMessage) ? "" : titleField.getText());
+    nameField.setText(nameField.getText().equals(missingDataMessage) ? "" : nameField.getText());
+    if (dobPicker.getValue() == null && dobPicker.getPromptText().equals(missingDataMessage)) {
+      dobPicker.setPromptText("");
+    } else {
+      dobPicker.setValue(dobPicker.getValue());
+    }
+    occupationField.setText(occupationField.getText().equals(missingDataMessage) ? "" : occupationField.getText());
+    citizenshipField.setText(citizenshipField.getText().equals(missingDataMessage) ? "" : citizenshipField.getText());
+  }
+
   private void setDisableForFields(boolean isDisabled) {
-    generalDetailsPane.setDisable(isDisabled);
+    profileInformationPane.setDisable(isDisabled);
     notesArea.setDisable(isDisabled);
     loansTab.setDisable(!isDisabled);
   }
@@ -416,7 +421,11 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   }
 
   public void setCustomerDetails(String customerId) {
-    customerIdLabel.setText("ID: " + customerId);
+    if (customerId != null) {
+      customerIdLabel.setText("ID: " + customerId);
+    } else {
+      System.out.println("customerId provided is null");
+    }
 
     customer = CustomerLoader.loadData(customerId);
     addresses = FXCollections.observableArrayList(AddressFinder.findData(customerId));
@@ -425,11 +434,16 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     employers = FXCollections.observableArrayList(EmployerFinder.findData(customerId));
     loans = FXCollections.observableArrayList(LoanFinder.findData(customerId));
 
-    titleField.setText(customer.getTitle());
-    nameField.setText(customer.getName());
-    dobPicker.setValue(customer.getDob());
-    occupationField.setText(customer.getOccupation());
-    citizenshipField.setText(customer.getCitizenship());
+    titleField.setText(customer.getTitle() != null ? customer.getTitle() : missingDataMessage);
+    nameField.setText(customer.getName() != null ? customer.getName() : missingDataMessage);
+    if (customer.getDob() != null) {
+      dobPicker.setValue(customer.getDob());
+    } else {
+      dobPicker.setValue(null);
+      dobPicker.setPromptText(missingDataMessage);
+    }
+    occupationField.setText(customer.getOccupation() != null ? customer.getOccupation() : missingDataMessage);
+    citizenshipField.setText(customer.getCitizenship() != null ? customer.getCitizenship() : missingDataMessage);
     visaField.setText(customer.getVisaType());
     notesArea.setText(customer.getNotes());
 
@@ -596,7 +610,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   private boolean validateFields() {
     boolean dobFlag = validateDateFormat(dobPicker, true);
     if (!dobFlag) {
-      dobPicker.setStyle(redBorder);
+      dobPicker.getStyleClass().add("invalid");
       appendErrorMessage("Date of birth must be before today!\n");
     }
     boolean addressFlag = addresses.size() >= 1;
@@ -626,7 +640,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
       appendErrorMessage("Please select a mailing address!\n");
     }
     if (!addressFlag || !primaryAddressFlag || !mailingAddressFlag) {
-      addressTable.setStyle(redBorder);
+      addressTable.getStyleClass().add("invalid");
     }
 
     boolean contactDetailsFlag = false;
@@ -641,7 +655,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
         }
       }
       if (!primaryEmailFlag) {
-        emailTable.setStyle(redBorder);
+        emailTable.getStyleClass().add("invalid");
         appendErrorMessage("Please select a primary email!\n");
       }
     }
@@ -660,18 +674,18 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
         }
       }
       if (!primaryPhoneFlag) {
-        phoneTable.setStyle(redBorder);
+        phoneTable.getStyleClass().add("invalid");
         appendErrorMessage("Please select a primary phone!\n");
       }
       if (!textingPhoneFlag) {
-        phoneTable.setStyle(redBorder);
+        phoneTable.getStyleClass().add("invalid");
         appendErrorMessage("Please select a texting phone!\n");
       }
     }
 
     if (!contactDetailsFlag) {
-      emailTable.setStyle(redBorder);
-      phoneTable.setStyle(redBorder);
+      emailTable.getStyleClass().add("invalid");
+      phoneTable.getStyleClass().add("invalid");
       appendErrorMessage("Please add at least one email or phone number!\n");
     }
 
@@ -688,32 +702,32 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   private boolean checkLengths() {
     boolean titleFieldFlag = isTooLong(titleField, 10);
     if (titleFieldFlag) {
-      titleField.setStyle(redBorder);
+      titleField.getStyleClass().add("invalid");
       appendErrorMessage("Title must be less than 10 characters\n");
     }
     boolean nameFieldFlag = isTooLong(nameField, 60);
     if (nameFieldFlag) {
-      nameField.setStyle(redBorder);
+      nameField.getStyleClass().add("invalid");
       appendErrorMessage("Name must be less than 60 characters\n");
     }
     boolean occupationFlag = isTooLong(occupationField, 40);
     if (occupationFlag) {
-      occupationField.setStyle(redBorder);
+      occupationField.getStyleClass().add("invalid");
       appendErrorMessage("Occupation must be less than 40 characters\n");
     }
     boolean citizenshipFieldFlag = isTooLong(citizenshipField, 40);
     if (citizenshipFieldFlag) {
-      citizenshipField.setStyle(redBorder);
+      citizenshipField.getStyleClass().add("invalid");
       appendErrorMessage("Citizenship must be less than 40 characters\n");
     }
     boolean visaFieldFlag = isTooLong(visaField, 40);
     if (visaFieldFlag) {
-      visaField.setStyle(redBorder);
+      visaField.getStyleClass().add("invalid");
       appendErrorMessage("Visa type must be less than 40 characters\n");
     }
     boolean notesAreaFlag = isTooLong(notesArea, 1330);
     if (notesAreaFlag) {
-      notesArea.setStyle(redBorder);
+      notesArea.getStyleClass().add("invalid");
       appendErrorMessage("Notes must be less than 1330 characters\n");
     }
 
@@ -726,17 +740,17 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   }
 
   private void resetFieldStyle() {
-    titleField.setStyle(normalBorder);
-    nameField.setStyle(normalBorder);
-    dobPicker.setStyle(normalBorder);
-    occupationField.setStyle(normalBorder);
-    citizenshipField.setStyle(normalBorder);
-    visaField.setStyle(normalBorder);
-    addressTable.setStyle(normalBorder);
-    emailTable.setStyle(normalBorder);
-    phoneTable.setStyle(normalBorder);
-    employmentTable.setStyle(normalBorder);
-    notesArea.setStyle(normalBorder);
+    titleField.getStyleClass().remove("invalid");
+    nameField.getStyleClass().remove("invalid");
+    dobPicker.getStyleClass().remove("invalid");
+    occupationField.getStyleClass().remove("invalid");
+    citizenshipField.getStyleClass().remove("invalid");
+    visaField.getStyleClass().remove("invalid");
+    addressTable.getStyleClass().remove("invalid");
+    emailTable.getStyleClass().remove("invalid");
+    phoneTable.getStyleClass().remove("invalid");
+    employmentTable.getStyleClass().remove("invalid");
+    notesArea.getStyleClass().remove("invalid");
   }
 
   @FXML
@@ -816,12 +830,13 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
         alertCancel.setTitle("Cancel adding customer");
         if (alertCancel.showAndWait().get() == ButtonType.OK) {
           resetScene();
-          Main.setScene(SceneManager.AppScene.START);
+          Main.setScene(AppScene.START);
         }
         break;
       case EDIT:
         alertCancel.setTitle("Cancel editing customer");
         if (alertCancel.showAndWait().get() == ButtonType.OK) {
+          resetFieldStyle();
           setUpViewCustomer(customer.getId());
         }
         break;
@@ -841,8 +856,10 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
   @FXML
   private void onClickHome(ActionEvent event) {
-    resetScene();
-    Main.setScene(AppScene.START);
+    if (handleHomeClick(setting)) {
+      resetScene();
+      Main.setScene(AppScene.START);
+    }
   }
 
   public String getCustomerID() {
@@ -870,15 +887,6 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   private boolean doesPrimaryPhoneExist() {
     for (Phone phone : phones) {
       if (phone.getIsPrimary()) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private boolean doesTextingPhoneExist() {
-    for (Phone phone : phones) {
-      if (phone.getCanSendText()) {
         return true;
       }
     }

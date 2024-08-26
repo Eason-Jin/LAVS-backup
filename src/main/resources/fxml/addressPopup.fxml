@@ -11,19 +11,11 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="addressPopupPane" maxHeight="671.0" maxWidth="1178.0" minHeight="648.0" minWidth="1152.0" prefHeight="671.0" prefWidth="1178.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.AddressPopupController">
+<Pane fx:id="addressPopupPane" maxHeight="671.0" maxWidth="1178.0" minHeight="648.0" minWidth="1152.0" prefHeight="671.0" prefWidth="1178.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uoa.lavs.controllers.AddressPopupController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#727272" height="671.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1178.0" />
       <Pane layoutX="176.0" layoutY="120.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" styleClass="popup-pane" stylesheets="@../css/application.css">
          <children>
-            <TextField fx:id="addressLine1TextField" cache="true" cacheHint="QUALITY" layoutX="65.0" layoutY="152.0" maxHeight="35.0" maxWidth="330.0" minHeight="35.0" minWidth="330.0" prefHeight="35.0" prefWidth="330.0" styleClass="input">
-               <font>
-                  <Font size="15.0" />
-               </font></TextField>
-            <TextField fx:id="addressLine2TextField" cache="true" cacheHint="QUALITY" layoutX="405.0" layoutY="152.0" maxHeight="35.0" maxWidth="330.0" minHeight="35.0" minWidth="330.0" prefHeight="35.0" prefWidth="330.0" styleClass="input">
-               <font>
-                  <Font size="15.0" />
-               </font></TextField>
             <Label layoutX="69.0" layoutY="68.0" prefHeight="45.0" prefWidth="391.0" text="Address">
                <font>
                   <Font name="System Bold" size="36.0" />
@@ -34,12 +26,16 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
+            <TextField fx:id="addressLine1TextField" cache="true" cacheHint="QUALITY" layoutX="65.0" layoutY="152.0" maxHeight="35.0" maxWidth="330.0" minHeight="35.0" minWidth="330.0" prefHeight="35.0" prefWidth="330.0" styleClass="input">
+               <font>
+                  <Font size="15.0" />
+               </font></TextField>
             <Label layoutX="418.0" layoutY="127.0" text="Address Line 2">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="suburbTextField" cache="true" cacheHint="QUALITY" layoutX="65.0" layoutY="223.0" maxHeight="35.0" maxWidth="160.0" minHeight="35.0" minWidth="160.0" prefHeight="35.0" prefWidth="160.0" styleClass="input">
+            <TextField fx:id="addressLine2TextField" cache="true" cacheHint="QUALITY" layoutX="405.0" layoutY="152.0" maxHeight="35.0" maxWidth="330.0" minHeight="35.0" minWidth="330.0" prefHeight="35.0" prefWidth="330.0" styleClass="input">
                <font>
                   <Font size="15.0" />
                </font></TextField>
@@ -48,7 +44,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="cityTextField" cache="true" cacheHint="QUALITY" layoutX="235.0" layoutY="223.0" maxHeight="35.0" maxWidth="160.0" minHeight="35.0" minWidth="160.0" prefHeight="35.0" prefWidth="160.0" styleClass="input">
+            <TextField fx:id="suburbTextField" cache="true" cacheHint="QUALITY" layoutX="65.0" layoutY="223.0" maxHeight="35.0" maxWidth="160.0" minHeight="35.0" minWidth="160.0" prefHeight="35.0" prefWidth="160.0" styleClass="input">
                <font>
                   <Font size="15.0" />
                </font></TextField>
@@ -57,7 +53,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="postcodeTextField" cache="true" cacheHint="QUALITY" layoutX="405.0" layoutY="223.0" maxHeight="35.0" maxWidth="160.0" minHeight="35.0" minWidth="160.0" prefHeight="35.0" prefWidth="160.0" styleClass="input">
+            <TextField fx:id="cityTextField" cache="true" cacheHint="QUALITY" layoutX="235.0" layoutY="223.0" maxHeight="35.0" maxWidth="160.0" minHeight="35.0" minWidth="160.0" prefHeight="35.0" prefWidth="160.0" styleClass="input">
                <font>
                   <Font size="15.0" />
                </font></TextField>
@@ -66,11 +62,20 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="countryTextField" cache="true" cacheHint="QUALITY" layoutX="575.0" layoutY="223.0" maxHeight="35.0" maxWidth="160.0" minHeight="35.0" minWidth="160.0" prefHeight="35.0" prefWidth="160.0" styleClass="input">
+            <TextField fx:id="postcodeTextField" cache="true" cacheHint="QUALITY" layoutX="405.0" layoutY="223.0" maxHeight="35.0" maxWidth="160.0" minHeight="35.0" minWidth="160.0" prefHeight="35.0" prefWidth="160.0" styleClass="input">
                <font>
                   <Font size="15.0" />
                </font></TextField>
             <Label layoutX="586.0" layoutY="197.0" text="Country">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="countryTextField" cache="true" cacheHint="QUALITY" layoutX="575.0" layoutY="223.0" maxHeight="35.0" maxWidth="160.0" minHeight="35.0" minWidth="160.0" prefHeight="35.0" prefWidth="160.0" styleClass="input">
+               <font>
+                  <Font size="15.0" />
+               </font></TextField>
+            <Label layoutX="76.0" layoutY="268.0" text="Type">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -83,11 +88,14 @@
                   </FXCollections>
                </items>
             </ComboBox>
-            <Label layoutX="76.0" layoutY="268.0" text="Type">
+            <CheckBox fx:id="isPrimaryAddressCheckBox" layoutX="251.0" layoutY="298.0" mnemonicParsing="false" stylesheets="@../css/application.css" text="Primary Address">
                <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
+                  <Font size="15.0" />
+               </font></CheckBox>
+            <CheckBox fx:id="isMailingAddressCheckBox" layoutX="426.0" layoutY="297.0" mnemonicParsing="false" stylesheets="@../css/application.css" text="Mailing Address">
+               <font>
+                  <Font size="15.0" />
+               </font></CheckBox>
             <Button layoutX="703.0" layoutY="28.0" maxHeight="35.0" maxWidth="35.0" minHeight="35.0" minWidth="35.0" mnemonicParsing="false" onAction="#onClickSave" prefHeight="35.0" prefWidth="35.0" stylesheets="@../css/application.css">
                <styleClass>
                   <String fx:value="popup-button" />
@@ -100,14 +108,6 @@
                   <String fx:value="popup-button" />
                </styleClass>
             </Button>
-            <CheckBox fx:id="isPrimaryAddressCheckBox" layoutX="251.0" layoutY="298.0" mnemonicParsing="false" stylesheets="@../css/application.css" text="Primary Address">
-               <font>
-                  <Font size="15.0" />
-               </font></CheckBox>
-            <CheckBox fx:id="isMailingAddressCheckBox" layoutX="426.0" layoutY="297.0" mnemonicParsing="false" stylesheets="@../css/application.css" text="Mailing Address">
-               <font>
-                  <Font size="15.0" />
-               </font></CheckBox>
          </children>
       </Pane>
    </children>
