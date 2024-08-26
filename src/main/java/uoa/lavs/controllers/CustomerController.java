@@ -70,7 +70,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
   @FXML private TabPane detailsTabPane;
 
-  @FXML private Pane generalDetailsPane;
+  @FXML private Pane profileInformationPane;
 
   @FXML private TextField titleField;
   @FXML private TextField nameField;
@@ -416,7 +416,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   }
 
   private void setDisableForFields(boolean isDisabled) {
-    generalDetailsPane.setDisable(isDisabled);
+    profileInformationPane.setDisable(isDisabled);
     notesArea.setDisable(isDisabled);
     loansTab.setDisable(!isDisabled);
   }

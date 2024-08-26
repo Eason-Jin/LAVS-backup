@@ -13,14 +13,8 @@
 /*    -fx-background-color: linear-gradient(#DBF1FE 75%, white 25%) no-repeat;*/
 /*}*/
 
-.text-area:disabled {
-  -fx-background-color: #f6f8fa;
-  -fx-border-color: #d0d7de;
-  -fx-border-radius: 4;
-  -fx-opacity: 1;
-}
-
 .input:disabled,
+.text-area:disabled,
 .combo-box:disabled,
 .date-picker:disabled,
 .label:disabled,
