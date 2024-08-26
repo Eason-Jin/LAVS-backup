@@ -201,8 +201,7 @@ public class LoanController extends uoa.lavs.controllers.Controller {
   public void setLoanDetails(String loanId) {
     if (loanId != null) {
       loanIdLabel.setText("Loan ID: " + loanId);
-    }
-    else {
+    } else {
       System.out.println("loanId provided is null");
     }
 
@@ -224,8 +223,7 @@ public class LoanController extends uoa.lavs.controllers.Controller {
       totalInterestField.setText((loanSummary != null && loanSummary.getTotalInterest() != null) ? ("$" + String.format("%.2f", loanSummary.getTotalInterest())) : "COULD NOT FIND");
       totalCostField.setText((loanSummary != null && loanSummary.getTotalCost() != null) ? ("$" + String.format("%.2f", loanSummary.getTotalCost())) : "COULD NOT FIND");
       payoffDateField.setText((loanSummary != null && loanSummary.getPayOffDate() != null) ? loanSummary.getPayOffDate().toString() : "COULD NOT FIND");
-    }
-    else {
+    } else {
       principalField.setText("COULD NOT FIND");
       rateTypeBox.setValue("COULD NOT FIND");
       rateValueField.setText("COULD NOT FIND");

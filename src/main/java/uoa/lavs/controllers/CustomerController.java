@@ -418,8 +418,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   public void setCustomerDetails(String customerId) {
     if (customerId != null) {
       customerIdLabel.setText("ID: " + customerId);
-    }
-    else {
+    } else {
       System.out.println("customerId provided is null");
     }
 
@@ -438,8 +437,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
       citizenshipField.setText(customer.getCitizenship() != null ? customer.getCitizenship() : "COULD NOT FIND");
       visaField.setText(customer.getVisaType());
       notesArea.setText(customer.getNotes() != null ? customer.getNotes() : "COULD NOT FIND");
-    }
-    else {
+    } else {
       titleField.setText("COULD NOT FIND");
       nameField.setText("COULD NOT FIND");
       dobPicker.setValue(null);
@@ -627,6 +625,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   private void createEmploymentPopup(Pane currentRoot, Employer employer) throws IOException {
     if (employer == null) {
       System.out.println("Employer is null");
+      return;
     }
     FXMLLoader loader = createPopup("/fxml/employmentPopup.fxml", currentRoot);
     EmploymentPopupController employmentPopupController = loader.getController();
