@@ -200,18 +200,23 @@ public class DataOperationsTestsHelper {
                     VALUES ('1', 'Tech Corp', '123 Tech Street', 'Tech Suburb', 'Tech City', 1234, 'Tech Country', '0934534345', 'techcorp@tech.com', 'www.techcorp.com', 1, true, 0);
                     """;
 
+            String insertCustomer2 = """
+                    INSERT INTO Customer (CustomerID, Name, Title, Status, Dob, Occupation, Citizenship, VisaType, Note, InMainframe)
+                    VALUES ('2', 'Bob Black', 'Mr', 'Active', '1990-01-01', 'Engineer', 'NZ', 'Work', 'Note', 0);
+                    """;
+
             String insertLoan = """
                     INSERT INTO Loan (LoanID, CustomerID, CustomerName, Status, Principal, RateValue, RateType, StartDate, Period, Term, PaymentAmount, PaymentFrequency, Compounding, InMainframe)
                     VALUES ('1-01', '1', 'Bob Black', 'Active', 1000, 0.1, 'Fixed', '2021-01-01', 12, 12, 100, 'Monthly', 'Monthly', 0);
                     """;
             String insertEmail2 = """
                     INSERT INTO Email (CustomerID, Address, IsPrimary, Number, InMainframe)
-                     VALUES ('1', 'john@gmail.com', true, 1, 0);
+                     VALUES ('1', 'john@gmail.com', true, 2, 0);
                     """;
 
             String insertPhone2 = """
                     INSERT INTO Phone (CustomerID, Type, Prefix, Number, IsPrimary, CanSendText, PhoneNumber, InMainframe)
-                    VALUES ('1', 'Mobile', 64, 1, true, true, '123456789', 0);
+                    VALUES ('1', 'Mobile', 64, 2, true, true, '123456789', 0);
                     """;
 
             String insertAddress2 = """
@@ -236,6 +241,7 @@ public class DataOperationsTestsHelper {
             stmt.executeUpdate(insertAddress);
             stmt.executeUpdate(insertEmployer);
             stmt.executeUpdate(insertLoan);
+            stmt.executeUpdate(insertCustomer2);
             stmt.executeUpdate(insertAddress2);
             stmt.executeUpdate(insertEmail2);
             stmt.executeUpdate(insertPhone2);
