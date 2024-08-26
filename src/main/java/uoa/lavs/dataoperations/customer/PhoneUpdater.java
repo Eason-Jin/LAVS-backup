@@ -184,8 +184,7 @@ public class PhoneUpdater {
         List<Phone> phones;
         phones = PhoneFinder.findFromDatabase(customerID);
         for (Phone phoneOnAccount : phones) {
-          if (phoneOnAccount.getNumber().equals(number)
-              && phoneOnAccount.getCustomerId().equals(customerID)) {
+          if (phoneOnAccount.getNumber().equals(number)) {
             failedUpdates.add(phoneOnAccount);
             break;
           }

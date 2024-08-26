@@ -168,10 +168,8 @@ public class EmailUpdater {
         List<Email> emails;
         emails = EmailFinder.findFromDatabase(customerID);
         for (Email emailOnAccount : emails) {
-          if (emailOnAccount.getNumber().equals(number)
-              && emailOnAccount.getCustomerId().equals(customerID)) {
+          if (emailOnAccount.getNumber().equals(number)) {
             failedUpdates.add(emailOnAccount);
-            break;
           }
         }
       }

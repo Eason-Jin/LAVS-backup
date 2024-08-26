@@ -37,7 +37,7 @@ public class AddressUpdater {
     }
   }
 
-  private static Integer updateMainframe(String customerID, Address address) throws Exception {
+  public static Integer updateMainframe(String customerID, Address address) throws Exception {
     UpdateCustomerAddress updateCustomerAddress = new UpdateCustomerAddress();
     updateCustomerAddress.setCustomerId(customerID);
     updateCustomerAddress.setNumber(address.getNumber());
@@ -48,8 +48,7 @@ public class AddressUpdater {
       try {
         existingAddresses = AddressFinder.findFromMainframe(customerID);
         for (Address addressOnAccount : existingAddresses) {
-          if (addressOnAccount.getNumber().equals(address.getNumber())
-              && addressOnAccount.getCustomerId().equals(address.getCustomerId())) {
+          if (addressOnAccount.getNumber().equals(address.getNumber())) {
             existingAddress = addressOnAccount;
             break;
           }
@@ -208,10 +207,8 @@ public class AddressUpdater {
         Integer number = resultSet.getInt("Number");
         List<Address> addresses = AddressFinder.findFromDatabase(customerID);
         for (Address addressOnAccount : addresses) {
-          if (addressOnAccount.getNumber().equals(number)
-              && addressOnAccount.getCustomerId().equals(customerID)) {
+          if (addressOnAccount.getNumber().equals(number)) {
             failedUpdates.add(addressOnAccount);
-            break;
           }
         }
       }

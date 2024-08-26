@@ -40,25 +40,23 @@ public class LoanUpdater {
   private static void updateDatabase(String loanId, Loan loan) throws SQLException {
     String sql;
     if (loan.getLoanId() == null) {
-      String GET_MAX_NUMBER_SQL =
-          "SELECT COALESCE(MAX(CAST(SUBSTR(LoanID, INSTR(LoanID, '-') + 1) AS INTEGER)), 0) + 1"
-              + " FROM Loan WHERE CustomerID = ?";
+      String GET_MAX_NUMBER_SQL = "SELECT COALESCE(MAX(CAST(SUBSTR(LoanID, INSTR(LoanID, '-') + 1) AS INTEGER)), 0) + 1"
+          + " FROM Loan WHERE CustomerID = ?";
       try (Connection connection = LocalInstance.getDatabaseConnection();
-          PreparedStatement getMaxNumberStatement =
-              connection.prepareStatement(GET_MAX_NUMBER_SQL)) {
+          PreparedStatement getMaxNumberStatement = connection.prepareStatement(GET_MAX_NUMBER_SQL)) {
         getMaxNumberStatement.setString(1, loan.getCustomerId());
         try (ResultSet resultSet = getMaxNumberStatement.executeQuery()) {
           if (resultSet.next()) {
             int nextNumber = resultSet.getInt(1);
-            loan.setLoanId(loan.getCustomerId().replace(" (Temporary)", "") + "-" + String.format("%02d", nextNumber) + " (Temporary)");
+            loan.setLoanId(loan.getCustomerId().replace(" (Temporary)", "") + "-" + String.format("%02d", nextNumber)
+                + " (Temporary)");
           }
         }
       }
     }
-    sql =
-        "INSERT INTO Loan (CustomerName, Status, Principal, RateValue, RateType, StartDate,"
-            + " Period, Term, PaymentAmount, PaymentFrequency, Compounding, CustomerID, LoanID)"
-            + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    sql = "INSERT INTO Loan (CustomerName, Status, Principal, RateValue, RateType, StartDate,"
+        + " Period, Term, PaymentAmount, PaymentFrequency, Compounding, CustomerID, LoanID)"
+        + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     try (Connection connection = LocalInstance.getDatabaseConnection();
         PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -154,7 +152,6 @@ public class LoanUpdater {
         for (Loan loanOnAccount : loans) {
           if (loanOnAccount.getLoanId().equals(loanId)) {
             failedUpdates.add(loanOnAccount);
-            break;
           }
         }
       }

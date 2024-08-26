@@ -219,10 +219,8 @@ public class EmployerUpdater {
         List<Employer> employers;
         employers = EmployerFinder.findFromDatabase(customerID);
         for (Employer employerOnAccount : employers) {
-          if (employerOnAccount.getNumber().equals(number)
-              && employerOnAccount.getCustomerId().equals(customerID)) {
+          if (employerOnAccount.getNumber().equals(number)) {
             failedUpdates.add(employerOnAccount);
-            break;
           }
         }
       }
