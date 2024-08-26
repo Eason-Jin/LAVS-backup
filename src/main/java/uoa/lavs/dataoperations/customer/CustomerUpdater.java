@@ -100,7 +100,7 @@ public class CustomerUpdater {
   public static String updateMainframe(String customerID, Customer customer) throws Exception {
     UpdateCustomer updateCustomer = new UpdateCustomer();
     UpdateCustomerNote updateCustomerNote = new UpdateCustomerNote();
-    if (customerID != null && !customerID.contains("Temporary")) {
+    if (customerID != null && !customerID.contains("Temp")) {
       updateCustomer.setCustomerId(customerID);
     } else {
       customerID = null;
@@ -239,8 +239,8 @@ public class CustomerUpdater {
         ResultSet rs = stmt.executeQuery(selectLastId)) {
       if (rs.next()) {
         String lastIdStr = rs.getString("CustomerID");
-        // Remove "(Temporary)" if it exists
-        lastIdStr = lastIdStr.replace(" (Temporary)", "");
+        // Remove "(Temp)" if it exists
+        lastIdStr = lastIdStr.replace(" (Temp)", "");
         int lastId = Integer.parseInt(lastIdStr);
         newId = Integer.toString(lastId + 1);
       } else {
@@ -248,6 +248,6 @@ public class CustomerUpdater {
       }
     }
 
-    return newId + " (Temporary)";
+    return newId + " (Temp)";
   }
 }

@@ -214,20 +214,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
                   }
                 }
               });
-          row.setOnMouseEntered(
-              event -> {
-                if (!row.isEmpty() && setting != Setting.VIEW) {
-                  row.styleProperty().set("-fx-background-color: #f0f0f0");
-                }
-              });
-
-          row.setOnMouseExited(
-              event -> {
-                if (!row.isEmpty()) {
-                  row.styleProperty().set("-fx-background-color: none");
-                  row.styleProperty().set("-fx-border-width: 5");
-                }
-              });
+          onRowHover(row);
           return row;
         });
 
@@ -246,20 +233,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
                   }
                 }
               });
-          row.setOnMouseEntered(
-              event -> {
-                if (!row.isEmpty() && setting != Setting.VIEW) {
-                  row.styleProperty().set("-fx-background-color: #f0f0f0");
-                }
-              });
-
-          row.setOnMouseExited(
-              event -> {
-                if (!row.isEmpty()) {
-                  row.styleProperty().set("-fx-background-color: none");
-                  row.styleProperty().set("-fx-border-width: 5");
-                }
-              });
+          onRowHover(row);
           return row;
         });
 
@@ -278,20 +252,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
                   }
                 }
               });
-          row.setOnMouseEntered(
-              event -> {
-                if (!row.isEmpty() && setting != Setting.VIEW) {
-                  row.styleProperty().set("-fx-background-color: #f0f0f0");
-                }
-              });
-
-          row.setOnMouseExited(
-              event -> {
-                if (!row.isEmpty()) {
-                  row.styleProperty().set("-fx-background-color: none");
-                  row.styleProperty().set("-fx-border-width: 5");
-                }
-              });
+          onRowHover(row);
           return row;
         });
 
@@ -311,20 +272,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
                   }
                 }
               });
-          row.setOnMouseEntered(
-              event -> {
-                if (!row.isEmpty() && setting != Setting.VIEW) {
-                  row.styleProperty().set("-fx-background-color: #f0f0f0");
-                }
-              });
-
-          row.setOnMouseExited(
-              event -> {
-                if (!row.isEmpty()) {
-                  row.styleProperty().set("-fx-background-color: none");
-                  row.styleProperty().set("-fx-border-width: 5");
-                }
-              });
+          onRowHover(row);
           return row;
         });
 
@@ -364,6 +312,22 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     phones = FXCollections.observableArrayList(new ArrayList<Phone>());
     employers = FXCollections.observableArrayList(new ArrayList<Employer>());
     loans = FXCollections.observableArrayList(new ArrayList<Loan>());
+  }
+
+  private <T> void onRowHover(TableRow<T> row) {
+    row.setOnMouseEntered(
+        event -> {
+          if (!row.isEmpty() && setting != Setting.VIEW) {
+            row.styleProperty().set("-fx-background-color: #f0f0f0");
+          }
+        });
+    row.setOnMouseExited(
+        event -> {
+          if (!row.isEmpty()) {
+            row.styleProperty().set("-fx-background-color: none");
+            row.styleProperty().set("-fx-border-width: 5");
+          }
+        });
   }
 
   public void setUpAddCustomer() {

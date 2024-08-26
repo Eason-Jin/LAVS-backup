@@ -228,7 +228,7 @@ public class LoanController extends uoa.lavs.controllers.Controller {
     List<String> coBorrowerIds = CoborrowerLoader.loadData(loanId);
 
     coBorrowerIds.removeIf(
-        id -> id.equals(primeBorrowerId) || id.equals(primeBorrowerId + " (Temporary)"));
+        id -> id.equals(primeBorrowerId) || id.equals(primeBorrowerId + " (Temp)"));
 
     coBorrowers.clear();
     for (String id : coBorrowerIds) {
