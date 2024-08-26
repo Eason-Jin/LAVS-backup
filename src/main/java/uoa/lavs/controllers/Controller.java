@@ -48,6 +48,34 @@ public abstract class Controller {
     return true;
   }
 
+  protected boolean validatePhoneFormat(TextField number, boolean hasPrefix) {
+    number.getStyleClass().remove("invalid");
+    String phone = number.getText();
+    if (hasPrefix) {
+      if (phone.charAt(0) != '+') {
+        if (!Character.isDigit(phone.charAt(0))) {
+          number.getStyleClass().add("invalid");
+          return false;
+        }
+      } else {
+        phone = phone.replaceFirst("\\+", "");
+      }
+    } else {
+      if (!Character.isDigit(phone.charAt(0))) {
+        number.getStyleClass().add("invalid");
+        return false;
+      }
+    }
+
+    try {
+      Long.parseLong(phone.replaceAll("-", ""));
+    } catch (Exception e) {
+      number.getStyleClass().add("invalid");
+      return false;
+    }
+    return true;
+  }
+
   protected boolean validateWebsiteFormat(TextField website) {
     website.getStyleClass().remove("invalid");
     // Website should be in the format of a.b
