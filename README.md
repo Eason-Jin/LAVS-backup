@@ -26,3 +26,40 @@ The repository contains some initial Java code to help your project. These are u
 * [Utility](src/main/java/uoa/lavs/utility/): a utility for calculating loan repayments.
 
   In addition, there are some unit tests in [src/test/java/uoa/lavs/](src/test/java/uoa/lavs/) folder.
+
+
+## Running Instructions
+
+To run LAVS, perform:
+
+`./mvnw clean javafx:run`
+
+## Debugging Instructions
+
+To debug LAVS, perform:
+
+`./mvnw clean javafx:run@debug`
+
+## Testing Instructions
+
+To run the JUnit tests on VSCode:
+1. Find `src/test/java/uoa/lavs`
+2. Here you will find `dataoperations` and `models` folder
+3. Right click on either folder and click "Run Tests with Coverage", to view code coverage.
+
+To run the JUnit tests on IntelliJ:
+1. Find `src/main/java/uoa/lavs`
+2. Right click the `lavs` folder and hover over "More Run/Debug", clicking "Run 'Tests in 'uoa.lavs" with Coverage"
+
+
+## Dependencies
+
+LAVS utilises the following dependencies:
+* Nitrite Database
+* OkHttp
+* Apache Commons Math
+* JUnit 
+* JavaFX 
+* Atlantafx
+* SQLite JDBC Driver
+* Spring Framework
