@@ -204,6 +204,10 @@ public class DataOperationsTestsHelper {
                     INSERT INTO Loan (LoanID, CustomerID, CustomerName, Status, Principal, RateValue, RateType, StartDate, Period, Term, PaymentAmount, PaymentFrequency, Compounding, InMainframe)
                     VALUES ('1-01', '1', 'Bob Black', 'Active', 1000, 0.1, 'Fixed', '2021-01-01', 12, 12, 100, 'Monthly', 'Monthly', 0);
                     """;
+            String insertAddress2 = """
+                    INSERT INTO Address (CustomerID, Line1, Suburb, City, Postcode, Country, IsPrimary, IsMailing, Number, Type, InMainframe)
+                    VALUES ('1', '35 Owens Road', 'Mt Eden', 'Auckland', 1234, 'New Zealand', true, true, 2, 'Residential', 0);
+                    """;
 
             stmt.executeUpdate(customerTable);
             stmt.executeUpdate(addressTable);
@@ -217,6 +221,7 @@ public class DataOperationsTestsHelper {
             stmt.executeUpdate(insertAddress);
             stmt.executeUpdate(insertEmployer);
             stmt.executeUpdate(insertLoan);
+            stmt.executeUpdate(insertAddress2);
         }
     }
 
