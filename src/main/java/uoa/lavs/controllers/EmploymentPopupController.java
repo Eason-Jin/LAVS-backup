@@ -145,10 +145,11 @@ public class EmploymentPopupController extends PopupController {
 
   @Override
   public void setUpPopup(Detail obj, Consumer<Detail> objectSaveHandler, Boolean isPrimary) {
-
     this.employment = (Employer) obj;
     this.employmentSaveHandler = (Consumer<Employer>) (Object) objectSaveHandler;
-
+    if (employment.getIsOwner() == null) {
+      employment.setIsOwner(false);
+    }
     companyNameTextField.setText(employment.getName());
     companyAddressLine1TextField.setText(employment.getLine1());
     companyAddressLine2TextField.setText(

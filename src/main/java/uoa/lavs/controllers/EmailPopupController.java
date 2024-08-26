@@ -60,6 +60,9 @@ public class EmailPopupController extends PopupController {
   public void setUpPopup(Detail obj, Consumer<Detail> objectSaveHandler, Boolean isPrimary) {
     this.email = (Email) obj;
     this.emailSaveHandler = (Consumer<Email>) (Object) objectSaveHandler;
+    if (email.getIsPrimary() == null) {
+      email.setIsPrimary(false);
+    }
     emailTextField.setText(email.getAddress());
     isPrimaryEmailCheckBox.setDisable(isPrimary && !email.getIsPrimary());
     isPrimaryEmailCheckBox.setSelected(email.getIsPrimary());

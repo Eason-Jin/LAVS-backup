@@ -75,6 +75,12 @@ public class PhonePopupController extends PopupController {
   public void setUpPopup(Detail obj, Consumer<Detail> objectSaveHandler, Boolean isPrimary) {
     this.phone = (Phone) obj;
     this.phoneSaveHandler = (Consumer<Phone>) (Object) objectSaveHandler;
+    if (phone.getIsPrimary() == null) {
+      phone.setIsPrimary(false);
+    }
+    if (phone.getCanSendText() == null) {
+      phone.setCanSendText(false);
+    }
     phoneTypeComboBox.setValue(phone.getType());
     prefixTextField.setText(phone.getPrefix());
     phoneTextField.setText(phone.getPhoneNumber());

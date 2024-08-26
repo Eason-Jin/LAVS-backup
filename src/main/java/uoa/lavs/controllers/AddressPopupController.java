@@ -116,6 +116,12 @@ public class AddressPopupController extends PopupController {
   public void setUpPopup(Detail obj, Consumer<Detail> objectSaveHandler, Boolean isPrimary) {
     this.address = (Address) obj;
     this.addressSaveHandler = (Consumer<Address>) (Object) objectSaveHandler;
+    if (address.getIsPrimary() == null) {
+      address.setIsPrimary(false);
+    }
+    if (address.getIsMailing() == null) {
+      address.setIsMailing(false);
+    }
     addressLine1TextField.setText(address.getLine1());
     addressLine2TextField.setText(address.getLine2() == null ? "" : address.getLine2());
     suburbTextField.setText(address.getSuburb());
