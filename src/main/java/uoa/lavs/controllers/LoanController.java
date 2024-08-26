@@ -211,7 +211,12 @@ public class LoanController extends uoa.lavs.controllers.Controller {
       principalField.setText(loan.getPrincipalString() != null ? loan.getPrincipalString() : missingDataMessage);
       rateTypeBox.setValue(loan.getRateType() != null ? String.valueOf(loan.getRateType()): missingDataMessage);
       rateValueField.setText(loan.getRateValue() != null ? String.valueOf(loan.getRateValue()) : missingDataMessage);
-      startDatePicker.setValue(loan.getStartDate() != null ? loan.getStartDate() : null);
+      if (loan.getStartDate() != null) {
+        startDatePicker.setValue(loan.getStartDate());
+      } else {
+        startDatePicker.setValue(null);
+        startDatePicker.setPromptText(missingDataMessage);
+      }
       periodField.setText(loan.getPeriod() != null ? String.valueOf(loan.getPeriod()) : missingDataMessage);
       loanTermField.setText(loan.getTerm() != null ? String.valueOf(loan.getTerm()) : missingDataMessage);
       compoundingBox.setValue(loan.getCompounding() != null ? String.valueOf(loan.getCompounding()) : missingDataMessage);
@@ -225,6 +230,7 @@ public class LoanController extends uoa.lavs.controllers.Controller {
       rateTypeBox.setValue(missingDataMessage);
       rateValueField.setText(missingDataMessage);
       startDatePicker.setValue(null);
+      startDatePicker.setPromptText(missingDataMessage);
       periodField.setText(missingDataMessage);
       loanTermField.setText(missingDataMessage);
       compoundingBox.setValue(missingDataMessage);

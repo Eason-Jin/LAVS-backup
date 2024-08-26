@@ -391,6 +391,15 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     clearNotFoundFields();
   }
 
+  public void setUpViewCustomer(String customerId) {
+    setting = Setting.VIEW;
+    titleLabel.setText("Customer Details");
+    detailsTabPane.getSelectionModel().select(0);
+    setCustomerDetails(customerId);
+    setDisableForFields(true);
+    setVisabilityForButtons(false);
+  }
+
   private void clearNotFoundFields() {
     titleField.setText(titleField.getText().equals(missingDataMessage) ? "" : titleField.getText());
     nameField.setText(nameField.getText().equals(missingDataMessage) ? "" : nameField.getText());
@@ -401,15 +410,6 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     }
     occupationField.setText(occupationField.getText().equals(missingDataMessage) ? "" : occupationField.getText());
     citizenshipField.setText(citizenshipField.getText().equals(missingDataMessage) ? "" : citizenshipField.getText());
-  }
-
-  public void setUpViewCustomer(String customerId) {
-    setting = Setting.VIEW;
-    titleLabel.setText("Customer Details");
-    detailsTabPane.getSelectionModel().select(0);
-    setCustomerDetails(customerId);
-    setDisableForFields(true);
-    setVisabilityForButtons(false);
   }
 
   private void setDisableForFields(boolean isDisabled) {
@@ -466,31 +466,11 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
       notesArea.setText(missingDataMessage);
     }
 
-    if (addresses != null) {
-      addressTable.setItems(addresses);
-    } else {
-      addressTable.setPlaceholder(new Label(missingDataMessage));
-    }
-    if (emails != null) {
-      emailTable.setItems(emails);
-    } else {
-      emailTable.setPlaceholder(new Label(missingDataMessage));
-    }
-    if (phones != null) {
-      phoneTable.setItems(phones);
-    } else {
-      phoneTable.setPlaceholder(new Label(missingDataMessage));
-    }
-    if (employers != null) {
-      employmentTable.setItems(employers);
-    } else {
-      employmentTable.setPlaceholder(new Label(missingDataMessage));
-    }
-    if (loans != null) {
-      loanTable.setItems(loans);
-    } else {
-      loanTable.setPlaceholder(new Label(missingDataMessage));
-    }
+    addressTable.setItems(addresses);
+    emailTable.setItems(emails);
+    phoneTable.setItems(phones);
+    employmentTable.setItems(employers);
+    loanTable.setItems(loans);
   }
 
   private void resetScene() {
@@ -561,10 +541,6 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   }
 
   private void handleSave(Detail saved) {
-    if (saved == null) {
-      System.out.println("Saved is null");
-      return;
-    }
     if (saved instanceof Address) {
       Address address = (Address) saved;
       if (addressTableRow != -1) {
@@ -612,40 +588,24 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   }
 
   private void createAddressPopup(Pane currentRoot, Address address) throws IOException {
-    if (address == null) {
-      System.out.println("Address is null");
-      return;
-    }
     FXMLLoader loader = createPopup("/fxml/addressPopup.fxml", currentRoot);
     AddressPopupController addressPopupController = loader.getController();
     addressPopupController.setUpPopup(address, this::handleSave, doesPrimaryAddressExist());
   }
 
   private void createEmailPopup(Pane currentRoot, Email email) throws IOException {
-    if (email == null) {
-      System.out.println("Email is null");
-      return;
-    }
     FXMLLoader loader = createPopup("/fxml/emailPopup.fxml", currentRoot);
     EmailPopupController emailPopupController = loader.getController();
     emailPopupController.setUpPopup(email, this::handleSave, doesPrimaryEmailExist());
   }
 
   private void createPhonePopup(Pane currentRoot, Phone phone) throws IOException {
-    if (phone == null) {
-      System.out.println("Phone is null");
-      return;
-    }
     FXMLLoader loader = createPopup("/fxml/phonePopup.fxml", currentRoot);
     PhonePopupController phonePopupController = loader.getController();
     phonePopupController.setUpPopup(phone, this::handleSave, doesPrimaryPhoneExist());
   }
 
   private void createEmploymentPopup(Pane currentRoot, Employer employer) throws IOException {
-    if (employer == null) {
-      System.out.println("Employer is null");
-      return;
-    }
     FXMLLoader loader = createPopup("/fxml/employmentPopup.fxml", currentRoot);
     EmploymentPopupController employmentPopupController = loader.getController();
     employmentPopupController.setUpPopup(employer, this::handleSave, null);
