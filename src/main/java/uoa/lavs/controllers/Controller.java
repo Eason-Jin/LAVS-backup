@@ -120,7 +120,6 @@ public abstract class Controller {
       TextArea ta = (TextArea) str;
       if (ta.getText() == null || ta.getText().length() > length) {
         ta.getStyleClass().add("invalid");
-        System.out.println(ta.getStyleClass());
         return true;
       }
     }
