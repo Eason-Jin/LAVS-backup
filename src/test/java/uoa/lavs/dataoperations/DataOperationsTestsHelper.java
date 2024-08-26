@@ -204,9 +204,24 @@ public class DataOperationsTestsHelper {
                     INSERT INTO Loan (LoanID, CustomerID, CustomerName, Status, Principal, RateValue, RateType, StartDate, Period, Term, PaymentAmount, PaymentFrequency, Compounding, InMainframe)
                     VALUES ('1-01', '1', 'Bob Black', 'Active', 1000, 0.1, 'Fixed', '2021-01-01', 12, 12, 100, 'Monthly', 'Monthly', 0);
                     """;
+            String insertEmail2 = """
+                    INSERT INTO Email (CustomerID, Address, IsPrimary, Number, InMainframe)
+                     VALUES ('1', 'john@gmail.com', true, 1, 0);
+                    """;
+
+            String insertPhone2 = """
+                    INSERT INTO Phone (CustomerID, Type, Prefix, Number, IsPrimary, CanSendText, PhoneNumber, InMainframe)
+                    VALUES ('1', 'Mobile', 64, 1, true, true, '123456789', 0);
+                    """;
+
             String insertAddress2 = """
                     INSERT INTO Address (CustomerID, Line1, Suburb, City, Postcode, Country, IsPrimary, IsMailing, Number, Type, InMainframe)
                     VALUES ('1', '35 Owens Road', 'Mt Eden', 'Auckland', 1234, 'New Zealand', true, true, 2, 'Residential', 0);
+                    """;
+
+            String insertEmployer2 = """
+                                        INSERT INTO Employer (CustomerID, Name, Line1, Suburb, City, Postcode, Country, PhoneNumber, EmailAddress, Website, Number, IsOwner, InMainframe)
+                                        VALUES ('1', 'Tech Corp', '123 Tech Street', 'Tech Suburb', 'Tech City', 1234, 'Tech Country', '0934534345', 'techcorp@tech.com', 'www.techcorp.com', 2, true, 0);
                     """;
 
             stmt.executeUpdate(customerTable);
@@ -222,6 +237,9 @@ public class DataOperationsTestsHelper {
             stmt.executeUpdate(insertEmployer);
             stmt.executeUpdate(insertLoan);
             stmt.executeUpdate(insertAddress2);
+            stmt.executeUpdate(insertEmail2);
+            stmt.executeUpdate(insertPhone2);
+            stmt.executeUpdate(insertEmployer2);
         }
     }
 
