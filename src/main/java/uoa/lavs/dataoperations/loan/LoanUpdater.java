@@ -50,7 +50,8 @@ public class LoanUpdater {
         try (ResultSet resultSet = getMaxNumberStatement.executeQuery()) {
           if (resultSet.next()) {
             int nextNumber = resultSet.getInt(1);
-            loan.setLoanId(loan.getCustomerId().replace(" (Temporary)", "") + "-" + String.format("%02d", nextNumber) + " (Temporary)");
+            loan.setLoanId(loan.getCustomerId().replace(" (Temp)", "") + "-"
+                + (nextNumber < 10 ? "0" + nextNumber : nextNumber) + " (Temp)");
           }
         }
       }
