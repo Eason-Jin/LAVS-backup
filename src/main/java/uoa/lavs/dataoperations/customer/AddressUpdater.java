@@ -37,10 +37,9 @@ public class AddressUpdater {
     }
   }
 
-  private static Integer updateMainframe(String customerID, Address address) throws Exception {
+  public static Integer updateMainframe(String customerID, Address address) throws Exception {
     UpdateCustomerAddress updateCustomerAddress = new UpdateCustomerAddress();
     updateCustomerAddress.setCustomerId(customerID);
-    updateCustomerAddress.setNumber(address.getNumber());
     Address existingAddress = null;
 
     if (address.getNumber() != null) {
@@ -48,11 +47,11 @@ public class AddressUpdater {
       try {
         existingAddresses = AddressFinder.findFromMainframe(customerID);
         for (Address addressOnAccount : existingAddresses) {
-          if (addressOnAccount.getNumber().equals(address.getNumber())
-              && addressOnAccount.getCustomerId().equals(address.getCustomerId())) {
+          if (addressOnAccount.getNumber().equals(address.getNumber())) {
             existingAddress = addressOnAccount;
             break;
           }
+          updateCustomerAddress.setNumber(null);
         }
       } catch (Exception e) {
         updateCustomerAddress.setNumber(null);
@@ -61,6 +60,7 @@ public class AddressUpdater {
     }
 
     if (existingAddress != null) {
+      updateCustomerAddress.setNumber(address.getNumber());
       updateCustomerAddress.setType(
           address.getType() != null ? address.getType() : existingAddress.getType());
       updateCustomerAddress.setLine1(
@@ -102,7 +102,7 @@ public class AddressUpdater {
     return updateCustomerAddress.getNumberFromServer();
   }
 
-  private static void updateDatabase(String customerID, Address address) throws SQLException {
+  public static void updateDatabase(String customerID, Address address) throws SQLException {
     boolean exists = false;
     String CHECK_SQL = "SELECT COUNT(*) FROM Address WHERE CustomerID = ? AND Number = ?";
 
@@ -121,25 +121,22 @@ public class AddressUpdater {
 
     String sql;
     if (exists) {
-      sql =
-          "UPDATE Address SET "
-              + "Type = COALESCE(?, Type), "
-              + "Line1 = COALESCE(?, Line1), "
-              + "Line2 = COALESCE(?, Line2), "
-              + "Suburb = COALESCE(?, Suburb), "
-              + "City = COALESCE(?, City), "
-              + "PostCode = COALESCE(?, PostCode), "
-              + "Country = COALESCE(?, Country), "
-              + "IsPrimary = COALESCE(?, IsPrimary), "
-              + "IsMailing = COALESCE(?, IsMailing) "
-              + "WHERE CustomerID = ? AND Number = ?";
+      sql = "UPDATE Address SET "
+          + "Type = COALESCE(?, Type), "
+          + "Line1 = COALESCE(?, Line1), "
+          + "Line2 = COALESCE(?, Line2), "
+          + "Suburb = COALESCE(?, Suburb), "
+          + "City = COALESCE(?, City), "
+          + "PostCode = COALESCE(?, PostCode), "
+          + "Country = COALESCE(?, Country), "
+          + "IsPrimary = COALESCE(?, IsPrimary), "
+          + "IsMailing = COALESCE(?, IsMailing) "
+          + "WHERE CustomerID = ? AND Number = ?";
     } else {
       if (address.getNumber() == null) {
-        String GET_MAX_NUMBER_SQL =
-            "SELECT COALESCE(MAX(Number), 0) + 1 FROM Address WHERE CustomerID = ?";
+        String GET_MAX_NUMBER_SQL = "SELECT COALESCE(MAX(Number), 0) + 1 FROM Address WHERE CustomerID = ?";
         try (Connection connection = LocalInstance.getDatabaseConnection();
-            PreparedStatement getMaxNumberStatement =
-                connection.prepareStatement(GET_MAX_NUMBER_SQL)) {
+            PreparedStatement getMaxNumberStatement = connection.prepareStatement(GET_MAX_NUMBER_SQL)) {
           getMaxNumberStatement.setString(1, customerID);
           try (ResultSet resultSet = getMaxNumberStatement.executeQuery()) {
             if (resultSet.next()) {
@@ -148,14 +145,12 @@ public class AddressUpdater {
           }
         }
       }
-      sql =
-          "INSERT INTO Address (Type, Line1, Line2, Suburb, City, PostCode, Country, IsPrimary,"
-              + " IsMailing, CustomerID, Number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      sql = "INSERT INTO Address (Type, Line1, Line2, Suburb, City, PostCode, Country, IsPrimary,"
+          + " IsMailing, CustomerID, Number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     }
 
     try (Connection connection = LocalInstance.getDatabaseConnection();
-        PreparedStatement statement =
-            connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
       statement.setString(1, address.getType());
       statement.setString(2, address.getLine1());
@@ -208,10 +203,8 @@ public class AddressUpdater {
         Integer number = resultSet.getInt("Number");
         List<Address> addresses = AddressFinder.findFromDatabase(customerID);
         for (Address addressOnAccount : addresses) {
-          if (addressOnAccount.getNumber().equals(number)
-              && addressOnAccount.getCustomerId().equals(customerID)) {
+          if (addressOnAccount.getNumber().equals(number)) {
             failedUpdates.add(addressOnAccount);
-            break;
           }
         }
       }
@@ -227,8 +220,8 @@ public class AddressUpdater {
       String customerID = address.getCustomerId();
       System.out.println("Retrying update for customer " + customerID);
       Integer number = address.getNumber();
-        updateMainframe(customerID, address);
-        addInMainframe(customerID, number);
+      updateMainframe(customerID, address);
+      addInMainframe(customerID, number);
     }
   }
 }

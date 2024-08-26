@@ -78,6 +78,9 @@ public class EmailFinder {
     } finally {
       connection.close();
     }
+    if (emails.isEmpty()) {
+      throw new Exception("Email not found in database");
+    }
     return emails;
   }
 }

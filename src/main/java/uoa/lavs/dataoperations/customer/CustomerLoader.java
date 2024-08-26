@@ -17,9 +17,6 @@ public class CustomerLoader {
     Customer customer = new Customer();
     try {
       customer = loadFromMainframe(customerId);
-      if (customer.getName() == null) {
-        throw new Exception("Customer not in mainframe");
-      }
     } catch (Exception e) {
       System.out.println("Mainframe load failed: " + e.getMessage());
       System.out.println("Trying to load from database");
