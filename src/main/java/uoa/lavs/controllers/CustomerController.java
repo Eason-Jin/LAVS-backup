@@ -62,7 +62,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
   @FXML private TabPane detailsTabPane;
 
-  @FXML private Pane generalDetailsPane;
+  @FXML private Pane profileInformationPane;
 
   @FXML private TextField titleField;
   @FXML private TextField nameField;
@@ -129,6 +129,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
   @FXML
   public void initialize() {
+    System.out.println(notesArea.getStyleClass());
     addressTable.setPlaceholder(new Label("No addresses for this customer"));
     emailTable.setPlaceholder(new Label("No emails for this customer"));
     phoneTable.setPlaceholder(new Label("No phones for this customer"));
@@ -380,19 +381,34 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     titleLabel.setText("Edit Customer");
     setDisableForFields(false);
     setVisabilityForButtons(true);
+    clearNotFoundFields();
   }
 
   public void setUpViewCustomer(String customerId) {
+    System.out.println(notesArea.getStyleClass());
     setting = Setting.VIEW;
     titleLabel.setText("Customer Details");
     detailsTabPane.getSelectionModel().select(0);
     setCustomerDetails(customerId);
     setDisableForFields(true);
     setVisabilityForButtons(false);
+    System.out.println(notesArea.getStyleClass());
+  }
+
+  private void clearNotFoundFields() {
+    titleField.setText(titleField.getText().equals(missingDataMessage) ? "" : titleField.getText());
+    nameField.setText(nameField.getText().equals(missingDataMessage) ? "" : nameField.getText());
+    if (dobPicker.getValue() == null && dobPicker.getPromptText().equals(missingDataMessage)) {
+      dobPicker.setPromptText("");
+    } else {
+      dobPicker.setValue(dobPicker.getValue());
+    }
+    occupationField.setText(occupationField.getText().equals(missingDataMessage) ? "" : occupationField.getText());
+    citizenshipField.setText(citizenshipField.getText().equals(missingDataMessage) ? "" : citizenshipField.getText());
   }
 
   private void setDisableForFields(boolean isDisabled) {
-    generalDetailsPane.setDisable(isDisabled);
+    profileInformationPane.setDisable(isDisabled);
     notesArea.setDisable(isDisabled);
     loansTab.setDisable(!isDisabled);
   }
@@ -408,7 +424,11 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   }
 
   public void setCustomerDetails(String customerId) {
-    customerIdLabel.setText("ID: " + customerId);
+    if (customerId != null) {
+      customerIdLabel.setText("ID: " + customerId);
+    } else {
+      System.out.println("customerId provided is null");
+    }
 
     customer = CustomerLoader.loadData(customerId);
     addresses = FXCollections.observableArrayList(AddressFinder.findData(customerId));
@@ -417,11 +437,16 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     employers = FXCollections.observableArrayList(EmployerFinder.findData(customerId));
     loans = FXCollections.observableArrayList(LoanFinder.findData(customerId));
 
-    titleField.setText(customer.getTitle());
-    nameField.setText(customer.getName());
-    dobPicker.setValue(customer.getDob());
-    occupationField.setText(customer.getOccupation());
-    citizenshipField.setText(customer.getCitizenship());
+    titleField.setText(customer.getTitle() != null ? customer.getTitle() : missingDataMessage);
+    nameField.setText(customer.getName() != null ? customer.getName() : missingDataMessage);
+    if (customer.getDob() != null) {
+      dobPicker.setValue(customer.getDob());
+    } else {
+      dobPicker.setValue(null);
+      dobPicker.setPromptText(missingDataMessage);
+    }
+    occupationField.setText(customer.getOccupation() != null ? customer.getOccupation() : missingDataMessage);
+    citizenshipField.setText(customer.getCitizenship() != null ? customer.getCitizenship() : missingDataMessage);
     visaField.setText(customer.getVisaType());
     notesArea.setText(customer.getNotes());
 
@@ -588,7 +613,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   private boolean validateFields() {
     boolean dobFlag = validateDateFormat(dobPicker, true);
     if (!dobFlag) {
-      dobPicker.setStyle(redBorder);
+      dobPicker.getStyleClass().add("invalid");
       appendErrorMessage("Date of birth must be before today!\n");
     }
     boolean addressFlag = addresses.size() >= 1;
@@ -618,7 +643,8 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
       appendErrorMessage("Please select a mailing address!\n");
     }
     if (!addressFlag || !primaryAddressFlag || !mailingAddressFlag) {
-      addressTable.setStyle(redBorder);
+      addressTable.getStyleClass().add("invalid");
+      System.out.println(addressTable.getStyleClass());
     }
 
     boolean contactDetailsFlag = false;
@@ -633,7 +659,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
         }
       }
       if (!primaryEmailFlag) {
-        emailTable.setStyle(redBorder);
+        emailTable.getStyleClass().add("invalid");
         appendErrorMessage("Please select a primary email!\n");
       }
     }
@@ -652,18 +678,18 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
         }
       }
       if (!primaryPhoneFlag) {
-        phoneTable.setStyle(redBorder);
+        phoneTable.getStyleClass().add("invalid");
         appendErrorMessage("Please select a primary phone!\n");
       }
       if (!textingPhoneFlag) {
-        phoneTable.setStyle(redBorder);
+        phoneTable.getStyleClass().add("invalid");
         appendErrorMessage("Please select a texting phone!\n");
       }
     }
 
     if (!contactDetailsFlag) {
-      emailTable.setStyle(redBorder);
-      phoneTable.setStyle(redBorder);
+      emailTable.getStyleClass().add("invalid");
+      phoneTable.getStyleClass().add("invalid");
       appendErrorMessage("Please add at least one email or phone number!\n");
     }
 
@@ -680,32 +706,33 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   private boolean checkLengths() {
     boolean titleFieldFlag = isTooLong(titleField, 10);
     if (titleFieldFlag) {
-      titleField.setStyle(redBorder);
+      titleField.getStyleClass().add("invalid");
       appendErrorMessage("Title must be less than 10 characters\n");
     }
     boolean nameFieldFlag = isTooLong(nameField, 60);
     if (nameFieldFlag) {
-      nameField.setStyle(redBorder);
+      nameField.getStyleClass().add("invalid");
       appendErrorMessage("Name must be less than 60 characters\n");
     }
     boolean occupationFlag = isTooLong(occupationField, 40);
     if (occupationFlag) {
-      occupationField.setStyle(redBorder);
+      occupationField.getStyleClass().add("invalid");
       appendErrorMessage("Occupation must be less than 40 characters\n");
     }
     boolean citizenshipFieldFlag = isTooLong(citizenshipField, 40);
     if (citizenshipFieldFlag) {
-      citizenshipField.setStyle(redBorder);
+      citizenshipField.getStyleClass().add("invalid");
       appendErrorMessage("Citizenship must be less than 40 characters\n");
     }
     boolean visaFieldFlag = isTooLong(visaField, 40);
     if (visaFieldFlag) {
-      visaField.setStyle(redBorder);
+      visaField.getStyleClass().add("invalid");
       appendErrorMessage("Visa type must be less than 40 characters\n");
     }
     boolean notesAreaFlag = isTooLong(notesArea, 1330);
     if (notesAreaFlag) {
-      notesArea.setStyle(redBorder);
+      notesArea.getStyleClass().add("invalid");
+      System.out.println(notesArea.getStyleClass());
       appendErrorMessage("Notes must be less than 1330 characters\n");
     }
 
@@ -718,17 +745,18 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   }
 
   private void resetFieldStyle() {
-    titleField.setStyle(normalBorder);
-    nameField.setStyle(normalBorder);
-    dobPicker.setStyle(normalBorder);
-    occupationField.setStyle(normalBorder);
-    citizenshipField.setStyle(normalBorder);
-    visaField.setStyle(normalBorder);
-    addressTable.setStyle(normalBorder);
-    emailTable.setStyle(normalBorder);
-    phoneTable.setStyle(normalBorder);
-    employmentTable.setStyle(normalBorder);
-    notesArea.setStyle(normalBorder);
+    titleField.getStyleClass().remove("invalid");
+    nameField.getStyleClass().remove("invalid");
+    dobPicker.getStyleClass().remove("invalid");
+    occupationField.getStyleClass().remove("invalid");
+    citizenshipField.getStyleClass().remove("invalid");
+    visaField.getStyleClass().remove("invalid");
+    addressTable.getStyleClass().remove("invalid");
+    emailTable.getStyleClass().remove("invalid");
+    phoneTable.getStyleClass().remove("invalid");
+    employmentTable.getStyleClass().remove("invalid");
+    notesArea.getStyleClass().remove("invalid");
+    System.out.println(notesArea.getStyleClass());
   }
 
   @FXML
@@ -814,6 +842,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
       case EDIT:
         alertCancel.setTitle("Cancel editing customer");
         if (alertCancel.showAndWait().get() == ButtonType.OK) {
+          resetFieldStyle();
           setUpViewCustomer(customer.getId());
         }
         break;
