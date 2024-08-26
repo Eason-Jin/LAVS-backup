@@ -50,7 +50,7 @@
             <Font name="System Bold" size="50.0" />
          </font>
       </Label>
-      <Label fx:id="customerIdLabel" alignment="CENTER_RIGHT" layoutX="726.0" layoutY="80.0" maxHeight="50.0" maxWidth="350.0" minHeight="50.0" minWidth="350.0" text="ID: ID" textAlignment="RIGHT">
+      <Label fx:id="customerIdLabel" alignment="CENTER_RIGHT" layoutX="526.0" layoutY="80.0" maxHeight="50.0" maxWidth="550.0" minHeight="50.0" minWidth="550.0" text="ID: ID" textAlignment="RIGHT">
          <font>
             <Font size="30.0" />
          </font>

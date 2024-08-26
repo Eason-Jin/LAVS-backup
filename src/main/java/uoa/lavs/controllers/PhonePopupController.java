@@ -44,10 +44,10 @@ public class PhonePopupController extends PopupController {
       }
       if (!(prefixLongFlag || phoneLongFlag)) {
         if (!validatePhoneFormat(prefixTextField, true)) {
-          appendErrorMessage("Prefix must be numbers or start with '+'!\n");
+          appendErrorMessage("Prefix must be numbers or start with the '+' character!\n");
         }
         if (!validatePhoneFormat(phoneTextField, false)) {
-          appendErrorMessage("Phone number must be numbers!\n");
+          appendErrorMessage("Phone number must be numbers or '-' characters!\n");
         }
       }
     }

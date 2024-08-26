@@ -71,7 +71,7 @@ public class Loan {
   }
 
   public String getCustomerName() {
-    return customerName;
+    return (customerName == null || customerName == "null") ? "" : customerName;
   }
 
   public void setCustomerName(String customerName) {
@@ -104,11 +104,11 @@ public class Loan {
   }
 
   public Double getPrincipal() {
-    return principal;
+    return (principal == null) ? 0.0 : principal;
   }
 
   public String getPrincipalString() {
-    return "$" + String.format("%.2f", principal);
+    return "$" + String.format("%.2f", getPrincipal());
   }
 
   public void setPrincipal(Double principal) {
@@ -116,7 +116,7 @@ public class Loan {
   }
 
   public Double getRateValue() {
-    return rateValue;
+    return (rateValue == null) ? 0.0 : rateValue;
   }
 
   public void setRateValue(Double rateValue) {
@@ -124,7 +124,7 @@ public class Loan {
   }
 
   public RateType getRateType() {
-    return rateType;
+    return (rateType == null) ? RateType.Unknown : rateType;
   }
 
   public void setRateType(RateType rateType) {
@@ -132,7 +132,7 @@ public class Loan {
   }
 
   public LocalDate getStartDate() {
-    return startDate;
+    return (startDate == null) ? LocalDate.of(1, 1, 1) : startDate;
   }
 
   public void setStartDate(LocalDate startDate) {
@@ -140,7 +140,7 @@ public class Loan {
   }
 
   public Integer getPeriod() {
-    return period;
+    return (period == null) ? 0 : period;
   }
 
   public void setPeriod(Integer period) {
@@ -148,7 +148,7 @@ public class Loan {
   }
 
   public Integer getTerm() {
-    return term;
+    return (term == null) ? 0 : term;
   }
 
   public void setTerm(Integer term) {
@@ -156,11 +156,11 @@ public class Loan {
   }
 
   public Double getPaymentAmount() {
-    return paymentAmount;
+    return (paymentAmount == null) ? 0.0 : paymentAmount;
   }
 
   public String getPaymentAmountString() {
-    return "$" + String.format("%.2f", paymentAmount);
+    return "$" + String.format("%.2f", getPaymentAmount());
   }
 
   public void setPaymentAmount(Double paymentAmount) {
@@ -168,7 +168,7 @@ public class Loan {
   }
 
   public Frequency getPaymentFrequency() {
-    return paymentFrequency;
+    return (paymentFrequency == null) ? Frequency.Unknown : paymentFrequency;
   }
 
   public void setPaymentFrequency(Frequency paymentFrequency) {
@@ -176,7 +176,7 @@ public class Loan {
   }
 
   public Frequency getCompounding() {
-    return compounding;
+    return (compounding == null) ? Frequency.Unknown : compounding;
   }
 
   public void setCompounding(Frequency compounding) {

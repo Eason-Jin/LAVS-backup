@@ -141,7 +141,6 @@ public class LoanController extends uoa.lavs.controllers.Controller {
 
   private void setDisableForFields(boolean isDisabled) {
     loanDetailsPane.setDisable(isDisabled);
-    coBorrowersTable.setDisable(isDisabled);
     repaymentsTab.setDisable(!isDisabled);
   }
 
@@ -371,10 +370,15 @@ public class LoanController extends uoa.lavs.controllers.Controller {
             CoborrowerUpdater.updateData(loanId, coborrower.getId(), null);
           }
         }
-        Alert successAlert = new Alert(AlertType.INFORMATION);
+
+        Alert successAlert = new Alert(AlertType.CONFIRMATION);
+        successAlert.getButtonTypes().setAll(new ButtonType("Home"), new ButtonType("View"));
         successAlert.setTitle("Success");
         successAlert.setHeaderText("Loan has been added");
-        if (successAlert.showAndWait().get() == ButtonType.OK) {
+        if (successAlert.showAndWait().get().getText().equals("Home")) {
+          resetScene();
+          Main.setScene(AppScene.START);
+        } else {
           setUpViewLoan(loanId);
         }
       } catch (Exception e) {

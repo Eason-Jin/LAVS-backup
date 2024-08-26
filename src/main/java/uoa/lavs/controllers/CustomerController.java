@@ -2,6 +2,7 @@ package uoa.lavs.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -480,6 +481,20 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
   @FXML
   private void onClickAddLoan(ActionEvent event) {
+    boolean doesMailingAddressExist = doesMailingAddressExist();
+    boolean doesContactDetailsExist = emails.size() + phones.size() > 0;
+
+    if (!doesMailingAddressExist || !doesContactDetailsExist) {
+      if (!doesMailingAddressExist) {
+        appendErrorMessage("Add a mailing address before adding a loan\n");
+      }
+      if (!doesContactDetailsExist) {
+        appendErrorMessage("Add an email or phone before adding a loan\n");
+      }
+      showAlert();
+      return;
+    }
+
     loanController.setUpAddLoan(customer.getId(), customer.getName());
     resetScene();
     Main.setScene(AppScene.LOAN);
@@ -758,12 +773,17 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
           EmployerUpdater.updateData(customerId, employer);
         }
 
-        Alert successAlert = new Alert(AlertType.INFORMATION);
+        Alert successAlert = new Alert(AlertType.CONFIRMATION);
+
+        successAlert.getButtonTypes().setAll(new ButtonType("Home"), new ButtonType("View"));
         successAlert.setTitle("Success");
         successAlert.setHeaderText(
             setting == Setting.ADD ? "Customer has been added" : "Customer has been updated");
         successAlert.setContentText(CustomerUpdater.message.toString());
-        if (successAlert.showAndWait().get() == ButtonType.OK) {
+        if (successAlert.showAndWait().get().getText().equals("Home")) {
+          resetScene();
+          Main.setScene(AppScene.START);
+        } else {
           resetFieldStyle();
           setUpViewCustomer(customerId);
         }
@@ -833,6 +853,15 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   private boolean doesPrimaryAddressExist() {
     for (Address address : addresses) {
       if (address.getIsPrimary()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean doesMailingAddressExist() {
+    for (Address address : addresses) {
+      if (address.getIsMailing()) {
         return true;
       }
     }

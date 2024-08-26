@@ -47,7 +47,7 @@ public class Customer extends Detail {
   }
 
   public String getTitle() {
-    return title;
+    return (title == null || title == "null") ? "" : title;
   }
 
   public void setTitle(String title) {
@@ -55,7 +55,7 @@ public class Customer extends Detail {
   }
 
   public String getName() {
-    return name;
+    return (name == null || name == "null") ? "" : name;
   }
 
   public void setName(String name) {
@@ -63,7 +63,7 @@ public class Customer extends Detail {
   }
 
   public LocalDate getDob() {
-    return dob;
+    return (dob == null) ? LocalDate.of(1, 1, 1) : dob;
   }
 
   public void setDob(LocalDate dob) {
@@ -71,7 +71,7 @@ public class Customer extends Detail {
   }
 
   public String getOccupation() {
-    return occupation;
+    return (occupation == null || occupation == "null") ? "" : occupation;
   }
 
   public void setOccupation(String occupation) {
@@ -79,7 +79,7 @@ public class Customer extends Detail {
   }
 
   public String getCitizenship() {
-    return citizenship;
+    return (citizenship == null || citizenship == "null") ? "" : citizenship;
   }
 
   public void setCitizenship(String citizenship) {
@@ -87,7 +87,7 @@ public class Customer extends Detail {
   }
 
   public String getVisaType() {
-    return visaType;
+    return (visaType == null || visaType == "null") ? "" : visaType;
   }
 
   public void setVisaType(String visaType) {
@@ -95,7 +95,7 @@ public class Customer extends Detail {
   }
 
   public String getStatus() {
-    return status;
+    return (status == null || status == "null") ? "" : status;
   }
 
   public void setStatus(String status) {
@@ -103,7 +103,7 @@ public class Customer extends Detail {
   }
 
   public String getNotes() {
-    return notes;
+    return (notes == null || notes == "null") ? "" : notes;
   }
 
   public void setNotes(String notes) {
@@ -118,7 +118,7 @@ public class Customer extends Detail {
     int l = 0;
     int r = 70;
     while (r < notes.length()) {
-      while (notes.charAt(r-1) != ' ') {
+      while (notes.charAt(r - 1) != ' ') {
         r--;
       }
       lines.add(notes.substring(l, r));
