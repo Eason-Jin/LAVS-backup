@@ -63,7 +63,7 @@ public class Customer extends Detail {
   }
 
   public LocalDate getDob() {
-    return (dob == null) ? LocalDate.of(1, 1, 1) : dob;
+    return dob;
   }
 
   public void setDob(LocalDate dob) {
