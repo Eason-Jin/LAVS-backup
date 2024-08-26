@@ -12,6 +12,7 @@ public class LoanLoaderTests {
 
   @Test
   public void loadExistingLoanFromDatabase() throws Exception {
+    LoanLoader loanLoader = new LoanLoader();
     DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String loanId = "1-01";
 

@@ -6,12 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 import uoa.lavs.dataoperations.DataOperationsTestsHelper;
+import uoa.lavs.models.Loan;
 import uoa.lavs.utility.LoanSummary;
 
 public class LoanSummaryTests {
 
   @Test
   public void testCalculateLoanSummaryLocally() throws Exception {
+    LoanSummaryLoader loanSummaryLoader = new LoanSummaryLoader();
     DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String loanId = "1-01";
 
@@ -49,7 +51,7 @@ public class LoanSummaryTests {
 
     LoanSummary loanSummary = LoanSummaryLoader.calculateLoanSummary(loanId);
 
-    assertAll(() -> assertEquals(1000.47, loanSummary.getTotalCost()));
+    assertAll(() -> assertEquals(10635.55, loanSummary.getTotalCost()));
   }
 
   @Test

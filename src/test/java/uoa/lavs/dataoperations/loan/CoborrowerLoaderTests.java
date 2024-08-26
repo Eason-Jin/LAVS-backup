@@ -10,6 +10,7 @@ public class CoborrowerLoaderTests {
 
     @Test
     public void testLoadCoborrowersLocally() throws Exception {
+        CoborrowerLoader coborrowerLoader = new CoborrowerLoader();
         DataOperationsTestsHelper.createTestingDatabasesForLoans();
         String loanId = "1-01";
 

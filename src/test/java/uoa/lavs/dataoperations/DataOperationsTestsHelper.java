@@ -316,6 +316,10 @@ public class DataOperationsTestsHelper {
                 .insert(Document.createDocument("type", "customer").put("id", 124));
         database.getCollection(NitriteConnection.Internal.CUSTOMERS_COLLECTION)
                 .insert(generateCustomerDocument("1", "Bob Black", true));
+        database.getCollection(NitriteConnection.Internal.CUSTOMERS_COLLECTION)
+                .insert(generateCustomerDocument("2", "Panda Bear", true));
+        database.getCollection(NitriteConnection.Internal.LOANS_COLLECTION)
+                .insert(generateSecondLoanDocument());
         return database;
     }
 
@@ -365,6 +369,25 @@ public class DataOperationsTestsHelper {
                 .put(LoadLoan.Fields.CUSTOMER_ID, "123")
                 .put(LoadLoan.Fields.CUSTOMER_NAME, "John Doe")
                 .put(LoadLoan.Fields.LOAN_ID, "123-09")
+                .put(LoadLoan.Fields.PAYMENT_AMOUNT, "573.00")
+                .put(LoadLoan.Fields.PAYMENT_FREQUENCY, "4")
+                .put(LoadLoan.Fields.PERIOD, "24")
+                .put(LoadLoan.Fields.PRINCIPAL, "10000.00")
+                .put(LoadLoan.Fields.RATE_TYPE, "2")
+                .put(LoadLoan.Fields.RATE_VALUE, "7.65")
+                .put(LoadLoan.Fields.START_DATE, "03-08-2024")
+                .put(LoadLoan.Fields.STATUS, "Active")
+                .put(LoadLoan.Fields.TERM, "30");
+        appendLoanCoborrowers(customer);
+        return customer;
+    }
+
+    private static Document generateSecondLoanDocument() {
+        Document customer = Document.createDocument()
+                .put(LoadLoan.Fields.COMPOUNDING, "2")
+                .put(LoadLoan.Fields.CUSTOMER_ID, "1")
+                .put(LoadLoan.Fields.CUSTOMER_NAME, "John Doe")
+                .put(LoadLoan.Fields.LOAN_ID, "1-01")
                 .put(LoadLoan.Fields.PAYMENT_AMOUNT, "573.00")
                 .put(LoadLoan.Fields.PAYMENT_FREQUENCY, "4")
                 .put(LoadLoan.Fields.PERIOD, "24")

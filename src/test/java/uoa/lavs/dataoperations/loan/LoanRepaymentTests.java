@@ -5,12 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import uoa.lavs.dataoperations.DataOperationsTestsHelper;
+import uoa.lavs.models.Loan;
 import uoa.lavs.utility.LoanRepayment;
 
 public class LoanRepaymentTests {
 
   @Test
   public void testCalculateLoanRepaymentLocally() throws Exception {
+    LoanPaymentsLoader loanPaymentsLoader = new LoanPaymentsLoader();
     DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String loanId = "1-01";
     List<LoanRepayment> loanRepayments = LoanPaymentsLoader.calculateLocally(loanId);

@@ -23,6 +23,7 @@ public class LoanUpdaterTests {
 
     @Test
     public void addLoanInDatabase() throws SQLException {
+        LoanUpdater loanUpdater = new LoanUpdater();
         DataOperationsTestsHelper.createTestingDatabasesForLoans();
 
         Loan loan = new Loan(

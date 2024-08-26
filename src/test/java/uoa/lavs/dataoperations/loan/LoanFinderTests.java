@@ -14,6 +14,7 @@ public class LoanFinderTests {
 
   @Test
   public void findExistingLoanFromDatabase() throws Exception {
+    LoanFinder loanFinder = new LoanFinder();
     DataOperationsTestsHelper.createTestingDatabasesForLoans();
     String customerId = "1";
 
