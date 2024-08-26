@@ -187,6 +187,26 @@ public class DataOperationsTestsHelper {
                     );
                     """;
 
+            String coborrowerTable = """
+                    CREATE TABLE Coborrower (
+                        LoanID       TEXT    NOT NULL,
+                        Id           INTEGER NOT NULL
+                                             PRIMARY KEY,
+                        CoborrowerID TEXT    NOT NULL,
+                        InMainframe  INTEGER,
+                        FOREIGN KEY (
+                            LoanID
+                        )
+                        REFERENCES Loan (LoanID) ON DELETE CASCADE
+                                                 ON UPDATE CASCADE,
+                        FOREIGN KEY (
+                            CoborrowerID
+                        )
+                        REFERENCES Customer (CustomerID) ON DELETE CASCADE
+                                                         ON UPDATE CASCADE
+                    );
+                    """;
+
             String insertCustomer = """
                     INSERT INTO Customer (CustomerID, Name, Title, Status, Dob, Occupation, Citizenship, VisaType, Note, InMainframe)
                     VALUES ('1', 'Bob Black', 'Mr', 'Active', '1990-01-01', 'Engineer', 'NZ', 'Work', 'Note', 0);
@@ -240,12 +260,18 @@ public class DataOperationsTestsHelper {
                                         VALUES ('1', 'Tech Corp', '123 Tech Street', 'Tech Suburb', 'Tech City', 1234, 'Tech Country', '0934534345', 'techcorp@tech.com', 'www.techcorp.com', 2, true, 0);
                     """;
 
+            String insertCoborrower = """
+                    INSERT INTO Coborrower (LoanID, Id, CoborrowerID, InMainframe)
+                    VALUES ('1-01', 1, '2', 0);
+                    """;
+
             stmt.executeUpdate(customerTable);
             stmt.executeUpdate(addressTable);
             stmt.executeUpdate(emailTable);
             stmt.executeUpdate(employerTable);
             stmt.executeUpdate(phoneTable);
             stmt.executeUpdate(loanTable);
+            stmt.executeUpdate(coborrowerTable);
             stmt.executeUpdate(insertCustomer);
             stmt.executeUpdate(insertEmail);
             stmt.executeUpdate(insertPhone);
@@ -257,6 +283,7 @@ public class DataOperationsTestsHelper {
             stmt.executeUpdate(insertEmail2);
             stmt.executeUpdate(insertPhone2);
             stmt.executeUpdate(insertEmployer2);
+            stmt.executeUpdate(insertCoborrower);
         }
     }
 

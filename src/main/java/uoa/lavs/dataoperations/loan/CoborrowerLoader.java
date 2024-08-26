@@ -27,7 +27,7 @@ public class CoborrowerLoader {
     return coborrowerIds;
   }
 
-  private static List<String> loadFromDatabase(String loanId) throws Exception {
+  public static List<String> loadFromDatabase(String loanId) throws Exception {
     List<String> coborrowerIds = new ArrayList<>();
     String query = "SELECT CoborrowerID FROM Coborrower WHERE LoanID = ?";
     try (Connection connection = LocalInstance.getDatabaseConnection();
@@ -42,7 +42,7 @@ public class CoborrowerLoader {
     return coborrowerIds;
   }
 
-  private static List<String> loadFromMainframe(String loanId) throws Exception {
+  public static List<String> loadFromMainframe(String loanId) throws Exception {
     LoadLoanCoborrowers loadLoanCoborrower = new LoadLoanCoborrowers();
     loadLoanCoborrower.setLoanId(loanId);
     loadLoanCoborrower.setNumber(1);
