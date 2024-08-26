@@ -204,42 +204,26 @@ public class LoanController extends uoa.lavs.controllers.Controller {
 
     loan = LoanLoader.loadData(loanId);
 
-    if (loan != null) {
-      primeBorrowerId = loan.getCustomerId();
-      LoanSummary loanSummary = LoanSummaryLoader.calculateLoanSummary(loanId);
+    primeBorrowerId = loan.getCustomerId();
+    LoanSummary loanSummary = LoanSummaryLoader.calculateLoanSummary(loanId);
 
-      principalField.setText(loan.getPrincipalString() != null ? loan.getPrincipalString() : missingDataMessage);
-      rateTypeBox.setValue(loan.getRateType() != null ? String.valueOf(loan.getRateType()): missingDataMessage);
-      rateValueField.setText(loan.getRateValue() != null ? String.valueOf(loan.getRateValue()) : missingDataMessage);
-      if (loan.getStartDate() != null) {
-        startDatePicker.setValue(loan.getStartDate());
-      } else {
-        startDatePicker.setValue(null);
-        startDatePicker.setPromptText(missingDataMessage);
-      }
-      periodField.setText(loan.getPeriod() != null ? String.valueOf(loan.getPeriod()) : missingDataMessage);
-      loanTermField.setText(loan.getTerm() != null ? String.valueOf(loan.getTerm()) : missingDataMessage);
-      compoundingBox.setValue(loan.getCompounding() != null ? String.valueOf(loan.getCompounding()) : missingDataMessage);
-      paymentFrequencyBox.setValue(loan.getPaymentFrequency() != null ? String.valueOf(loan.getPaymentFrequency()) : missingDataMessage);
-      paymentAmountField.setText(loan.getPaymentAmountString() != null ? loan.getPaymentAmountString() : missingDataMessage);
-      totalInterestField.setText((loanSummary != null && loanSummary.getTotalInterest() != null) ? ("$" + String.format("%.2f", loanSummary.getTotalInterest())) : missingDataMessage);
-      totalCostField.setText((loanSummary != null && loanSummary.getTotalCost() != null) ? ("$" + String.format("%.2f", loanSummary.getTotalCost())) : missingDataMessage);
-      payoffDateField.setText((loanSummary != null && loanSummary.getPayOffDate() != null) ? loanSummary.getPayOffDate().toString() : missingDataMessage);
+    principalField.setText(loan.getPrincipalString() != null ? loan.getPrincipalString() : missingDataMessage);
+    rateTypeBox.setValue(loan.getRateType() != null ? String.valueOf(loan.getRateType()): missingDataMessage);
+    rateValueField.setText(loan.getRateValue() != null ? String.valueOf(loan.getRateValue()) : missingDataMessage);
+    if (loan.getStartDate() != null) {
+      startDatePicker.setValue(loan.getStartDate());
     } else {
-      principalField.setText(missingDataMessage);
-      rateTypeBox.setValue(missingDataMessage);
-      rateValueField.setText(missingDataMessage);
       startDatePicker.setValue(null);
       startDatePicker.setPromptText(missingDataMessage);
-      periodField.setText(missingDataMessage);
-      loanTermField.setText(missingDataMessage);
-      compoundingBox.setValue(missingDataMessage);
-      paymentFrequencyBox.setValue(missingDataMessage);
-      paymentAmountField.setText(missingDataMessage);
-      totalInterestField.setText(missingDataMessage);
-      totalCostField.setText(missingDataMessage);
-      payoffDateField.setText(missingDataMessage);
     }
+    periodField.setText(loan.getPeriod() != null ? String.valueOf(loan.getPeriod()) : missingDataMessage);
+    loanTermField.setText(loan.getTerm() != null ? String.valueOf(loan.getTerm()) : missingDataMessage);
+    compoundingBox.setValue(loan.getCompounding() != null ? String.valueOf(loan.getCompounding()) : missingDataMessage);
+    paymentFrequencyBox.setValue(loan.getPaymentFrequency() != null ? String.valueOf(loan.getPaymentFrequency()) : missingDataMessage);
+    paymentAmountField.setText(loan.getPaymentAmountString() != null ? loan.getPaymentAmountString() : missingDataMessage);
+    totalInterestField.setText((loanSummary != null && loanSummary.getTotalInterest() != null) ? ("$" + String.format("%.2f", loanSummary.getTotalInterest())) : missingDataMessage);
+    totalCostField.setText((loanSummary != null && loanSummary.getTotalCost() != null) ? ("$" + String.format("%.2f", loanSummary.getTotalCost())) : missingDataMessage);
+    payoffDateField.setText((loanSummary != null && loanSummary.getPayOffDate() != null) ? loanSummary.getPayOffDate().toString() : missingDataMessage);
 
     setCoBorrowersTable(loanId);
     setRepaymentsTable(loanId);
@@ -284,9 +268,6 @@ public class LoanController extends uoa.lavs.controllers.Controller {
     }
     if (coBorrower != null) {
       coBorrowers.add(coBorrower);
-    }
-    else {
-      System.out.println("coBorrower not found: " + coBorrower.getId());
     }
     coBorrowersTable.setItems(coBorrowers);
   }

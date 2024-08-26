@@ -445,29 +445,18 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     employers = FXCollections.observableArrayList(EmployerFinder.findData(customerId));
     loans = FXCollections.observableArrayList(LoanFinder.findData(customerId));
 
-    if (customer != null) {
-      titleField.setText(customer.getTitle() != null ? customer.getTitle() : missingDataMessage);
-      nameField.setText(customer.getName() != null ? customer.getName() : missingDataMessage);
-      if (customer.getDob() != null) {
-        dobPicker.setValue(customer.getDob());
-      } else {
-        dobPicker.setValue(null);
-        dobPicker.setPromptText(missingDataMessage);
-      }
-      occupationField.setText(customer.getOccupation() != null ? customer.getOccupation() : missingDataMessage);
-      citizenshipField.setText(customer.getCitizenship() != null ? customer.getCitizenship() : missingDataMessage);
-      visaField.setText(customer.getVisaType());
-      notesArea.setText(customer.getNotes());
+    titleField.setText(customer.getTitle() != null ? customer.getTitle() : missingDataMessage);
+    nameField.setText(customer.getName() != null ? customer.getName() : missingDataMessage);
+    if (customer.getDob() != null) {
+      dobPicker.setValue(customer.getDob());
     } else {
-      titleField.setText(missingDataMessage);
-      nameField.setText(missingDataMessage);
       dobPicker.setValue(null);
       dobPicker.setPromptText(missingDataMessage);
-      occupationField.setText(missingDataMessage);
-      citizenshipField.setText(missingDataMessage);
-      visaField.setText(missingDataMessage);
-      notesArea.setText(missingDataMessage);
     }
+    occupationField.setText(customer.getOccupation() != null ? customer.getOccupation() : missingDataMessage);
+    citizenshipField.setText(customer.getCitizenship() != null ? customer.getCitizenship() : missingDataMessage);
+    visaField.setText(customer.getVisaType());
+    notesArea.setText(customer.getNotes());
 
     addressTable.setItems(addresses);
     emailTable.setItems(emails);
