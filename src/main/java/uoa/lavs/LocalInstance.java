@@ -42,18 +42,6 @@ public class LocalInstance {
     _useTestConnections = useTestConnections;
     SingletonHelper.INSTANCE = new NitriteConnection(database);
     resetTestDatabase();
-    resetNitriteDatabase();
-  }
-
-  private static void resetNitriteDatabase() {
-    Path databasePath = Paths.get("testNitriteDatabase.txt");
-    try {
-      if (Files.exists(databasePath)) {
-        Files.delete(databasePath);
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
   }
 
   private static void resetTestDatabase() {

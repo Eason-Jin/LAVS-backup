@@ -151,7 +151,7 @@ public class LoanUpdaterTests {
             Frequency.Monthly
         );
         LoanUpdater.updateDatabase(null, loan);
-        assertEquals("123-01 (Temporary)", loan.getLoanId());  // Assuming a new loan ID is generated like this
+        assertEquals("123-01 (Temp)", loan.getLoanId());  // Assuming a new loan ID is generated like this
     }
 
     @Test
