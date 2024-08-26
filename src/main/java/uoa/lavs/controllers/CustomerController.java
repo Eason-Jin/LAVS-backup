@@ -388,6 +388,19 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     titleLabel.setText("Edit Customer");
     setDisableForFields(false);
     setVisabilityForButtons(true);
+    clearNotFoundFields();
+  }
+
+  private void clearNotFoundFields() {
+    titleField.setText(titleField.getText().equals(missingDataMessage) ? "" : titleField.getText());
+    nameField.setText(nameField.getText().equals(missingDataMessage) ? "" : nameField.getText());
+    if (dobPicker.getValue() == null && dobPicker.getPromptText().equals(missingDataMessage)) {
+      dobPicker.setPromptText("");
+    } else {
+      dobPicker.setValue(dobPicker.getValue());
+    }
+    occupationField.setText(occupationField.getText().equals(missingDataMessage) ? "" : occupationField.getText());
+    citizenshipField.setText(citizenshipField.getText().equals(missingDataMessage) ? "" : citizenshipField.getText());
   }
 
   public void setUpViewCustomer(String customerId) {
@@ -430,47 +443,53 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
     loans = FXCollections.observableArrayList(LoanFinder.findData(customerId));
 
     if (customer != null) {
-      titleField.setText(customer.getTitle() != null ? customer.getTitle() : "COULD NOT FIND");
-      nameField.setText(customer.getName() != null ? customer.getName() : "COULD NOT FIND");
-      dobPicker.setValue(customer.getDob() != null ? customer.getDob() : null);
-      occupationField.setText(customer.getOccupation() != null ? customer.getOccupation() : "COULD NOT FIND");
-      citizenshipField.setText(customer.getCitizenship() != null ? customer.getCitizenship() : "COULD NOT FIND");
+      titleField.setText(customer.getTitle() != null ? customer.getTitle() : missingDataMessage);
+      nameField.setText(customer.getName() != null ? customer.getName() : missingDataMessage);
+      if (customer.getDob() != null) {
+        dobPicker.setValue(customer.getDob());
+      } else {
+        dobPicker.setValue(null);
+        dobPicker.setPromptText(missingDataMessage);
+      }
+      occupationField.setText(customer.getOccupation() != null ? customer.getOccupation() : missingDataMessage);
+      citizenshipField.setText(customer.getCitizenship() != null ? customer.getCitizenship() : missingDataMessage);
       visaField.setText(customer.getVisaType());
-      notesArea.setText(customer.getNotes() != null ? customer.getNotes() : "COULD NOT FIND");
+      notesArea.setText(customer.getNotes() != null ? customer.getNotes() : missingDataMessage);
     } else {
-      titleField.setText("COULD NOT FIND");
-      nameField.setText("COULD NOT FIND");
+      titleField.setText(missingDataMessage);
+      nameField.setText(missingDataMessage);
       dobPicker.setValue(null);
-      occupationField.setText("COULD NOT FIND");
-      citizenshipField.setText("COULD NOT FIND");
-      visaField.setText("COULD NOT FIND");
-      notesArea.setText("COULD NOT FIND");
+      dobPicker.setPromptText(missingDataMessage);
+      occupationField.setText(missingDataMessage);
+      citizenshipField.setText(missingDataMessage);
+      visaField.setText(missingDataMessage);
+      notesArea.setText(missingDataMessage);
     }
 
     if (addresses != null) {
       addressTable.setItems(addresses);
     } else {
-      addressTable.setPlaceholder(new Label("COULD NOT FIND"));
+      addressTable.setPlaceholder(new Label(missingDataMessage));
     }
     if (emails != null) {
       emailTable.setItems(emails);
     } else {
-      emailTable.setPlaceholder(new Label("COULD NOT FIND"));
+      emailTable.setPlaceholder(new Label(missingDataMessage));
     }
     if (phones != null) {
       phoneTable.setItems(phones);
     } else {
-      phoneTable.setPlaceholder(new Label("COULD NOT FIND"));
+      phoneTable.setPlaceholder(new Label(missingDataMessage));
     }
     if (employers != null) {
       employmentTable.setItems(employers);
     } else {
-      employmentTable.setPlaceholder(new Label("COULD NOT FIND"));
+      employmentTable.setPlaceholder(new Label(missingDataMessage));
     }
     if (loans != null) {
       loanTable.setItems(loans);
     } else {
-      loanTable.setPlaceholder(new Label("COULD NOT FIND"));
+      loanTable.setPlaceholder(new Label(missingDataMessage));
     }
   }
 
@@ -877,6 +896,7 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
       case EDIT:
         alertCancel.setTitle("Cancel editing customer");
         if (alertCancel.showAndWait().get() == ButtonType.OK) {
+          resetFieldStyle();
           setUpViewCustomer(customer.getId());
         }
         break;

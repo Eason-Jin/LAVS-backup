@@ -208,31 +208,31 @@ public class LoanController extends uoa.lavs.controllers.Controller {
       primeBorrowerId = loan.getCustomerId();
       LoanSummary loanSummary = LoanSummaryLoader.calculateLoanSummary(loanId);
 
-      principalField.setText(loan.getPrincipalString() != null ? loan.getPrincipalString() : "COULD NOT FIND");
-      rateTypeBox.setValue(loan.getRateType() != null ? String.valueOf(loan.getRateType()): "COULD NOT FIND");
-      rateValueField.setText(loan.getRateValue() != null ? String.valueOf(loan.getRateValue()) : "COULD NOT FIND");
+      principalField.setText(loan.getPrincipalString() != null ? loan.getPrincipalString() : missingDataMessage);
+      rateTypeBox.setValue(loan.getRateType() != null ? String.valueOf(loan.getRateType()): missingDataMessage);
+      rateValueField.setText(loan.getRateValue() != null ? String.valueOf(loan.getRateValue()) : missingDataMessage);
       startDatePicker.setValue(loan.getStartDate() != null ? loan.getStartDate() : null);
-      periodField.setText(loan.getPeriod() != null ? String.valueOf(loan.getPeriod()) : "COULD NOT FIND");
-      loanTermField.setText(loan.getTerm() != null ? String.valueOf(loan.getTerm()) : "COULD NOT FIND");
-      compoundingBox.setValue(loan.getCompounding() != null ? String.valueOf(loan.getCompounding()) : "COULD NOT FIND");
-      paymentFrequencyBox.setValue(loan.getPaymentFrequency() != null ? String.valueOf(loan.getPaymentFrequency()) : "COULD NOT FIND");
-      paymentAmountField.setText(loan.getPaymentAmountString() != null ? loan.getPaymentAmountString() : "COULD NOT FIND");
-      totalInterestField.setText((loanSummary != null && loanSummary.getTotalInterest() != null) ? ("$" + String.format("%.2f", loanSummary.getTotalInterest())) : "COULD NOT FIND");
-      totalCostField.setText((loanSummary != null && loanSummary.getTotalCost() != null) ? ("$" + String.format("%.2f", loanSummary.getTotalCost())) : "COULD NOT FIND");
-      payoffDateField.setText((loanSummary != null && loanSummary.getPayOffDate() != null) ? loanSummary.getPayOffDate().toString() : "COULD NOT FIND");
+      periodField.setText(loan.getPeriod() != null ? String.valueOf(loan.getPeriod()) : missingDataMessage);
+      loanTermField.setText(loan.getTerm() != null ? String.valueOf(loan.getTerm()) : missingDataMessage);
+      compoundingBox.setValue(loan.getCompounding() != null ? String.valueOf(loan.getCompounding()) : missingDataMessage);
+      paymentFrequencyBox.setValue(loan.getPaymentFrequency() != null ? String.valueOf(loan.getPaymentFrequency()) : missingDataMessage);
+      paymentAmountField.setText(loan.getPaymentAmountString() != null ? loan.getPaymentAmountString() : missingDataMessage);
+      totalInterestField.setText((loanSummary != null && loanSummary.getTotalInterest() != null) ? ("$" + String.format("%.2f", loanSummary.getTotalInterest())) : missingDataMessage);
+      totalCostField.setText((loanSummary != null && loanSummary.getTotalCost() != null) ? ("$" + String.format("%.2f", loanSummary.getTotalCost())) : missingDataMessage);
+      payoffDateField.setText((loanSummary != null && loanSummary.getPayOffDate() != null) ? loanSummary.getPayOffDate().toString() : missingDataMessage);
     } else {
-      principalField.setText("COULD NOT FIND");
-      rateTypeBox.setValue("COULD NOT FIND");
-      rateValueField.setText("COULD NOT FIND");
+      principalField.setText(missingDataMessage);
+      rateTypeBox.setValue(missingDataMessage);
+      rateValueField.setText(missingDataMessage);
       startDatePicker.setValue(null);
-      periodField.setText("COULD NOT FIND");
-      loanTermField.setText("COULD NOT FIND");
-      compoundingBox.setValue("COULD NOT FIND");
-      paymentFrequencyBox.setValue("COULD NOT FIND");
-      paymentAmountField.setText("COULD NOT FIND");
-      totalInterestField.setText("COULD NOT FIND");
-      totalCostField.setText("COULD NOT FIND");
-      payoffDateField.setText("COULD NOT FIND");
+      periodField.setText(missingDataMessage);
+      loanTermField.setText(missingDataMessage);
+      compoundingBox.setValue(missingDataMessage);
+      paymentFrequencyBox.setValue(missingDataMessage);
+      paymentAmountField.setText(missingDataMessage);
+      totalInterestField.setText(missingDataMessage);
+      totalCostField.setText(missingDataMessage);
+      payoffDateField.setText(missingDataMessage);
     }
 
     setCoBorrowersTable(loanId);
