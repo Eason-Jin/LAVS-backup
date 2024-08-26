@@ -108,17 +108,17 @@ public abstract class Controller {
     return false;
   }
 
-  protected boolean isTooLong(Control str, int length) {
-    str.getStyleClass().remove("invalid");
-    if (str instanceof TextField) {
-      TextField tf = (TextField) str;
-      if (tf.getText() == null || tf.getText().length() > length) {
+  protected boolean isTooLong(Control ui, int length) {
+    ui.getStyleClass().remove("invalid");
+    if (ui instanceof TextField) {
+      TextField tf = (TextField) ui;
+      if (tf.getText() != null && tf.getText().length() > length) {
         tf.getStyleClass().add("invalid");
         return true;
       }
-    } else if (str instanceof TextArea) {
-      TextArea ta = (TextArea) str;
-      if (ta.getText() == null || ta.getText().length() > length) {
+    } else if (ui instanceof TextArea) {
+      TextArea ta = (TextArea) ui;
+      if (ta.getText() != null && ta.getText().length() > length) {
         ta.getStyleClass().add("invalid");
         System.out.println(ta.getStyleClass());
         return true;
