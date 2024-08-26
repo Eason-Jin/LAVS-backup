@@ -516,6 +516,20 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
 
   @FXML
   private void onClickAddLoan(ActionEvent event) {
+    boolean doesMailingAddressExist = doesMailingAddressExist();
+    boolean doesContactDetailsExist = emails.size() + phones.size() > 0;
+
+    if (!doesMailingAddressExist || !doesContactDetailsExist) {
+      if (!doesMailingAddressExist) {
+        appendErrorMessage("Add a mailing address before adding a loan\n");
+      }
+      if (!doesContactDetailsExist) {
+        appendErrorMessage("Add an email or phone before adding a loan\n");
+      }
+      showAlert();
+      return;
+    }
+
     loanController.setUpAddLoan(customer.getId(), customer.getName());
     resetScene();
     Main.setScene(AppScene.LOAN);
@@ -869,6 +883,15 @@ public class CustomerController extends uoa.lavs.controllers.Controller {
   private boolean doesPrimaryAddressExist() {
     for (Address address : addresses) {
       if (address.getIsPrimary()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean doesMailingAddressExist() {
+    for (Address address : addresses) {
+      if (address.getIsMailing()) {
         return true;
       }
     }
