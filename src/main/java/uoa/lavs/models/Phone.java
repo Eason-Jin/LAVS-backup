@@ -45,7 +45,7 @@ public class Phone extends Detail {
   }
 
   public String getType() {
-    return (type == null || type == "null") ? "" : type;
+    return type;
   }
 
   public void setType(String type) {
@@ -53,7 +53,7 @@ public class Phone extends Detail {
   }
 
   public String getPrefix() {
-    return (prefix == null || prefix == "null") ? "" : prefix;
+    return prefix;
   }
 
   public void setPrefix(String prefix) {
@@ -61,7 +61,7 @@ public class Phone extends Detail {
   }
 
   public String getPhoneNumber() {
-    return (phoneNumber == null || phoneNumber == "null") ? "" : phoneNumber;
+    return phoneNumber;
   }
 
   public void setPhoneNumber(String phoneNumber) {
@@ -69,7 +69,7 @@ public class Phone extends Detail {
   }
 
   public Boolean getIsPrimary() {
-    return (isPrimary == null) ? false : isPrimary;
+    return isPrimary;
   }
 
   public void setIsPrimary(Boolean isPrimary) {
@@ -77,7 +77,7 @@ public class Phone extends Detail {
   }
 
   public Boolean getCanSendText() {
-    return (canSendText == null) ? false : canSendText;
+    return canSendText;
   }
 
   public void setCanSendText(Boolean canSendText) {

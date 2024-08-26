@@ -20,7 +20,7 @@ public abstract class Controller {
 
   protected Alert alert = new Alert(Alert.AlertType.ERROR);
   protected StringBuilder errorMessage = new StringBuilder();
-  protected String missingDataMessage = "COULD NOT FIND";
+  protected String missingDataMessage = "null";
 
   protected boolean validateEmailFormat(TextField email) {
     email.getStyleClass().remove("invalid");

@@ -64,7 +64,7 @@ public class Employer extends Detail {
   }
 
   public String getName() {
-    return (name == null || name == "null") ? "" : name;
+    return name;
   }
 
   public void setName(String name) {
@@ -72,7 +72,7 @@ public class Employer extends Detail {
   }
 
   public String getLine1() {
-    return (line1 == null || line1 == "null") ? "" : line1;
+    return line1;
   }
 
   public void setLine1(String line1) {
@@ -80,7 +80,7 @@ public class Employer extends Detail {
   }
 
   public String getLine2() {
-    return (line2 == null || line2 == "null") ? "" : line2;
+    return line2;
   }
 
   public void setLine2(String line2) {
@@ -88,7 +88,7 @@ public class Employer extends Detail {
   }
 
   public String getSuburb() {
-    return (suburb == null || suburb == "null") ? "" : suburb;
+    return suburb;
   }
 
   public void setSuburb(String suburb) {
@@ -96,7 +96,7 @@ public class Employer extends Detail {
   }
 
   public String getCity() {
-    return (city == null || city == "null") ? "" : city;
+    return city;
   }
 
   public void setCity(String city) {
@@ -104,7 +104,7 @@ public class Employer extends Detail {
   }
 
   public String getPostCode() {
-    return (postCode == null || postCode == "null") ? "" : postCode;
+    return postCode;
   }
 
   public void setPostCode(String postCode) {
@@ -112,7 +112,7 @@ public class Employer extends Detail {
   }
 
   public String getCountry() {
-    return (country == null || country == "null") ? "" : country;
+    return country;
   }
 
   public void setCountry(String country) {
@@ -120,7 +120,7 @@ public class Employer extends Detail {
   }
 
   public String getPhoneNumber() {
-    return (phoneNumber == null || phoneNumber == "null") ? "" : phoneNumber;
+    return phoneNumber;
   }
 
   public void setPhoneNumber(String phoneNumber) {
@@ -128,7 +128,7 @@ public class Employer extends Detail {
   }
 
   public String getEmailAddress() {
-    return (emailAddress == null || emailAddress == "null") ? "" : emailAddress;
+    return emailAddress;
   }
 
   public void setEmailAddress(String emailAddress) {
@@ -136,7 +136,7 @@ public class Employer extends Detail {
   }
 
   public String getWebsite() {
-    return (website == null || website == "null") ? "" : website;
+    return website;
   }
 
   public void setWebsite(String website) {
@@ -144,7 +144,7 @@ public class Employer extends Detail {
   }
 
   public Boolean getIsOwner() {
-    return (isOwner == null) ? false : isOwner;
+    return isOwner;
   }
 
   public void setIsOwner(Boolean isOwner) {
