@@ -35,6 +35,11 @@ public abstract class Controller {
 
   protected boolean validateNumberFormat(TextField number, boolean isDouble) {
     number.getStyleClass().remove("invalid");
+    if (!Character.isDigit(number.getText().charAt(0))) {
+      number.getStyleClass().add("invalid");
+      return false;
+    }
+
     try {
       if (isDouble) {
         Double.parseDouble(number.getText());
